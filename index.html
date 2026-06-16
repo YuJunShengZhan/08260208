@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>林聖展 ♡ 蘇予君</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+--pink:#e8637a;
+--pink-light:#fce8ec;
+--pink-soft:#f7d0d8;
+--rose:#c94b64;
+--cream:#fdf8f5;
+--text:#2d1a20;
+--text-muted:#8a6470;
+--white:#ffffff;
+--card-border:rgba(232,99,122,0.15);
+--bg:var(--cream);
+}
+
+input[type="date"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"] input[type="date"] {
+  color-scheme: dark;
+}
+
+[data-theme="dark"]{
+--cream:#1a1014;
+--text:#f5dde3;
+--text-muted:#b08090;
+--white:#2a1820;
+--card-border:rgba(232,99,122,0.25);
+--pink-light:#3a1e26;
+--pink-soft:#4a2030;
+--bg:#1a1014;
+}
+
+body{
+background:var(--cream);
+color:var(--text);
+font-family:'Noto Sans TC',sans-serif;
+min-height:100vh;
+padding-bottom:80px;
+transition:background .3s,color .3s;
+}
+
+.header{
+background:var(--white);
+border-bottom:1px solid var(--card-border);
+padding:18px 20px 14px;
+text-align:center;
+position:sticky;top:0;z-index:100;
+transition:background .3s;
+}
+.header-names{
+font-family:'Noto Serif TC',serif;
+font-size:20px;
+color:var(--pink);
+letter-spacing:2px;
+}
+.header-sub{
+font-size:12px;
+color:var(--text-muted);
+margin-top:4px;
+}
+.heart-pulse{
+display:inline-block;
+animation:pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
+
+.dark-toggle{
+position:absolute;
+top:50%;right:14px;
+transform:translateY(-50%);
+background:none;
+border:1px solid var(--card-border);
+border-radius:20px;
+padding:4px 8px;
+cursor:pointer;
+font-size:14px;
+color:var(--text-muted);
+display:flex;align-items:center;gap:4px;
+transition:all .2s;
+}
+.dark-toggle:hover{border-color:var(--pink);color:var(--pink);}
+
+.bottom-nav{
+position:fixed;bottom:0;left:0;right:0;
+background:var(--white);
+border-top:1px solid var(--card-border);
+display:flex;justify-content:space-around;
+padding:8px 0 12px;z-index:100;
+transition:background .3s;
+}
+.nav-btn{
+background:none;border:none;
+display:flex;flex-direction:column;align-items:center;
+gap:2px;cursor:pointer;padding:3px 5px;
+color:var(--text-muted);font-size:9px;
+transition:color .2s;
+border-radius:10px;
+}
+.nav-btn.active{color:var(--pink);font-weight:700;}
+.nav-btn:hover{color:var(--pink);}
+.nav-icon{font-size:19px;}
+.nav-btn.active .nav-icon{
+filter:drop-shadow(0 0 3px rgba(232,99,122,0.5));
+transform:scale(1.15);
+display:inline-block;
+}
+.nav-btn.active::after{
+content:'';display:block;
+width:4px;height:4px;border-radius:50%;
+background:var(--pink);margin-top:1px;
+}
+
+.page{display:none;padding:16px;}
+.page.active{display:block;}
+
+.card{
+background:var(--white);
+border:1px solid var(--card-border);
+border-radius:20px;
+padding:20px;
+margin-bottom:16px;
+transition:background .3s;
+}
+.card-title{
+font-family:'Noto Serif TC',serif;
+font-size:16px;
+color:var(--pink);
+margin-bottom:14px;
+display:flex;align-items:center;gap:8px;
+}
+
+.days-label{text-align:center;color:var(--text-muted);font-size:14px;margin-top:6px;}
+.countdown-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.countdown-item{
+background:var(--pink-light);
+border-radius:14px;
+padding:14px 12px;
+text-align:center;
+transition:background .3s;
+}
+.countdown-num{
+font-family:'Noto Serif TC',serif;
+font-size:28px;font-weight:700;color:var(--rose);
+}
+.countdown-desc{font-size:11px;color:var(--text-muted);margin-top:3px;}
+
+.timeline{margin-top:4px;}
+.tl-item{
+padding:10px 0 10px 20px;
+border-left:2px solid var(--pink-soft);
+position:relative;font-size:14px;
+color:var(--text);line-height:1.6;
+}
+.tl-item::before{
+content:'';position:absolute;left:-5px;top:14px;
+width:8px;height:8px;border-radius:50%;background:var(--pink);
+}
+.tl-date{font-size:12px;color:var(--text-muted);display:block;margin-bottom:2px;}
+
+.letter-wrap{
+background:var(--pink-light);
+border-radius:16px;padding:20px;
+font-size:14px;line-height:2;color:var(--text);
+display:none;margin-top:12px;
+border:1px dashed var(--pink-soft);
+font-family:'Noto Serif TC',serif;
+}
+.letter-wrap.open{display:block;}
+.open-btn{
+width:100%;padding:12px;
+background:var(--pink);color:white;
+border:none;border-radius:12px;
+font-size:14px;cursor:pointer;
+font-family:'Noto Sans TC',sans-serif;
+transition:background .2s;
+}
+.open-btn:hover{background:var(--rose);}
+
+.special-overlay{
+position:fixed;inset:0;
+background:rgba(0,0,0,0.55);
+z-index:999;
+display:flex;align-items:center;justify-content:center;
+padding:20px;
+}
+.special-box{
+background:var(--white);
+border-radius:24px;
+padding:32px 24px;
+text-align:center;
+max-width:320px;width:100%;
+position:relative;
+animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn{from{transform:scale(.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+.special-emoji{font-size:60px;margin-bottom:12px;display:block;}
+.special-title{
+font-family:'Noto Serif TC',serif;
+font-size:22px;color:var(--pink);font-weight:700;
+margin-bottom:8px;
+}
+.special-sub{font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:20px;}
+.special-close{
+background:var(--pink);color:white;
+border:none;border-radius:12px;
+padding:12px 32px;font-size:15px;cursor:pointer;
+font-family:'Noto Sans TC',sans-serif;
+}
+.confetti-wrap{
+position:fixed;inset:0;pointer-events:none;z-index:998;overflow:hidden;
+}
+.confetti-piece{
+position:absolute;
+width:10px;height:10px;
+top:-20px;
+animation:fall linear forwards;
+}
+@keyframes fall{
+to{transform:translateY(110vh) rotate(720deg);opacity:0;}
+}
+
+.album-cal-header{
+display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
+}
+.album-cal-nav{
+background:none;border:none;font-size:22px;cursor:pointer;color:var(--pink);padding:2px 6px;
+}
+.album-cal-title{
+font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text);font-weight:700;
+}
+.album-cal-grid{
+display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+}
+.cal-day-header{
+font-size:11px;color:var(--text-muted);text-align:center;padding:4px 0;
+}
+.cal-day{
+aspect-ratio:1;border-radius:10px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+cursor:pointer;font-size:13px;color:var(--text);
+border:1px solid transparent;
+transition:all .15s;
+position:relative;
+min-height:36px;
+}
+.cal-day:hover{border-color:var(--pink);background:var(--pink-light);}
+.cal-day.today{background:var(--pink);color:white;font-weight:700;}
+.cal-day.has-data::after{
+content:'';position:absolute;bottom:4px;
+width:5px;height:5px;border-radius:50%;
+background:var(--rose);
+}
+.cal-day.today.has-data::after{background:white;}
+.cal-day.empty{cursor:default;}
+.cal-day.other-month{opacity:.35;}
+
+.day-modal-bg{
+position:fixed;inset:0;background:rgba(0,0,0,0.45);
+z-index:500;display:flex;align-items:flex-end;justify-content:center;
+}
+.day-modal{
+background:var(--white);
+border-radius:24px 24px 0 0;
+padding:20px 20px 36px;
+width:100%;max-width:480px;
+max-height:85vh;overflow-y:auto;
+animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.day-modal-title{
+font-family:'Noto Serif TC',serif;
+font-size:18px;color:var(--pink);margin-bottom:16px;
+display:flex;align-items:center;justify-content:space-between;
+}
+.day-modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-muted);}
+
+.edit-toggle-btn{
+background:none;
+border:1.5px solid var(--card-border);
+border-radius:20px;
+padding:5px 12px;
+font-size:12px;
+cursor:pointer;
+color:var(--text-muted);
+font-family:'Noto Sans TC',sans-serif;
+transition:all .2s;
+display:flex;align-items:center;gap:4px;
+}
+.edit-toggle-btn.editing{
+background:var(--pink);
+color:white;
+border-color:var(--pink);
+}
+.edit-toggle-btn:hover{border-color:var(--pink);color:var(--pink);}
+.edit-toggle-btn.editing:hover{background:var(--rose);}
+
+.modal-section{margin-bottom:18px;}
+.modal-section-title{
+font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
+}
+
+.modal-photos-grid{
+display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;
+}
+.modal-photo-item{
+aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;
+}
+.modal-photo-item img{width:100%;height:100%;object-fit:cover;}
+.modal-photo-del{
+position:absolute;top:3px;right:3px;
+background:rgba(0,0,0,.55);color:white;border:none;
+width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;
+display:flex;align-items:center;justify-content:center;
+}
+.modal-photo-empty{
+aspect-ratio:1;border-radius:10px;
+background:var(--pink-light);
+display:flex;align-items:center;justify-content:center;
+font-size:28px;
+}
+
+.view-schedule-item{
+display:flex;align-items:center;gap:8px;
+padding:9px 12px;
+background:var(--pink-light);
+border-radius:10px;
+font-size:13px;
+color:var(--text);
+margin-bottom:6px;
+}
+.view-schedule-item::before{
+content:'🗓';font-size:14px;flex-shrink:0;
+}
+
+.view-note{
+background:var(--pink-light);
+border-radius:12px;
+padding:12px 14px;
+font-size:13px;
+line-height:1.7;
+color:var(--text);
+font-family:'Noto Serif TC',serif;
+white-space:pre-wrap;
+border:1px dashed var(--pink-soft);
+}
+.view-empty{
+text-align:center;
+color:var(--text-muted);
+font-size:13px;
+padding:16px 0;
+}
+
+.modal-add-photo{
+width:100%;padding:10px;
+background:var(--pink-light);color:var(--rose);
+border:1px dashed var(--pink);border-radius:10px;
+cursor:pointer;font-size:13px;
+font-family:'Noto Sans TC',sans-serif;
+display:block;text-align:center;
+}
+
+.photo-upload-options{
+display:flex;gap:8px;margin-bottom:6px;
+}
+.photo-upload-btn{
+flex:1;padding:10px;
+background:var(--pink-light);color:var(--rose);
+border:1px dashed var(--pink);border-radius:10px;
+cursor:pointer;font-size:12px;
+font-family:'Noto Sans TC',sans-serif;
+display:flex;align-items:center;justify-content:center;gap:4px;
+}
+
+.modal-input{
+width:100%;padding:10px;
+border:1px solid var(--card-border);border-radius:10px;
+font-size:13px;font-family:'Noto Sans TC',sans-serif;
+background:var(--pink-light);color:var(--text);
+margin-bottom:8px;
+}
+.modal-textarea{
+width:100%;padding:10px;
+border:1px solid var(--card-border);border-radius:10px;
+font-size:13px;font-family:'Noto Sans TC',sans-serif;
+background:var(--pink-light);color:var(--text);
+resize:none;
+}
+.modal-save-btn{
+width:100%;padding:12px;
+background:var(--pink);color:white;
+border:none;border-radius:12px;
+font-size:14px;cursor:pointer;
+font-family:'Noto Sans TC',sans-serif;
+margin-top:12px;
+}
+
+.schedule-list{display:flex;flex-direction:column;gap:6px;}
+.schedule-item{
+display:flex;align-items:center;gap:8px;
+background:var(--pink-light);border-radius:10px;padding:8px 10px;
+font-size:13px;color:var(--text);
+}
+.schedule-item-del{
+margin-left:auto;background:none;border:none;
+color:var(--text-muted);cursor:pointer;font-size:14px;
+}
+
+.msg-list{margin-top:14px;display:flex;flex-direction:column;gap:10px;}
+.msg-bubble{
+padding:12px 15px;border-radius:16px;
+font-size:14px;line-height:1.7;position:relative;
+}
+.msg-bubble.from-me{
+background:var(--pink);color:white;
+border-bottom-right-radius:4px;
+align-self:flex-end;max-width:85%;
+}
+.msg-bubble.from-other{
+background:var(--white);
+border:1px solid var(--card-border);
+border-bottom-left-radius:4px;
+align-self:flex-start;max-width:85%;
+}
+.msg-meta{font-size:11px;opacity:.6;margin-top:5px;}
+.del-msg{
+position:absolute;top:5px;right:8px;
+background:none;border:none;font-size:13px;cursor:pointer;
+color:rgba(255,255,255,0.7);
+}
+.msg-input-area{display:flex;flex-direction:column;gap:10px;}
+.msg-input-area textarea{
+width:100%;padding:12px;
+border:1px solid var(--card-border);border-radius:12px;
+font-size:14px;font-family:'Noto Sans TC',sans-serif;
+resize:none;background:var(--pink-light);color:var(--text);
+}
+.sender-toggle{display:flex;gap:8px;}
+.sender-btn{
+flex:1;padding:9px;border:1px solid var(--card-border);
+border-radius:10px;background:none;cursor:pointer;font-size:13px;
+font-family:'Noto Sans TC',sans-serif;transition:all .2s;color:var(--text);
+}
+.sender-btn.active{background:var(--pink);color:white;border-color:var(--pink);}
+.send-btn{
+background:var(--pink);color:white;
+border:none;padding:12px;border-radius:12px;
+cursor:pointer;font-size:14px;font-family:'Noto Sans TC',sans-serif;
+}
+
+.food-result{
+font-family:'Noto Serif TC',serif;font-size:36px;font-weight:700;
+text-align:center;color:var(--pink);padding:20px 0;min-height:80px;
+}
+.food-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.food-tag{
+background:var(--pink-light);color:var(--rose);
+padding:5px 12px;border-radius:20px;font-size:12px;
+}
+
+.game-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.game-tab{
+flex:1;padding:10px;background:var(--pink-light);
+border:none;border-radius:10px;cursor:pointer;font-size:13px;
+color:var(--rose);font-family:'Noto Sans TC',sans-serif;transition:all .2s;
+}
+.game-tab.active{background:var(--pink);color:white;}
+.game-section{display:none;}
+.game-section.active{display:block;}
+
+.rps-choices{display:flex;gap:10px;justify-content:center;margin:16px 0;}
+.rps-choice{
+font-size:44px;cursor:pointer;padding:12px;border-radius:16px;
+border:2px solid transparent;transition:all .2s;background:var(--pink-light);
+}
+.rps-choice:hover,.rps-choice.selected{
+border-color:var(--pink);background:var(--pink-soft);transform:scale(1.1);
+}
+.rps-status{
+text-align:center;font-size:14px;color:var(--text-muted);
+padding:10px;background:var(--pink-light);border-radius:12px;
+min-height:50px;display:flex;align-items:center;justify-content:center;
+}
+.rps-vs{
+display:flex;align-items:center;justify-content:center;gap:20px;
+font-size:36px;margin:10px 0;min-height:60px;
+}
+.rps-result{
+text-align:center;font-size:20px;font-weight:500;
+color:var(--pink);margin:8px 0;min-height:30px;
+}
+
+.quiz-progress{font-size:12px;color:var(--text-muted);text-align:right;margin-bottom:10px;}
+.quiz-question{
+font-size:16px;font-family:'Noto Serif TC',serif;
+color:var(--text);margin-bottom:16px;line-height:1.7;
+}
+.quiz-options{display:flex;flex-direction:column;gap:8px;}
+.quiz-option{
+padding:13px;border:1px solid var(--card-border);
+border-radius:12px;background:var(--white);
+cursor:pointer;font-size:14px;text-align:left;width:100%;
+font-family:'Noto Sans TC',sans-serif;transition:all .2s;color:var(--text);
+}
+.quiz-option:hover{border-color:var(--pink);background:var(--pink-light);}
+.quiz-option.correct{background:#e8f5e9;border-color:#4caf50;color:#2e7d32;}
+.quiz-option.wrong{background:#fce8ec;border-color:var(--pink);color:var(--rose);}
+.quiz-score{text-align:center;padding:20px 0;font-family:'Noto Serif TC',serif;}
+.quiz-score-num{font-size:48px;font-weight:700;color:var(--pink);}
+
+.hidden{display:none!important;}
+
+.music-player{
+position:fixed;
+bottom:68px;
+right:14px;
+z-index:200;
+background:var(--white);
+border:1px solid var(--card-border);
+border-radius:16px;
+padding:8px 10px;
+display:flex;align-items:center;gap:8px;
+box-shadow:0 4px 20px rgba(232,99,122,0.2);
+width:200px;
+transition:background .3s;
+}
+.music-disc{
+width:32px;height:32px;border-radius:50%;
+background:var(--pink);
+display:flex;align-items:center;justify-content:center;
+font-size:14px;flex-shrink:0;
+}
+.music-disc.playing{animation:spin 4s linear infinite;}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.music-info{flex:1;min-width:0;overflow:hidden;}
+.music-title-wrap{overflow:hidden;white-space:nowrap;}
+.music-title{display:inline-block;font-size:11px;color:var(--text);white-space:nowrap;}
+.music-title.marquee{animation:marquee 8s linear infinite;}
+@keyframes marquee{
+0%{transform:translateX(0);}30%{transform:translateX(0);}
+80%{transform:translateX(var(--marquee-dist,-100px));}
+100%{transform:translateX(var(--marquee-dist,-100px));}
+}
+.music-btns{display:flex;gap:2px;flex-shrink:0;}
+.music-btn{background:none;border:none;cursor:pointer;font-size:16px;padding:1px;color:var(--pink);}
+
+.mc-opt-btn{
+padding:12px;
+border:1.5px solid var(--card-border);
+border-radius:12px;
+background:var(--white);
+cursor:pointer;
+font-size:14px;
+text-align:center;
+font-family:'Noto Sans TC',sans-serif;
+color:var(--text);
+transition:all .2s;
+width:100%;
+}
+.mc-opt-btn:hover:not(:disabled){border-color:var(--pink);background:var(--pink-light);}
+.mc-opt-btn.chosen{background:var(--pink);color:white;border-color:var(--pink);}
+.mc-opt-btn:disabled{opacity:.75;cursor:default;}
+
+/* 相簿同步載入指示器 */
+.album-sync-badge{
+display:inline-flex;align-items:center;gap:4px;
+font-size:11px;color:var(--text-muted);
+padding:3px 8px;border-radius:20px;
+background:var(--pink-light);margin-left:8px;
+}
+
+/* ── Block Blast ── */
+:root {
+  --bb-cell: min(calc((100vw - 72px) / 8), 44px);
+}
+.bb-cell.filled{background:var(--pink);}
+.bb-cell.preview{background:#22c55e;opacity:.7;transform:scale(.9);}
+.bb-cell.flash{background:#fff;transition:none;}
+
+.bb-piece-wrap{
+  padding:6px;
+  background:var(--pink-light);
+  border-radius:10px;
+  cursor:grab;
+  border:2px solid transparent;
+  transition:all .15s;
+  display:flex;align-items:center;justify-content:center;
+  min-width:44px;min-height:44px;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.bb-piece-wrap.selected{border-color:var(--pink);background:var(--pink-soft);}
+.bb-piece-wrap.used{opacity:.3;pointer-events:none;}
+.bb-piece-wrap:hover:not(.used){border-color:var(--pink);}
+.bb-cell{
+  width:var(--bb-cell);height:var(--bb-cell);
+  border-radius:6px;
+	background:#f9e8ec;
+	border:1px solid #f0c8d0;
+  cursor:pointer;
+  touch-action:none;
+  box-sizing:border-box;
+}
+.bb-cell.filled{
+  border-radius:8px;
+  border-bottom:3px solid rgba(0,0,0,0.3);
+  border-right:2px solid rgba(0,0,0,0.2);
+  border-top:1.5px solid rgba(255,255,255,0.35);
+  border-left:1.5px solid rgba(255,255,255,0.15);
+}
+.bb-cell.preview{
+  opacity:.6;
+  border-radius:8px;
+  border-bottom:3px solid rgba(0,0,0,0.25);
+  border-top:1.5px solid rgba(255,255,255,0.3);
+}
+.bb-block.empty{visibility:hidden;}
+.bb-block {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+.bb-block.empty {
+  visibility: hidden;
+}
+/* 拖曳時的幽靈方塊 */
+#bb-drag-ghost{
+  position:fixed;
+  pointer-events:none;
+  z-index:9999;
+  opacity:.75;
+  transform:translate(-50%,-200%);
+  display:none;
+}
+#ft-date-input:not(:valid) {
+  color: transparent;
+}
+#ft-date-input:not(:valid)::before {
+  content: '日期（點我選擇）';
+  color: var(--text-muted);
+  position: absolute;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<header class="header" style="position:sticky;top:0;z-index:100;">
+  <div class="header-names">林聖展 <span class="heart-pulse">♡</span> 蘇予君</div>
+  <div class="header-sub">屬於我們的網站</div>
+  <button class="dark-toggle" onclick="toggleDark()" id="dark-btn" title="切換深色模式">🌙</button>
+</header>
+
+<div class="music-player" id="music-player">
+  <div class="music-disc" id="music-disc">🎵</div>
+  <div class="music-info">
+    <div class="music-title-wrap" id="music-title-wrap">
+      <span class="music-title" id="music-title">載入中...</span>
+    </div>
+  </div>
+  <div class="music-btns">
+    <button class="music-btn" onclick="prevSong()">⏮</button>
+    <button class="music-btn" id="play-btn" onclick="togglePlay()">▶️</button>
+    <button class="music-btn" onclick="nextSong()">⏭</button>
+  </div>
+</div>
+<audio id="audio-player"></audio>
+
+<div class="special-overlay hidden" id="special-overlay">
+  <div class="special-box">
+    <span class="special-emoji" id="special-emoji">🎉</span>
+    <div class="special-title" id="special-title"></div>
+    <div class="special-sub" id="special-sub"></div>
+    <button class="special-close" onclick="closeSpecial()">收下這份驚喜 💕</button>
+  </div>
+</div>
+<div class="confetti-wrap hidden" id="confetti-wrap"></div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="card">
+    <div class="card-title">💕 在一起多久了</div>
+    <div style="text-align:center">
+      <div style="font-family:'Noto Serif TC',serif;font-size:64px;font-weight:700;color:var(--pink);line-height:1;display:inline-block">
+        <span id="loveDays">0</span><span style="font-size:22px;font-weight:400;color:var(--text-muted);margin-left:4px;vertical-align:middle">天</span>
+      </div>
+    </div>
+    <div class="days-label">我們開始的日子是 2025/12/01</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 重要倒數</div>
+    <div class="countdown-grid">
+      <div class="countdown-item">
+        <div class="countdown-num" id="annivDays">—</div>
+        <div class="countdown-desc" id="annivLabel">下個週年紀念日</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-num" id="bd1Days">—</div>
+        <div class="countdown-desc">聖展生日 (2/8)</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-num" id="bd2Days">—</div>
+        <div class="countdown-desc">予君生日 (8/26)</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-num" id="vdDays">—</div>
+        <div class="countdown-desc" id="vdLabel">下個情人節</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+  <div class="card-title">💑 我們的第一次</div>
+  <div class="timeline" id="firsttime-list">
+    <div style="text-align:center;color:var(--text-muted);font-size:13px;padding:12px 0">載入中...</div>
+  </div>
+  <!-- 新增區 -->
+  <div id="firsttime-add-area" style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <input type="date" id="ft-date-input" 
+        style="flex:1;padding:10px;border:1px solid var(--card-border);border-radius:10px;font-size:14px;font-family:'Noto Sans TC',sans-serif;background:var(--pink-light);color:var(--text);min-height:44px;"
+        onchange="this.style.color='var(--text)'"
+        onfocus="this.style.color='var(--text)'"
+      >
+      <span style="font-size:11px;color:var(--text-muted);white-space:nowrap;flex-shrink:0">📅 點擊選擇日期</span>
+    </div>
+  
+    <div style="display:flex;gap:8px">
+      <input id="ft-text-input" class="modal-input" placeholder="紀錄做了什麼事..." style="flex:1;margin-bottom:0">
+      <button onclick="ftAdd()" style="background:var(--pink);color:white;border:none;border-radius:10px;padding:0 16px;cursor:pointer;font-size:14px;flex-shrink:0">＋</button>
+    </div>
+  </div>
+</div>
+
+  <div class="card">
+    <div class="card-title">💌 給予君寶包的信</div>
+    <button class="open-btn" onclick="toggleLetter(this)">打開信封 ✉️</button>
+    <div class="letter-wrap" id="letter">
+      
+    </div>
+  </div>
+</div>
+
+<!-- ALBUM -->
+<div id="page-album" class="page">
+  <div class="card">
+    <div class="album-cal-header">
+      <button class="album-cal-nav" onclick="albumCalPrev()">‹</button>
+      <div>
+        <span class="album-cal-title" id="album-cal-title"></span>
+        <span class="album-sync-badge" id="album-sync-badge">☁️ 同步中...</span>
+      </div>
+      <button class="album-cal-nav" onclick="albumCalNext()">›</button>
+    </div>
+    <div class="album-cal-grid" id="album-cal-dow">
+      <div class="cal-day-header">日</div>
+      <div class="cal-day-header">一</div>
+      <div class="cal-day-header">二</div>
+      <div class="cal-day-header">三</div>
+      <div class="cal-day-header">四</div>
+      <div class="cal-day-header">五</div>
+      <div class="cal-day-header">六</div>
+    </div>
+    <div class="album-cal-grid" id="album-cal-grid"></div>
+    <div style="margin-top:12px;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
+      <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--rose)"></span>有照片/行程/筆記的日期
+    </div>
+  </div>
+</div>
+
+<!-- Day Modal -->
+<div class="day-modal-bg hidden" id="day-modal-bg" onclick="closeDayModal(event)">
+  <div class="day-modal" id="day-modal">
+    <div class="day-modal-title">
+      <span id="day-modal-date"></span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="edit-toggle-btn" id="modal-edit-btn" onclick="toggleModalEditMode()">✏️ 編輯</button>
+        <button class="day-modal-close" onclick="closeDayModalDirect()">✕</button>
+      </div>
+    </div>
+    <div id="modal-view-content">
+      <div class="modal-section">
+        <div class="modal-section-title">📷 照片</div>
+        <div class="modal-photos-grid" id="view-photos-grid"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">🗓 行程</div>
+        <div id="view-schedule-list"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">📝 筆記</div>
+        <div id="view-note"></div>
+      </div>
+    </div>
+    <div id="modal-edit-content" class="hidden">
+      <div class="modal-section">
+        <div class="modal-section-title">📷 照片</div>
+        <div class="modal-photos-grid" id="modal-photos-grid"></div>
+        <div class="photo-upload-options">
+          <label style="cursor:pointer;flex:1">
+            <input type="file" accept="image/*" capture="environment" multiple onchange="modalUploadPhotos(event)" style="display:none" id="modal-photo-camera">
+            <span class="photo-upload-btn">📷 拍照</span>
+          </label>
+          <label style="cursor:pointer;flex:1">
+            <input type="file" accept="image/*" multiple onchange="modalUploadPhotos(event)" style="display:none" id="modal-photo-gallery">
+            <span class="photo-upload-btn">🖼️ 相簿</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">🗓 行程</div>
+        <div class="schedule-list" id="modal-schedule-list"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input class="modal-input" id="modal-schedule-input" placeholder="新增行程（例：吃火鍋 18:00）" style="margin-bottom:0;flex:1">
+          <button onclick="addScheduleItem()" style="background:var(--pink);color:white;border:none;border-radius:10px;padding:0 14px;cursor:pointer;font-size:14px">＋</button>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">📝 筆記</div>
+        <textarea class="modal-textarea" id="modal-note" rows="3" placeholder="記錄這天的心情、回憶..."></textarea>
+      </div>
+      <button class="modal-save-btn" onclick="saveDayData()">儲存 💾</button>
+    </div>
+  </div>
+</div>
+
+<!-- MESSAGES -->
+<div id="page-message" class="page">
+  <div class="card">
+    <div class="card-title">💬 留言給對方</div>
+    <div class="msg-input-area">
+      <div class="sender-toggle">
+        <button class="sender-btn active" id="me-btn" onclick="setSender('me')">林聖展</button>
+        <button class="sender-btn" id="other-btn" onclick="setSender('other')">蘇予君</button>
+      </div>
+      <textarea id="msg-input" rows="3" placeholder="想對對方說什麼..."></textarea>
+      <button class="send-btn" onclick="sendMessage()">送出 ❤️</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">💌 愛心留言牆</div>
+    <div class="msg-list" id="msg-list">
+      <div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有留言，先說一句話吧 💕</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOD -->
+<div id="page-food" class="page">
+  <div class="card">
+    <div class="card-title">🍜 今天吃什麼</div>
+    <div class="food-result" id="foodResult">？</div>
+    <button class="open-btn" onclick="pickFood()">幫我們決定！</button>
+    <div class="food-tags">
+      <span class="food-tag">火鍋</span><span class="food-tag">拉麵</span>
+      <span class="food-tag">牛排</span><span class="food-tag">義大利麵</span>
+      <span class="food-tag">韓式料理</span><span class="food-tag">麥當勞</span>
+      <span class="food-tag">摩斯</span><span class="food-tag">壽司</span>
+      <span class="food-tag">夜市</span><span class="food-tag">滷肉飯</span>
+      <span class="food-tag">炸雞</span><span class="food-tag">燒肉</span>
+      <span class="food-tag">熱炒</span>
+    </div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="page-game" class="page">
+  <div class="game-tabs">
+    <button class="game-tab active" onclick="switchGame(0,this)">✊ 猜拳</button>
+    <button class="game-tab" onclick="switchGame(1,this)">🤝 默契挑戰</button>
+    <button class="game-tab" onclick="switchGame(2,this)">🟦 方塊遊戲</button>
+  </div>
+
+  <!-- 猜拳 -->
+  <div class="game-section active" id="gs-0">
+    <div class="card">
+      <div class="card-title">✊ 同步猜拳</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">兩個人各自選一個，同時揭曉！</p>
+      <!-- 加入區：只有還沒加入才顯示 -->
+      <div id="rps-join-area">
+  <div style="display:flex;gap:10px;margin-bottom:12px">
+    <button class="open-btn" style="flex:1" onclick="rpsJoin('聖展')">我是聖展</button>
+    <button class="open-btn" style="flex:1" onclick="rpsJoin('予君')">我是予君</button>
+  </div>
+</div>
+      <!-- 已加入後顯示的名字標示 -->
+      <div id="rps-joined-label" style="display:none;font-size:13px;color:var(--pink);font-weight:600;margin-bottom:10px;text-align:center;padding:8px;background:var(--pink-light);border-radius:10px"></div>
+      <div class="rps-status" id="rps-status">請先輸入名字並加入</div>
+      <div class="rps-choices" id="rps-btns" style="pointer-events:none;opacity:.4">
+        <div class="rps-choice" onclick="rpsChoose('✊')">✊</div>
+        <div class="rps-choice" onclick="rpsChoose('✌️')">✌️</div>
+        <div class="rps-choice" onclick="rpsChoose('✋')">✋</div>
+      </div>
+      <div class="rps-vs" id="rps-vs"></div>
+      <div class="rps-result" id="rps-result"></div>
+      <button class="open-btn" onclick="rpsPlayAgain()" id="rps-reset-btn" style="display:none;margin-top:8px">再玩一次 🔄</button>
+    </div>
+  </div>
+
+  <!-- 默契挑戰 -->
+  <div class="game-section" id="gs-1">
+    <div class="card">
+      <div class="card-title">🤝 雙人默契挑戰</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">兩人各自回答同一道題，選到一樣才得分！滿分 10 分 💕</p>
+
+      <!-- 加入區 -->
+      <div id="mc-join-area">
+  <div style="display:flex;gap:10px;margin-bottom:10px">
+    <button class="open-btn" style="flex:1" onclick="mcJoin('聖展')">我是聖展</button>
+    <button class="open-btn" style="flex:1" onclick="mcJoin('予君')">我是予君</button>
+  </div>
+  <div class="rps-status" id="mc-join-status">請選擇你是誰</div>
+</div>
+<div id="mc-wait-join" style="display:none;text-align:center;padding:14px;font-size:14px;color:var(--text-muted);background:var(--pink-light);border-radius:12px;margin-bottom:12px"></div>
+
+      <!-- 題目區 -->
+      <div id="mc-question-area" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:12px;color:var(--text-muted)" id="mc-progress">第 1 / 10 題</span>
+          <span style="font-size:13px;color:var(--pink);font-weight:600" id="mc-score-display">得分：0</span>
+        </div>
+        <div style="height:4px;background:var(--pink-soft);border-radius:4px;margin-bottom:14px;overflow:hidden">
+          <div id="mc-progress-bar" style="height:100%;background:var(--pink);border-radius:4px;transition:width .4s ease;width:0%"></div>
+        </div>
+        <div style="background:var(--pink-light);border-radius:14px;padding:18px;font-size:16px;font-family:'Noto Serif TC',serif;color:var(--text);margin-bottom:14px;min-height:72px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.7;border:1px dashed var(--pink-soft)" id="mc-question-text"></div>
+        <div id="mc-options-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+        <div id="mc-wait-msg" style="display:none;text-align:center;font-size:13px;color:var(--text-muted);padding:12px;background:var(--pink-light);border-radius:12px;margin-top:10px"></div>
+        <div id="mc-reveal-area" style="display:none;margin-top:12px">
+          <div style="background:var(--pink-light);border-radius:14px;padding:14px;text-align:center;font-size:16px;font-weight:600;margin-bottom:12px;font-family:'Noto Serif TC',serif" id="mc-reveal-msg"></div>
+          <div style="display:flex;justify-content:space-around;align-items:center" id="mc-reveal-answers"></div>
+        </div>
+        <button id="mc-next-btn" onclick="mcNext()" style="display:none;width:100%;margin-top:14px;padding:12px;background:var(--pink);color:white;border:none;border-radius:12px;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif">下一題 ➡️</button>
+      </div>
+
+      <!-- 最終結果區 -->
+      <div id="mc-result-area" style="display:none;text-align:center;padding:16px 0">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:6px">你們的默契分數</div>
+        <div style="font-size:64px;font-family:'Noto Serif TC',serif;font-weight:700;color:var(--pink);line-height:1" id="mc-final-score"></div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:4px">/ 10 分</div>
+        <div style="font-size:15px;color:var(--text);margin-top:12px;line-height:1.7;font-family:'Noto Serif TC',serif" id="mc-final-msg"></div>
+        <button class="open-btn" style="margin-top:18px" onclick="mcReset()">再玩一次 🔄</button>
+      </div>
+    </div>
+  </div>
+
+ <!-- 方塊遊戲 -->
+<div class="game-section" id="gs-2">
+  <div class="card" style="padding:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="display:flex;gap:12px">
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--text-muted)">分數</div>
+          <div id="bb-score" style="font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--pink)">0</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--text-muted)">☁️最高</div>
+          <div id="bb-best" style="font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--rose)">0</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--text-muted)">連消</div>
+          <div id="bb-combo" style="font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:#ff9800">x1</div>
+        </div>
+      </div>
+      <button onclick="bbRestart()" style="background:var(--pink);color:white;border:none;border-radius:10px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif">重新開始</button>
+    </div>
+	
+<div style="position:relative;width:fit-content;margin:0 auto;">
+    <div id="bb-board" style="display:grid;grid-template-columns:repeat(8,var(--bb-cell));gap:3px;background:#111;padding:5px;border-radius:10px;margin-bottom:10px;touch-action:none;width:fit-content;margin-left:auto;margin-right:auto"></div>
+    <div id="bb-gameover" style="display:none;position:absolute;inset:0;border-radius:10px;background:rgba(20,5,10,0.82);z-index:10;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;">
+      <div style="font-size:36px;margin-bottom:8px">😢</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:18px;color:#ff8fa0;font-weight:700;margin-bottom:4px">遊戲結束</div>
+      <div style="font-size:13px;color:#c08090;margin-bottom:16px">最終分數：<span id="bb-final-score" style="color:#ff8fa0;font-weight:700"></span></div>
+      <button class="open-btn" onclick="bbRestart()" style="width:auto;padding:10px 28px">再玩一次 🔄</button>
+    </div>
+  </div>
+
+    <!-- 方塊選擇區 -->
+    <div id="bb-pieces" style="display:flex;gap:8px;justify-content:space-around;padding:4px 0;min-height:60px"></div>
+
+    <!-- 提示 -->
+    <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:4px">👆 點選方塊再點格子，或直接拖曳到棋盤</div>
+</div>
+</div>
+</div>
+<!-- PERIOD -->
+<div id="page-period" class="page">
+  <div id="pd-status-banner" style="border-radius:20px;padding:20px;margin-bottom:16px;text-align:center;background:var(--white);border:1px solid var(--card-border)">
+    <div id="pd-banner-emoji" style="font-size:40px;margin-bottom:6px">🌸</div>
+    <div id="pd-banner-title" style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--pink);font-weight:700">載入中...</div>
+    <div id="pd-banner-sub" style="font-size:13px;color:var(--text-muted);margin-top:4px"></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <button onclick="pdCalPrev()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--pink)">‹</button>
+      <div id="pd-cal-title" style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text);font-weight:500"></div>
+      <button onclick="pdCalNext()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--pink)">›</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;margin-bottom:6px">
+      <div style="font-size:11px;color:var(--text-muted);padding:4px">日</div>
+      <div style="font-size:11px;color:var(--text-muted);padding:4px">一</div>
+      <div style="font-size:11px;color:var(--text-muted);padding:4px">二</div>
+      <div style="font-size:11px;color:var(--text-muted);padding:4px">三</div>
+      <div style="font-size:11px;color:var(--text-muted);padding:4px">四</div>
+      <div style="font-size:11px;color:var(--text-muted);padding:4px">五</div>
+      <div style="font-size:11px;color:var(--text-muted);padding:4px">六</div>
+    </div>
+    <div id="pd-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center"></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--text-muted)">
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pink);margin-right:4px"></span>生理期</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff9800;margin-right:4px"></span>排卵日</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fce8ec;border:1px solid var(--pink-soft);margin-right:4px"></span>易孕期</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e3f2fd;border:1px solid #90caf9;margin-right:4px"></span>安全期</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📋 未來週期預覽</div>
+    <div id="pd-upcoming"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚙️ 週期設定</div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">最近一次生理期開始日</div>
+        <input type="date" id="pd-start" style="width:100%;padding:11px;border:1px solid var(--card-border);border-radius:12px;font-size:14px;font-family:'Noto Sans TC',sans-serif;background:var(--pink-light);color:var(--text)">
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">最近一次生理期結束日</div>
+        <input type="date" id="pd-end" style="width:100%;padding:11px;border:1px solid var(--card-border);border-radius:12px;font-size:14px;font-family:'Noto Sans TC',sans-serif;background:var(--pink-light);color:var(--text)">
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--text-muted)">週期長度</span>
+          <span id="pd-cycle-val" style="font-size:12px;color:var(--pink);font-weight:500">28 天</span>
+        </div>
+        <input type="range" id="pd-cycle" min="21" max="40" value="28" oninput="document.getElementById('pd-cycle-val').textContent=this.value+' 天'" style="width:100%">
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:12px;color:var(--text-muted)">經期持續天數</span>
+          <span id="pd-dur-val" style="font-size:12px;color:var(--pink);font-weight:500">5 天</span>
+        </div>
+        <input type="range" id="pd-dur" min="2" max="10" value="5" oninput="document.getElementById('pd-dur-val').textContent=this.value+' 天'" style="width:100%">
+      </div>
+      <button class="open-btn" onclick="pdSaveSettings()">儲存設定 💾</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📝 今日症狀記錄</div>
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">選擇今天有哪些感覺</div>
+    <div id="pd-symptom-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"></div>
+    <textarea id="pd-note" rows="2" placeholder="備注（心情、特別狀況...）" style="width:100%;padding:10px;border:1px solid var(--card-border);border-radius:10px;font-size:13px;font-family:'Noto Sans TC',sans-serif;resize:none;background:var(--pink-light);color:var(--text)"></textarea>
+    <button class="open-btn" style="margin-top:10px" onclick="pdSaveLog()">記錄今天 ✍️</button>
+    <div id="pd-log-list" style="margin-top:14px"></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>首頁</button>
+  <button class="nav-btn" onclick="showPage('album',this)"><span class="nav-icon">📸</span>相簿</button>
+  <button class="nav-btn" onclick="showPage('message',this)"><span class="nav-icon">💌</span>留言</button>
+  <button class="nav-btn" onclick="showPage('period',this)"><span class="nav-icon">🌸</span>生理期</button>
+  <button class="nav-btn" onclick="showPage('food',this)"><span class="nav-icon">🍜</span>吃什麼</button>
+  <button class="nav-btn" onclick="showPage('game',this)"><span class="nav-icon">🎮</span>遊戲</button>
+</nav>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue, get, push, remove, update, onDisconnect }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCnb0mN8CFMTMPRp-2Z-7LMU2ekw6njybc",
+  authDomain: "yujunshengzhan.firebaseapp.com",
+  databaseURL: "https://yujunshengzhan-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "yujunshengzhan",
+  storageBucket: "yujunshengzhan.firebasestorage.app",
+  messagingSenderId: "808547698488",
+  appId: "1:808547698488:web:5b35ff76d7db5ee613e3cd",
+  measurementId: "G-0MJ3KQ51J8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+window._fb = { db, ref, set, onValue, get, push, remove, update, onDisconnect };
+window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<script>
+// ── Dark mode ──
+function toggleDark(){
+  const html=document.documentElement;
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('dark-btn').textContent=isDark?'🌙':'☀️';
+  localStorage.setItem('theme',isDark?'light':'dark');
+}
+(function(){
+  const t=localStorage.getItem('theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('dark-btn').textContent=t==='dark'?'☀️':'🌙';
+})();
+
+// ── Dates ──
+function today(){
+  const d=new Date();
+  return new Date(d.getFullYear(),d.getMonth(),d.getDate());
+}
+function daysUntilNext(month,day){
+  const t=today();
+  let next=new Date(t.getFullYear(),month-1,day);
+  if(next<=t) next=new Date(t.getFullYear()+1,month-1,day);
+  return Math.ceil((next-t)/864e5);
+}
+const START=new Date(2025,11,1);
+function cdEl(id,n){
+  document.getElementById(id).innerHTML=
+    `${n}<span style="font-size:13px;font-weight:400;color:var(--text-muted);margin-left:2px">天</span>`;
+}
+function nextAnniv(){
+  const t=today();
+  let next=new Date(t.getFullYear(),11,1);
+  if(next<=t) next=new Date(t.getFullYear()+1,11,1);
+  const days=Math.ceil((next-t)/864e5);
+  document.getElementById('annivLabel').textContent=`${next.getFullYear()}/12/01 週年`;
+  cdEl('annivDays',days);
+}
+function nextVday(){
+  const t=today();
+  let m=t.getMonth(),y=t.getFullYear();
+  let candidate=new Date(y,m,14);
+  if(candidate<=t){m++;if(m>11){m=0;y++;}candidate=new Date(y,m,14);}
+  const days=Math.ceil((candidate-t)/864e5);
+  document.getElementById('vdLabel').textContent=`${candidate.getMonth()+1}/14 情人節`;
+  cdEl('vdDays',days);
+}
+function updateHome(){
+  const diff=Math.floor((today()-START)/864e5);
+  document.getElementById('loveDays').textContent=diff;
+  nextAnniv();
+  cdEl('bd1Days',daysUntilNext(2,8));
+  cdEl('bd2Days',daysUntilNext(8,26));
+  nextVday();
+}
+updateHome();
+(function(){const n=new Date();setTimeout(()=>{updateHome();setInterval(updateHome,864e5);},(new Date(n.getFullYear(),n.getMonth(),n.getDate()+1))-n);})();
+
+// ── Special Day ──
+function checkSpecialDay(){
+  const shown=sessionStorage.getItem('specialShown');
+  if(shown) return;
+  const t=today();
+  const m=t.getMonth()+1,d=t.getDate();
+  let emoji='',title='',sub='';
+  if(m===12&&d===1){emoji='🎊';title='週年紀念日快樂！';sub='又過了一年，謝謝妳一直在我身邊 💕\n每一天有妳都是最珍貴的禮物。';}
+  else if(m===2&&d===8){emoji='🎂';title='聖展生日快樂！';sub='今天是屬於你的特別日子\n謝謝你出現在我的生命裡 ❤️';}
+  else if(m===8&&d===26){emoji='🎂';title='予君生日快樂！';sub='今天是寶包最特別的日子\n希望每個願望都能實現 🌸';}
+  else if(d===14){emoji='💝';title=`${m}/14 情人節快樂！`;sub='今天是情人節，記得讓對方感受到你的愛 💌';}
+  if(title){
+    sessionStorage.setItem('specialShown','1');
+    document.getElementById('special-emoji').textContent=emoji;
+    document.getElementById('special-title').textContent=title;
+    document.getElementById('special-sub').textContent=sub;
+    document.getElementById('special-overlay').classList.remove('hidden');
+    launchConfetti();
+  }
+}
+function launchConfetti(){
+  const wrap=document.getElementById('confetti-wrap');
+  wrap.classList.remove('hidden');wrap.innerHTML='';
+  const colors=['#e8637a','#f7d0d8','#fce8ec','#c94b64','#ff9eb5','#ffccd5','#fff0f3'];
+  for(let i=0;i<60;i++){
+    const p=document.createElement('div');p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation:fall ${1.5+Math.random()*2}s ${Math.random()*1.5}s linear forwards;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>wrap.classList.add('hidden'),5000);
+}
+function closeSpecial(){document.getElementById('special-overlay').classList.add('hidden');}
+setTimeout(checkSpecialDay,800);
+
+// ── Nav ──
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='period') pdRefresh();
+  if(id==='album') albumRenderCal();
+}
+
+// ── Letter ──
+function toggleLetter(btn){
+  const l=document.getElementById('letter');
+  const open=l.classList.toggle('open');
+  btn.textContent=open?'收起信封 ✉️':'打開信封 ✉️';
+}
+
+// ══════════════════════════════════════════════
+// ── 相簿 (Firebase 同步版) ──
+// ══════════════════════════════════════════════
+let albumYear=new Date().getFullYear();
+let albumMonth=new Date().getMonth();
+let currentDayKey='';
+let modalEditMode=false;
+let albumFirebaseData={};
+
+function albumSetBadge(text){
+  const badge=document.getElementById('album-sync-badge');
+  if(badge) badge.textContent=text;
+}
+
+function albumInitFirebase(){
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'albumData'),snap=>{
+    albumFirebaseData=snap.val()||{};
+    albumSetBadge('☁️ 已同步');
+    albumRenderCal();
+    if(!document.getElementById('day-modal-bg').classList.contains('hidden') && currentDayKey){
+      const dayData=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
+      if(!modalEditMode) applyModalMode(dayData);
+    }
+  });
+}
+
+function albumSaveDay(key,dayData){
+  if(!window._fb) return;
+  const {db,ref,set}=window._fb;
+  albumSetBadge('💾 儲存中...');
+  set(ref(db,`albumData/${key}`),dayData).then(()=>{
+    albumSetBadge('☁️ 已同步');
+  }).catch(()=>{
+    albumSetBadge('❌ 同步失敗');
+  });
+}
+
+function albumRenderCal(){
+  const y=albumYear,m=albumMonth;
+  document.getElementById('album-cal-title').textContent=`${y} 年 ${m+1} 月`;
+  const firstDay=new Date(y,m,1).getDay();
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const t=today();
+  let html='';
+  for(let i=0;i<firstDay;i++) html+='<div class="cal-day empty"></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayData=albumFirebaseData[key];
+    const hasData=dayData&&((dayData.photos&&dayData.photos.length)||(dayData.schedule&&dayData.schedule.length)||(dayData.note&&dayData.note.trim()));
+    const isToday=new Date(y,m,d).getTime()===t.getTime();
+    html+=`<div class="cal-day${isToday?' today':''}${hasData?' has-data':''}" onclick="openDayModal('${key}',${d})">${d}</div>`;
+  }
+  document.getElementById('album-cal-grid').innerHTML=html;
+}
+function albumCalPrev(){albumMonth--;if(albumMonth<0){albumMonth=11;albumYear--;}albumRenderCal();}
+function albumCalNext(){albumMonth++;if(albumMonth>11){albumMonth=0;albumYear++;}albumRenderCal();}
+
+function openDayModal(key,day){
+  currentDayKey=key;
+  const [y,m,d]=key.split('-');
+  document.getElementById('day-modal-date').textContent=`${y}/${m}/${d}`;
+  const dayData=albumFirebaseData[key]||{photos:[],schedule:[],note:''};
+  modalEditMode=false;
+  applyModalMode(dayData);
+  document.getElementById('day-modal-bg').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+
+function applyModalMode(dayData){
+  const editBtn=document.getElementById('modal-edit-btn');
+  const viewContent=document.getElementById('modal-view-content');
+  const editContent=document.getElementById('modal-edit-content');
+  if(modalEditMode){
+    editBtn.textContent='✓ 完成';editBtn.classList.add('editing');
+    viewContent.classList.add('hidden');editContent.classList.remove('hidden');
+    renderModalPhotosEdit(dayData.photos||[]);
+    renderModalScheduleEdit(dayData.schedule||[]);
+    document.getElementById('modal-note').value=dayData.note||'';
+  } else {
+    editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
+    viewContent.classList.remove('hidden');editContent.classList.add('hidden');
+    renderViewPhotos(dayData.photos||[]);
+    renderViewSchedule(dayData.schedule||[]);
+    renderViewNote(dayData.note||'');
+  }
+}
+
+function toggleModalEditMode(){
+  const dayData=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
+  if(modalEditMode){
+    saveDayDataSilent();
+    modalEditMode=false;
+    const updated=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
+    applyModalMode(updated);
+  } else {
+    modalEditMode=true;applyModalMode(dayData);
+  }
+}
+
+function renderViewPhotos(photos){
+  const grid=document.getElementById('view-photos-grid');
+  if(!photos||!photos.length){grid.innerHTML='<div class="view-empty" style="grid-column:span 3">還沒有照片，點「編輯」新增吧 📷</div>';return;}
+  grid.innerHTML=photos.map(src=>`<div class="modal-photo-item"><img src="${src}" onclick="openPhotoFullscreen(this)"></div>`).join('');
+}
+function renderViewSchedule(schedule){
+  const el=document.getElementById('view-schedule-list');
+  if(!schedule||!schedule.length){el.innerHTML='<div class="view-empty">還沒有行程</div>';return;}
+  el.innerHTML=schedule.map(s=>`<div class="view-schedule-item">${s}</div>`).join('');
+}
+function renderViewNote(note){
+  const el=document.getElementById('view-note');
+  if(!note||!note.trim()){el.innerHTML='<div class="view-empty">還沒有筆記</div>';return;}
+  el.innerHTML=`<div class="view-note">${note.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+}
+function renderModalPhotosEdit(photos){
+  const grid=document.getElementById('modal-photos-grid');
+  grid.innerHTML=(photos||[]).map((src,i)=>`<div class="modal-photo-item"><img src="${src}"><button class="modal-photo-del" onclick="modalDeletePhoto(${i})">✕</button></div>`).join('');
+}
+function renderModalScheduleEdit(schedule){
+  const list=document.getElementById('modal-schedule-list');
+  if(!schedule||!schedule.length){list.innerHTML='<div style="font-size:13px;color:var(--text-muted)">還沒有行程</div>';return;}
+  list.innerHTML=schedule.map((s,i)=>`<div class="schedule-item"><span>${s}</span><button class="schedule-item-del" onclick="deleteScheduleItem(${i})">✕</button></div>`).join('');
+}
+function openPhotoFullscreen(img){
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  const imgEl=document.createElement('img');imgEl.src=img.src;
+  imgEl.style.cssText='max-width:95vw;max-height:90vh;border-radius:12px;object-fit:contain;';
+  overlay.appendChild(imgEl);overlay.onclick=()=>document.body.removeChild(overlay);
+  document.body.appendChild(overlay);
+}
+async function modalUploadPhotos(e) {
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+  if (!window._fb) { alert('Firebase 尚未連線'); return; }
+
+  const { db, ref, set, get } = window._fb;
+
+  const snap = await get(ref(db, `albumData/${currentDayKey}`));
+  const dayData = snap.val() || { photos: [], schedule: [], note: '' };
+  if (!Array.isArray(dayData.photos)) dayData.photos = [];
+
+  const uploadArea = document.querySelector('.photo-upload-options');
+  const loadingDiv = document.createElement('div');
+  loadingDiv.id = 'upload-loading';
+  loadingDiv.style.cssText = 'text-align:center;padding:10px;font-size:13px;color:var(--rose);background:var(--pink-light);border-radius:10px;margin-bottom:8px;';
+  loadingDiv.textContent = `⏳ 壓縮上傳中 (0/${files.length})...`;
+  uploadArea.insertAdjacentElement('beforebegin', loadingDiv);
+
+  let uploaded = 0;
+  for (const file of files) {
+    try {
+      const base64 = await compressToBase64(file, 600, 0.55);
+      dayData.photos.push(base64);
+      uploaded++;
+      loadingDiv.textContent = `⏳ 壓縮上傳中 (${uploaded}/${files.length})...`;
+    } catch (err) {
+      console.error('壓縮失敗', err);
+      alert('有一張照片壓縮失敗，跳過');
+    }
+  }
+
+  try {
+    await set(ref(db, `albumData/${currentDayKey}`), dayData);
+    loadingDiv.textContent = '✅ 上傳完成！';
+    setTimeout(() => loadingDiv.remove(), 1500);
+    renderModalPhotosEdit(dayData.photos);
+    albumFirebaseData[currentDayKey] = dayData;
+    albumRenderCal();
+  } catch (err) {
+    loadingDiv.textContent = '❌ 儲存失敗，照片太多請減少數量或一張一張上傳';
+    console.error('Firebase 寫入失敗:', err);
+  }
+
+  e.target.value = '';
+}
+
+function compressToBase64(file, maxSize, quality) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > maxSize || h > maxSize) {
+        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+        else { w = Math.round(w * maxSize / h); h = maxSize; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(objectUrl);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('圖片載入失敗')); };
+    img.src = objectUrl;
+  });
+}
+function modalDeletePhoto(i){
+  if(!confirm('刪除這張照片？')) return;
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''}));
+  dayData.photos.splice(i,1);
+  albumSaveDay(currentDayKey,dayData);
+  renderModalPhotosEdit(dayData.photos);
+}
+function addScheduleItem(){
+  const input=document.getElementById('modal-schedule-input');
+  const val=input.value.trim();if(!val) return;
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''}));
+  dayData.schedule=dayData.schedule||[];dayData.schedule.push(val);
+  albumSaveDay(currentDayKey,dayData);
+  renderModalScheduleEdit(dayData.schedule);
+  input.value='';
+}
+function deleteScheduleItem(i){
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''}));
+  dayData.schedule.splice(i,1);
+  albumSaveDay(currentDayKey,dayData);
+  renderModalScheduleEdit(dayData.schedule);
+}
+function saveDayDataSilent(){
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''}));
+  dayData.note=document.getElementById('modal-note').value;
+  albumSaveDay(currentDayKey,dayData);
+}
+function saveDayData(){
+  saveDayDataSilent();
+  modalEditMode=false;
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''}));
+  dayData.note=document.getElementById('modal-note').value;
+  applyModalMode(dayData);
+}
+function closeDayModal(e){if(e.target===document.getElementById('day-modal-bg')) closeDayModalDirect();}
+function closeDayModalDirect(){document.getElementById('day-modal-bg').classList.add('hidden');document.body.style.overflow='';}
+albumRenderCal();
+
+// ── Messages (Firebase) ──
+let sender='me';
+function setSender(s){
+  sender=s;
+  document.getElementById('me-btn').classList.toggle('active',s==='me');
+  document.getElementById('other-btn').classList.toggle('active',s==='other');
+}
+function renderMessages(msgs){
+  const list=document.getElementById('msg-list');
+  if(!msgs||!msgs.length){list.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有留言，先說一句話吧 💕</div>';return;}
+  list.innerHTML=msgs.map((m)=>`
+    <div class="msg-bubble ${m.sender==='me'?'from-me':'from-other'}">
+      <strong style="font-size:12px;opacity:.7">${m.sender==='me'?'林聖展':'蘇予君'}</strong><br>
+      ${m.text}
+      <div class="msg-meta">${m.time}</div>
+      <button class="del-msg" onclick="deleteMsg('${m._key}')" ${m.sender!=='me'?'style="color:rgba(0,0,0,0.4)"':''}>✕</button>
+    </div>`).join('');
+}
+function sendMessage(){
+  const txt=document.getElementById('msg-input').value.trim();
+  if(!txt) return;
+  if(!window._fb){alert('Firebase 尚未連線，請稍後再試');return;}
+  const {db,ref,push}=window._fb;
+  const now=new Date();
+  push(ref(db,'messages'),{
+    sender,text:txt,
+    time:now.toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
+  });
+  document.getElementById('msg-input').value='';
+}
+function deleteMsg(key){
+  if(!confirm('刪除這則留言？')) return;
+  const {db,ref,remove}=window._fb;
+  remove(ref(db,`messages/${key}`));
+}
+function initMessages(){
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'messages'),snap=>{
+    const val=snap.val();
+    const msgs=val?Object.entries(val).map(([k,v])=>({...v,_key:k})):[];
+    renderMessages(msgs);
+    setTimeout(()=>document.getElementById('msg-list').lastElementChild?.scrollIntoView({behavior:'smooth'}),100);
+  });
+}
+
+// ── Food ──
+const foods=['火鍋🍲','拉麵🍜','牛排🥩','義大利麵🍝','韓式烤肉🇰🇷','麥當勞🍟','摩斯漢堡🍔','壽司🍣','夜市小吃🌃','滷肉飯🍚','炸雞🍗','燒肉🔥','熱炒🥘'];
+function pickFood(){
+  const el=document.getElementById('foodResult');
+  let count=0;
+  const iv=setInterval(()=>{el.textContent=foods[Math.floor(Math.random()*foods.length)];if(++count>15) clearInterval(iv);},80);
+}
+
+// ── Game tabs ──
+function switchGame(i,btn){
+  document.querySelectorAll('.game-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.game-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('gs-'+i).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════════
+// ── 猜拳 (Firebase) ──
+// ══════════════════════════════════════════
+let rpsPlayer=null;
+let rpsPlayerName='';
+let rpsMyChoice=null;
+
+function rpsJoin(name){
+  if(!window._fb){alert('Firebase 尚未連線');return;}
+  const {db,ref,get,set}=window._fb;
+  get(ref(db,'rps')).then(snap=>{
+    let state=snap.val()||{p1:null,p2:null,c1:null,c2:null};
+
+    if(name==='聖展'){
+      // p1 已有人且不是自己（不是 null 也不是 '聖展'）→ 拒絕
+      if(state.p1 && state.p1!=='聖展'){alert('聖展位置已被占用');return;}
+      state.p1='聖展'; rpsPlayer=1;
+    } else {
+      if(state.p2 && state.p2!=='予君'){alert('予君位置已被占用');return;}
+      state.p2='予君'; rpsPlayer=2;
+    }
+    rpsPlayerName=name;
+    rpsMyChoice=null;
+    // 加入時清掉自己上一輪的出拳
+    if(rpsPlayer===1) state.c1=null; else state.c2=null;
+    set(ref(db,'rps'),state);
+
+    document.getElementById('rps-join-area').style.display='none';
+    const label=document.getElementById('rps-joined-label');
+    label.style.display='block';
+    label.textContent=`你是 ${name} ✅`;
+    document.getElementById('rps-btns').style.pointerEvents='auto';
+    document.getElementById('rps-btns').style.opacity='1';
+  });
+}
+
+function rpsChoose(c){
+  if(!rpsPlayer){alert('請先加入遊戲');return;}
+  if(!window._fb||rpsMyChoice!==null) return;
+  rpsMyChoice=c;
+  document.querySelectorAll('.rps-choice').forEach(el=>{
+    el.style.pointerEvents='none';
+    el.classList.toggle('selected',el.textContent.trim()===c);
+  });
+  const {db,ref,get,set}=window._fb;
+  get(ref(db,'rps')).then(snap=>{
+    const state=snap.val()||{};
+    if(rpsPlayer===1) state.c1=c; else state.c2=c;
+    set(ref(db,'rps'),state);
+  });
+}
+
+function rpsRenderDirect(state){
+  const status=document.getElementById('rps-status');
+  const vs=document.getElementById('rps-vs');
+  const result=document.getElementById('rps-result');
+  const resetBtn=document.getElementById('rps-reset-btn');
+  const joinArea=document.getElementById('rps-join-area');
+  const joinedLabel=document.getElementById('rps-joined-label');
+  const choiceBtns=document.getElementById('rps-btns');
+
+  // ── Firebase 空 → 完全重置 UI ──
+  if(!state||(!state.p1&&!state.p2)){
+    rpsPlayer=null; rpsPlayerName=''; rpsMyChoice=null;
+    joinArea.style.display='';
+    joinedLabel.style.display='none';
+    choiceBtns.style.pointerEvents='none';
+    choiceBtns.style.opacity='.4';
+    status.textContent='請先選擇你是誰';
+    vs.textContent=''; result.textContent='';
+    resetBtn.style.display='none';
+    document.querySelectorAll('.rps-choice').forEach(el=>{
+      el.classList.remove('selected');
+      el.style.pointerEvents='auto';
+    });
+    return;
+  }
+
+  // ── 我已加入，確保 UI 正確 ──
+  if(rpsPlayer){
+    joinArea.style.display='none';
+    joinedLabel.style.display='block';
+    joinedLabel.textContent=`你是 ${rpsPlayerName} ✅`;
+    choiceBtns.style.pointerEvents='auto';
+    choiceBtns.style.opacity='1';
+  }
+
+  // ── 等另一人加入 ──
+  if(!state.p1||!state.p2){
+    const who=state.p1||state.p2;
+    status.textContent=`${who} 已加入，等待另一位 👀`;
+    vs.textContent=''; result.textContent='';
+    resetBtn.style.display='none';
+    return;
+  }
+
+  // ── 雙方都加入了 ──
+  // Firebase 出拳被清空（再玩一次後）→ 同步清本地
+  if(!state.c1&&!state.c2&&rpsMyChoice!==null){
+    rpsMyChoice=null;
+    document.querySelectorAll('.rps-choice').forEach(el=>{
+      el.classList.remove('selected');
+      el.style.pointerEvents='auto';
+    });
+  }
+
+  // 恢復我的出拳高亮
+  const myServerChoice=rpsPlayer===1?state.c1:state.c2;
+  if(myServerChoice&&rpsMyChoice===null){
+    rpsMyChoice=myServerChoice;
+    document.querySelectorAll('.rps-choice').forEach(el=>{
+      el.style.pointerEvents='none';
+      el.classList.toggle('selected',el.textContent.trim()===myServerChoice);
+    });
+  }
+
+  // 有人還沒出拳
+  if(!state.c1||!state.c2){
+    const waiting=[];
+    if(!state.c1) waiting.push(state.p1);
+    if(!state.c2) waiting.push(state.p2);
+    status.textContent=`等待 ${waiting.join(' 和 ')} 出拳... 👊`;
+    vs.textContent=''; result.textContent='';
+    resetBtn.style.display='none';
+    return;
+  }
+
+  // ── 雙方都出拳，揭曉結果 ──
+  status.textContent='雙方都選好了！✨';
+  vs.innerHTML=`<span title="${state.p1}">${state.c1}</span><span style="font-size:18px;color:var(--text-muted)">vs</span><span title="${state.p2}">${state.c2}</span>`;
+  const wins=(a,b)=>(a==='✊'&&b==='✌️')||(a==='✌️'&&b==='✋')||(a==='✋'&&b==='✊');
+  let msg;
+  if(state.c1===state.c2) msg='平手！🤝';
+  else if(wins(state.c1,state.c2)) msg=`🎉 ${state.p1} 贏了！`;
+  else msg=`🎉 ${state.p2} 贏了！`;
+  result.textContent=msg;
+  // 兩人都能看到「再玩一次」，但只讓 p1 實際執行清除
+  resetBtn.style.display=rpsPlayer?'block':'none';
+}
+
+function rpsPlayAgain(){
+  if(!window._fb||!rpsPlayer) return;
+  // 只讓 p1 執行清除，避免兩端同時寫
+  if(rpsPlayer!==1) return;
+  rpsMyChoice=null;
+  document.querySelectorAll('.rps-choice').forEach(el=>{
+    el.classList.remove('selected');
+    el.style.pointerEvents='auto';
+  });
+  const {db,ref,get,set}=window._fb;
+  get(ref(db,'rps')).then(snap=>{
+    const state=snap.val()||{};
+    set(ref(db,'rps'),{p1:state.p1,p2:state.p2,c1:null,c2:null});
+  });
+}
+
+function initRps(){
+  const {db,ref,onValue,onDisconnect,set,get}=window._fb;
+
+  // 進頁面時：只清掉自己上次可能殘留的位置（不清對方）
+  // 方法：直接讀取後決定
+  get(ref(db,'rps')).then(snap=>{
+    const state=snap.val()||{p1:null,p2:null,c1:null,c2:null};
+    // 如果 p1/p2 都沒人，確保是乾淨狀態
+    if(!state.p1&&!state.p2){
+      set(ref(db,'rps'),{p1:null,p2:null,c1:null,c2:null});
+    }
+    // 否則不動，讓玩家自己選角色加入
+  });
+
+  // 斷線時由 Firebase server 自動清整個房間
+  onDisconnect(ref(db,'rps')).set({p1:null,p2:null,c1:null,c2:null});
+
+  onValue(ref(db,'rps'),snap=>{rpsRenderDirect(snap.val()||{});});
+}
+
+// ════════════════════════════════════════════════
+// ── 默契挑戰 ──
+// ════════════════════════════════════════════════
+const MC_QUESTION_BANK=[
+  {q:'你們第一次約會最喜歡哪個環節？',opts:['吃飯','看電影','聊天','散步']},
+  {q:'如果今天只能做一件事，你選？',opts:['睡覺','出去玩','窩在家看劇','吃大餐']},
+  {q:'你覺得對方最可愛的地方是？',opts:['笑容','撒嬌','體貼','幽默']},
+  {q:'你們最想去的旅行地點是？',opts:['日本','歐洲','東南亞','台灣各地']},
+  {q:'約會最理想的天氣是？',opts:['晴天','微涼有風','下小雨','無所謂']},
+  {q:'你覺得兩人關係中最重要的是？',opts:['信任','溝通','陪伴','浪漫']},
+  {q:'最喜歡哪種約會方式？',opts:['吃大餐','看夜景','逛街','窩在家']},
+  {q:'如果對方有壞心情，你會？',opts:['陪他說話','帶他出去玩','買食物哄','給他空間']},
+  {q:'你們的感情用什麼食物形容最貼切？',opts:['甜甜圈','珍珠奶茶','火鍋','提拉米蘇']},
+  {q:'對你來說「愛」最像什麼？',opts:['溫暖的陽光','深夜的擁抱','一首歌','家的感覺']},
+  {q:'如果有一天假期，你最想做什麼？',opts:['睡到自然醒','出門探險','待在家耍廢','來個小旅行']},
+  {q:'你覺得對方最讓你心動的是？',opts:['眼神','聲音','笑容','溫柔的動作']},
+  {q:'兩人吵架後你通常會？',opts:['主動道歉','等對方先說','冷靜後再談','用行動表達']},
+  {q:'你覺得最浪漫的事是？',opts:['一起看夕陽','深夜聊天聊到睡著','突然收到驚喜','牽手散步']},
+  {q:'如果可以給對方一個超能力，你選？',opts:['心靈感應','永遠健康','無限財富','時光旅行']},
+  {q:'你們在一起最像哪種組合？',opts:['歡喜冤家','青梅竹馬','一見鍾情','慢熱相知']},
+  {q:'最想和對方一起做的事是？',opts:['環遊世界','一起養寵物','共同學一樣技能','蓋一個家']},
+  {q:'你覺得對方最像哪種天氣？',opts:['晴天暖陽','涼爽微風','神秘陰天','溫柔細雨']},
+  {q:'約會時你最在意的是？',opts:['氣氛好不好','食物好不好吃','對方開不開心','玩得盡不盡興']},
+  {q:'你覺得兩人在一起最重要的習慣是？',opts:['每天說晚安','定期約會','分享日常小事','一起吃飯']},
+  {q:'如果今晚可以一起看電影，你選哪類？',opts:['愛情片','恐怖片','動作片','搞笑喜劇']},
+  {q:'你覺得對方最厲害的地方是？',opts:['超會照顧人','很有幽默感','做事很可靠','總是很體貼']},
+  {q:'你最喜歡對方說哪句話？',opts:['我愛你','你今天怎麼這麼好看','你餓了嗎','我想你']},
+  {q:'你覺得兩人之間最需要的是？',opts:['多一點擁抱','多一點說出口','多一點驚喜','多一點陪伴']},
+  {q:'如果養寵物，你們最想養？',opts:['狗狗','貓咪','兔子','鸚鵡']},
+  {q:'你覺得對方的愛情語言是？',opts:['肢體接觸','服務行動','送禮物','說甜言蜜語']},
+  {q:'最想在哪裡跟對方拍一張照？',opts:['海邊夕陽','山頂夜景','咖啡廳角落','家裡的沙發上']},
+  {q:'如果要送對方一份禮物，你會選？',opts:['手寫的信','一起的旅行','喜歡的食物','親手做的東西']},
+  {q:'你覺得你們最甜蜜的時刻是？',opts:['睡前說晚安','一起吃飯','突然被抱住','對方記得你說過的小事']},
+  {q:'你希望老了之後兩人一起做什麼？',opts:['環遊世界','種花種菜','每天散步','窩在家回憶年輕']},
+];
+
+// 本局使用的題目（從 Firebase 同步）
+let MC_QUESTIONS=[];
+
+let mcPlayer=null;
+let mcMyAnswer=null;
+let mcRenderedQ=-1;
+
+function mcJoin(name){
+  if(!window._fb){alert('Firebase 尚未連線');return;}
+  const {db,ref,get,set}=window._fb;
+  get(ref(db,'mc')).then(snap=>{
+    let state=snap.val()||{p1:null,p2:null,q:0,a1:null,a2:null,score:0,done:false,scored:false,qs:null};
+
+    if(name==='聖展'){
+      if(state.p1&&state.p1!=='聖展'){alert('聖展已在遊戲中');return;}
+      state.p1='聖展'; mcPlayer='p1';
+    } else {
+      if(state.p2&&state.p2!=='予君'){alert('予君已在遊戲中');return;}
+      state.p2='予君'; mcPlayer='p2';
+    }
+    mcMyAnswer=null;
+    mcRenderedQ=-1;
+
+    // 只有在還沒有題目時才抽（p1 第一個加入時）
+    if(!state.qs){
+      const shuffled=[...MC_QUESTION_BANK].sort(()=>Math.random()-0.5);
+      state.qs=shuffled.slice(0,10); // 直接存完整題目物件
+    }
+    // 兩人都從 state.qs 同步，不靠本地
+    MC_QUESTIONS=state.qs;
+
+    set(ref(db,'mc'),state);
+    document.getElementById('mc-join-area').style.display='none';
+    const waitJoin=document.getElementById('mc-wait-join');
+    waitJoin.style.display='block';
+    waitJoin.textContent=`你是 ${name} ✅，等待另一位加入...`;
+  });
+}
+
+function mcChoose(optIdx){
+  if(mcMyAnswer!==null||!mcPlayer||!window._fb) return;
+  mcMyAnswer=optIdx;
+  document.querySelectorAll('#mc-options-grid button').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===optIdx) b.classList.add('chosen');
+  });
+  const {db,ref,get,set}=window._fb;
+  get(ref(db,'mc')).then(snap=>{
+    const state=snap.val()||{};
+    if(mcPlayer==='p1') state.a1=optIdx; else state.a2=optIdx;
+    set(ref(db,'mc'),state);
+  });
+}
+
+function mcNext(){
+  if(!window._fb||mcPlayer!=='p1') return;
+  const {db,ref,get,set}=window._fb;
+  get(ref(db,'mc')).then(snap=>{
+    const state=snap.val()||{};
+    const nextQ=(state.q||0)+1;
+    set(ref(db,'mc'),{
+      p1:state.p1, p2:state.p2,
+      q:nextQ,
+      a1:null, a2:null,
+      score:state.score||0,
+      done:nextQ>=10,
+      scored:false,
+      qs:state.qs||null
+    });
+  });
+}
+
+function mcReset(){
+  if(!window._fb) return;
+  const {db,ref,set}=window._fb;
+  set(ref(db,'mc'),{p1:null,p2:null,q:0,a1:null,a2:null,score:0,done:false,scored:false,qs:null});
+  mcPlayer=null; mcMyAnswer=null; mcRenderedQ=-1; MC_QUESTIONS=[];
+  document.getElementById('mc-join-area').style.display='';
+  document.getElementById('mc-wait-join').style.display='none';
+  document.getElementById('mc-question-area').style.display='none';
+  document.getElementById('mc-result-area').style.display='none';
+  document.getElementById('mc-join-status').textContent='請選擇你是誰';
+}
+
+function mcRenderState(state){
+  if(!state||!state.p1){
+    document.getElementById('mc-join-area').style.display='';
+    document.getElementById('mc-join-status').textContent='請選擇你是誰';
+    document.getElementById('mc-wait-join').style.display='none';
+    document.getElementById('mc-question-area').style.display='none';
+    document.getElementById('mc-result-area').style.display='none';
+    return;
+  }
+
+  // 每次 onValue 觸發時，確保本地題目和 Firebase 同步
+  if(state.qs&&state.qs.length>0){
+    MC_QUESTIONS=state.qs;
+  }
+
+  if(!state.p2){
+    if(mcPlayer) document.getElementById('mc-join-area').style.display='none';
+    else document.getElementById('mc-join-area').style.display='';
+    document.getElementById('mc-wait-join').style.display='block';
+    document.getElementById('mc-wait-join').textContent=`${state.p1} 已加入，等待另一位加入... 👀`;
+    document.getElementById('mc-question-area').style.display='none';
+    document.getElementById('mc-result-area').style.display='none';
+    return;
+  }
+
+  document.getElementById('mc-join-area').style.display='none';
+  document.getElementById('mc-wait-join').style.display='none';
+
+  if(state.done||(state.q>=10)||MC_QUESTIONS.length===0){
+    if(MC_QUESTIONS.length===0) return; // 題目還沒載入，等下次觸發
+    document.getElementById('mc-question-area').style.display='none';
+    document.getElementById('mc-result-area').style.display='block';
+    document.getElementById('mc-final-score').textContent=state.score||0;
+    const msgs=['還需要多了解彼此哦，繼續加油 💪','有一點默契，下次一定更好 😊','默契不錯！你們很有感應 ❤️','超有默契，心靈相通 💕','完美默契！你們真的天生一對 ✨'];
+    document.getElementById('mc-final-msg').textContent=msgs[Math.min(Math.floor((state.score||0)/2),4)];
+    return;
+  }
+
+  document.getElementById('mc-question-area').style.display='block';
+  document.getElementById('mc-result-area').style.display='none';
+
+  const qIdx=state.q||0;
+  const opts=MC_QUESTIONS[qIdx].opts;
+
+  document.getElementById('mc-progress').textContent=`第 ${qIdx+1} / 10 題`;
+  document.getElementById('mc-score-display').textContent=`得分：${state.score||0}`;
+  document.getElementById('mc-progress-bar').style.width=`${(qIdx/10)*100}%`;
+
+  if(qIdx!==mcRenderedQ){
+    mcRenderedQ=qIdx;
+    mcMyAnswer=null;
+    document.getElementById('mc-question-text').textContent=MC_QUESTIONS[qIdx].q;
+    document.getElementById('mc-options-grid').innerHTML=opts.map((o,i)=>
+      `<button class="mc-opt-btn" onclick="mcChoose(${i})">${o}</button>`
+    ).join('');
+    document.getElementById('mc-wait-msg').style.display='none';
+    document.getElementById('mc-reveal-area').style.display='none';
+    document.getElementById('mc-next-btn').style.display='none';
+  }
+
+  const myServerAns=mcPlayer==='p1'?state.a1:state.a2;
+  if(myServerAns!==null&&myServerAns!==undefined&&mcMyAnswer===null){
+    mcMyAnswer=myServerAns;
+    document.querySelectorAll('#mc-options-grid button').forEach((b,i)=>{
+      b.disabled=true;
+      if(i===myServerAns) b.classList.add('chosen');
+    });
+  }
+
+  const p1Done=(state.a1!==null&&state.a1!==undefined);
+  const p2Done=(state.a2!==null&&state.a2!==undefined);
+  const bothAnswered=p1Done&&p2Done;
+
+  const waitMsg=document.getElementById('mc-wait-msg');
+  const revealArea=document.getElementById('mc-reveal-area');
+  const nextBtn=document.getElementById('mc-next-btn');
+
+  if(!bothAnswered){
+    revealArea.style.display='none';
+    nextBtn.style.display='none';
+    waitMsg.style.display='block';
+    const iAnswered=mcPlayer==='p1'?p1Done:p2Done;
+    if(iAnswered){
+      const otherName=mcPlayer==='p1'?state.p2:state.p1;
+      waitMsg.textContent=`等待 ${otherName} 作答... 💭`;
+    } else {
+      waitMsg.textContent='請選擇你的答案 👆';
+    }
+  } else {
+    waitMsg.style.display='none';
+    revealArea.style.display='block';
+    const p1Ans=state.a1, p2Ans=state.a2;
+    const match=(p1Ans===p2Ans);
+    document.getElementById('mc-reveal-msg').innerHTML=match
+      ?'🎉 答案一樣！得 1 分！'
+      :'😢 這題不一樣，繼續加油！';
+    document.getElementById('mc-reveal-answers').innerHTML=`
+      <div style="text-align:center">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:5px">${state.p1}</div>
+        <div style="background:var(--white);border:1.5px solid ${match?'var(--pink)':'var(--card-border)'};padding:8px 14px;border-radius:10px;font-size:14px">${opts[p1Ans]}</div>
+      </div>
+      <div style="font-size:24px;align-self:center">${match?'💕':'💭'}</div>
+      <div style="text-align:center">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:5px">${state.p2}</div>
+        <div style="background:var(--white);border:1.5px solid ${match?'var(--pink)':'var(--card-border)'};padding:8px 14px;border-radius:10px;font-size:14px">${opts[p2Ans]}</div>
+      </div>`;
+    nextBtn.style.display=mcPlayer==='p1'?'block':'none';
+    if(mcPlayer==='p1'){
+      nextBtn.textContent=qIdx+1>=10?'看結果 🎊':'下一題 ➡️';
+    } else {
+      waitMsg.style.display='block';
+      waitMsg.textContent='等待聖展進入下一題... 💭';
+    }
+  }
+}
+
+function initMc(){
+  const {db,ref,onValue,set,onDisconnect}=window._fb;
+
+  set(ref(db,'mc'),{p1:null,p2:null,q:0,a1:null,a2:null,score:0,done:false,scored:false,qs:null});
+  onDisconnect(ref(db,'mc')).set({p1:null,p2:null,q:0,a1:null,a2:null,score:0,done:false,scored:false,qs:null});
+
+  onValue(ref(db,'mc'),snap=>{
+    const state=snap.val();
+    if(!state){mcRenderState(null);return;}
+
+    const p1Done=(state.a1!==null&&state.a1!==undefined);
+    const p2Done=(state.a2!==null&&state.a2!==undefined);
+    if(p1Done&&p2Done&&!state.scored&&!state.done&&mcPlayer==='p1'){
+      const match=(state.a1===state.a2);
+      set(ref(db,'mc'),{
+        ...state,
+        score:(state.score||0)+(match?1:0),
+        scored:true
+      });
+      return;
+    }
+
+    mcRenderState(state);
+  });
+}
+
+// ══════════════════════════════════════════
+// ── Block Blast 遊戲 ──
+// ══════════════════════════════════════════
+const BB_SIZE = 8;
+let bbBoard = [];
+let bbScore = 0;
+let bbBest = 0;
+let bbCombo = 0;
+let bbSelectedIdx = null;
+let bbPieces = [];
+let bbGameOver = false;
+
+// 拖曳狀態
+let bbDragIdx = null;
+let bbDragPreviewR = -1;
+let bbDragPreviewC = -1;
+const DRAG_OFFSET_Y = 220;
+
+const BB_SHAPES = [
+  [[1]],
+  [[1,1]],
+  [[1],[1]],
+  [[1,1,1]],
+  [[1],[1],[1]],
+  [[1,1],[1,1]],
+  [[1,1,1,1]],
+  [[1],[1],[1],[1]],
+  [[1,1,1],[0,0,1]],
+  [[1,1,1],[1,0,0]],
+  [[1,0],[1,1],[0,1]],
+  [[0,1],[1,1],[1,0]],
+  [[1,1,1],[0,1,0]],
+  [[0,1,0],[1,1,1]],
+  [[1,1,0],[0,1,1]],
+  [[0,1,1],[1,1,0]],
+  [[1,1,1,1,1]],
+  [[1],[1],[1],[1],[1]],
+ [[1,1,1],[1,1,1],[1,1,1]],  // 3x3 正方形
+];
+
+const BB_COLORS = [
+  '#e8394a', // 紅
+  '#ff7a1a', // 橘
+  '#ffcc00', // 黃
+  '#2ecc71', // 綠
+  '#1aabff', // 藍
+  '#a855f7', // 紫
+  '#ff4fab', // 粉
+  '#00d4c8', // 青
+];
+
+function bbRandShape(){
+  const s = BB_SHAPES[Math.floor(Math.random()*BB_SHAPES.length)];
+  return JSON.parse(JSON.stringify(s));
+}
+
+function bbInit(){
+  bbBoard = Array.from({length:BB_SIZE},()=>Array(BB_SIZE).fill(0));
+  bbScore = 0; bbCombo = 0; bbSelectedIdx = null; bbGameOver = false;
+  bbDragIdx = null; bbDragPreviewR = -1; bbDragPreviewC = -1;
+  bbPieces = [
+    {shape:bbRandShape(), color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
+    {shape:bbRandShape(), color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
+    {shape:bbRandShape(), color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
+  ];
+  document.getElementById('bb-gameover').style.display='none';
+  document.getElementById('bb-board').style.opacity='1';
+  document.getElementById('bb-pieces').style.opacity='1';
+  bbUpdateScore();
+  bbDrawBoard();
+  bbDrawPieces();
+}
+
+function bbGetCellSize(){
+  // 動態計算實際 cell 大小
+  const cell = document.querySelector('#bb-board .bb-cell');
+  if(cell) return cell.getBoundingClientRect().width;
+  return Math.min((window.innerWidth - 72) / 8, 44);
+}
+
+function bbDrawBoard(previewR=-1, previewC=-1){
+  const boardEl = document.getElementById('bb-board');
+  const activeIdx = bbDragIdx !== null ? bbDragIdx : bbSelectedIdx;
+  const shape = activeIdx !== null ? bbPieces[activeIdx]?.shape : null;
+  const usePR = bbDragIdx !== null ? bbDragPreviewR : previewR;
+  const usePC = bbDragIdx !== null ? bbDragPreviewC : previewC;
+
+  let html = '';
+  for(let r=0;r<BB_SIZE;r++){
+    for(let c=0;c<BB_SIZE;c++){
+      let cls = 'bb-cell';
+      let style = '';
+      if(bbBoard[r][c]){
+		cls += ' filled';
+		style = `background:${bbBoard[r][c]};`;
+	} else if(shape && usePR>=0 && bbCanPlace(shape,usePR,usePC)){
+        const pr = r - usePR, pc = c - usePC;
+        if(pr>=0 && pr<shape.length && pc>=0 && pc<shape[pr].length && shape[pr][pc]){
+          cls += ' preview';
+          const previewColor = activeIdx !== null ? bbPieces[activeIdx]?.color : '#22c55e';
+          style = `background:${previewColor};opacity:.65;box-shadow:inset 0 2px 0 rgba(255,255,255,0.35);`;
+        }
+      }
+      html += `<div class="${cls}" style="${style}" data-r="${r}" data-c="${c}"></div>`;
+    }
+  }
+  boardEl.innerHTML = html;
+
+  // 滑鼠 hover 預覽（桌面）
+  boardEl.querySelectorAll('.bb-cell').forEach(cell=>{
+    cell.addEventListener('click',()=>{
+      const r=+cell.dataset.r, c=+cell.dataset.c;
+      bbPlaceAt(r,c);
+    });
+    cell.addEventListener('mouseover',()=>{
+      if(bbSelectedIdx===null && bbDragIdx===null) return;
+      const r=+cell.dataset.r, c=+cell.dataset.c;
+      bbDrawBoard(r,c);
+    });
+  });
+  boardEl.addEventListener('mouseleave',()=>{
+    if(bbDragIdx===null) bbDrawBoard();
+  });
+}
+
+function bbDrawPieces(){
+  const el = document.getElementById('bb-pieces');
+  el.innerHTML = '';
+  bbPieces.forEach((p,i)=>{
+    if(!p){
+      const ph = document.createElement('div');
+      ph.style.cssText='min-width:44px;min-height:44px;';
+      el.appendChild(ph); return;
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'bb-piece-wrap' + (i===bbSelectedIdx?' selected':'');
+    wrap.dataset.idx = i;
+
+    const grid = document.createElement('div');
+    const cols = p.shape[0].length;
+    grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},20px);gap:2px;`;
+    p.shape.forEach(row=>row.forEach(v=>{
+      const b = document.createElement('div');
+      b.className = 'bb-block' + (v?'':' empty');
+      if(v){
+		b.style.background = p.color;
+		b.style.boxShadow = 'inset 0 2px 0 rgba(255,255,255,0.4), inset 0 -2px 0 rgba(0,0,0,0.25)';
+		b.style.borderRadius = '4px';
+		b.style.borderTop = '1px solid rgba(255,255,255,0.3)';
+		b.style.borderBottom = '2px solid rgba(0,0,0,0.2)';
+	}
+      grid.appendChild(b);
+    }));
+    wrap.appendChild(grid);
+
+    // 點選（桌面模式）
+    wrap.addEventListener('click',()=>{
+      bbSelectedIdx = bbSelectedIdx===i ? null : i;
+      bbDrawPieces();
+      bbDrawBoard();
+    });
+
+    // ── 觸控拖曳 ──
+    wrap.addEventListener('touchstart', e=>{
+      e.preventDefault();
+      bbDragIdx = i;
+      bbSelectedIdx = null;
+      bbUpdateGhost(p, e.touches[0].clientX, e.touches[0].clientY);
+      bbDrawPieces();
+    }, {passive:false});
+
+    wrap.addEventListener('touchmove', e=>{
+      e.preventDefault();
+      if(bbDragIdx===null) return;
+      const touch = e.touches[0];
+      bbUpdateGhost(p, touch.clientX, touch.clientY);
+      // 找出觸點下的 cell
+      const cellSize = bbGetCellSize();
+	  const ghost = document.getElementById('bb-drag-ghost');
+      ghost.style.display = 'none';
+	 const cell = bbCellAtPoint(
+    touch.clientX,
+    touch.clientY - DRAG_OFFSET_Y
+);
+	  ghost.style.display = 'block';
+      if(cell){
+        bbDragPreviewR = +cell.dataset.r;
+        bbDragPreviewC = +cell.dataset.c;
+      } else {
+        bbDragPreviewR = -1; bbDragPreviewC = -1;
+      }
+      bbDrawBoard();
+    }, {passive:false});
+
+    wrap.addEventListener('touchend', e=>{
+  e.preventDefault();
+  const ghost = document.getElementById('bb-drag-ghost');
+  ghost.style.display='none';
+  if(bbDragIdx===null){return;}
+  
+  // 用 changedTouches 取得最後位置重新計算一次
+  const touch = e.changedTouches[0];
+
+  const cell = bbCellAtPoint(
+    touch.clientX,
+    touch.clientY - DRAG_OFFSET_Y
+);
+  if(cell){
+    bbDragPreviewR = +cell.dataset.r;
+    bbDragPreviewC = +cell.dataset.c;
+  }
+  
+  if(bbDragPreviewR>=0){
+    bbPlaceAt(bbDragPreviewR, bbDragPreviewC);
+  }
+  bbDragIdx=null; bbDragPreviewR=-1; bbDragPreviewC=-1;
+  bbDrawBoard();
+  bbDrawPieces();
+}, {passive:false});
+
+    el.appendChild(wrap);
+  });
+}
+
+function bbCellAtPoint(x, y){
+
+  const ghost = document.getElementById('bb-drag-ghost');
+
+  if(ghost){
+    const old = ghost.style.display;
+    ghost.style.display = 'none';
+
+    const el = document.elementFromPoint(x,y);
+
+    ghost.style.display = old;
+
+    if(!el) return null;
+
+    const cell = el.closest('.bb-cell');
+
+    if(!cell) return null;
+
+    return {
+      dataset:{
+        r: cell.dataset.r,
+        c: cell.dataset.c
+      }
+    };
+  }
+
+  return null;
+}
+
+function bbUpdateGhost(piece, x, y){
+  const ghost = document.getElementById('bb-drag-ghost');
+  if(!ghost) return;
+  const cols = piece.shape[0].length;
+  let html = `<div style="display:grid;grid-template-columns:repeat(${cols},14px);gap:2px;background:rgba(30,10,20,.6);padding:4px;border-radius:8px;">`;
+  piece.shape.forEach(row=>row.forEach(v=>{
+    html += v
+      ? `<div style="width:14px;height:14px;border-radius:3px;background:${piece.color}"></div>`
+      : `<div style="width:14px;height:14px;visibility:hidden"></div>`;
+  }));
+  html += '</div>';
+  ghost.innerHTML = html;
+  ghost.style.display = 'block';
+ const DRAG_OFFSET_Y = 220;
+
+ghost.style.left = x + 'px';
+ghost.style.top = (y - DRAG_OFFSET_Y) + 'px';
+ghost.style.transform ='translate(-50%, -250%)';
+}
+
+function bbCanPlace(shape,r,c){
+  for(let dr=0;dr<shape.length;dr++)
+    for(let dc=0;dc<shape[dr].length;dc++)
+      if(shape[dr][dc]){
+        const nr=r+dr, nc=c+dc;
+        if(nr>=BB_SIZE||nc>=BB_SIZE||nr<0||nc<0||bbBoard[nr][nc]) return false;
+      }
+  return true;
+}
+
+function bbPlaceAt(r,c){
+  if(bbGameOver) return;
+  const activeIdx = bbDragIdx !== null ? bbDragIdx : bbSelectedIdx;
+  if(activeIdx===null) return;
+  const p = bbPieces[activeIdx];
+  if(!p||!bbCanPlace(p.shape,r,c)) return;
+
+  p.shape.forEach((row,dr)=>row.forEach((v,dc)=>{
+    if(v) bbBoard[r+dr][c+dc] = p.color;
+}));
+
+if(navigator.vibrate){
+    navigator.vibrate(40);
+}
+  bbScore += p.shape.flat().filter(Boolean).length * 10;
+  bbPieces[activeIdx] = null;
+  bbSelectedIdx = null;
+
+  bbClearLines();
+
+  if(bbPieces.every(p=>p===null)){
+    bbPieces = [
+      {shape:bbRandShape(),color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
+      {shape:bbRandShape(),color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
+      {shape:bbRandShape(),color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
+    ];
+  }
+
+  bbUpdateScore();
+  bbDrawBoard();
+  bbDrawPieces();
+  bbCheckGameOver();
+}
+
+function bbClearLines(){
+  const toClearR=[], toClearC=[];
+  for(let r=0;r<BB_SIZE;r++)
+    if(bbBoard[r].every(v=>v)) toClearR.push(r);
+  for(let c=0;c<BB_SIZE;c++)
+    if(bbBoard.every(row=>row[c])) toClearC.push(c);
+
+  if(!toClearR.length&&!toClearC.length){ bbCombo=0; return; }
+
+  bbCombo++;
+  const lines = toClearR.length + toClearC.length;
+  bbScore += lines * 80 * bbCombo;
+
+  toClearR.forEach(r=>{ for(let c=0;c<BB_SIZE;c++) bbBoard[r][c]=0; });
+  toClearC.forEach(c=>{ for(let r=0;r<BB_SIZE;r++) bbBoard[r][c]=0; });
+
+  document.getElementById('bb-combo').textContent = `x${bbCombo}`;
+  
+  if(toClearR.length || toClearC.length){
+
+    if(navigator.vibrate){
+    navigator.vibrate([80,50,80,50,120]);
+}
+
+}
+  
+}
+
+function bbUpdateScore(){
+  document.getElementById('bb-score').textContent = bbScore;
+  document.getElementById('bb-combo').textContent = `x${bbCombo||1}`;
+  if(bbScore > bbBest){
+    bbBest = bbScore;
+    document.getElementById('bb-best').textContent = bbBest;
+    if(window._fb){
+      const {db,ref,set} = window._fb;
+      set(ref(db,'bbBest'), bbBest);
+    }
+  }
+}
+
+function bbCheckGameOver(){
+  const remaining = bbPieces.filter(Boolean);
+  for(const p of remaining)
+    for(let r=0;r<BB_SIZE;r++)
+      for(let c=0;c<BB_SIZE;c++)
+        if(bbCanPlace(p.shape,r,c)) return;
+  bbGameOver = true;
+  document.getElementById('bb-final-score').textContent = bbScore;
+  document.getElementById('bb-gameover').style.display = 'flex';
+}
+
+function bbRestart(){
+  document.getElementById('bb-gameover').style.display = 'none';
+  bbInit();
+}
+
+function bbInitFirebase(){
+  if(!window._fb) return;
+  const {db,ref,onValue} = window._fb;
+  onValue(ref(db,'bbBest'),snap=>{
+    const val = snap.val()||0;
+    if(val > bbBest){
+      bbBest = val;
+      document.getElementById('bb-best').textContent = bbBest;
+    }
+  });
+}
+
+bbInit();
+
+// ── Period (Firebase) ──
+const SYMPTOMS=['😴 疲勞','😣 腹痛','🤯 頭痛','😤 情緒波動','🤢 噁心','🎈 脹氣','💤 嗜睡','🍫 想吃甜食','🥶 怕冷','💪 還不錯'];
+let pdSettings={start:'',end:'',cycle:28,dur:5};
+let pdCalYear=new Date().getFullYear();
+let pdCalMonth=new Date().getMonth();
+let pdSelectedSymptoms=new Set();
+
+function pdApplySettings(s){
+  pdSettings=s;
+  if(pdSettings.start) document.getElementById('pd-start').value=pdSettings.start;
+  if(pdSettings.end) document.getElementById('pd-end').value=pdSettings.end;
+  document.getElementById('pd-cycle').value=pdSettings.cycle;
+  document.getElementById('pd-cycle-val').textContent=pdSettings.cycle+' 天';
+  document.getElementById('pd-dur').value=pdSettings.dur;
+  document.getElementById('pd-dur-val').textContent=pdSettings.dur+' 天';
+  pdRefresh();
+}
+function pdLoad(){
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'pdSettings'),snap=>{
+    const s=snap.val();
+    if(s){pdApplySettings(s);}
+    else{pdRefresh();}
+  });
+  onValue(ref(db,'pdLogs'),snap=>{pdRenderLogsFromSnap(snap.val());});
+}
+function pdSaveSettings(){
+  const s=document.getElementById('pd-start').value;
+  if(!s){alert('請選擇最近一次生理期開始日');return;}
+  const newSettings={start:s,end:document.getElementById('pd-end').value,cycle:parseInt(document.getElementById('pd-cycle').value),dur:parseInt(document.getElementById('pd-dur').value)};
+  const {db,ref,set}=window._fb;
+  set(ref(db,'pdSettings'),newSettings);
+  alert('已儲存 ✅');
+}
+function pdGetCycles(count){
+  if(!pdSettings.start) return [];
+  const base=new Date(pdSettings.start+'T00:00:00');
+  const cycles=[];
+  for(let i=0;i<count;i++){
+    const pStart=new Date(base.getTime()+i*pdSettings.cycle*864e5);
+    const pEnd=new Date(pStart.getTime()+(pdSettings.dur-1)*864e5);
+    const ovulate=new Date(pStart.getTime()+(pdSettings.cycle-14)*864e5);
+    const fertileStart=new Date(ovulate.getTime()-5*864e5);
+    const fertileEnd=new Date(ovulate.getTime()+864e5);
+    cycles.push({pStart,pEnd,ovulate,fertileStart,fertileEnd});
+  }
+  return cycles;
+}
+function pdDayType(dateObj,cycles){
+  const t=dateObj.getTime();
+  for(const c of cycles){
+    if(t>=c.pStart.getTime()&&t<=c.pEnd.getTime()) return 'period';
+    if(t===c.ovulate.getTime()) return 'ovulate';
+    if(t>=c.fertileStart.getTime()&&t<=c.fertileEnd.getTime()) return 'fertile';
+  }
+  return 'safe';
+}
+function pdRefresh(){
+  if(!pdSettings.start){
+    document.getElementById('pd-banner-title').textContent='尚未設定週期';
+    document.getElementById('pd-banner-sub').textContent='請先到下方設定生理期資訊';
+    document.getElementById('pd-banner-emoji').textContent='⚙️';
+    document.getElementById('pd-upcoming').innerHTML='<div style="text-align:center;color:var(--text-muted);padding:20px 0;font-size:14px">設定週期後顯示</div>';
+    pdRenderCal();return;
+  }
+  const cycles=pdGetCycles(12);
+  const t=today();
+  let bannerEmoji='🌿',bannerTitle='安全期',bannerSub='';
+  for(const c of cycles){
+    const pStartMs=c.pStart.getTime(),pEndMs=c.pEnd.getTime(),tMs=t.getTime();
+    if(tMs>=pStartMs&&tMs<=pEndMs){const day=Math.floor((tMs-pStartMs)/864e5)+1;bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;break;}
+    if(tMs===c.ovulate.getTime()){bannerEmoji='🥚';bannerTitle='排卵日';bannerSub='今天是排卵日，易孕期！';break;}
+    if(tMs>=c.fertileStart.getTime()&&tMs<=c.fertileEnd.getTime()){bannerEmoji='🌺';bannerTitle='易孕期';bannerSub=`距離排卵日還有 ${Math.ceil((c.ovulate.getTime()-tMs)/864e5)} 天`;break;}
+    if(tMs<c.pStart.getTime()){const daysTo=Math.ceil((c.pStart.getTime()-tMs)/864e5);if(daysTo<=7){bannerEmoji='😮';bannerTitle='快來了';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}else{bannerEmoji='🌿';bannerTitle='安全期';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}break;}
+  }
+  document.getElementById('pd-banner-emoji').textContent=bannerEmoji;
+  document.getElementById('pd-banner-title').textContent=bannerTitle;
+  document.getElementById('pd-banner-sub').textContent=bannerSub;
+  const banner=document.getElementById('pd-status-banner');
+  const bannerColors={'🩸':'#fff0f3','🥚':'#fff8e1','🌺':'#fce8ec','😮':'#fce8ec','🌿':'#f1f8e9'};
+  banner.style.background=bannerColors[bannerEmoji]||'var(--white)';
+  const fmt=d=>d.toLocaleDateString('zh-TW',{month:'2-digit',day:'2-digit'});
+  let upHTML='';let shown=0;
+  for(const c of cycles){
+    if(c.pEnd.getTime()<t.getTime()) continue;
+    if(shown>=3) break;shown++;
+    const daysTo=Math.ceil((c.pStart.getTime()-t.getTime())/864e5);
+    const isNow=t.getTime()>=c.pStart.getTime()&&t.getTime()<=c.pEnd.getTime();
+    upHTML+=`<div style="border-left:3px solid var(--pink);padding:10px 12px;margin-bottom:10px;border-radius:0 10px 10px 0;background:var(--pink-light)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-size:13px;font-weight:500;color:var(--rose)">🩸 ${fmt(c.pStart)} ～ ${fmt(c.pEnd)}</span>
+        <span style="font-size:11px;background:${isNow?'var(--pink)':'var(--white)'};color:${isNow?'white':'var(--text-muted)'};padding:2px 8px;border-radius:20px;border:1px solid var(--card-border)">${isNow?'進行中':daysTo<=0?'今天':'還有 '+daysTo+' 天'}</span>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted)">🥚 排卵日 ${fmt(c.ovulate)} &nbsp;·&nbsp; 🌺 易孕期 ${fmt(c.fertileStart)}～${fmt(c.fertileEnd)}</div>
+    </div>`;
+  }
+  document.getElementById('pd-upcoming').innerHTML=upHTML||'<div style="color:var(--text-muted);font-size:13px">無資料</div>';
+  pdRenderCal();
+}
+function pdRenderCal(){
+  const cycles=pdGetCycles(14);
+  const y=pdCalYear,m=pdCalMonth;
+  document.getElementById('pd-cal-title').textContent=`${y} 年 ${m+1} 月`;
+  const firstDay=new Date(y,m,1).getDay();
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const t=today();
+  let html='';
+  for(let i=0;i<firstDay;i++) html+='<div></div>';
+  for(let d=1;d<=daysInMonth;d++){
+    const date=new Date(y,m,d);
+    const type=pdDayType(date,cycles);
+    const isToday=date.getTime()===t.getTime();
+    const colors={period:'background:var(--pink);color:white;',ovulate:'background:#ff9800;color:white;',fertile:'background:#fce8ec;color:var(--rose);border:1px solid var(--pink-soft);',safe:'background:#e3f2fd;color:#1565c0;'};
+    html+=`<div style="padding:5px 2px;border-radius:8px;font-size:13px;${colors[type]||''}${isToday?'outline:2px solid var(--pink);outline-offset:1px;font-weight:700;':''}">${d}</div>`;
+  }
+  document.getElementById('pd-cal-grid').innerHTML=html;
+}
+function pdCalPrev(){pdCalMonth--;if(pdCalMonth<0){pdCalMonth=11;pdCalYear--;}pdRenderCal();}
+function pdCalNext(){pdCalMonth++;if(pdCalMonth>11){pdCalMonth=0;pdCalYear++;}pdRenderCal();}
+function pdInitSymptoms(){
+  document.getElementById('pd-symptom-tags').innerHTML=SYMPTOMS.map((s,i)=>`
+    <button onclick="pdToggleSymptom(${i},this)" style="padding:7px 12px;border-radius:20px;border:1px solid var(--card-border);background:var(--white);font-size:12px;cursor:pointer;transition:all .2s;font-family:'Noto Sans TC',sans-serif;color:var(--text)">${s}</button>`).join('');
+}
+function pdToggleSymptom(i,el){
+  if(pdSelectedSymptoms.has(i)){pdSelectedSymptoms.delete(i);el.style.background='var(--white)';el.style.color='';el.style.borderColor='var(--card-border)';}
+  else{pdSelectedSymptoms.add(i);el.style.background='var(--pink)';el.style.color='white';el.style.borderColor='var(--pink)';}
+}
+function pdSaveLog(){
+  const note=document.getElementById('pd-note').value.trim();
+  const syms=Array.from(pdSelectedSymptoms).map(i=>SYMPTOMS[i]);
+  if(!syms.length&&!note){alert('請至少選一個症狀或填寫備注');return;}
+  const {db,ref,set}=window._fb;
+  const t=today();
+  const dateStr=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+  set(ref(db,`pdLogs/${dateStr}`),{date:dateStr,symptoms:syms,note});
+  document.getElementById('pd-note').value='';
+  pdSelectedSymptoms.clear();
+  document.querySelectorAll('#pd-symptom-tags button').forEach(el=>{el.style.background='var(--white)';el.style.color='';el.style.borderColor='var(--card-border)';});
+  alert('已記錄 ✅');
+}
+function pdRenderLogsFromSnap(val){
+  const el=document.getElementById('pd-log-list');
+  if(!val){el.innerHTML='<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:12px 0">還沒有記錄</div>';return;}
+  const logs=Object.values(val).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
+  el.innerHTML=logs.map((l)=>`
+    <div style="border-top:1px solid var(--card-border);padding:10px 0;display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-size:12px;color:var(--text-muted)">${l.date}</div>
+        <div style="font-size:13px;margin-top:3px">${(l.symptoms||[]).join('　')}</div>
+        ${l.note?`<div style="font-size:12px;color:var(--text-muted);margin-top:2px">${l.note}</div>`:''}
+      </div>
+      <button onclick="pdDeleteLog('${l.date}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px">✕</button>
+    </div>`).join('');
+}
+function pdDeleteLog(dateStr){
+  if(!confirm('刪除這筆記錄？')) return;
+  const {db,ref,remove}=window._fb;
+  remove(ref(db,`pdLogs/${dateStr}`));
+}
+
+// ── Music Player ──
+const SONGS=[
+  {file:'music01.mp3',name:'晴天'},
+  {file:'music02.mp3',name:'我們倆'},
+  {file:'music03.mp3',name:'想和你看五月的晚霞:夏日續章'},
+  {file:'music04.mp3',name:'小船'},
+  {file:'music05.mp3',name:'是心動呀'},
+  {file:'music06.mp3',name:'那一刻心動'},
+  {file:'music07.mp3',name:'Emo一整夜只因為想你'},
+  {file:'music08.mp3',name:'你知道你比晚霞好看嗎'},
+  {file:'music09.mp3',name:'做我的初戀'},
+  {file:'music10.mp3',name:'你沒等我去的舊金山'},
+  {file:'music11.mp3',name:'浪漫主義'},
+  {file:'music12.mp3',name:'黏踢踢'},
+];
+for(let i=SONGS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[SONGS[i],SONGS[j]]=[SONGS[j],SONGS[i]];}
+let songIdx=Math.floor(Math.random()*SONGS.length);
+
+const audio=document.getElementById('audio-player');
+const disc=document.getElementById('music-disc');
+const playBtn=document.getElementById('play-btn');
+const titleEl=document.getElementById('music-title');
+const titleWrap=document.getElementById('music-title-wrap');
+
+function updateMusicTitle(name){
+  titleEl.textContent=name;
+  titleEl.classList.remove('marquee');
+  setTimeout(()=>{
+    const wrapW=titleWrap.offsetWidth;
+    const textW=titleEl.scrollWidth;
+    if(textW>wrapW){
+      titleEl.style.setProperty('--marquee-dist',-(textW-wrapW+10)+'px');
+      titleEl.classList.add('marquee');
+    }
+  },100);
+}
+function setUI(playing){
+  disc.classList.toggle('playing',playing);
+  playBtn.textContent=playing?'⏸️':'▶️';
+}
+function loadSong(idx){
+  audio.src=SONGS[idx].file;
+  updateMusicTitle(SONGS[idx].name);
+}
+audio.addEventListener('ended',()=>{
+  songIdx=(songIdx+1)%SONGS.length;
+  audio.src=SONGS[songIdx].file;
+  updateMusicTitle(SONGS[songIdx].name);
+  audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+});
+function togglePlay(){
+  if(audio.paused){audio.play().then(()=>setUI(true)).catch(()=>setUI(false));}
+  else{audio.pause();setUI(false);}
+}
+function nextSong(){
+  const wasPlaying=!audio.paused;
+  songIdx=(songIdx+1)%SONGS.length;
+  audio.src=SONGS[songIdx].file;
+  updateMusicTitle(SONGS[songIdx].name);
+  if(wasPlaying) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+}
+function prevSong(){
+  const wasPlaying=!audio.paused;
+  songIdx=(songIdx-1+SONGS.length)%SONGS.length;
+  audio.src=SONGS[songIdx].file;
+  updateMusicTitle(SONGS[songIdx].name);
+  if(wasPlaying) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+}
+loadSong(songIdx);
+// ── 我們的第一次 (Firebase 同步) ──
+const FT_DEFAULTS = [
+  {date:'2025-10-05', text:'第一天認識，在交友軟體裡面'},
+  {date:'2025-10-08', text:'第一次見面，一起吃藏壽司，看了電影他年他日'},
+  {date:'2025-11-09', text:'第一次做愛，在板橋開房間'},
+  {date:'2025-12-01', text:'正式在一起 ❤️'},
+  {date:'2025-12-02', text:'交往後第一次見面'},
+  {date:'2026-02-07', text:'第一次騎機車載妳、一起看夜景'},
+];
+
+function ftFmtDate(d){
+  if(d==='未來') return '未來';
+  const [y,m,day]=d.split('-');
+  return `${y} / ${m} / ${day}`;
+}
+
+function ftRender(items){
+  const list = document.getElementById('firsttime-list');
+  if(!items||!items.length){
+    list.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:12px 0">還沒有記錄，新增第一筆吧 💕</div>';
+    return;
+  }
+  // 排序：未來排最後，其他按日期升序
+  const sorted=[...items].sort((a,b)=>a.date.localeCompare(b.date));
+  
+  list.innerHTML = sorted.map(item=>`
+    <div class="tl-item" style="position:relative;padding-right:28px">
+      <span class="tl-date">${ftFmtDate(item.date)}</span>${item.text}
+      ${item._key ? `<button onclick="ftDelete('${item._key}')" style="position:absolute;right:0;top:10px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:0 2px" title="刪除">✕</button>` : ''}
+    </div>`).join('');
+}
+
+function ftAdd(){
+  const dateVal = document.getElementById('ft-date-input').value;
+  const textVal = document.getElementById('ft-text-input').value.trim();
+  if(!textVal){alert('請輸入內容');return;}
+  // date 可以是空的（代表「未來」）
+  // 簡單驗證格式或留空
+  const dateStr = (dateVal && /^\d{4}-\d{2}-\d{2}$/.test(dateVal)) ? dateVal : (dateVal ? dateVal : '未來');
+  if(!window._fb){alert('Firebase 尚未連線');return;}
+  const {db,ref,push} = window._fb;
+  push(ref(db,'firstTimes'),{date:dateStr, text:textVal});
+  document.getElementById('ft-date-input').value='';
+  document.getElementById('ft-text-input').value='';
+}
+
+function ftDelete(key){
+  if(!confirm('刪除這筆記錄？')) return;
+  const {db,ref,remove} = window._fb;
+  remove(ref(db,`firstTimes/${key}`));
+}
+
+function ftInit(){
+  const {db,ref,get,set,push,onValue} = window._fb;
+  // 第一次：如果 Firebase 裡是空的，寫入預設資料
+  get(ref(db,'firstTimes')).then(snap=>{
+    if(!snap.val()){
+      FT_DEFAULTS.forEach(item=>push(ref(db,'firstTimes'),item));
+    }
+  });
+  // 即時監聽
+  onValue(ref(db,'firstTimes'),snap=>{
+    const val=snap.val();
+    const items = val ? Object.entries(val).map(([k,v])=>({...v,_key:k})) : [];
+    ftRender(items);
+  });
+}
+// ── Firebase 初始化完成後啟動 ──
+window.addEventListener('firebaseReady',()=>{
+  albumInitFirebase();
+  initMessages();
+  initRps();
+  initMc();
+  pdLoad();
+  ftInit();
+  bbInitFirebase();
+});
+</script>
+<!-- 拖曳幽靈 -->
+<div id="bb-drag-ghost"></div>
+
+</body>
+</html>

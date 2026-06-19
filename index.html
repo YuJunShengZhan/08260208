@@ -572,47 +572,51 @@ background:var(--pink-light);margin-left:8px;
 
 /* ── Block Blast ── */
 :root {
-  --bb-cell: min(calc((100vw - 72px) / 8), 44px);
+  --bb-cell: clamp(34px, calc((100vw - 72px) / 8), 46px);
 }
 .bb-cell.filled{background:var(--pink);}
-.bb-cell.preview{background:#22c55e;opacity:.7;transform:scale(.9);}
+.bb-cell.preview{background:#22c55e;opacity:.78;transform:scale(.92);}
+.bb-cell.preview-bad{background:#ff5b77!important;opacity:.45;transform:scale(.86);}
 .bb-cell.flash{background:#fff;transition:none;}
 
 .bb-piece-wrap{
-  padding:6px;
+  padding:8px;
   background:var(--pink-light);
-  border-radius:10px;
+  border-radius:14px;
   cursor:grab;
   border:2px solid transparent;
-  transition:all .15s;
+  transition:transform .12s, border-color .12s, background .12s, box-shadow .12s;
   display:flex;align-items:center;justify-content:center;
-  min-width:44px;min-height:44px;
+  min-width:54px;min-height:54px;
   touch-action:none;
   user-select:none;
   -webkit-user-select:none;
+  -webkit-touch-callout:none;
 }
-.bb-piece-wrap.selected{border-color:var(--pink);background:var(--pink-soft);}
+.bb-piece-wrap:active{cursor:grabbing;transform:scale(.98);}
+.bb-piece-wrap.selected{border-color:var(--pink);background:var(--pink-soft);box-shadow:0 8px 22px rgba(232,99,122,.18);}
 .bb-piece-wrap.used{opacity:.3;pointer-events:none;}
 .bb-piece-wrap:hover:not(.used){border-color:var(--pink);}
 .bb-cell{
   width:var(--bb-cell);height:var(--bb-cell);
-  border-radius:6px;
-	background:#f9e8ec;
-	border:1px solid #f0c8d0;
+  border-radius:8px;
+  background:#f9e8ec;
+  border:1px solid #f0c8d0;
   cursor:pointer;
   touch-action:none;
   box-sizing:border-box;
+  transition:transform .08s, opacity .08s, background .08s;
 }
 .bb-cell.filled{
-  border-radius:8px;
+  border-radius:9px;
   border-bottom:3px solid rgba(0,0,0,0.3);
   border-right:2px solid rgba(0,0,0,0.2);
   border-top:1.5px solid rgba(255,255,255,0.35);
   border-left:1.5px solid rgba(255,255,255,0.15);
 }
 .bb-cell.preview{
-  opacity:.6;
-  border-radius:8px;
+  opacity:.72;
+  border-radius:9px;
   border-bottom:3px solid rgba(0,0,0,0.25);
   border-top:1.5px solid rgba(255,255,255,0.3);
 }
@@ -620,7 +624,7 @@ background:var(--pink-light);margin-left:8px;
 .bb-block {
   width: 20px;
   height: 20px;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 .bb-block.empty {
   visibility: hidden;
@@ -630,9 +634,10 @@ background:var(--pink-light);margin-left:8px;
   position:fixed;
   pointer-events:none;
   z-index:9999;
-  opacity:.75;
-  transform:translate(-50%,-200%);
+  opacity:.88;
+  transform:translate(-50%,-50%);
   display:none;
+  filter:drop-shadow(0 12px 18px rgba(0,0,0,.22));
 }
 #ft-date-input:not(:valid) {
   color: transparent;
@@ -2073,13 +2078,17 @@ container.innerHTML = `
     ${pagesHtml}
   </div>
   <div style="display:flex;justify-content:center;gap:6px;margin-top:8px" id="memories-dots"></div>
-  <div style="display:flex;gap:8px;align-items:center;margin-top:14px">
-    <select id="collage-size-select" style="flex:1;padding:12px;border:1px solid var(--card-border);border-radius:12px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif">
-      <option value="6">6 張</option>
-      <option value="9" selected>9 張</option>
+  <div style="display:flex;justify-content:flex-start;align-items:center;gap:12px;margin-top:12px;flex-wrap:nowrap">
+    <select id="collage-size-select" style="width:132px;min-height:46px;padding:0 14px;border:1px solid var(--card-border);border-radius:14px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:15px;text-align:center;text-align-last:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.65)">
+
+      <option value="6" selected>6 張</option>
+      <option value="9">9 張</option>
       <option value="12">12 張</option>
       <option value="15">15 張</option>
     </select>
+    <div style="flex:0 1 auto;text-align:left;font-size:13px;color:var(--text-muted);line-height:1.5;white-space:nowrap">
+      請選擇一頁拼貼的照片數量
+    </div>
   </div>
   <button onclick="generateCollage()" style="
     width:100%;padding:13px;margin-top:10px;
@@ -2310,7 +2319,7 @@ function drawMemoriesChart(months, meetData, loveData){
 let collageSelectedPhotos = [];
 
 function openCollagePicker(photos){
-  const perPage = Number(document.getElementById('collage-size-select')?.value || 9);
+  const perPage = Number(document.getElementById('collage-size-select')?.value || 6);
   const box = document.getElementById('collage-select-area');
   if(!box) return;
   collageSelectedPhotos = [];
@@ -2363,7 +2372,7 @@ function toggleCollagePhoto(i){
     const numEl = document.getElementById('collage-pick-num-'+i);
     if(numEl){ numEl.style.display = 'flex'; numEl.textContent = collageSelectedPhotos.length; }
   }
-  const perPage = window._collagePickerPerPage || 9;
+  const perPage = window._collagePickerPerPage || 6;
   const cnt = collageSelectedPhotos.length;
   const isValid = cnt > 0 && cnt % perPage === 0;
   const countEl = document.getElementById('collage-pick-count');
@@ -2378,7 +2387,7 @@ function toggleCollagePhoto(i){
 }
 
 function confirmCollagePicker(){
-  const perPage = window._collagePickerPerPage || 9;
+  const perPage = window._collagePickerPerPage || 6;
   const cnt = collageSelectedPhotos.length;
   if(cnt === 0){ alert('請至少選一張照片'); return; }
   if(cnt % perPage !== 0){
@@ -2413,7 +2422,7 @@ async function generateCollage(selectedPhotos=null) {
   photos.length=0;
   selectedPhotos.forEach(p=>photos.push(p));
 
-  const perPage = Number(document.getElementById('collage-size-select')?.value || 9);
+  const perPage = Number(document.getElementById('collage-size-select')?.value || 6);
   const pages = [];
   for(let i=0;i<photos.length;i+=perPage) pages.push(photos.slice(i,i+perPage));
 
@@ -3457,11 +3466,21 @@ let bbSelectedIdx = null;
 let bbPieces = [];
 let bbGameOver = false;
 
-// 拖曳狀態
+// 拖曳狀態：新版改成「智能吸附」＋「指尖上方定位」
 let bbDragIdx = null;
 let bbDragPreviewR = -1;
 let bbDragPreviewC = -1;
-const BB_DRAG_OFFSET_Y = 76;
+let bbDragPreviewOk = false;
+let bbDragPointerId = null;
+let bbDragStartX = 0;
+let bbDragStartY = 0;
+let bbDragMoved = false;
+let bbDragWrap = null;
+let bbSuppressClickUntil = 0;
+
+const BB_DRAG_OFFSET_Y = 88;      // 方塊顯示在手指上方，避免被手指擋住
+const BB_SNAP_RADIUS = 2;         // 放下時自動找附近 2 格內可放位置
+const BB_MIN_MOVE_TO_DRAG = 6;
 
 const BB_SHAPES = [
   [[1]],
@@ -3482,34 +3501,71 @@ const BB_SHAPES = [
   [[0,1,1],[1,1,0]],
   [[1,1,1,1,1]],
   [[1],[1],[1],[1],[1]],
- [[1,1,1],[1,1,1],[1,1,1]],  // 3x3 正方形
+  [[1,1,1],[1,1,1],[1,1,1]],
 ];
 
 const BB_COLORS = [
-  '#e8394a', // 紅
-  '#ff7a1a', // 橘
-  '#ffcc00', // 黃
-  '#2ecc71', // 綠
-  '#1aabff', // 藍
-  '#a855f7', // 紫
-  '#ff4fab', // 粉
-  '#00d4c8', // 青
+  '#e8394a', '#ff7a1a', '#ffcc00', '#2ecc71',
+  '#1aabff', '#a855f7', '#ff4fab', '#00d4c8',
 ];
+
+function bbVibrate(pattern){
+  if(navigator.vibrate) navigator.vibrate(pattern);
+}
+
+function bbCloneShape(s){
+  return JSON.parse(JSON.stringify(s));
+}
 
 function bbRandShape(){
   const s = BB_SHAPES[Math.floor(Math.random()*BB_SHAPES.length)];
-  return JSON.parse(JSON.stringify(s));
+  return bbCloneShape(s);
+}
+
+function bbRandColor(){
+  return BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)];
+}
+
+function bbPieceBlocks(shape){
+  return shape.flat().filter(Boolean).length;
+}
+
+function bbShapeCols(shape){
+  return Math.max(...shape.map(row=>row.length));
+}
+
+function bbPieceCanFit(shape){
+  for(let r=0;r<BB_SIZE;r++){
+    for(let c=0;c<BB_SIZE;c++){
+      if(bbCanPlace(shape,r,c)) return true;
+    }
+  }
+  return false;
+}
+
+function bbCreatePiece(forceFit=false){
+  // 盡量生出目前棋盤還能放的方塊，玩起來比較順、不會莫名其妙卡死
+  for(let tries=0; tries<60; tries++){
+    const shape = bbRandShape();
+    if(!forceFit || bbPieceCanFit(shape)) return {shape, color:bbRandColor()};
+  }
+  return {shape:bbRandShape(), color:bbRandColor()};
+}
+
+function bbNewPieces(){
+  let pieces = [bbCreatePiece(true), bbCreatePiece(true), bbCreatePiece(true)];
+  // 保底：至少一顆可以放，避免剛換牌就直接很掃興
+  if(!pieces.some(p=>bbPieceCanFit(p.shape))){
+    pieces[0] = bbCreatePiece(true);
+  }
+  return pieces;
 }
 
 function bbInit(){
   bbBoard = Array.from({length:BB_SIZE},()=>Array(BB_SIZE).fill(0));
   bbScore = 0; bbCombo = 0; bbSelectedIdx = null; bbGameOver = false;
-  bbDragIdx = null; bbDragPreviewR = -1; bbDragPreviewC = -1;
-  bbPieces = [
-    {shape:bbRandShape(), color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
-    {shape:bbRandShape(), color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
-    {shape:bbRandShape(), color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
-  ];
+  bbDragIdx = null; bbDragPreviewR = -1; bbDragPreviewC = -1; bbDragPreviewOk = false;
+  bbPieces = bbNewPieces();
   document.getElementById('bb-gameover').style.display='none';
   document.getElementById('bb-board').style.opacity='1';
   document.getElementById('bb-pieces').style.opacity='1';
@@ -3519,55 +3575,101 @@ function bbInit(){
 }
 
 function bbGetCellSize(){
-  // 動態計算實際 cell 大小
   const cell = document.querySelector('#bb-board .bb-cell');
   if(cell) return cell.getBoundingClientRect().width;
-  return Math.min((window.innerWidth - 72) / 8, 44);
+  return Math.min((window.innerWidth - 72) / 8, 46);
 }
 
-function bbDrawBoard(previewR=-1, previewC=-1){
+function bbGetBoardMetrics(){
+  const boardEl = document.getElementById('bb-board');
+  if(!boardEl) return null;
+  const cells = Array.from(boardEl.querySelectorAll('.bb-cell'));
+  if(!cells.length) return null;
+
+  const first = cells[0].getBoundingClientRect();
+  const second = cells[1]?.getBoundingClientRect();
+  const ninth = cells[8]?.getBoundingClientRect();
+  const cell = first.width;
+  const pitchX = second ? (second.left - first.left) : cell + 3;
+  const pitchY = ninth ? (ninth.top - first.top) : cell + 3;
+
+  return {
+    boardEl,
+    boardRect: boardEl.getBoundingClientRect(),
+    firstLeft: first.left,
+    firstTop: first.top,
+    cell,
+    pitchX,
+    pitchY,
+  };
+}
+
+function bbSetBoardGlow(active, ok){
+  const boardEl = document.getElementById('bb-board');
+  if(!boardEl) return;
+  if(!active){
+    boardEl.style.boxShadow = '';
+    return;
+  }
+  boardEl.style.boxShadow = ok
+    ? '0 0 0 3px rgba(34,197,94,.45), 0 10px 28px rgba(34,197,94,.18)'
+    : '0 0 0 3px rgba(255,91,119,.38), 0 10px 28px rgba(255,91,119,.14)';
+}
+
+function bbDrawBoard(previewR=-1, previewC=-1, previewOk=null){
   const boardEl = document.getElementById('bb-board');
   const activeIdx = bbDragIdx !== null ? bbDragIdx : bbSelectedIdx;
   const shape = activeIdx !== null ? bbPieces[activeIdx]?.shape : null;
   const usePR = bbDragIdx !== null ? bbDragPreviewR : previewR;
   const usePC = bbDragIdx !== null ? bbDragPreviewC : previewC;
+  const canPreview = shape && usePR >= 0 && usePC >= 0;
+  const isOk = previewOk === null
+    ? (bbDragIdx !== null ? bbDragPreviewOk : (canPreview ? bbCanPlace(shape,usePR,usePC) : false))
+    : previewOk;
+
+  bbSetBoardGlow(!!canPreview, !!isOk);
 
   let html = '';
   for(let r=0;r<BB_SIZE;r++){
     for(let c=0;c<BB_SIZE;c++){
       let cls = 'bb-cell';
       let style = '';
-      if(bbBoard[r][c]){
-		cls += ' filled';
-		style = `background:${bbBoard[r][c]};`;
-	} else if(shape && usePR>=0 && bbCanPlace(shape,usePR,usePC)){
+      let previewHere = false;
+
+      if(shape && canPreview){
         const pr = r - usePR, pc = c - usePC;
-        if(pr>=0 && pr<shape.length && pc>=0 && pc<shape[pr].length && shape[pr][pc]){
-          cls += ' preview';
-          const previewColor = activeIdx !== null ? bbPieces[activeIdx]?.color : '#22c55e';
-          style = `background:${previewColor};opacity:.65;box-shadow:inset 0 2px 0 rgba(255,255,255,0.35);`;
-        }
+        previewHere = pr>=0 && pr<shape.length && pc>=0 && pc<shape[pr].length && shape[pr][pc];
+      }
+
+      if(bbBoard[r][c]){
+        cls += ' filled';
+        style = `background:${bbBoard[r][c]};`;
+      } else if(previewHere){
+        cls += isOk ? ' preview' : ' preview preview-bad';
+        const previewColor = activeIdx !== null ? bbPieces[activeIdx]?.color : '#22c55e';
+        style = isOk
+          ? `background:${previewColor};opacity:.72;box-shadow:inset 0 2px 0 rgba(255,255,255,0.35);`
+          : 'background:#ff5b77;opacity:.48;';
       }
       html += `<div class="${cls}" style="${style}" data-r="${r}" data-c="${c}"></div>`;
     }
   }
   boardEl.innerHTML = html;
 
-  // 滑鼠 hover 預覽（桌面）
   boardEl.querySelectorAll('.bb-cell').forEach(cell=>{
-    cell.addEventListener('click',()=>{
+    cell.onclick = ()=>{
       const r=+cell.dataset.r, c=+cell.dataset.c;
       bbPlaceAt(r,c);
-    });
-    cell.addEventListener('mouseover',()=>{
-      if(bbSelectedIdx===null && bbDragIdx===null) return;
+    };
+    cell.onmouseenter = ()=>{
+      if(bbSelectedIdx===null || bbDragIdx!==null) return;
       const r=+cell.dataset.r, c=+cell.dataset.c;
-      bbDrawBoard(r,c);
-    });
+      bbDrawBoard(r,c,bbCanPlace(bbPieces[bbSelectedIdx].shape,r,c));
+    };
   });
-  boardEl.addEventListener('mouseleave',()=>{
+  boardEl.onmouseleave = ()=>{
     if(bbDragIdx===null) bbDrawBoard();
-  });
+  };
 }
 
 function bbDrawPieces(){
@@ -3576,7 +3678,7 @@ function bbDrawPieces(){
   bbPieces.forEach((p,i)=>{
     if(!p){
       const ph = document.createElement('div');
-      ph.style.cssText='min-width:44px;min-height:44px;';
+      ph.style.cssText='min-width:54px;min-height:54px;';
       el.appendChild(ph); return;
     }
     const wrap = document.createElement('div');
@@ -3584,117 +3686,180 @@ function bbDrawPieces(){
     wrap.dataset.idx = i;
 
     const grid = document.createElement('div');
-    const cols = p.shape[0].length;
-    grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},20px);gap:2px;`;
-    p.shape.forEach(row=>row.forEach(v=>{
-      const b = document.createElement('div');
-      b.className = 'bb-block' + (v?'':' empty');
-      if(v){
-		b.style.background = p.color;
-		b.style.boxShadow = 'inset 0 2px 0 rgba(255,255,255,0.4), inset 0 -2px 0 rgba(0,0,0,0.25)';
-		b.style.borderRadius = '4px';
-		b.style.borderTop = '1px solid rgba(255,255,255,0.3)';
-		b.style.borderBottom = '2px solid rgba(0,0,0,0.2)';
-	}
-      grid.appendChild(b);
-    }));
+    const cols = bbShapeCols(p.shape);
+    grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},20px);gap:3px;`;
+    p.shape.forEach(row=>{
+      for(let k=0;k<cols;k++){
+        const v = row[k] || 0;
+        const b = document.createElement('div');
+        b.className = 'bb-block' + (v?'':' empty');
+        if(v){
+          b.style.background = p.color;
+          b.style.boxShadow = 'inset 0 2px 0 rgba(255,255,255,0.42), inset 0 -2px 0 rgba(0,0,0,0.25)';
+          b.style.borderRadius = '5px';
+          b.style.borderTop = '1px solid rgba(255,255,255,0.3)';
+          b.style.borderBottom = '2px solid rgba(0,0,0,0.2)';
+        }
+        grid.appendChild(b);
+      }
+    });
     wrap.appendChild(grid);
 
-    // 點選（桌面模式）
-    wrap.addEventListener('click',()=>{
+    wrap.addEventListener('click', e=>{
+      // 滑鼠點選模式保留：點方塊，再點棋盤也可以放
+      if(Date.now() < bbSuppressClickUntil){
+        e.preventDefault();
+        return;
+      }
+      if(bbDragMoved) return;
       bbSelectedIdx = bbSelectedIdx===i ? null : i;
       bbDrawPieces();
       bbDrawBoard();
     });
 
-    // ── 觸控拖曳 ──
-    wrap.addEventListener('touchstart', e=>{
+    wrap.addEventListener('pointerdown', e=>{
+      if(bbGameOver) return;
       e.preventDefault();
       bbDragIdx = i;
       bbSelectedIdx = null;
-      bbUpdateGhost(p, e.touches[0].clientX, e.touches[0].clientY);
-      bbDrawPieces();
+      bbDragPointerId = e.pointerId;
+      bbDragStartX = e.clientX;
+      bbDragStartY = e.clientY;
+      bbDragMoved = false;
+      bbDragWrap = wrap;
+      wrap.setPointerCapture?.(e.pointerId);
+      wrap.style.transform = 'scale(.96)';
+      bbUpdateGhost(p, e.clientX, e.clientY);
+      bbUpdateDragPreview(e.clientX, e.clientY, p.shape);
     }, {passive:false});
 
-    wrap.addEventListener('touchmove', e=>{
+    wrap.addEventListener('pointermove', e=>{
+      if(bbDragIdx !== i || bbDragPointerId !== e.pointerId) return;
       e.preventDefault();
-      if(bbDragIdx===null) return;
-      const touch = e.touches[0];
-      bbUpdateGhost(p, touch.clientX, touch.clientY);
-      const cell = bbGetDropCell(touch.clientX, touch.clientY);
-      if(cell){
-        bbDragPreviewR = cell.r;
-        bbDragPreviewC = cell.c;
-      } else {
-        bbDragPreviewR = -1; bbDragPreviewC = -1;
-      }
-      bbDrawBoard();
+      const dist = Math.hypot(e.clientX - bbDragStartX, e.clientY - bbDragStartY);
+      if(dist > BB_MIN_MOVE_TO_DRAG) bbDragMoved = true;
+      bbUpdateGhost(p, e.clientX, e.clientY);
+      bbUpdateDragPreview(e.clientX, e.clientY, p.shape);
     }, {passive:false});
 
-    wrap.addEventListener('touchend', e=>{
-      e.preventDefault();
-      const ghost = document.getElementById('bb-drag-ghost');
-      if(ghost) ghost.style.display='none';
-      if(bbDragIdx===null) return;
-
-      const touch = e.changedTouches[0];
-      const cell = touch ? bbGetDropCell(touch.clientX, touch.clientY) : null;
-      const placeR = cell ? cell.r : bbDragPreviewR;
-      const placeC = cell ? cell.c : bbDragPreviewC;
-
-      if(placeR>=0 && placeC>=0){
-        bbPlaceAt(placeR, placeC);
-      }
-      bbDragIdx=null; bbDragPreviewR=-1; bbDragPreviewC=-1;
-      bbDrawBoard();
-      bbDrawPieces();
-    }, {passive:false});
+    wrap.addEventListener('pointerup', e=>bbEndPointerDrag(e, i), {passive:false});
+    wrap.addEventListener('pointercancel', e=>bbEndPointerDrag(e, i, true), {passive:false});
 
     el.appendChild(wrap);
   });
 }
 
-function bbGetDropCell(x, y){
-  const boardEl = document.getElementById('bb-board');
-  if(!boardEl) return null;
+function bbUpdateDragPreview(x, y, shape){
+  const res = bbResolveDrop(x, y, shape);
+  if(res){
+    bbDragPreviewR = res.r;
+    bbDragPreviewC = res.c;
+    bbDragPreviewOk = !!res.ok;
+  } else {
+    bbDragPreviewR = -1;
+    bbDragPreviewC = -1;
+    bbDragPreviewOk = false;
+  }
+  bbDrawBoard();
+}
 
+function bbEndPointerDrag(e, idx, cancelled=false){
+  if(bbDragIdx !== idx) return;
+  e.preventDefault?.();
+
+  const ghost = document.getElementById('bb-drag-ghost');
+  if(ghost) ghost.style.display='none';
+  if(bbDragWrap){
+    bbDragWrap.style.transform = '';
+    try{ bbDragWrap.releasePointerCapture?.(bbDragPointerId); }catch(_e){}
+  }
+
+  const p = bbPieces[idx];
+  const res = (!cancelled && p) ? bbResolveDrop(e.clientX, e.clientY, p.shape) : null;
+  bbSuppressClickUntil = Date.now() + 350;
+
+  if(res && res.ok){
+    bbPlaceAt(res.r, res.c);
+  } else if(!bbDragMoved && !cancelled){
+    // 沒拖動時當作點選
+    bbSelectedIdx = bbSelectedIdx===idx ? null : idx;
+  } else if(!cancelled){
+    bbVibrate(25);
+  }
+
+  bbDragIdx=null;
+  bbDragPreviewR=-1;
+  bbDragPreviewC=-1;
+  bbDragPreviewOk=false;
+  bbDragPointerId=null;
+  bbDragWrap=null;
+  bbSetBoardGlow(false,false);
+  bbDrawBoard();
+  bbDrawPieces();
+}
+
+function bbResolveDrop(x, y, shape){
+  const m = bbGetBoardMetrics();
+  if(!m || !shape) return null;
+
+  const rows = shape.length;
+  const cols = bbShapeCols(shape);
   const targetX = x;
   const targetY = y - BB_DRAG_OFFSET_Y;
-  const cells = Array.from(boardEl.querySelectorAll('.bb-cell'));
-  if(!cells.length) return null;
+  const pieceW = cols * m.cell + (cols - 1) * (m.pitchX - m.cell);
+  const pieceH = rows * m.cell + (rows - 1) * (m.pitchY - m.cell);
+
+  // 只要方塊中心靠近棋盤，就算使用者有一點點沒拖準，也讓它進入判定
+  const expanded = Math.max(m.cell * 1.35, 58);
+  const nearBoard =
+    targetX >= m.boardRect.left - pieceW * .5 - expanded &&
+    targetX <= m.boardRect.right + pieceW * .5 + expanded &&
+    targetY >= m.boardRect.top - pieceH * .5 - expanded &&
+    targetY <= m.boardRect.bottom + pieceH * .5 + expanded;
+  if(!nearBoard) return null;
+
+  const topLeftX = targetX - pieceW / 2;
+  const topLeftY = targetY - pieceH / 2;
+  const desiredC = Math.round((topLeftX - m.firstLeft) / m.pitchX);
+  const desiredR = Math.round((topLeftY - m.firstTop) / m.pitchY);
 
   let best = null;
-  let bestDist = Infinity;
-  const firstRect = cells[0].getBoundingClientRect();
-  const cellSize = firstRect.width;
-  const tolerance = cellSize * 0.78;
+  let bestScore = Infinity;
 
-  cells.forEach(cell => {
-    const rect = cell.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = targetX - cx;
-    const dy = targetY - cy;
-    const dist = Math.hypot(dx, dy);
-    if(dist < bestDist){
-      bestDist = dist;
-      best = { r:+cell.dataset.r, c:+cell.dataset.c };
+  for(let r=desiredR-BB_SNAP_RADIUS; r<=desiredR+BB_SNAP_RADIUS; r++){
+    for(let c=desiredC-BB_SNAP_RADIUS; c<=desiredC+BB_SNAP_RADIUS; c++){
+      if(!bbCanPlace(shape,r,c)) continue;
+      const score = Math.hypot(r-desiredR, c-desiredC);
+      if(score < bestScore){
+        bestScore = score;
+        best = {r,c,ok:true};
+      }
     }
-  });
+  }
 
-  return bestDist <= tolerance ? best : null;
+  if(best) return best;
+
+  // 沒有可放位置時仍顯示紅色預覽，讓使用者知道不是沒感應，是那裡不能放
+  const clampedR = Math.max(0, Math.min(BB_SIZE - rows, desiredR));
+  const clampedC = Math.max(0, Math.min(BB_SIZE - cols, desiredC));
+  return {r:clampedR, c:clampedC, ok:false};
 }
 
 function bbUpdateGhost(piece, x, y){
   const ghost = document.getElementById('bb-drag-ghost');
-  if(!ghost) return;
-  const cols = piece.shape[0].length;
-  let html = `<div style="display:grid;grid-template-columns:repeat(${cols},14px);gap:2px;background:rgba(30,10,20,.6);padding:4px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.22)">`;
-  piece.shape.forEach(row=>row.forEach(v=>{
-    html += v
-      ? `<div style="width:14px;height:14px;border-radius:3px;background:${piece.color}"></div>`
-      : `<div style="width:14px;height:14px;visibility:hidden"></div>`;
-  }));
+  if(!ghost || !piece) return;
+  const cols = bbShapeCols(piece.shape);
+  const cell = Math.max(18, Math.min(bbGetCellSize() - 6, 38));
+  const gap = 3;
+  let html = `<div style="display:grid;grid-template-columns:repeat(${cols},${cell}px);gap:${gap}px;background:rgba(30,10,20,.48);padding:5px;border-radius:12px;box-shadow:0 10px 22px rgba(0,0,0,.22)">`;
+  piece.shape.forEach(row=>{
+    for(let k=0;k<cols;k++){
+      const v = row[k] || 0;
+      html += v
+        ? `<div style="width:${cell}px;height:${cell}px;border-radius:7px;background:${piece.color};box-shadow:inset 0 2px 0 rgba(255,255,255,.35), inset 0 -3px 0 rgba(0,0,0,.22)"></div>`
+        : `<div style="width:${cell}px;height:${cell}px;visibility:hidden"></div>`;
+    }
+  });
   html += '</div>';
   ghost.innerHTML = html;
   ghost.style.display = 'block';
@@ -3704,12 +3869,15 @@ function bbUpdateGhost(piece, x, y){
 }
 
 function bbCanPlace(shape,r,c){
-  for(let dr=0;dr<shape.length;dr++)
-    for(let dc=0;dc<shape[dr].length;dc++)
+  if(!shape) return false;
+  for(let dr=0; dr<shape.length; dr++){
+    for(let dc=0; dc<shape[dr].length; dc++){
       if(shape[dr][dc]){
         const nr=r+dr, nc=c+dc;
-        if(nr>=BB_SIZE||nc>=BB_SIZE||nr<0||nc<0||bbBoard[nr][nc]) return false;
+        if(nr>=BB_SIZE || nc>=BB_SIZE || nr<0 || nc<0 || bbBoard[nr][nc]) return false;
       }
+    }
+  }
   return true;
 }
 
@@ -3718,27 +3886,25 @@ function bbPlaceAt(r,c){
   const activeIdx = bbDragIdx !== null ? bbDragIdx : bbSelectedIdx;
   if(activeIdx===null) return;
   const p = bbPieces[activeIdx];
-  if(!p||!bbCanPlace(p.shape,r,c)) return;
+  if(!p || !bbCanPlace(p.shape,r,c)){
+    bbVibrate(25);
+    return;
+  }
 
   p.shape.forEach((row,dr)=>row.forEach((v,dc)=>{
     if(v) bbBoard[r+dr][c+dc] = p.color;
-}));
+  }));
 
-if(navigator.vibrate){
-    navigator.vibrate(40);
-}
-  bbScore += p.shape.flat().filter(Boolean).length * 10;
+  bbVibrate(35);
+  bbScore += bbPieceBlocks(p.shape) * 10;
   bbPieces[activeIdx] = null;
   bbSelectedIdx = null;
 
   bbClearLines();
 
   if(bbPieces.every(p=>p===null)){
-    bbPieces = [
-      {shape:bbRandShape(),color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
-      {shape:bbRandShape(),color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
-      {shape:bbRandShape(),color:BB_COLORS[Math.floor(Math.random()*BB_COLORS.length)]},
-    ];
+    bbPieces = bbNewPieces();
+    bbScore += 30; // 全部放完小獎勵，節奏更爽
   }
 
   bbUpdateScore();
@@ -3749,30 +3915,27 @@ if(navigator.vibrate){
 
 function bbClearLines(){
   const toClearR=[], toClearC=[];
-  for(let r=0;r<BB_SIZE;r++)
+  for(let r=0;r<BB_SIZE;r++){
     if(bbBoard[r].every(v=>v)) toClearR.push(r);
-  for(let c=0;c<BB_SIZE;c++)
+  }
+  for(let c=0;c<BB_SIZE;c++){
     if(bbBoard.every(row=>row[c])) toClearC.push(c);
+  }
 
-  if(!toClearR.length&&!toClearC.length){ bbCombo=0; return; }
+  if(!toClearR.length && !toClearC.length){
+    bbCombo=0;
+    return;
+  }
 
   bbCombo++;
   const lines = toClearR.length + toClearC.length;
-  bbScore += lines * 80 * bbCombo;
+  bbScore += lines * 90 * bbCombo;
 
   toClearR.forEach(r=>{ for(let c=0;c<BB_SIZE;c++) bbBoard[r][c]=0; });
   toClearC.forEach(c=>{ for(let r=0;r<BB_SIZE;r++) bbBoard[r][c]=0; });
 
   document.getElementById('bb-combo').textContent = `x${bbCombo}`;
-  
-  if(toClearR.length || toClearC.length){
-
-    if(navigator.vibrate){
-    navigator.vibrate([80,50,80,50,120]);
-}
-
-}
-  
+  bbVibrate([70,40,90,40,120]);
 }
 
 function bbUpdateScore(){
@@ -3790,13 +3953,13 @@ function bbUpdateScore(){
 
 function bbCheckGameOver(){
   const remaining = bbPieces.filter(Boolean);
-  for(const p of remaining)
-    for(let r=0;r<BB_SIZE;r++)
-      for(let c=0;c<BB_SIZE;c++)
-        if(bbCanPlace(p.shape,r,c)) return;
+  for(const p of remaining){
+    if(bbPieceCanFit(p.shape)) return;
+  }
   bbGameOver = true;
   document.getElementById('bb-final-score').textContent = bbScore;
   document.getElementById('bb-gameover').style.display = 'flex';
+  bbVibrate([150,80,150]);
 }
 
 function bbRestart(){

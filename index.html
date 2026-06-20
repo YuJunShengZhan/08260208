@@ -2963,13 +2963,7 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 
 
 <button class="special-close"
-onclick="
-localStorage.setItem(
-'specialShownDate',
-new Date().toISOString().slice(0,10)
-);
-closeSpecial();
-">
+onclick="hideSpecialForToday()">
 今天內不再提醒
 </button>
 
@@ -3789,6 +3783,16 @@ function localDateKey(){
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
+function setDailyReminder(key){
+  localStorage.setItem(key, localDateKey());
+}
+function isDailyReminderSet(key){
+  return localStorage.getItem(key) === localDateKey();
+}
+function hideSpecialForToday(){
+  setDailyReminder('specialShownDate');
+  closeSpecial();
+}
 
 function updateHome(){
   const diff=Math.floor((today()-START)/864e5);
@@ -3828,7 +3832,7 @@ function check67DayGifReminder(){
   if(!hitDay) return;
 
   const todayStr = localDateKey();
-  if(localStorage.getItem('love67GifReminder') === todayStr) return;
+  if(isDailyReminderSet('love67GifReminder')) return;
 
   const overlay = document.createElement('div');
   overlay.dataset.reminder = 'love67';
@@ -3839,7 +3843,7 @@ function check67DayGifReminder(){
       <div style="font-family:'Noto Serif TC',serif;font-size:22px;color:var(--pink);font-weight:700;margin-bottom:12px">發現 ${hitDay} 天的小驚喜</div>
       <div style="color:var(--text-muted);font-size:14px;line-height:1.8;margin-bottom:20px">天數裡包含 67，送你一個小提示 ✨</div>
       <div style="display:flex;gap:10px">
-        <button onclick="localStorage.setItem('love67GifReminder','${todayStr}');closeReminderOverlay(this)" style="flex:1;padding:12px;border-radius:12px;border:1px solid var(--card-border);background:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;color:var(--text)">今天內不再提醒</button>
+        <button onclick="setDailyReminder('love67GifReminder');closeReminderOverlay(this)" style="flex:1;padding:12px;border-radius:12px;border:1px solid var(--card-border);background:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;color:var(--text)">今天內不再提醒</button>
         <button onclick="closeReminderOverlay(this)" style="flex:1;padding:12px;border-radius:12px;border:none;background:var(--pink);color:white;cursor:pointer;font-family:'Noto Sans TC',sans-serif">關閉</button>
       </div>
     </div>`;
@@ -3851,7 +3855,7 @@ function checkLoveDaysMilestone(days){
   if(document.querySelector('[data-reminder="love100"]')) return;
 
   const todayStr = localDateKey();
-  if(localStorage.getItem('loveDaysReminder') === todayStr) return;
+  if(isDailyReminderSet('loveDaysReminder')) return;
 
   const overlay = document.createElement('div');
   overlay.dataset.reminder = 'love100';
@@ -3862,7 +3866,7 @@ function checkLoveDaysMilestone(days){
       <div style="font-family:'Noto Serif TC',serif;font-size:22px;color:var(--pink);font-weight:700;margin-bottom:12px">我們在一起 ${days} 天了</div>
       <div style="color:var(--text-muted);font-size:14px;line-height:1.8;margin-bottom:20px">剛好是 100 的倍數，值得紀念一下 💕</div>
       <div style="display:flex;gap:10px">
-        <button onclick="localStorage.setItem('loveDaysReminder','${todayStr}');closeReminderOverlay(this)" style="flex:1;padding:12px;border-radius:12px;border:1px solid var(--card-border);background:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;color:var(--text)">今天內不再提醒</button>
+        <button onclick="setDailyReminder('loveDaysReminder');closeReminderOverlay(this)" style="flex:1;padding:12px;border-radius:12px;border:1px solid var(--card-border);background:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;color:var(--text)">今天內不再提醒</button>
         <button onclick="closeReminderOverlay(this)" style="flex:1;padding:12px;border-radius:12px;border:none;background:var(--pink);color:white;cursor:pointer;font-family:'Noto Sans TC',sans-serif">關閉</button>
       </div>
     </div>`;
@@ -3985,7 +3989,7 @@ function markLoveSurpriseSeen(key){
 }
 
 function closeLoveSurprise(btn, key, hideToday=false){
-  if(hideToday) localStorage.setItem('loveSurpriseHidden', localDateKey());
+  if(hideToday) setDailyReminder('loveSurpriseHidden');
   else if(key) markLoveSurpriseSeen(key);
   btn.closest('.special-overlay')?.remove();
   if(!hideToday) setTimeout(renderDueLoveSurprise, 150);
@@ -4002,7 +4006,7 @@ function getPendingLoveSurprises(){
 
 function showLoveSurprise(item){
   if(document.querySelector('[data-surprise-overlay="love"]')) return;
-  if(localStorage.getItem('loveSurpriseHidden') === localDateKey()) return;
+  if(isDailyReminderSet('loveSurpriseHidden')) return;
 
   const safeText = escapeHtml(item.text || '');
   const safePhoto = item.photo || '';
@@ -4025,7 +4029,7 @@ function showLoveSurprise(item){
 }
 
 function renderDueLoveSurprise(){
-  if(localStorage.getItem('loveSurpriseHidden') === localDateKey()) return;
+  if(isDailyReminderSet('loveSurpriseHidden')) return;
   const now = new Date();
   const item = getPendingLoveSurprises().find(v => new Date(v.time) <= now);
   if(item) showLoveSurprise(item);
@@ -4034,7 +4038,7 @@ function renderDueLoveSurprise(){
 function scheduleLoveSurpriseCheck(){
   if(loveSurpriseTimer) clearTimeout(loveSurpriseTimer);
 
-  if(localStorage.getItem('loveSurpriseHidden') === localDateKey()){
+  if(isDailyReminderSet('loveSurpriseHidden')){
     const now = new Date();
     const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
     loveSurpriseTimer = setTimeout(()=>{ renderDueLoveSurprise(); scheduleLoveSurpriseCheck(); }, Math.max(1000, tomorrow-now+1000));
@@ -4064,13 +4068,9 @@ function checkLoveSurprise(){
 // ── Special Day ──
 function checkSpecialDay(){
 
-  const todayStr = new Date().toISOString().slice(0,10);
-
   // 每台裝置獨立紀錄
-  const saved = localStorage.getItem('specialShownDate');
-
   // 今天已選擇不提醒
-  if(saved === todayStr) return;
+  if(isDailyReminderSet('specialShownDate')) return;
 
 
   const t=today();

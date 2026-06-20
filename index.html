@@ -1288,7 +1288,7 @@ background:var(--pink-light);margin-left:8px;
   border-radius:26px;
   overflow:hidden;
   border:1px solid rgba(232,99,122,.14);
-  background:linear-gradient(180deg,#fff6f8 0%,#ffe3ea 100%);
+  background:linear-gradient(180deg,#f7f7f7 0%,#ededed 100%);
   box-shadow:0 18px 34px rgba(110,33,52,.16);
 }
 .rg-stage::before{
@@ -1306,7 +1306,7 @@ background:var(--pink-light);margin-left:8px;
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg,rgba(255,248,250,.66) 0%,rgba(255,227,234,.72) 100%);
+  background:linear-gradient(180deg,rgba(255,255,255,.58) 0%,rgba(255,255,255,.22) 100%);
 }
 .rg-lanes,
 .rg-notes,
@@ -1321,9 +1321,9 @@ background:var(--pink-light);margin-left:8px;
 }
 .rg-lane{
   border-radius:20px;
-  background:rgba(255,255,255,.28);
-  border:1px solid rgba(255,255,255,.24);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+  background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(0,0,0,.04));
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
 }
 .rg-notes{
   --gap:6px;
@@ -1336,14 +1336,14 @@ background:var(--pink-light);margin-left:8px;
   left:calc(var(--lane) * (var(--lane-size) + var(--gap)));
   width:var(--lane-size);
   height:22px;
-  border-radius:999px;
+  border-radius:12px;
   transform:translateY(-50%);
   box-shadow:0 10px 18px rgba(117,35,54,.22), inset 0 1px 0 rgba(255,255,255,.36);
 }
-.rg-note.l0{background:linear-gradient(135deg,#ff8ba7,#f06292);}
-.rg-note.l1{background:linear-gradient(135deg,#ffb787,#ff8a65);}
-.rg-note.l2{background:linear-gradient(135deg,#8ec5ff,#5b8dff);}
-.rg-note.l3{background:linear-gradient(135deg,#9be7c4,#4dbb95);}
+.rg-note.l0{background:linear-gradient(180deg,#2b2b2b,#0b0b0b);}
+.rg-note.l1{background:linear-gradient(180deg,#222,#090909);}
+.rg-note.l2{background:linear-gradient(180deg,#303030,#101010);}
+.rg-note.l3{background:linear-gradient(180deg,#262626,#070707);}
 .rg-hit-line{
   left:14px;
   right:14px;
@@ -1976,10 +1976,10 @@ body.rg-mode{
   cursor:wait;
   filter:saturate(.75);
 }
-#gs-4 .rg-note.l0{background:linear-gradient(135deg,#ff7194,#e83f72);}
-#gs-4 .rg-note.l1{background:linear-gradient(135deg,#ffb36d,#ff7a42);}
-#gs-4 .rg-note.l2{background:linear-gradient(135deg,#7db9ff,#4f7cff);}
-#gs-4 .rg-note.l3{background:linear-gradient(135deg,#87e7be,#2eb789);}
+#gs-4 .rg-note.l0{background:linear-gradient(180deg,#2b2b2b,#0b0b0b);}
+#gs-4 .rg-note.l1{background:linear-gradient(180deg,#222,#090909);}
+#gs-4 .rg-note.l2{background:linear-gradient(180deg,#303030,#101010);}
+#gs-4 .rg-note.l3{background:linear-gradient(180deg,#262626,#070707);}
 [data-theme="dark"] #gs-4 .rg-shell{
   background:linear-gradient(180deg,#301922 0%,#211118 100%);
   border-color:rgba(232,99,122,.22);
@@ -2013,35 +2013,43 @@ body.rg-mode{
     padding-right:10px;
   }
   #gs-4 .card{
-    padding:10px;
+    padding:8px;
     border-radius:20px;
   }
   #gs-4 .rg-shell{
-    padding:10px;
+    padding:8px;
     border-radius:22px;
   }
   #gs-4 .rg-topbar{gap:6px;}
   #gs-4 .rg-song-row{margin-top:8px;}
   #gs-4 .rg-stage{
-    height:clamp(292px,48dvh,380px);
+    width:min(100%,360px);
+    height:clamp(240px,42dvh,320px);
     border-radius:24px;
   }
   #gs-4 .rg-lanes,
   #gs-4 .rg-notes{
-    inset:10px 10px 76px;
+    inset:8px 8px 64px;
     gap:6px;
   }
   #gs-4 .rg-notes{--gap:6px;}
+  #gs-4 .rg-note{
+    height:18px;
+    border-radius:10px;
+  }
   #gs-4 .rg-hit-line{
-    left:10px;
-    right:10px;
-    bottom:66px;
+    left:8px;
+    right:8px;
+    bottom:54px;
   }
   #gs-4 .rg-judgement{
-    bottom:96px;
+    bottom:74px;
+    padding:6px 12px;
+    font-size:12px;
   }
   #gs-4 .rg-pads{
-    bottom:calc(58px + env(safe-area-inset-bottom));
+    margin-top:8px;
+    gap:6px;
   }
   #gs-4 .rg-actions .pz-btn{
     flex:1 1 calc(50% - 4px);
@@ -2049,7 +2057,7 @@ body.rg-mode{
 }
 @media (max-height:680px) and (max-width:520px){
   #gs-4 .rg-stage{
-    height:clamp(260px,43dvh,330px);
+    height:clamp(220px,38dvh,300px);
   }
   #gs-4 .rg-summary{
     display:none;
@@ -8886,6 +8894,42 @@ function rgClamp(value, min, max){
   return Math.max(min, Math.min(max, value));
 }
 
+function rgMedian(values){
+  if(!values.length) return 0;
+  const sorted = values.slice().sort((a,b)=>a-b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+function rgEstimateBeatMs(notes, durationMs){
+  const times = (notes || []).map(n => Number(n.t)).filter(n => Number.isFinite(n)).sort((a,b)=>a-b);
+  const gaps = [];
+  for(let i=1;i<times.length;i++){
+    const diff = times[i] - times[i-1];
+    if(diff >= 220 && diff <= 900) gaps.push(diff);
+  }
+  if(gaps.length >= 4){
+    return rgClamp(rgMedian(gaps), 280, 760);
+  }
+  const targetCount = rgClamp(Math.round(durationMs / 620), 28, 72);
+  return rgClamp(durationMs / targetCount, 300, 760);
+}
+
+function rgSnapChartToBeat(chart, durationMs){
+  const cleaned = rgNormalizeChart(chart, durationMs);
+  if(!cleaned.length) return cleaned;
+  const beatMs = rgEstimateBeatMs(cleaned, durationMs);
+  const anchor = rgClamp(cleaned[0].t - beatMs * 0.35, 950, Math.max(950, durationMs - 5000));
+  let lastT = -1e9;
+  const snapped = cleaned.map((note, idx) => {
+    let t = idx === 0 ? anchor : anchor + Math.round((note.t - anchor) / beatMs) * beatMs;
+    while(t - lastT < 210) t += beatMs;
+    lastT = t;
+    return { ...note, t: rgClamp(Math.round(t), 950, Math.max(950, durationMs - 1200)) };
+  });
+  return rgNormalizeChart(snapped, durationMs);
+}
+
 function rgDecodeAudio(ctx, arrayBuffer){
   return new Promise((resolve, reject) => {
     try{
@@ -8930,7 +8974,7 @@ function rgBuildFallbackChart(song, durationSec){
   const beat = 60000 / bpm;
   const endAt = Math.max(9000, durationMs - 1600);
   const chart = [];
-  let t = 1300 + Math.floor(rand() * 320);
+  let t = 1200 + Math.floor(rand() * 220);
   let lastLane = -1;
   let phrase = 0;
 
@@ -8949,7 +8993,7 @@ function rgBuildFallbackChart(song, durationSec){
     t += beat * (spice < .12 ? 1.5 : spice > .9 ? .75 : 1);
     phrase++;
   }
-  return rgNormalizeChart(chart, durationMs);
+  return rgSnapChartToBeat(chart, durationMs);
 }
 
 function rgBuildChartFromAudio(buffer){
@@ -9042,7 +9086,7 @@ function rgBuildChartFromAudio(buffer){
     const intensity = rgClamp(.72 + (p90 ? c.score / (p90 * 2.4) : .16), .66, 1.16);
     return { t:c.time, lane, intensity };
   });
-  return rgNormalizeChart(chart, durationMs);
+  return rgSnapChartToBeat(chart, durationMs);
 }
 
 async function rgAnalyzeSong(song){
@@ -9279,7 +9323,7 @@ async function rgPrepareChart(){
     base = rgBuildFallbackChart(song, duration);
     rgChartMode = 'fallback';
   }
-  rgChart = rgNormalizeChart(base, durationMs).map(note => ({ ...note, judged:false, hit:false }));
+  rgChart = rgSnapChartToBeat(base, durationMs).map(note => ({ ...note, judged:false, hit:false }));
   rgSetStartDisabled(false, '開始');
   const modeText = rgChartMode === 'auto' ? '旋律譜' : '備用節奏譜';
   rgSetStateLine(`已產生 ${rgChart.length} 個拍點（${modeText}）。`);

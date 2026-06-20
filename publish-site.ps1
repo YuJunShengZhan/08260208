@@ -14,12 +14,26 @@ if ([string]::IsNullOrWhiteSpace($SourceIndex)) {
     throw "OneDrive path not found."
   }
 
-  $found = Get-ChildItem -Path $oneDrive -Filter "index.html" -File -Recurse -ErrorAction SilentlyContinue |
-    Sort-Object @{ Expression = { $_.FullName.Length }; Descending = $true } |
-    Select-Object -First 1
+  $preferredCandidates = @(
+    (Join-Path $oneDrive "桌面\網站\index.html"),
+    (Join-Path $oneDrive "桌面\index.html")
+  )
 
-  if ($found) {
-    $SourceIndex = $found.FullName
+  foreach ($candidate in $preferredCandidates) {
+    if (Test-Path -LiteralPath $candidate) {
+      $SourceIndex = $candidate
+      break
+    }
+  }
+
+  if ([string]::IsNullOrWhiteSpace($SourceIndex)) {
+    $found = Get-ChildItem -Path $oneDrive -Filter "index.html" -File -Recurse -ErrorAction SilentlyContinue |
+      Sort-Object @{ Expression = { $_.FullName.Length }; Descending = $true } |
+      Select-Object -First 1
+
+    if ($found) {
+      $SourceIndex = $found.FullName
+    }
   }
 }
 

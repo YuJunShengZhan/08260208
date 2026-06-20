@@ -8760,7 +8760,7 @@ const SONGS=[
   {file:'music20.mp3',name:'偷偷的'},
 ];
 const RG_SONGS=[
-  {file:'game1.mp3',name:'Game 1 鋼琴版'}
+  {file:'game1.mp3',name:'跳樓機 鋼琴版'}
 ];
 for(let i=SONGS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[SONGS[i],SONGS[j]]=[SONGS[j],SONGS[i]];}
 let songIdx=Math.floor(Math.random()*SONGS.length);
@@ -8848,8 +8848,8 @@ function prevSong(){
 loadSong(songIdx);
 
 const RG_LANES = 4;
-const RG_TRAVEL_MS = 2050;
-const RG_JUDGE_WINDOWS = { perfect: 110, great: 185, good: 285, miss: 390 };
+const RG_TRAVEL_MS = 720;
+const RG_JUDGE_WINDOWS = { perfect: 145, great: 250, good: 390, miss: 520 };
 const RG_NOTE_SYMBOLS = ['♥','★','◆','●'];
 const RG_ANALYSIS_CACHE = {};
 let rgAudio = null;
@@ -8961,8 +8961,10 @@ function rgNormalizeChart(chart, durationMs){
 
   for(const note of sorted){
     const last = cleaned[cleaned.length - 1];
-    if(last && Math.abs(note.t - last.t) < 150){
-      if(note.intensity > last.intensity){ cleaned[cleaned.length - 1] = note; }
+    if(last && Math.abs(note.t - last.t) < 105){
+      if((note.holdMs && !last.holdMs) || note.intensity > last.intensity){
+        cleaned[cleaned.length - 1] = note;
+      }
       continue;
     }
     cleaned.push(note);
@@ -9292,11 +9294,11 @@ function rgBuildChartFromAudioBeatGrid(buffer){
 }
 
 async function rgAnalyzeSong(song){
-  const key = `piano-beat-grid-v3:${song?.file || song?.name || 'song'}`;
+  const key = `piano-beat-grid-v4:${song?.file || song?.name || 'song'}`;
   if(RG_ANALYSIS_CACHE[key]) return RG_ANALYSIS_CACHE[key];
   if(song?.file === 'game1.mp3'){
     try{
-      const chartResponse = await fetch('game1-chart.json', { cache:'force-cache' });
+      const chartResponse = await fetch('game1-chart.json?v=2', { cache:'no-cache' });
       if(chartResponse.ok){
         const savedChart = await chartResponse.json();
         if(Array.isArray(savedChart?.notes) && savedChart.notes.length >= 16){

@@ -1,4 +1,4 @@
-# CPBL Guess Game Deploy
+﻿# CPBL Guess Game Deploy
 
 This version is set up for Git + Vercel deployment.
 
@@ -8,11 +8,9 @@ Files:
 - `vercel.json`: small Vercel config
 
 Deploy steps:
-1. Create a new GitHub repo
-2. Put these files in the repo root
-3. Push to GitHub
-4. Import the repo into Vercel
-5. Deploy
+1. Push these files to GitHub
+2. Import the repo into Vercel
+3. Deploy
 
 How it works:
 - On Vercel, the page calls `/api/cpbl-schedule`

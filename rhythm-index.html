@@ -1534,8 +1534,42 @@ background:var(--pink-light);margin-left:8px;
   color:var(--text-muted);
 }
 .collage-picker-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-auto-flow:row;
+  align-items:start;
   scrollbar-width:thin;
   scrollbar-color:rgba(201,75,100,.62) rgba(232,99,122,.12);
+}
+.collage-picker-item{
+  position:relative;
+  width:100%;
+  min-width:0;
+  aspect-ratio:1 / 1;
+  overflow:hidden;
+  contain:layout paint;
+}
+.collage-picker-item > img{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:cover!important;
+  object-position:center!important;
+}
+@media (max-width:520px){
+  .collage-picker-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-auto-rows:clamp(82px,25vw,108px)!important;
+    gap:8px!important;
+  }
+  .collage-picker-item{
+    height:clamp(82px,25vw,108px)!important;
+    aspect-ratio:auto!important;
+  }
 }
 .collage-picker-grid::-webkit-scrollbar{
   width:10px;
@@ -4975,16 +5009,16 @@ function openCollagePicker(photos){
       <div id="collage-pick-count" style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
         已選 0 張
       </div>
-      <div id="collage-picker-grid" class="collage-picker-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:360px;max-height:min(46vh,360px);max-height:min(46dvh,360px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 4px 2px 2px"></div>
+      <div id="collage-picker-grid" class="collage-picker-grid" style="gap:8px;max-height:360px;max-height:min(46vh,360px);max-height:min(46dvh,360px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 4px 2px 2px"></div>
       <button onclick="confirmCollagePicker()" style="width:100%;margin-top:12px;padding:12px;background:var(--pink);color:white;border:none;border-radius:12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif">
         使用這些照片生成 💕
       </button>
     </div>`;
 
   document.getElementById('collage-picker-grid').innerHTML = photos.map((p,i) => `
-    <div onclick="toggleCollagePhoto(${i})" id="collage-pick-${i}"
-      style="aspect-ratio:1;border-radius:10px;overflow:hidden;border:3px solid transparent;cursor:pointer;position:relative">
-      <img src="${p.src}" style="width:100%;height:100%;object-fit:cover">
+    <div onclick="toggleCollagePhoto(${i})" id="collage-pick-${i}" class="collage-picker-item"
+      style="border-radius:10px;border:3px solid transparent;cursor:pointer">
+      <img src="${p.src}" alt="回憶照片 ${i+1}" loading="lazy" draggable="false">
       <div id="collage-pick-num-${i}" style="display:none;position:absolute;top:4px;left:4px;background:var(--pink);color:white;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center"></div>
     </div>`).join('');
 

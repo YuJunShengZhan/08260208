@@ -3216,7 +3216,7 @@ closeSpecial();
       <button type="button" class="game-menu-btn" onclick="openGame(2,this)">🟦 方塊遊戲</button>
       <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🧩 回憶拼圖</button>
       <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
-      <button type="button" class="game-menu-btn" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
+      <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
     </div>
   </div>
 
@@ -3538,9 +3538,8 @@ closeSpecial();
       <div class="cpblg-hero"><div class="cpblg-title">今天哪隊會贏？</div><div class="cpblg-sub">抓 CPBL 官方賽程／首頁資料，開賽後會自動鎖住不能再猜。純小遊戲紀錄，沒有下注、賠率或金錢功能。</div></div>
       <div class="cpblg-row"><button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-sheng" onclick="cpblSelectPlayer('聖展')">我是聖展</button><button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-yujun" onclick="cpblSelectPlayer('予君')">我是予君</button></div>
       <div class="cpblg-row"><div class="cpblg-stat"><div class="cpblg-small">聖展勝率</div><div class="cpblg-rate" id="cpblg-rate-sheng">0%</div><div class="cpblg-small" id="cpblg-record-sheng">0 / 0</div></div><div class="cpblg-stat"><div class="cpblg-small">予君勝率</div><div class="cpblg-rate" id="cpblg-rate-yujun">0%</div><div class="cpblg-small" id="cpblg-record-yujun">0 / 0</div></div></div>
-      <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleHistory()">歷史猜測紀錄</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleManual(true)">手動輸入賽程</button><button type="button" class="cpblg-btn secondary" onclick="cpblRunSettlementDemo()">測試結算</button><button type="button" class="cpblg-btn" onclick="cpblRefreshGames(true)">重新抓官網</button></div></div>
+      <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="cpblg-btn secondary" onclick="cpblOpenHistoryPage()">歷史猜測紀錄</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleManual(true)">手動輸入賽程</button><button type="button" class="cpblg-btn secondary" onclick="cpblRunSettlementDemo()">測試結算</button><button type="button" class="cpblg-btn" onclick="cpblRefreshGames(true)">重新抓官網</button></div></div>
       <div class="cpblg-status" id="cpblg-status">進入頁面後會自動載入。</div><div class="cpblg-games" id="cpblg-games"></div>
-      <div class="cpblg-history" id="cpblg-history"><div class="cpblg-small" style="font-weight:700;color:var(--rose);margin-bottom:8px">歷史猜測紀錄</div><div id="cpblg-history-list"><div class="cpblg-history-empty">目前還沒有已結算的比賽紀錄。</div></div></div>
       <div class="cpblg-manual" id="cpblg-manual">
         <div class="cpblg-small" style="font-weight:700;color:var(--rose);margin-bottom:6px">手動備援輸入</div>
         <div class="cpblg-manual-hint">如果瀏覽器或代理暫時擋住官網資料，可以貼上賽程。格式範例：<br>中信兄弟 vs 統一7-ELEVEn獅 16:05 亞太主</div>
@@ -3549,6 +3548,24 @@ closeSpecial();
           <button type="button" class="cpblg-btn" onclick="cpblApplyManualGames()">套用手動賽程</button>
           <button type="button" class="cpblg-btn secondary" onclick="cpblToggleManual(false)">收起</button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="game-section" id="gs-5-history">
+  <div class="card">
+    <div style="margin-bottom:14px">
+      <button type="button" class="game-back-btn" onclick="cpblCloseHistoryPage()">‹ 回到 ⚾ 中職猜勝負</button>
+    </div>
+    <div class="card-title">歷史猜測紀錄</div>
+    <div class="cpblg-shell">
+      <div class="cpblg-hero">
+        <div class="cpblg-title">月曆猜測紀錄</div>
+        <div class="cpblg-sub">月曆上會直接看到聖展和予君猜對或猜錯，點日期再看那天每一場的詳細比分。</div>
+      </div>
+      <div id="cpblg-history-page-list">
+        <div class="cpblg-history-empty">目前還沒有已結算的比賽紀錄。</div>
       </div>
     </div>
   </div>
@@ -5173,6 +5190,28 @@ function openGame(i,btn){
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
 }
+function showGameSectionById(id, options={}){
+  const { showBackRow=true } = options;
+  document.getElementById('game-hub')?.classList.add('hidden');
+  document.getElementById('game-back-row')?.classList.toggle('hidden', !showBackRow);
+  document.querySelectorAll('.game-section').forEach(section=>{
+    section.classList.toggle('active', section.id===id);
+  });
+  document.querySelectorAll('.game-tab,.game-menu-btn').forEach(btn=>btn.classList.remove('active'));
+  document.getElementById('game-menu-cpbl')?.classList.add('active');
+  document.body.classList.add('game-mode');
+  document.body.classList.remove('pz-mode','rg-mode');
+  if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  const target=document.getElementById('page-game');
+  if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
+}
+function cpblOpenHistoryPage(){
+  cpblRenderHistory();
+  showGameSectionById('gs-5-history', { showBackRow:false });
+}
+function cpblCloseHistoryPage(){
+  showGameSectionById('gs-5', { showBackRow:true });
+}
 
 function switchGame(i,btn){
   openGame(i,btn);
@@ -5686,11 +5725,8 @@ function cpblTeamCard(team, side){
   return `<div class="cpblg-team"><span class="cpblg-side">${cpblEscape(side)}</span>${cpblTeamInline(team)}</div>`;
 }
 function cpblToggleHistory(force){
-  const box=document.getElementById('cpblg-history');
-  if(!box) return;
-  const open = typeof force==='boolean' ? force : !box.classList.contains('open');
-  box.classList.toggle('open', open);
-  if(open) cpblRenderHistory();
+  if(force===false) return;
+  cpblOpenHistoryPage();
 }
 let cpblgHistoryMonth = '';
 let cpblgHistorySelectedDate = '';
@@ -5769,7 +5805,7 @@ function cpblRenderHistoryDetail(selectedDate, grouped){
   return `<div class="cpblg-history-detail"><div class="cpblg-history-datebar"><strong>${cpblFormatDateLabel(selectedDate)}</strong><span class="cpblg-small">點其他日期可切換</span></div><div class="cpblg-history-daylist">${cards}</div></div>`;
 }
 function cpblRenderHistory(){
-  const wrap=document.getElementById('cpblg-history-list');
+  const wrap=document.getElementById('cpblg-history-page-list');
   if(!wrap) return;
   const rows = Array.isArray(cpblgData.history) ? cpblgData.history.slice().sort((a,b)=>(b.resolvedAt||0)-(a.resolvedAt||0)) : [];
   if(!rows.length){
@@ -6319,7 +6355,7 @@ function cpblRunSettlementDemo(){
   cpblRenderStats();
   cpblRenderGames();
   cpblRenderHistory();
-  cpblToggleHistory(true);
+  cpblOpenHistoryPage();
   cpblSetStatus('已套用測試結算結果，可直接查看猜對猜錯、比分和歷史紀錄。');
 }
 

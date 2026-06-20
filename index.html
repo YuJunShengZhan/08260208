@@ -1352,7 +1352,7 @@ background:var(--pink-light);margin-left:8px;
   position:absolute;
   left:calc(var(--lane) * (var(--lane-size) + var(--gap)));
   width:var(--lane-size);
-  height:26px;
+  height:30px;
   border-radius:13px;
   transform:translateY(-50%);
   box-shadow:0 10px 18px rgba(117,35,54,.22), inset 0 1px 0 rgba(255,255,255,.36);
@@ -1363,11 +1363,11 @@ background:var(--pink-light);margin-left:8px;
 .rg-note.l3{background:linear-gradient(180deg,#262626,#070707);}
 .rg-note.hold{
   --head-half:18px;
-  min-height:44px;
+  min-height:48px;
   align-items:flex-end !important;
   padding-bottom:5px;
   border-radius:16px !important;
-  transform:translateY(calc(-100% + var(--head-half))) scale(var(--note-scale,1)) !important;
+  transform:translateY(calc(-100% + var(--head-half))) scale(var(--note-scale-x,1), var(--note-scale-y,1)) !important;
   box-sizing:border-box;
 }
 .rg-note.hold::after{
@@ -1930,16 +1930,16 @@ body.rg-mode #gs-4 *{
   inset:12px 12px 64px;
 }
 #gs-4 .rg-note{
-  height:clamp(36px,9.6vw,48px);
+  height:clamp(42px,10.4vw,56px);
   border-radius:999px;
   display:flex;
   align-items:center;
   justify-content:center;
   color:#fff;
-  font-size:clamp(17px,5vw,22px);
+  font-size:clamp(18px,5.4vw,24px);
   font-weight:800;
   text-shadow:0 1px 3px rgba(0,0,0,.25);
-  transform:translateY(-50%) scale(var(--note-scale,1));
+  transform:translateY(-50%) scale(var(--note-scale-x,1), var(--note-scale-y,1));
   box-shadow:0 12px 20px rgba(117,35,54,.25), inset 0 1.5px 0 rgba(255,255,255,.42), inset 0 -4px 0 rgba(0,0,0,.16);
   border:1px solid rgba(255,255,255,.28);
 }
@@ -2093,15 +2093,15 @@ body.rg-mode #gs-4 *{
   }
   #gs-4 .rg-notes{--gap:6px;}
   #gs-4 .rg-note{
-    height:22px;
-    border-radius:10px;
+    height:26px;
+    border-radius:12px;
     box-shadow:none;
   }
-  #gs-4 .rg-note.hold{
-    --head-half:11px;
-    min-height:34px;
-    padding-bottom:2px;
-  }
+#gs-4 .rg-note.hold{
+  --head-half:11px;
+  min-height:40px;
+  padding-bottom:2px;
+}
   #gs-4 .rg-judgement{
     bottom:72px;
     padding:6px 12px;
@@ -8940,18 +8940,18 @@ const SONGS=[
 ];
 const RG_SONGS=[
   {file:'game1.mp3',name:'跳樓機 鋼琴版'},
-  {file:'game2.mp3',name:'海嶼你'},
-  {file:'game3.mp3',name:'友誼長存'},
-  {file:'game4.mp3',name:'離開我的依賴'},
-  {file:'game5.mp3',name:'太陽與地球'},
-  {file:'game6.mp3',name:'逆光 Against The Light'},
-  {file:'game7.mp3',name:'我知道'},
-  {file:'game8.mp3',name:'反方向的鐘'},
-  {file:'game9.mp3',name:'再見的時候'},
-  {file:'game10.mp3',name:'幸福在歌唱'},
-  {file:'game11.mp3',name:'Enchanted'},
-  {file:'game12.mp3',name:'Zoo'},
-  {file:'game13.mp3',name:'專屬天使'}
+  {file:'game2.mp3',name:'海嶼你 鋼琴版'},
+  {file:'game3.mp3',name:'友誼長存 鋼琴版'},
+  {file:'game4.mp3',name:'離開我的依賴 鋼琴版'},
+  {file:'game5.mp3',name:'太陽與地球 鋼琴版'},
+  {file:'game6.mp3',name:'逆光 Against The Light 鋼琴版'},
+  {file:'game7.mp3',name:'我知道 鋼琴版'},
+  {file:'game8.mp3',name:'反方向的鐘 鋼琴版'},
+  {file:'game9.mp3',name:'再見的時候 鋼琴版'},
+  {file:'game10.mp3',name:'幸福在歌唱 鋼琴版'},
+  {file:'game11.mp3',name:'Enchanted 鋼琴版'},
+  {file:'game12.mp3',name:'Zoo 鋼琴版'},
+  {file:'game13.mp3',name:'專屬天使 鋼琴版'}
 ];
 for(let i=SONGS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[SONGS[i],SONGS[j]]=[SONGS[j],SONGS[i]];}
 let songIdx=Math.floor(Math.random()*SONGS.length);
@@ -9897,13 +9897,14 @@ function rgRenderNotes(now){
     const top = note.holdMs
       ? rgClamp(Math.min(progress * targetTop, targetTop), -12, targetTop)
       : rgClamp(progress * targetTop, -12, 112);
-    const scale = rgClamp(.96 + (note.intensity || .78) * .16, 1.02, 1.18);
+    const scaleX = rgClamp(1.08 + (note.intensity || .78) * .18, 1.12, 1.32);
+    const scaleY = rgClamp(1.02 + (note.intensity || .78) * .08, 1.04, 1.14);
     const symbol = RG_NOTE_SYMBOLS[note.lane] || '♪';
     const remainingHold = note.holdMs ? Math.max(0, note.holdMs - Math.max(0, now - note.t)) : 0;
     const holdHeight = note.holdMs ? Math.max(38, remainingHold / RG_TRAVEL_MS * box.clientHeight + 24) : 0;
     const holdClass = note.holdMs ? ' hold' : '';
     const holdStyle = note.holdMs ? `height:${holdHeight}px;` : '';
-    return `<div class="rg-note l${note.lane}${holdClass}" style="--lane:${note.lane};top:${top}%;--note-scale:${scale};${holdStyle}">${symbol}</div>`;
+    return `<div class="rg-note l${note.lane}${holdClass}" style="--lane:${note.lane};top:${top}%;--note-scale-x:${scaleX};--note-scale-y:${scaleY};${holdStyle}">${symbol}</div>`;
   }).join('');
 }
 

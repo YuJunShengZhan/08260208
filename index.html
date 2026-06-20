@@ -3064,6 +3064,46 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 [data-theme="dark"] .cpblg-player-select{background:rgba(58,33,42,.72);border-color:rgba(232,99,122,.18)}
 @media(max-width:520px){.cpblg-shell{padding:13px}.cpblg-row{gap:8px}.cpblg-match{gap:6px}.cpblg-team{font-size:13px}.cpblg-pickrow{grid-template-columns:1fr}}
 
+/* Guess song game */
+.gsg-shell{display:flex;flex-direction:column;gap:12px;max-width:760px;margin:0 auto}
+.gsg-hero,.gsg-panel,.gsg-result{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
+.gsg-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--pink);margin-bottom:4px;line-height:1.5}
+.gsg-sub,.gsg-current,.gsg-feedback,.gsg-progress-text,.gsg-result-msg{font-size:13px;line-height:1.7;color:var(--text-muted)}
+.gsg-row{display:grid;gap:8px}
+.gsg-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.gsg-stat{background:var(--pink-light);border-radius:14px;padding:10px 8px;text-align:center}
+.gsg-small{font-size:11px;color:var(--text-muted);margin-bottom:4px}
+.gsg-big{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--rose)}
+.gsg-panel{display:flex;flex-direction:column;gap:12px}
+.gsg-progress-wrap{display:flex;flex-direction:column;gap:8px}
+.gsg-progress-bar{height:8px;border-radius:999px;background:rgba(232,99,122,.12);overflow:hidden}
+.gsg-progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--pink),#ff9db0);transition:width .28s ease}
+.gsg-cover{width:92px;height:92px;border-radius:26px;margin:0 auto;background:linear-gradient(180deg,#fff,#fce4ea);border:1px solid rgba(232,99,122,.14);display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 12px 30px rgba(232,99,122,.12)}
+.gsg-current{text-align:center;color:var(--text);font-weight:600}
+.gsg-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gsg-btn{min-height:42px;border-radius:12px;border:1px solid rgba(232,99,122,.16);background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:10px 12px;cursor:pointer;transition:.2s ease}
+.gsg-btn:hover,.gsg-btn:focus-visible{transform:translateY(-1px);border-color:var(--pink);box-shadow:0 8px 18px rgba(232,99,122,.12)}
+.gsg-btn.primary{background:var(--pink);color:#fff;border-color:var(--pink)}
+.gsg-btn.secondary{background:var(--pink-light)}
+.gsg-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+.gsg-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gsg-option{min-height:54px;border-radius:14px;border:1.5px solid rgba(232,99,122,.18);background:var(--white);color:var(--text);font-size:13px;line-height:1.5;padding:10px 12px;cursor:pointer;transition:.18s ease;text-align:left}
+.gsg-option:hover,.gsg-option:focus-visible{border-color:var(--pink);background:var(--pink-light)}
+.gsg-option.correct{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+.gsg-option.wrong{background:#fff0f3;border-color:var(--pink);color:var(--rose)}
+.gsg-feedback{min-height:24px;text-align:center;font-weight:600;color:var(--rose)}
+.gsg-result{display:none;text-align:center}
+.gsg-result.show{display:block}
+.gsg-result-emoji{font-size:54px;margin-bottom:6px}
+.gsg-result-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:6px}
+.gsg-result-score{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:var(--rose);margin-bottom:6px}
+[data-theme="dark"] .gsg-hero,[data-theme="dark"] .gsg-panel,[data-theme="dark"] .gsg-result{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}
+[data-theme="dark"] .gsg-stat{background:#3a1f28}
+[data-theme="dark"] .gsg-btn{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
+[data-theme="dark"] .gsg-btn.secondary{background:#3a1f28;color:#ffd9e2}
+[data-theme="dark"] .gsg-option{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
+@media(max-width:520px){.gsg-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.gsg-controls,.gsg-options{grid-template-columns:1fr}}
+
 .cpblg-source-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.cpblg-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 9px;background:var(--pink-light);color:var(--rose);font-size:11px}.cpblg-pickrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.cpblg-pick{background:var(--white);color:var(--text);border:1.5px solid rgba(232,99,122,.16)}.cpblg-pick.correct{background:#e8f5e9!important;border-color:#4caf50!important;color:#2e7d32!important}.cpblg-pick.wrong{background:#fff0f3!important;border-color:var(--pink)!important;color:var(--rose)!important}.cpblg-manual{display:none;margin-top:12px;background:var(--pink-light);border-radius:16px;padding:12px}.cpblg-manual.open{display:block}.cpblg-manual textarea{width:100%;min-height:88px;border:1px solid var(--card-border);border-radius:12px;background:var(--white);color:var(--text);padding:10px;font-family:'Noto Sans TC',sans-serif;resize:vertical}.cpblg-manual-hint{font-size:11px;color:var(--text-muted);line-height:1.7;margin:6px 0 10px}.cpblg-team-head{display:flex;align-items:center;justify-content:center;gap:8px}.cpblg-logo{width:34px;height:34px;border-radius:12px;overflow:hidden;flex:0 0 34px;box-shadow:0 6px 14px rgba(0,0,0,.12);background:#fff}.cpblg-logo img{width:100%;height:100%;display:block;object-fit:cover}.cpblg-team-name{line-height:1.35}.cpblg-pick .cpblg-team-head{justify-content:center}.cpblg-pick .cpblg-logo{width:28px;height:28px;flex-basis:28px}.cpblg-history{display:none;margin-top:12px;background:rgba(255,255,255,.82);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-history.open{display:block}.cpblg-history-list{display:flex;flex-direction:column;gap:10px}.cpblg-history-card{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:16px;padding:12px}.cpblg-history-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.cpblg-history-date{font-size:12px;color:var(--text-muted)}.cpblg-history-result{font-size:13px;color:var(--rose);font-weight:700}.cpblg-history-match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.cpblg-history-score{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700}.cpblg-history-picks{display:flex;flex-direction:column;gap:6px}.cpblg-history-pick{display:flex;justify-content:space-between;gap:8px;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;line-height:1.5}.cpblg-history-player{font-weight:700;color:var(--text)}.cpblg-history-empty{text-align:center;padding:16px 8px;color:var(--text-muted);font-size:13px}[data-theme="dark"] .cpblg-pick{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-manual textarea{background:#24151c;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history,[data-theme="dark"] .cpblg-history-card{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history-pick{background:#3a1f28}
 .cpblg-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.cpblg-cal-nav{min-width:42px;padding:8px 0;border:none;border-radius:12px;background:var(--pink-light);color:var(--rose);font-weight:700;cursor:pointer}.cpblg-cal-title{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--rose);font-weight:700}.cpblg-cal-legend{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.cpblg-cal-legend-item{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;background:var(--pink-light);font-size:10px;color:var(--text)}.cpblg-cal-legend-dot{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;font-size:10px;font-weight:700}.cpblg-cal-legend-dot.correct{background:#e8f5e9;color:#2e7d32}.cpblg-cal-legend-dot.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-cal-legend-dot.draw{background:#fff8e1;color:#9a6a00}.cpblg-cal-legend-dot.none{background:var(--white);color:var(--text-muted);border:1px solid rgba(232,99,122,.14)}.cpblg-cal-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:6px}.cpblg-cal-week span{font-size:11px;color:var(--text-muted);text-align:center}.cpblg-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cpblg-cal-day{min-height:76px;border:1px solid rgba(232,99,122,.14);border-radius:14px;background:var(--white);padding:8px 6px;cursor:pointer;display:flex;flex-direction:column;gap:6px}.cpblg-cal-day.muted{opacity:.34;cursor:default}.cpblg-cal-day.active{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.15)}.cpblg-cal-num{font-size:13px;font-weight:700;color:var(--text)}.cpblg-cal-marks{display:flex;flex-direction:column;gap:4px}.cpblg-cal-mark{border-radius:999px;padding:3px 6px;font-size:10px;line-height:1;text-align:center;font-weight:700}.cpblg-cal-mark.correct{background:#e8f5e9;color:#2e7d32}.cpblg-cal-mark.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-cal-mark.draw{background:#fff8e1;color:#9a6a00}.cpblg-cal-mark.none{background:var(--pink-light);color:var(--text-muted)}.cpblg-history-detail{margin-top:12px;border-top:1px dashed rgba(232,99,122,.18);padding-top:12px}.cpblg-history-datebar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}.cpblg-history-datebar strong{color:var(--rose)}.cpblg-history-daylist{display:flex;flex-direction:column;gap:8px}.cpblg-history-simple{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px}.cpblg-history-simple-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:6px}.cpblg-history-line{font-size:13px;line-height:1.6;color:var(--text)}.cpblg-history-matchup{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:8px}.cpblg-history-side{display:flex;justify-content:center}.cpblg-history-team{background:var(--pink-light);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px 8px;display:flex;justify-content:center}.cpblg-history-scoreline{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700;text-align:center}.cpblg-history-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.cpblg-history-tag{border-radius:999px;padding:4px 8px;font-size:11px;background:var(--pink-light);color:var(--rose)}.cpblg-history-tag.correct{background:#e8f5e9;color:#2e7d32}.cpblg-history-tag.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-history-tag.draw{background:#fff8e1;color:#9a6a00}.cpblg-history-tag.none{background:var(--pink-light);color:var(--text-muted)}[data-theme="dark"] .cpblg-cal-day,[data-theme="dark"] .cpblg-history-simple{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-cal-nav{background:#3a1f28;color:#ffd9e2}[data-theme="dark"] .cpblg-cal-legend-item,[data-theme="dark"] .cpblg-history-team{background:#3a1f28;border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-cal-legend-dot.none,[data-theme="dark"] .cpblg-history-tag.none{background:#382029;border-color:rgba(232,99,122,.18)}
 
@@ -3363,6 +3403,7 @@ onclick="hideSpecialForToday()">
       <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🧩 回憶拼圖</button>
       <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
       <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
+      <button type="button" class="game-menu-btn" id="game-menu-gsg" onclick="openGame(6,this)">🎤 猜歌遊戲</button>
     </div>
   </div>
 
@@ -3708,9 +3749,62 @@ onclick="hideSpecialForToday()">
       </div>
       <div id="cpblg-history-page-list">
         <div class="cpblg-history-empty">目前還沒有已結算的比賽紀錄。</div>
-      </div>
     </div>
   </div>
+</div>
+ 
+ </div>
+
+<div class="game-section" id="gs-6">
+  <div class="card">
+    <div class="card-title">🎤 猜歌遊戲</div>
+    <div class="gsg-shell">
+      <div class="gsg-hero">
+        <div class="gsg-title">聽前奏，猜出歌曲名字</div>
+        <div class="gsg-sub">每題先播放一小段片段，再從 4 個選項中選出正確答案。</div>
+      </div>
+
+      <div class="gsg-row gsg-stats">
+        <div class="gsg-stat"><div class="gsg-small">題數</div><div class="gsg-big" id="gsg-round">0 / 0</div></div>
+        <div class="gsg-stat"><div class="gsg-small">分數</div><div class="gsg-big" id="gsg-score">0</div></div>
+        <div class="gsg-stat"><div class="gsg-small">連對</div><div class="gsg-big" id="gsg-streak">0</div></div>
+        <div class="gsg-stat"><div class="gsg-small">最佳</div><div class="gsg-big" id="gsg-best">0</div></div>
+      </div>
+
+      <div class="gsg-panel">
+        <div class="gsg-progress-wrap">
+          <div class="gsg-progress-bar"><div class="gsg-progress-fill" id="gsg-progress-fill"></div></div>
+          <div class="gsg-progress-text" id="gsg-progress-text">準備開始</div>
+        </div>
+
+        <div class="gsg-cover" id="gsg-cover">🎵</div>
+
+        <div class="gsg-current" id="gsg-current">點「播放片段」開始猜歌</div>
+
+        <div class="gsg-controls">
+          <button type="button" class="gsg-btn primary" id="gsg-play-btn" onclick="gsgPlayPreview()">▶️ 播放片段</button>
+          <button type="button" class="gsg-btn secondary" onclick="gsgReplayRound()">🔁 再聽一次</button>
+          <button type="button" class="gsg-btn secondary" onclick="gsgNextRound()">➡️ 下一題</button>
+          <button type="button" class="gsg-btn secondary" onclick="gsgRestart()">重新開始</button>
+        </div>
+
+        <div class="gsg-options" id="gsg-options"></div>
+
+        <div class="gsg-feedback" id="gsg-feedback">先播放片段，再從下面選答案。</div>
+      </div>
+
+      <div id="gsg-result" class="gsg-result">
+        <div class="gsg-result-emoji">🎉</div>
+        <div class="gsg-result-title">猜歌完成</div>
+        <div class="gsg-result-score" id="gsg-final-score">0 / 0</div>
+        <div class="gsg-result-msg" id="gsg-final-msg"></div>
+        <button type="button" class="gsg-btn primary" onclick="gsgRestart()">再玩一次</button>
+      </div>
+
+      <audio id="gsg-audio" preload="auto"></audio>
+    </div>
+  </div>
+</div>
 </div>
 
 <div id="pz-picker-modal" class="pz-picker-modal hidden" onclick="pzClosePicker(event)">
@@ -4299,6 +4393,7 @@ function showPage(id,btn){
   document.body.classList.toggle('game-mode', isGamePage);
 
   if(!isGamePage && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(!isGamePage && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(!isGamePage){
     document.body.classList.remove('pz-mode','rg-mode');
   }
@@ -5307,6 +5402,8 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ── Game tabs ──
+const GAME_SECTION_IDS = ['gs-0','gs-1','gs-2','gs-3','gs-4','gs-5','gs-6','gs-5-history'];
+
 function showGameHub(){
   document.getElementById('game-hub')?.classList.remove('hidden');
   document.getElementById('game-back-row')?.classList.add('hidden');
@@ -5315,6 +5412,7 @@ function showGameHub(){
   document.body.classList.add('game-mode');
   document.body.classList.remove('pz-mode','rg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -5322,7 +5420,8 @@ function openGame(i,btn){
   document.getElementById('game-hub')?.classList.add('hidden');
   document.getElementById('game-back-row')?.classList.remove('hidden');
 
-  document.querySelectorAll('.game-section').forEach((s,idx)=>s.classList.toggle('active',idx===i));
+  const targetId = GAME_SECTION_IDS[i] || GAME_SECTION_IDS[0];
+  document.querySelectorAll('.game-section').forEach(section => section.classList.toggle('active', section.id === targetId));
   document.querySelectorAll('.game-tab').forEach((b,idx)=>b.classList.toggle('active',idx===i));
   document.querySelectorAll('.game-menu-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -5332,9 +5431,11 @@ function openGame(i,btn){
   document.body.classList.toggle('rg-mode', i===4);
 
   if(i!==4 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(i!==6 && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
   if(i===4 && typeof rgEnterScreen==='function') rgEnterScreen();
   if(i===5 && typeof cpblEnterScreen==='function') cpblEnterScreen();
+  if(i===6 && typeof gsgEnterScreen==='function') gsgEnterScreen();
 
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
@@ -5360,6 +5461,262 @@ function cpblOpenHistoryPage(){
 }
 function cpblCloseHistoryPage(){
   showGameSectionById('gs-5', { showBackRow:true });
+}
+
+let gsgAudio = null;
+let gsgDeck = [];
+let gsgRoundIndex = 0;
+let gsgScore = 0;
+let gsgStreak = 0;
+let gsgBest = 0;
+let gsgCurrent = null;
+let gsgOptions = [];
+let gsgAnswered = false;
+let gsgPreviewTimer = null;
+let gsgPreviewStart = 8;
+let gsgReady = false;
+const GSG_BEST_KEY = 'gsg_best_score';
+
+function gsgShuffle(list){
+  const arr = list.slice();
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function gsgEscape(text){
+  return String(text ?? '').replace(/[&<>"']/g, char => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[char]);
+}
+
+function gsgSongPool(){
+  return Array.isArray(SONGS) ? SONGS.filter(song => song && song.file && song.name) : [];
+}
+
+function gsgLoadBest(){
+  gsgBest = Number(localStorage.getItem(GSG_BEST_KEY) || 0);
+  const el = document.getElementById('gsg-best');
+  if(el) el.textContent = String(gsgBest);
+}
+
+function gsgSaveBest(){
+  if(gsgScore > gsgBest){
+    gsgBest = gsgScore;
+    localStorage.setItem(GSG_BEST_KEY, String(gsgBest));
+  }
+  const el = document.getElementById('gsg-best');
+  if(el) el.textContent = String(gsgBest);
+}
+
+function gsgUpdateStats(){
+  const total = gsgDeck.length || 0;
+  const roundEl = document.getElementById('gsg-round');
+  const scoreEl = document.getElementById('gsg-score');
+  const streakEl = document.getElementById('gsg-streak');
+  const progressFill = document.getElementById('gsg-progress-fill');
+  const progressText = document.getElementById('gsg-progress-text');
+  if(roundEl) roundEl.textContent = `${Math.min(gsgRoundIndex + 1, total || 1)} / ${total}`;
+  if(scoreEl) scoreEl.textContent = String(gsgScore);
+  if(streakEl) streakEl.textContent = String(gsgStreak);
+  if(progressFill) progressFill.style.width = total ? `${Math.round((Math.min(gsgRoundIndex, total) / total) * 100)}%` : '0%';
+  if(progressText) progressText.textContent = total ? `第 ${Math.min(gsgRoundIndex + 1, total)} 題 / 共 ${total} 題` : '尚未開始';
+}
+
+function gsgBuildDeck(){
+  const pool = gsgShuffle(gsgSongPool());
+  const roundCount = Math.min(10, pool.length);
+  return pool.slice(0, roundCount);
+}
+
+function gsgBuildOptions(current){
+  const pool = gsgSongPool().filter(song => song.file !== current.file);
+  const others = gsgShuffle(pool).slice(0, 3);
+  return gsgShuffle([current, ...others].filter(Boolean));
+}
+
+function gsgSetFeedback(text, tone='neutral'){
+  const el = document.getElementById('gsg-feedback');
+  if(!el) return;
+  el.textContent = text;
+  el.style.color = tone === 'good' ? '#2e7d32' : tone === 'bad' ? 'var(--rose)' : 'var(--text-muted)';
+}
+
+function gsgRenderOptions(){
+  const grid = document.getElementById('gsg-options');
+  if(!grid) return;
+  grid.innerHTML = gsgOptions.map((song, idx) =>
+    `<button type="button" class="gsg-option" data-index="${idx}" onclick="gsgAnswer(${idx})">${gsgEscape(song.name)}</button>`
+  ).join('');
+}
+
+function gsgSetCurrentSong(showName=false){
+  const el = document.getElementById('gsg-current');
+  if(!el || !gsgCurrent) return;
+  el.textContent = showName ? `正確答案：${gsgCurrent.name}` : `第 ${gsgRoundIndex + 1} 題，聽前奏猜歌名`;
+}
+
+function gsgStopPreview(){
+  clearTimeout(gsgPreviewTimer);
+  gsgPreviewTimer = null;
+  if(gsgAudio){
+    try{ gsgAudio.pause(); }catch(_err){}
+  }
+}
+
+function gsgPlayPreview(){
+  if(!gsgCurrent || !gsgAudio) return;
+  const start = Math.max(0, gsgPreviewStart || 0);
+  gsgAudio.src = gsgCurrent.file;
+  const playAt = () => {
+    const safeStart = gsgAudio.duration ? Math.max(0, Math.min(start, Math.max(0, gsgAudio.duration - 7))) : start;
+    try{ gsgAudio.currentTime = safeStart; }catch(_err){}
+    const playPromise = gsgAudio.play();
+    if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(()=>{});
+    clearTimeout(gsgPreviewTimer);
+    gsgPreviewTimer = setTimeout(() => gsgStopPreview(), 8000);
+    gsgSetFeedback('已播放片段，快選答案！', 'neutral');
+  };
+  if(gsgAudio.readyState < 1){
+    gsgAudio.addEventListener('loadedmetadata', playAt, { once:true });
+    gsgAudio.load();
+  }else{
+    playAt();
+  }
+}
+
+function gsgReplayRound(){
+  if(!gsgCurrent) return;
+  gsgPlayPreview();
+}
+
+function gsgLoadRound(index){
+  gsgRoundIndex = index;
+  gsgAnswered = false;
+  gsgCurrent = gsgDeck[gsgRoundIndex] || null;
+  gsgOptions = gsgCurrent ? gsgBuildOptions(gsgCurrent) : [];
+  gsgPreviewStart = 6 + Math.floor(Math.random() * 18);
+  gsgSetCurrentSong(false);
+  gsgUpdateStats();
+  gsgRenderOptions();
+  gsgSetFeedback('先播放片段，再從下方選答案。', 'neutral');
+  const btn = document.getElementById('gsg-play-btn');
+  if(btn) btn.disabled = !gsgCurrent;
+  if(!gsgCurrent){
+    gsgFinish();
+    return;
+  }
+  if(gsgAudio){
+    gsgAudio.pause();
+    gsgAudio.src = gsgCurrent.file;
+    gsgAudio.load();
+  }
+  const cover = document.getElementById('gsg-cover');
+  if(cover) cover.textContent = '🎵';
+  const result = document.getElementById('gsg-result');
+  result?.classList.remove('show');
+}
+
+function gsgAnswer(index){
+  if(gsgAnswered || !gsgCurrent) return;
+  gsgAnswered = true;
+  gsgStopPreview();
+  const picked = gsgOptions[index];
+  const buttons = document.querySelectorAll('#gsg-options .gsg-option');
+  buttons.forEach((button, idx) => {
+    button.disabled = true;
+    if(gsgOptions[idx]?.file === gsgCurrent.file){
+      button.classList.add('correct');
+    }else if(idx === index){
+      button.classList.add('wrong');
+    }
+  });
+  const correct = picked?.file === gsgCurrent.file;
+  if(correct){
+    gsgScore += 1;
+    gsgStreak += 1;
+    gsgSetFeedback(`答對了！這首是《${gsgCurrent.name}》`, 'good');
+  }else{
+    gsgStreak = 0;
+    gsgSetFeedback(`答錯了，正解是《${gsgCurrent.name}》`, 'bad');
+  }
+  gsgSetCurrentSong(true);
+  gsgUpdateStats();
+  gsgSaveBest();
+}
+
+function gsgNextRound(){
+  if(!gsgCurrent) return;
+  if(!gsgAnswered){
+    gsgStopPreview();
+    gsgSetFeedback('已跳過這題，直接看下一首。', 'neutral');
+  }
+  if(gsgRoundIndex + 1 >= gsgDeck.length){
+    gsgFinish();
+    return;
+  }
+  gsgLoadRound(gsgRoundIndex + 1);
+}
+
+function gsgFinish(){
+  gsgStopPreview();
+  const result = document.getElementById('gsg-result');
+  const finalScore = document.getElementById('gsg-final-score');
+  const finalMsg = document.getElementById('gsg-final-msg');
+  const total = gsgDeck.length || 0;
+  const rate = total ? Math.round(gsgScore / total * 100) : 0;
+  gsgSaveBest();
+  if(finalScore) finalScore.textContent = `${gsgScore} / ${total}`;
+  if(finalMsg) finalMsg.textContent = `正確率 ${rate}%｜目前最佳 ${gsgBest} 分`;
+  result?.classList.add('show');
+  const playBtn = document.getElementById('gsg-play-btn');
+  if(playBtn) playBtn.disabled = true;
+  gsgSetFeedback('這一輪已經完成了，按重新開始可以再挑戰一次。', 'neutral');
+}
+
+function gsgRestart(){
+  gsgInit();
+  gsgDeck = gsgBuildDeck();
+  gsgRoundIndex = 0;
+  gsgScore = 0;
+  gsgStreak = 0;
+  gsgAnswered = false;
+  gsgSetFeedback('先播放片段，再從下方選答案。', 'neutral');
+  const result = document.getElementById('gsg-result');
+  result?.classList.remove('show');
+  gsgLoadBest();
+  gsgLoadRound(0);
+}
+
+function gsgEnterScreen(){
+  gsgInit();
+  if(!gsgCurrent) gsgRestart();
+  const target = document.getElementById('gs-6');
+  if(target && window.matchMedia && window.matchMedia('(max-width: 520px)').matches){
+    target.scrollIntoView({ block:'start', behavior:'smooth' });
+  }
+}
+
+function gsgPauseIfHidden(){
+  gsgStopPreview();
+}
+
+function gsgInit(){
+  if(gsgReady) return;
+  gsgReady = true;
+  gsgAudio = document.getElementById('gsg-audio');
+  if(gsgAudio){
+    gsgAudio.preload = 'auto';
+    gsgAudio.addEventListener('ended', () => gsgStopPreview());
+  }
+  gsgLoadBest();
+  if(!gsgDeck.length) gsgDeck = gsgBuildDeck();
 }
 
 function switchGame(i,btn){

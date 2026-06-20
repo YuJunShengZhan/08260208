@@ -5636,8 +5636,8 @@ function cpblParseSchedule(raw, sourceName=''){
       const sm=scoreLine.match(/(\d+)\s*[:：]\s*(\d+)/);
       awayScore=Number(sm[1]); homeScore=Number(sm[2]);
     }
-    const rawTime=seg.find(l=>/^\d{1,2}:\d{2}$/.test(l));
-    const time=cpblNormalizeTime(rawTime);
+    const timeMatch=seg.map(line=>line.match(/(\d{1,2})\s*[:：]\s*(\d{2})/)).find(Boolean);
+    const time=cpblNormalizeTime(timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '');
     const field=seg.find(l=>CPBLG_FIELDS.includes(l)) || '';
     games.push({
       id:`${ymd}-A-${no}`,
@@ -5674,7 +5674,8 @@ function cpblApplyManualGames(){
       }
     });
     if(teams.length<2) return;
-    const time=cpblNormalizeTime((line.match(/\b\d{1,2}:\d{2}\b/)||[])[0]||'');
+    const timeMatch=line.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
+    const time=cpblNormalizeTime(timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '');
     const field=CPBLG_FIELDS.find(f=>line.includes(f))||'';
     games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'手動輸入'});
   });
@@ -6068,7 +6069,7 @@ function cpblParseGameSegment(seg, no, date, sourceName=''){
   }
   if(teamList.length<2) return null;
   const scoreMatch = joined.match(/(\d+)\s*[:：]\s*(\d+)/);
-  const timeMatch = joined.match(/\b(\d{1,2}:\d{2})\b/);
+  const timeMatch = joined.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
   const field = CPBLG_FIELDS.find(name=>seg.some(line=>line.includes(name))) || '';
   return {id:`${date}-A-${no}`,date,no,away:teamList[0],home:teamList[1],field,time:cpblNormalizeTime(timeMatch ? timeMatch[1] : ''),status:cpblParseGameStatus(joined),awayScore:scoreMatch ? Number(scoreMatch[1]) : null,homeScore:scoreMatch ? Number(scoreMatch[2]) : null,source:sourceName};
 }
@@ -6252,7 +6253,7 @@ function cpblParseGameSegment(seg, no, date, sourceName=''){
   }
   if(teamList.length < 2) return null;
   const scoreMatch = joined.match(/(\d+)\s*[:：]\s*(\d+)/);
-  const timeMatch = joined.match(/\b(\d{1,2}:\d{2})\b/);
+  const timeMatch = joined.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
   const field = CPBLG_FIELDS.find(name=>seg.some(line=>line.includes(name))) || '';
   return {
     id:`${date}-A-${no}`,
@@ -6261,7 +6262,7 @@ function cpblParseGameSegment(seg, no, date, sourceName=''){
     away:teamList[0],
     home:teamList[1],
     field,
-    time:cpblNormalizeTime(timeMatch ? timeMatch[1] : ''),
+    time:cpblNormalizeTime(timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : ''),
     status:cpblParseGameStatus(joined),
     awayScore:scoreMatch ? Number(scoreMatch[1]) : null,
     homeScore:scoreMatch ? Number(scoreMatch[2]) : null,

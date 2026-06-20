@@ -8407,6 +8407,7 @@ window.addEventListener('resize',()=>{
 // ── Period (Firebase) ──
 const SYMPTOMS=['😴 疲勞','😣 腹痛','🤯 頭痛','😤 情緒波動','🤢 噁心','🎈 脹氣','💤 嗜睡','🍫 想吃甜食','🥶 怕冷','💪 還不錯'];
 let pdSettings={start:'',end:'',cycle:28,dur:5};
+let pdCycleHistory=[];
 let pdCalYear=new Date().getFullYear();
 let pdCalMonth=new Date().getMonth();
 let pdSelectedSymptoms=new Set();
@@ -8422,6 +8423,27 @@ function pdApplySettings(s){
   pdRefresh();
   pdUpdateSettingsSummary();
 }
+function pdNormalizeHistoryItem(item, key=''){
+  const start = String(item?.start || '').slice(0,10);
+  if(!start) return null;
+  const cycle = Number(item?.cycle) || Number(pdSettings.cycle) || 28;
+  const dur = Number(item?.dur) || Number(pdSettings.dur) || 5;
+  const end = String(item?.end || '').slice(0,10);
+  return {
+    _key: key,
+    start,
+    end,
+    cycle,
+    dur,
+    createdAt: Number(item?.createdAt) || 0
+  };
+}
+function pdHistoryToArray(val){
+  return Object.entries(val || {})
+    .map(([k,v])=>pdNormalizeHistoryItem(v,k))
+    .filter(Boolean)
+    .sort((a,b)=>a.start.localeCompare(b.start) || (a.createdAt - b.createdAt));
+}
 function pdLoad(){
   const {db,ref,onValue}=window._fb;
   onValue(ref(db,'pdSettings'),snap=>{
@@ -8430,8 +8452,6 @@ function pdLoad(){
     else{pdRefresh();}
   });
   onValue(ref(db,'pdLogs'),snap=>{pdRenderLogsFromSnap(snap.val());});
-  
-  // 新增：監聽歷史紀錄
   onValue(ref(db,'pdPeriodHistory'),snap=>{
     pdRenderHistory(snap.val());
   });
@@ -8439,14 +8459,20 @@ function pdLoad(){
 function pdRenderHistory(val){
   const el = document.getElementById('pd-history-list');
   if(!el) return;
-  if(!val){
+  pdCycleHistory = pdHistoryToArray(val);
+  if(!pdCycleHistory.length){
+    if(pdSettings.start){
+      pdCycleHistory = [pdNormalizeHistoryItem({start:pdSettings.start,end:pdSettings.end,cycle:pdSettings.cycle,dur:pdSettings.dur,createdAt:Date.now()},'current')].filter(Boolean);
+    }else{
+      el.innerHTML='<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:12px 0">還沒有記錄</div>';
+      return;
+    }
+  }
+  const records = pdCycleHistory.slice().sort((a,b)=>b.start.localeCompare(a.start) || (b.createdAt-a.createdAt));
+  if(!records.length){
     el.innerHTML='<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:12px 0">還沒有記錄</div>';
     return;
   }
-  const records = Object.entries(val)
-    .map(([k,v])=>({...v, _key:k}))
-    .sort((a,b)=>b.start.localeCompare(a.start)); // 最新的在上面
-  
   el.innerHTML = records.map(r=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--card-border)">
       <div>
@@ -8455,6 +8481,7 @@ function pdRenderHistory(val){
       </div>
       <button onclick="pdDeleteHistory('${r._key}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:15px">✕</button>
     </div>`).join('');
+  pdRefresh();
 }
 
 function pdDeleteHistory(key){
@@ -8467,23 +8494,59 @@ function pdSaveSettings(){
   const s=document.getElementById('pd-start').value;
   if(!s){alert('請選擇最近一次生理期開始日');return;}
   const newSettings={start:s,end:document.getElementById('pd-end').value,cycle:parseInt(document.getElementById('pd-cycle').value),dur:parseInt(document.getElementById('pd-dur').value)};
-  const {db,ref,set}=window._fb;
-  set(ref(db,'pdSettings'),newSettings);
-  alert('已儲存 ✅');
+  if(!window._fb){ alert('Firebase 尚未連線'); return; }
+  const {db,ref,set,push,get}=window._fb;
+  get(ref(db,'pdPeriodHistory')).then(snap=>{
+    const exists = snap.exists();
+    const writes = [set(ref(db,'pdSettings'),newSettings)];
+    if(!exists){
+      writes.push(push(ref(db,'pdPeriodHistory'),{...newSettings,createdAt:Date.now()}));
+    }
+    return Promise.all(writes);
+  }).then(()=>{
+    alert('已儲存 ✅');
+  });
 }
-function pdGetCycles(count){
+function pdGetSeedCycles(){
+  const cycles = pdCycleHistory.map(item=>{
+    const pStart = new Date(item.start+'T00:00:00');
+    if(Number.isNaN(pStart.getTime())) return null;
+    const cycle = Number(item.cycle) || Number(pdSettings.cycle) || 28;
+    const dur = Number(item.dur) || Number(pdSettings.dur) || 5;
+    const pEnd = new Date(pStart.getTime() + (dur - 1) * 864e5);
+    const ovulate = new Date(pStart.getTime() + Math.max(0, cycle - 14) * 864e5);
+    const fertileStart = new Date(ovulate.getTime() - 5 * 864e5);
+    const fertileEnd = new Date(ovulate.getTime() + 864e5);
+    return {pStart,pEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:item.start};
+  }).filter(Boolean);
+  if(cycles.length) return cycles;
   if(!pdSettings.start) return [];
   const base=new Date(pdSettings.start+'T00:00:00');
-  const cycles=[];
-  for(let i=0;i<count;i++){
-    const pStart=new Date(base.getTime()+i*pdSettings.cycle*864e5);
-    const pEnd=new Date(pStart.getTime()+(pdSettings.dur-1)*864e5);
-    const ovulate=new Date(pStart.getTime()+(pdSettings.cycle-14)*864e5);
-    const fertileStart=new Date(ovulate.getTime()-5*864e5);
-    const fertileEnd=new Date(ovulate.getTime()+864e5);
-    cycles.push({pStart,pEnd,ovulate,fertileStart,fertileEnd});
+  if(Number.isNaN(base.getTime())) return [];
+  const cycle = Number(pdSettings.cycle) || 28;
+  const dur = Number(pdSettings.dur) || 5;
+  return [{pStart:base,pEnd:new Date(base.getTime()+(dur-1)*864e5),ovulate:new Date(base.getTime()+Math.max(0,cycle-14)*864e5),fertileStart:new Date(base.getTime()+Math.max(0,cycle-14)*864e5-5*864e5),fertileEnd:new Date(base.getTime()+Math.max(0,cycle-14)*864e5+864e5),cycle,dur,sourceStart:pdSettings.start}];
+}
+function pdExpandForecast(count=14){
+  const seeds = pdGetSeedCycles();
+  if(!seeds.length) return [];
+  const last = seeds[seeds.length - 1];
+  const base = new Date(last.sourceStart + 'T00:00:00');
+  if(Number.isNaN(base.getTime())) return seeds;
+  const cycle = Number(last.cycle) || Number(pdSettings.cycle) || 28;
+  const dur = Number(last.dur) || Number(pdSettings.dur) || 5;
+  for(let i=1;i<=count;i++){
+    const pStart = new Date(base.getTime()+i*cycle*864e5);
+    const pEnd = new Date(pStart.getTime()+(dur-1)*864e5);
+    const ovulate = new Date(pStart.getTime()+Math.max(0,cycle-14)*864e5);
+    const fertileStart = new Date(ovulate.getTime()-5*864e5);
+    const fertileEnd = new Date(ovulate.getTime()+864e5);
+    seeds.push({pStart,pEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:last.sourceStart});
   }
-  return cycles;
+  return seeds;
+}
+function pdGetCycles(count){
+  return pdExpandForecast(count);
 }
 function pdDayType(dateObj,cycles){
   const t=dateObj.getTime();
@@ -8663,7 +8726,7 @@ function pdConfirmStart(){
   // 2. 把這次記錄存進 pdPeriodHistory
   Promise.all([
     set(ref(db,'pdSettings'), newSettings),
-    push(ref(db,'pdPeriodHistory'), { start: startDate, end: endStr })
+    push(ref(db,'pdPeriodHistory'), { ...newSettings, createdAt: Date.now() })
   ]).then(()=>{
     document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
     alert(`已記錄！月經開始日：${startDate} 🩸`);

@@ -1343,6 +1343,29 @@ background:var(--pink-light);margin-left:8px;
 .rg-note.l1{background:linear-gradient(180deg,#222,#090909);}
 .rg-note.l2{background:linear-gradient(180deg,#303030,#101010);}
 .rg-note.l3{background:linear-gradient(180deg,#262626,#070707);}
+.rg-note.hold{
+  --head-half:18px;
+  min-height:44px;
+  align-items:flex-end !important;
+  padding-bottom:5px;
+  border-radius:16px !important;
+  transform:translateY(calc(-100% + var(--head-half))) scale(var(--note-scale,1)) !important;
+  box-sizing:border-box;
+}
+.rg-note.hold::after{
+  content:'長按';
+  position:absolute;
+  top:8px;
+  left:50%;
+  transform:translateX(-50%);
+  color:rgba(255,255,255,.78);
+  font-size:10px;
+  letter-spacing:1px;
+}
+.rg-pad.holding{
+  filter:brightness(1.16) saturate(1.18);
+  transform:scale(.96);
+}
 .rg-judgement{
   left:50%;
   bottom:84px;
@@ -2012,6 +2035,11 @@ body.rg-mode{
     height:22px;
     border-radius:10px;
     box-shadow:none;
+  }
+  #gs-4 .rg-note.hold{
+    --head-half:11px;
+    min-height:34px;
+    padding-bottom:2px;
   }
   #gs-4 .rg-judgement{
     bottom:72px;
@@ -3462,12 +3490,10 @@ onclick="hideSpecialForToday()">
       </div>
 
       <div class="rg-song-row">
-        <button class="pz-btn secondary rg-song-nav" onclick="rgPrevSong()">⏮</button>
         <div class="rg-song-meta">
           <div class="rg-song-label">目前曲目</div>
           <div class="rg-song-name" id="rg-song-name">載入中...</div>
         </div>
-        <button class="pz-btn secondary rg-song-nav" onclick="rgNextSong()">⏭</button>
       </div>
 
       <div class="rg-stage" id="rg-stage">
@@ -3491,10 +3517,10 @@ onclick="hideSpecialForToday()">
           </div>
         </div>
         <div class="rg-pads">
-          <button type="button" class="rg-pad l0" id="rg-pad-0" onpointerdown="rgPadPress(event,0)">A</button>
-          <button type="button" class="rg-pad l1" id="rg-pad-1" onpointerdown="rgPadPress(event,1)">S</button>
-          <button type="button" class="rg-pad l2" id="rg-pad-2" onpointerdown="rgPadPress(event,2)">K</button>
-          <button type="button" class="rg-pad l3" id="rg-pad-3" onpointerdown="rgPadPress(event,3)">L</button>
+          <button type="button" class="rg-pad l0" id="rg-pad-0" onpointerdown="rgPadPress(event,0)" onpointerup="rgPadRelease(event,0)" onpointercancel="rgPadRelease(event,0)">A</button>
+          <button type="button" class="rg-pad l1" id="rg-pad-1" onpointerdown="rgPadPress(event,1)" onpointerup="rgPadRelease(event,1)" onpointercancel="rgPadRelease(event,1)">S</button>
+          <button type="button" class="rg-pad l2" id="rg-pad-2" onpointerdown="rgPadPress(event,2)" onpointerup="rgPadRelease(event,2)" onpointercancel="rgPadRelease(event,2)">K</button>
+          <button type="button" class="rg-pad l3" id="rg-pad-3" onpointerdown="rgPadPress(event,3)" onpointerup="rgPadRelease(event,3)" onpointercancel="rgPadRelease(event,3)">L</button>
         </div>
       </div>
 
@@ -3508,8 +3534,7 @@ onclick="hideSpecialForToday()">
   <div class="card">
     <div class="card-title">⚾ 中職猜勝負</div>
     <div class="cpblg-shell">
-      <div class="cpblg-hero"><div class="cpblg-title">今天哪隊會贏？</div><div class="cpblg-sub">抓 CPBL 官方賽程／首頁資料，開賽後會自動鎖住不能再猜。純小遊戲紀錄，沒有下注、賠率或金錢功能。</div></div>
-      <div class="cpblg-row"><button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-sheng" onclick="cpblSelectPlayer('聖展')">我是聖展</button><button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-yujun" onclick="cpblSelectPlayer('予君')">我是予君</button></div>
+      <div class="cpblg-hero"><div class="cpblg-title">今天哪支球隊會贏？</div><div class="cpblg-sub">比賽開始後會自動鎖住不能再猜。</div></div>
       <div class="cpblg-row"><div class="cpblg-stat"><div class="cpblg-small">聖展勝率</div><div class="cpblg-rate" id="cpblg-rate-sheng">0%</div><div class="cpblg-small" id="cpblg-record-sheng">0 / 0</div></div><div class="cpblg-stat"><div class="cpblg-small">予君勝率</div><div class="cpblg-rate" id="cpblg-rate-yujun">0%</div><div class="cpblg-small" id="cpblg-record-yujun">0 / 0</div></div></div>
       <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div class="cpblg-toolbar-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblOpenHistoryPage()">歷史猜測紀錄</button></div></div>
       <div class="cpblg-status" id="cpblg-status">進入頁面後會自動載入。</div><div class="cpblg-games" id="cpblg-games"></div>
@@ -8734,6 +8759,9 @@ const SONGS=[
   {file:'music19.mp3',name:'使我成為我們'},
   {file:'music20.mp3',name:'偷偷的'},
 ];
+const RG_SONGS=[
+  {file:'game1.mp3',name:'Game 1 鋼琴版'}
+];
 for(let i=SONGS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[SONGS[i],SONGS[j]]=[SONGS[j],SONGS[i]];}
 let songIdx=Math.floor(Math.random()*SONGS.length);
 
@@ -8843,6 +8871,7 @@ let rgAudioCtx = null;
 let rgChartMode = 'auto';
 let rgLastFocusAt = 0;
 let rgLastFrameAt = 0;
+const rgHeldLanes = [false, false, false, false];
 
 function rgIsLowPerfMode(){
   return window.matchMedia && window.matchMedia('(max-width: 520px)').matches;
@@ -8921,8 +8950,11 @@ function rgNormalizeChart(chart, durationMs){
       t: Math.round(n.t),
       lane: rgClamp(Math.round(n.lane), 0, RG_LANES - 1),
       intensity: rgClamp(Number(n.intensity || .78), .58, 1.18),
+      holdMs: Number(n.holdMs) >= 620 ? rgClamp(Math.round(n.holdMs), 620, 2200) : 0,
       judged: false,
-      hit: false
+      hit: false,
+      holding: false,
+      holdGrade: ''
     }))
     .filter(n => n.t >= 950 && n.t <= endAt)
     .sort((a,b)=>a.t-b.t);
@@ -9089,7 +9121,9 @@ function rgBuildChartFromAudioBeatGrid(buffer){
   const ch0 = buffer.getChannelData(0);
   const ch1 = buffer.numberOfChannels > 1 ? buffer.getChannelData(1) : null;
   const frameSize = Math.max(768, Math.round(sr * .024));
-  const hop = Math.max(320, Math.round(sr * .012));
+  const hop = Math.max(384, Math.round(sr * .014));
+  const sampleStep = 2;
+  const samplesPerFrame = Math.ceil(frameSize / sampleStep);
   const hopMs = hop / sr * 1000;
   const frames = [];
 
@@ -9098,7 +9132,7 @@ function rgBuildChartFromAudioBeatGrid(buffer){
     let attack = 0;
     let abs = 0;
     let previous = ch1 ? (ch0[pos] + ch1[pos]) * .5 : ch0[pos];
-    for(let i=0; i<frameSize; i++){
+    for(let i=0; i<frameSize; i+=sampleStep){
       const sample = ch1 ? (ch0[pos+i] + ch1[pos+i]) * .5 : ch0[pos+i];
       const delta = sample - previous;
       energy += sample * sample;
@@ -9108,9 +9142,9 @@ function rgBuildChartFromAudioBeatGrid(buffer){
     }
     frames.push({
       time:(pos + frameSize * .5) / sr * 1000,
-      energy:Math.sqrt(energy / frameSize),
-      attack:Math.sqrt(attack / frameSize),
-      amp:abs / frameSize
+      energy:Math.sqrt(energy / samplesPerFrame),
+      attack:Math.sqrt(attack / samplesPerFrame),
+      amp:abs / samplesPerFrame
     });
   }
   if(frames.length < 80) return [];
@@ -9212,7 +9246,7 @@ function rgBuildChartFromAudioBeatGrid(buffer){
   }
 
   const durationSec = buffer.duration || 90;
-  const target = rgClamp(Math.round(durationSec * 1.72), 52, 250);
+  const target = rgClamp(Math.round(durationSec * 1.9), 52, 420);
   const minGap = Math.max(105, Math.min(155, beatMs * .24));
   const picked = [];
   for(const candidate of candidates.sort((a,b)=>b.score-a.score)){
@@ -9225,25 +9259,53 @@ function rgBuildChartFromAudioBeatGrid(buffer){
 
   const peakRef = rgPercentile(picked.map(p=>p.strength), .9) || strongLevel || 1;
   const attackMid = rgPercentile(frames.map(f=>f.attack), .62);
+  const energyFloor = rgPercentile(frames.map(f=>f.energy), .42);
   let lastLane = -1;
   const chart = picked.map((candidate, index) => {
     const direction = candidate.attack >= attackMid ? 1 : -1;
     let lane = (index + (direction > 0 ? Math.floor(index / 3) : 3)) % RG_LANES;
     if(lane === lastLane) lane = (lane + 1 + (index % 2)) % RG_LANES;
     lastLane = lane;
+    const nextTime = picked[index + 1]?.time ?? (candidate.time + 2300);
+    const availableMs = Math.min(2100, nextTime - candidate.time - 170);
+    let holdMs = 0;
+    if(availableMs >= 620){
+      const endFrame = Math.min(frames.length - 1, candidate.index + Math.round(availableMs / hopMs));
+      const sustainThreshold = Math.max(energyFloor * 1.08, frames[candidate.index].energy * .2);
+      let sustained = 0;
+      let checked = 0;
+      for(let frameIndex=candidate.index + Math.round(220 / hopMs); frameIndex<=endFrame; frameIndex++){
+        checked++;
+        if(frames[frameIndex].energy >= sustainThreshold) sustained++;
+      }
+      if(checked && sustained / checked >= .58) holdMs = rgClamp(availableMs, 620, 1900);
+    }
     return {
       // Frame centres represent the audible attack; a tiny compensation removes analysis-window delay.
       t:Math.max(0, candidate.time - 18),
       lane,
-      intensity:rgClamp(.72 + candidate.strength / (peakRef * 2.25), .68, 1.18)
+      intensity:rgClamp(.72 + candidate.strength / (peakRef * 2.25), .68, 1.18),
+      holdMs
     };
   });
   return rgNormalizeChart(chart, durationMs);
 }
 
 async function rgAnalyzeSong(song){
-  const key = `beat-grid-v2:${song?.file || song?.name || 'song'}`;
+  const key = `piano-beat-grid-v3:${song?.file || song?.name || 'song'}`;
   if(RG_ANALYSIS_CACHE[key]) return RG_ANALYSIS_CACHE[key];
+  if(song?.file === 'game1.mp3'){
+    try{
+      const chartResponse = await fetch('game1-chart.json', { cache:'force-cache' });
+      if(chartResponse.ok){
+        const savedChart = await chartResponse.json();
+        if(Array.isArray(savedChart?.notes) && savedChart.notes.length >= 16){
+          RG_ANALYSIS_CACHE[key] = savedChart.notes;
+          return savedChart.notes;
+        }
+      }
+    }catch(_chartError){}
+  }
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   if(!AudioCtx || !window.fetch) throw new Error('此瀏覽器不支援自動分析');
   if(!rgAudioCtx) rgAudioCtx = new AudioCtx();
@@ -9268,14 +9330,14 @@ function rgInit(){
 
   const select = document.getElementById('rg-song-select');
   if(select){
-    select.innerHTML = SONGS.map((song, index) =>
+    select.innerHTML = RG_SONGS.map((song, index) =>
       `<option value="${index}">${song.name}</option>`
     ).join('');
   }
 
   rgAudio.addEventListener('loadedmetadata', () => {
     rgChart = [];
-    const approx = rgBuildFallbackChart(SONGS[rgSongIndex], rgAudio.duration || 90);
+    const approx = rgBuildFallbackChart(RG_SONGS[rgSongIndex], rgAudio.duration || 90);
     rgSetStateLine('');
   });
 
@@ -9284,7 +9346,9 @@ function rgInit(){
   });
 
   document.addEventListener('keydown', rgHandleKeydown);
+  document.addEventListener('keyup', rgHandleKeyup);
   rgLoadSong(songIdx || 0);
+  rgAnalyzeSong(RG_SONGS[0]).catch(()=>{});
 }
 
 function rgEnterScreen(){
@@ -9301,7 +9365,7 @@ function rgEnterScreen(){
     }, 80);
   }
   if(!rgRunning && !rgChart.length && rgAudio?.src){
-    rgSetOverlay('節奏挑戰', `目前是 ${SONGS[rgSongIndex].name}，按開始會自動分析歌曲旋律。`, '開始');
+    rgSetOverlay('節奏挑戰', `目前是 ${RG_SONGS[rgSongIndex].name}，按開始會自動分析鋼琴節奏。`, '開始');
   }
 }
 
@@ -9359,7 +9423,7 @@ function rgSetStateLine(text){
 }
 
 function rgSetSongName(){
-  const song = SONGS[rgSongIndex];
+  const song = RG_SONGS[rgSongIndex];
   const name = document.getElementById('rg-song-name');
   const select = document.getElementById('rg-song-select');
   if(name) name.textContent = song?.name || '未選擇';
@@ -9404,6 +9468,10 @@ function rgResetStats(){
   rgGood = 0;
   rgMiss = 0;
   rgBestCombo = 0;
+  for(let lane=0; lane<RG_LANES; lane++){
+    rgHeldLanes[lane] = false;
+    document.getElementById(`rg-pad-${lane}`)?.classList.remove('holding');
+  }
   rgUpdateStats();
 }
 
@@ -9434,7 +9502,7 @@ function rgLoadSong(index){
   rgLastFrameAt = 0;
   cancelAnimationFrame(rgRaf);
   rgRaf = 0;
-  rgSongIndex = (Number(index) + SONGS.length) % SONGS.length;
+  rgSongIndex = (Number(index) + RG_SONGS.length) % RG_SONGS.length;
   rgSetSongName();
   rgSetCover();
   rgResetStats();
@@ -9445,7 +9513,7 @@ function rgLoadSong(index){
   if(rgAudio){
     rgAudio.pause();
     rgAudio.currentTime = 0;
-    rgAudio.src = SONGS[rgSongIndex].file;
+    rgAudio.src = RG_SONGS[rgSongIndex].file;
     rgAudio.load();
   }
   rgSetOverlay('節奏挑戰', '', '開始');
@@ -9457,14 +9525,14 @@ function rgPrevSong(){ rgLoadSong(rgSongIndex - 1); }
 function rgNextSong(){ rgLoadSong(rgSongIndex + 1); }
 
 function rgRandomSong(){
-  const next = SONGS.length > 1
-    ? (rgSongIndex + 1 + Math.floor(Math.random() * (SONGS.length - 1))) % SONGS.length
+  const next = RG_SONGS.length > 1
+    ? (rgSongIndex + 1 + Math.floor(Math.random() * (RG_SONGS.length - 1))) % RG_SONGS.length
     : rgSongIndex;
   rgLoadSong(next);
 }
 
 async function rgPrepareChart(){
-  const song = SONGS[rgSongIndex];
+  const song = RG_SONGS[rgSongIndex];
   const duration = rgAudio?.duration || 90;
   const durationMs = Math.max(42000, Math.round(duration * 1000));
   let base = null;
@@ -9501,10 +9569,19 @@ async function rgStart(){
   rgResetStats();
   rgShowJudge('分析中');
   const expectedIndex = rgSongIndex;
+  // Claim audio playback during the actual tap so mobile browsers allow the song to start after setup.
+  const previousVolume = rgAudio.volume;
+  try{
+    rgAudio.volume = 0;
+    await rgAudio.play();
+    rgAudio.pause();
+    rgAudio.currentTime = 0;
+  }catch(_unlockError){}
+  rgAudio.volume = previousVolume;
   try{
     await rgPrepareChart();
   }catch(_err){
-    rgChart = rgBuildFallbackChart(SONGS[rgSongIndex], rgAudio?.duration || 90).map(note => ({...note, judged:false, hit:false}));
+    rgChart = rgBuildFallbackChart(RG_SONGS[rgSongIndex], rgAudio?.duration || 90).map(note => ({...note, judged:false, hit:false}));
   }
   if(expectedIndex !== rgSongIndex){
     rgStarting = false;
@@ -9521,7 +9598,7 @@ async function rgStart(){
     rgStarting = false;
     cancelAnimationFrame(rgRaf);
     rgRaf = requestAnimationFrame(rgTick);
-    rgSetStateLine(`正在播放 ${SONGS[rgSongIndex].name}｜${rgChart.length} 個拍點`);
+    rgSetStateLine(`正在播放 ${RG_SONGS[rgSongIndex].name}｜${rgChart.length} 個拍點`);
   }catch(_err){
     rgRunning = false;
     rgStarting = false;
@@ -9540,7 +9617,9 @@ function rgTick(){
   rgLastFrameAt = frameNow;
   const now = rgAudio.currentTime * 1000;
   for(const note of rgChart){
-    if(!note.judged && now - note.t > RG_JUDGE_WINDOWS.miss){
+    if(note.holding && now >= note.t + note.holdMs){
+      rgCompleteHold(note);
+    } else if(!note.judged && !note.holding && now - note.t > RG_JUDGE_WINDOWS.miss){
       rgApplyJudge('miss', note, false);
     }
   }
@@ -9551,13 +9630,23 @@ function rgTick(){
 function rgRenderNotes(now){
   const box = document.getElementById('rg-notes');
   if(!box) return;
-  const active = rgChart.filter(note => !note.judged && note.t - now < RG_TRAVEL_MS && now - note.t < RG_JUDGE_WINDOWS.miss);
+  const active = rgChart.filter(note => {
+    const endTime = note.t + (note.holdMs || 0);
+    return !note.judged && note.t - now < RG_TRAVEL_MS && now - endTime < RG_JUDGE_WINDOWS.miss;
+  });
   box.innerHTML = active.map(note => {
     const progress = ((now - note.t) + RG_TRAVEL_MS) / RG_TRAVEL_MS;
-    const top = rgClamp(progress * 104.5, -12, 112);
+    const targetTop = 104.5;
+    const top = note.holdMs
+      ? rgClamp(Math.min(progress * targetTop, targetTop), -12, targetTop)
+      : rgClamp(progress * targetTop, -12, 112);
     const scale = rgClamp(.96 + (note.intensity || .78) * .16, 1.02, 1.18);
     const symbol = RG_NOTE_SYMBOLS[note.lane] || '♪';
-    return `<div class="rg-note l${note.lane}" style="--lane:${note.lane};top:${top}%;--note-scale:${scale}">${symbol}</div>`;
+    const remainingHold = note.holdMs ? Math.max(0, note.holdMs - Math.max(0, now - note.t)) : 0;
+    const holdHeight = note.holdMs ? Math.max(38, remainingHold / RG_TRAVEL_MS * box.clientHeight + 24) : 0;
+    const holdClass = note.holdMs ? ' hold' : '';
+    const holdStyle = note.holdMs ? `height:${holdHeight}px;` : '';
+    return `<div class="rg-note l${note.lane}${holdClass}" style="--lane:${note.lane};top:${top}%;--note-scale:${scale};${holdStyle}">${symbol}</div>`;
   }).join('');
 }
 
@@ -9566,7 +9655,33 @@ function rgPadPress(e, lane){
     e.preventDefault();
     try{ e.currentTarget?.setPointerCapture?.(e.pointerId); }catch(_err){}
   }
+  rgHeldLanes[lane] = true;
+  document.getElementById(`rg-pad-${lane}`)?.classList.add('holding');
   rgHit(lane);
+}
+
+function rgPadRelease(e, lane){
+  if(e) e.preventDefault();
+  rgHeldLanes[lane] = false;
+  document.getElementById(`rg-pad-${lane}`)?.classList.remove('holding');
+  if(!rgRunning || !rgAudio) return;
+  const note = rgChart.find(item => item.holding && !item.judged && item.lane === lane);
+  if(!note) return;
+  const now = rgAudio.currentTime * 1000;
+  if(now >= note.t + note.holdMs - RG_JUDGE_WINDOWS.great){
+    rgCompleteHold(note);
+  }else{
+    note.holding = false;
+    rgApplyJudge('miss', note, false);
+    rgShowJudge('長按太早放開');
+  }
+}
+
+function rgCompleteHold(note){
+  if(!note || note.judged) return;
+  note.holding = false;
+  document.getElementById(`rg-pad-${note.lane}`)?.classList.remove('holding');
+  rgApplyJudge(note.holdGrade || 'good', note, true);
 }
 
 function rgHit(lane){
@@ -9589,9 +9704,18 @@ function rgHit(lane){
     rgShowJudge('看準線再點');
     return;
   }
-  if(bestDelta <= RG_JUDGE_WINDOWS.perfect) return rgApplyJudge('perfect', candidate, true);
-  if(bestDelta <= RG_JUDGE_WINDOWS.great) return rgApplyJudge('great', candidate, true);
-  if(bestDelta <= RG_JUDGE_WINDOWS.good) return rgApplyJudge('good', candidate, true);
+  let grade = '';
+  if(bestDelta <= RG_JUDGE_WINDOWS.perfect) grade = 'perfect';
+  else if(bestDelta <= RG_JUDGE_WINDOWS.great) grade = 'great';
+  else if(bestDelta <= RG_JUDGE_WINDOWS.good) grade = 'good';
+  if(grade && candidate.holdMs){
+    candidate.holding = true;
+    candidate.hit = true;
+    candidate.holdGrade = grade;
+    rgShowJudge('按住不要放');
+    return;
+  }
+  if(grade) return rgApplyJudge(grade, candidate, true);
   rgShowJudge(now < candidate.t ? '太早' : '太晚');
 }
 
@@ -9599,6 +9723,7 @@ function rgApplyJudge(type, note, fromHit = false){
   if(!note || note.judged) return;
   note.judged = true;
   note.hit = type !== 'miss';
+  note.holding = false;
 
   if(type === 'perfect'){
     rgPerfect++;
@@ -9667,7 +9792,7 @@ function rgFinish(){
   const totalHit = rgPerfect + rgGreat + rgGood;
   const accuracy = rgGetAccuracy();
   const rating = accuracy >= 92 ? '超會抓節奏 ✨' : accuracy >= 78 ? '很穩欸 💕' : accuracy >= 55 ? '再玩一次會更順' : '這首有點難';
-  rgSetOverlay('這首歌完成了', `${SONGS[rgSongIndex].name} 完成！${rating}｜得分 ${rgScore.toLocaleString()}｜命中 ${totalHit}/${rgChart.length}｜最高連擊 x${rgBestCombo}。`, '再玩一次');
+  rgSetOverlay('這首歌完成了', `${RG_SONGS[rgSongIndex].name} 完成！${rating}｜得分 ${rgScore.toLocaleString()}｜命中 ${totalHit}/${rgChart.length}｜最高連擊 x${rgBestCombo}。`, '再玩一次');
   rgSetStateLine(`完成！命中 ${totalHit} 個拍點，最高連擊 x${rgBestCombo}。`);
   rgShowJudge('完成');
 }
@@ -9678,7 +9803,17 @@ function rgHandleKeydown(e){
   if(lane === undefined) return;
   if(!document.getElementById('gs-4')?.classList.contains('active')) return;
   e.preventDefault();
-  rgHit(lane);
+  if(e.repeat) return;
+  rgPadPress(null, lane);
+}
+
+function rgHandleKeyup(e){
+  const map = { a:0, s:1, k:2, l:3, '1':0, '2':1, '3':2, '4':3 };
+  const lane = map[(e.key || '').toLowerCase()];
+  if(lane === undefined) return;
+  if(!document.getElementById('gs-4')?.classList.contains('active')) return;
+  e.preventDefault();
+  rgPadRelease(null, lane);
 }
 
 // ── 我們的第一次 (Firebase 同步) ──

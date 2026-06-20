@@ -5536,7 +5536,7 @@ function cpblStatusText(game){
   if(game.awayScore!=null && game.homeScore!=null) return '比賽結束';
   const start = cpblGameStart(game);
   if(start && Date.now() >= start.getTime()) return '進行中';
-  return cpblGetGameTime(game) || '未開始';
+  return cpblGetGameTime(game) || '';
 }
 function cpblSetStatus(msg){const el=document.getElementById('cpblg-status'); if(el) el.innerHTML=msg;}
 function cpblRenderGames(){

@@ -3537,7 +3537,7 @@ closeSpecial();
       <div class="cpblg-hero"><div class="cpblg-title">今天哪隊會贏？</div><div class="cpblg-sub">抓 CPBL 官方賽程／首頁資料，開賽後會自動鎖住不能再猜。純小遊戲紀錄，沒有下注、賠率或金錢功能。</div></div>
       <div class="cpblg-row"><button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-sheng" onclick="cpblSelectPlayer('聖展')">我是聖展</button><button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-yujun" onclick="cpblSelectPlayer('予君')">我是予君</button></div>
       <div class="cpblg-row"><div class="cpblg-stat"><div class="cpblg-small">聖展勝率</div><div class="cpblg-rate" id="cpblg-rate-sheng">0%</div><div class="cpblg-small" id="cpblg-record-sheng">0 / 0</div></div><div class="cpblg-stat"><div class="cpblg-small">予君勝率</div><div class="cpblg-rate" id="cpblg-rate-yujun">0%</div><div class="cpblg-small" id="cpblg-record-yujun">0 / 0</div></div></div>
-      <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleHistory()">歷史猜測紀錄</button><button type="button" class="cpblg-btn" onclick="cpblRefreshGames(true)">重新抓官網</button></div></div>
+      <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleHistory()">歷史猜測紀錄</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleManual(true)">手動輸入賽程</button><button type="button" class="cpblg-btn secondary" onclick="cpblRunSettlementDemo()">測試結算</button><button type="button" class="cpblg-btn" onclick="cpblRefreshGames(true)">重新抓官網</button></div></div>
       <div class="cpblg-status" id="cpblg-status">進入頁面後會自動載入。</div><div class="cpblg-games" id="cpblg-games"></div>
       <div class="cpblg-history" id="cpblg-history"><div class="cpblg-small" style="font-weight:700;color:var(--rose);margin-bottom:8px">歷史猜測紀錄</div><div class="cpblg-history-list" id="cpblg-history-list"><div class="cpblg-history-empty">目前還沒有已結算的比賽紀錄。</div></div></div>
       <div class="cpblg-manual" id="cpblg-manual">
@@ -6204,6 +6204,52 @@ async function cpblRefreshGames(showAlert=false){
     cpblSetStatus(`今天賽程暫時抓不到。<div class="cpblg-source-row"><span class="cpblg-pill">來源：部署 API / 本機助手</span></div><div class="cpblg-small" style="margin-top:8px">・${cpblEscape(err?.message || String(err))}</div><br>可以先用手動備援輸入。`);
     if(showAlert) console.warn('CPBL unified fetch failed:', err);
   }
+}
+
+function cpblRunSettlementDemo(){
+  const ymd = cpblTodayYMD();
+  const players = Object.keys(cpblgData?.players || {});
+  if(!players.length){
+    alert('目前找不到玩家資料，請先重新整理頁面後再試。');
+    return;
+  }
+
+  const sampleGames = cpblgGames.length ? cpblgGames.map((game, idx)=>({
+    ...game,
+    date: game.date || ymd,
+    status: '已結束',
+    awayScore: Number.isFinite(Number(game.awayScore)) ? Number(game.awayScore) : (idx % 2 === 0 ? 6 + idx : 2 + idx),
+    homeScore: Number.isFinite(Number(game.homeScore)) ? Number(game.homeScore) : (idx % 2 === 0 ? 3 + idx : 7 + idx)
+  })) : [
+    {id:`${ymd}-T-1`,date:ymd,no:'T1',away:'中信兄弟',home:'統一7-ELEVEn獅',field:'亞太主',time:'18:35',status:'已結束',awayScore:6,homeScore:3,source:'測試結算'},
+    {id:`${ymd}-T-2`,date:ymd,no:'T2',away:'味全龍',home:'台鋼雄鷹',field:'澄清湖',time:'18:35',status:'已結束',awayScore:2,homeScore:5,source:'測試結算'}
+  ];
+
+  sampleGames.forEach((game, idx)=>{
+    cpblgData.picks[game.id] = cpblgData.picks[game.id] || {};
+    players.forEach((player, playerIdx)=>{
+      if(!cpblgData.picks[game.id][player]){
+        const guessTeam = (idx + playerIdx) % 2 === 0 ? game.away : game.home;
+        cpblgData.picks[game.id][player] = {
+          team: guessTeam,
+          checked: false,
+          correct: null,
+          pickedAt: Date.now() - ((idx + 1) * 60000)
+        };
+      }else{
+        cpblgData.picks[game.id][player].checked = false;
+        cpblgData.picks[game.id][player].correct = null;
+      }
+    });
+  });
+
+  cpblgGames = sampleGames;
+  cpblResolveFinishedGames(true);
+  cpblRenderStats();
+  cpblRenderGames();
+  cpblRenderHistory();
+  cpblToggleHistory(true);
+  cpblSetStatus('已套用測試結算結果，可直接查看猜對猜錯、比分和歷史紀錄。');
 }
 
 let minePlayer = null; // 'p1'=聖展 / 'p2'=予君

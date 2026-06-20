@@ -9,36 +9,15 @@ $repoIndex = Join-Path $repoDir "index.html"
 $gitExe = "C:\Program Files\Git\cmd\git.exe"
 
 if ([string]::IsNullOrWhiteSpace($SourceIndex)) {
-  $oneDrive = $env:OneDrive
-  if ([string]::IsNullOrWhiteSpace($oneDrive) -or !(Test-Path -LiteralPath $oneDrive)) {
-    throw "OneDrive path not found."
-  }
-
-  $preferredCandidates = @(
-    (Join-Path $oneDrive "桌面\網站\index.html"),
-    (Join-Path $oneDrive "桌面\index.html")
-  )
-
-  foreach ($candidate in $preferredCandidates) {
-    if (Test-Path -LiteralPath $candidate) {
-      $SourceIndex = $candidate
-      break
-    }
-  }
-
-  if ([string]::IsNullOrWhiteSpace($SourceIndex)) {
-    $found = Get-ChildItem -Path $oneDrive -Filter "index.html" -File -Recurse -ErrorAction SilentlyContinue |
-      Sort-Object @{ Expression = { $_.FullName.Length }; Descending = $true } |
-      Select-Object -First 1
-
-    if ($found) {
-      $SourceIndex = $found.FullName
-    }
-  }
+  throw "Please drag an index.html file onto the batch file."
 }
 
-if ([string]::IsNullOrWhiteSpace($SourceIndex) -or !(Test-Path -LiteralPath $SourceIndex)) {
-  throw "Source index.html not found."
+if (!(Test-Path -LiteralPath $SourceIndex)) {
+  throw "Source index.html not found: $SourceIndex"
+}
+
+if ([System.IO.Path]::GetFileName($SourceIndex).ToLower() -ne "index.html") {
+  throw "Please drag a file named index.html."
 }
 
 if (!(Test-Path -LiteralPath $gitExe)) {

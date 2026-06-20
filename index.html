@@ -5790,13 +5790,13 @@ function cpblParseSchedule(raw, sourceName=''){
     const seg=block.slice(i,j);
     const no=gm[1];
     const statusRaw=(gm[2]||seg.join(' '));
-    let status='未開始';
+    let status='';
     if(/取消/.test(statusRaw)) status='取消';
     else if(/延賽/.test(statusRaw)) status='延賽';
     else if(/保留/.test(statusRaw)) status='保留';
     else if(/已結束|比賽結束|結束/.test(statusRaw)) status='已結束';
     else if(/進行中|比賽中|暫停/.test(statusRaw)) status='進行中';
-    else if(/先發|未開始|vs/i.test(statusRaw)) status='未開始';
+    else if(/先發|未開始|vs/i.test(statusRaw)) status='';
 
     const teamList=[];
     seg.forEach(l=>{
@@ -5852,7 +5852,7 @@ function cpblApplyManualGames(){
     const timeMatch=line.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
     const time=cpblNormalizeTime(timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '');
     const field=CPBLG_FIELDS.find(f=>line.includes(f))||'';
-    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'手動輸入'});
+    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'',awayScore:null,homeScore:null,source:'手動輸入'});
   });
   if(!games.length){alert('沒有解析到賽事，請用「隊伍A vs 隊伍B 時間 場地」一行一場');return;}
   cpblgGames=games;
@@ -6227,7 +6227,7 @@ function cpblParseGameStatus(text){
   if(/保留/.test(raw)) return '保留';
   if(/已結束|比賽結束|結束/.test(raw)) return '已結束';
   if(/進行中|比賽中|暫停/.test(raw)) return '進行中';
-  return '未開始';
+  return '';
 }
 function cpblParseGameSegment(seg, no, date, sourceName=''){
   const joined = seg.join(' ');
@@ -6332,7 +6332,7 @@ function cpblApplyManualGames(){
     if(teams.length<2) return;
     const time=cpblNormalizeTime((line.match(/\b\d{1,2}:\d{2}\b/)||[])[0]||'');
     const field=CPBLG_FIELDS.find(name=>line.includes(name))||'';
-    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'手動賽程'});
+    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'',awayScore:null,homeScore:null,source:'手動賽程'});
   });
   if(!games.length){alert('沒有辨識到有效格式，請用「隊伍A vs 隊伍B 18:35 球場」的方式輸入');return;}
   cpblgGames=games;
@@ -6373,7 +6373,7 @@ function cpblParseGameStatus(text){
   if(/保留/.test(raw)) return '保留';
   if(/已結束|比賽結束|結束/.test(raw)) return '已結束';
   if(/進行中|比賽中|暫停/.test(raw)) return '進行中';
-  return '未開始';
+  return '';
 }
 
 function cpblGetTodayBlock(raw){

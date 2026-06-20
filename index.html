@@ -1313,7 +1313,7 @@ background:var(--pink-light);margin-left:8px;
 .rg-judgement,
 .rg-overlay{position:absolute;z-index:2;}
 .rg-lanes{
-  inset:14px 14px 86px;
+  inset:14px 14px 66px;
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:6px;
@@ -1327,15 +1327,15 @@ background:var(--pink-light);margin-left:8px;
 .rg-notes{
   --gap:6px;
   --lane-size:calc((100% - (var(--gap) * 3)) / 4);
-  inset:14px 14px 86px;
+  inset:14px 14px 66px;
   pointer-events:none;
 }
 .rg-note{
   position:absolute;
   left:calc(var(--lane) * (var(--lane-size) + var(--gap)));
   width:var(--lane-size);
-  height:22px;
-  border-radius:12px;
+  height:26px;
+  border-radius:13px;
   transform:translateY(-50%);
   box-shadow:0 10px 18px rgba(117,35,54,.22), inset 0 1px 0 rgba(255,255,255,.36);
 }
@@ -1345,7 +1345,7 @@ background:var(--pink-light);margin-left:8px;
 .rg-note.l3{background:linear-gradient(180deg,#262626,#070707);}
 .rg-judgement{
   left:50%;
-  bottom:108px;
+  bottom:84px;
   transform:translateX(-50%);
   padding:8px 16px;
   border-radius:999px;
@@ -1832,7 +1832,7 @@ body.rg-mode{
   background:linear-gradient(180deg,rgba(255,248,251,.62) 0%,rgba(255,222,232,.82) 100%);
 }
 #gs-4 .rg-lanes{
-  inset:12px 12px 82px;
+  inset:12px 12px 64px;
   gap:8px;
 }
 #gs-4 .rg-lane{
@@ -1843,10 +1843,10 @@ body.rg-mode{
 }
 #gs-4 .rg-notes{
   --gap:8px;
-  inset:12px 12px 82px;
+  inset:12px 12px 64px;
 }
 #gs-4 .rg-note{
-  height:clamp(32px,8.6vw,44px);
+  height:clamp(36px,9.6vw,48px);
   border-radius:999px;
   display:flex;
   align-items:center;
@@ -1868,7 +1868,7 @@ body.rg-mode{
   z-index:-1;
 }
 #gs-4 .rg-judgement{
-  bottom:104px;
+  bottom:86px;
   padding:8px 16px;
   font-size:13px;
   border-radius:999px;
@@ -2004,17 +2004,17 @@ body.rg-mode{
   }
   #gs-4 .rg-lanes,
   #gs-4 .rg-notes{
-    inset:8px 8px 64px;
+    inset:8px 8px 54px;
     gap:6px;
   }
   #gs-4 .rg-notes{--gap:6px;}
   #gs-4 .rg-note{
-    height:18px;
+    height:22px;
     border-radius:10px;
     box-shadow:none;
   }
   #gs-4 .rg-judgement{
-    bottom:52px;
+    bottom:72px;
     padding:6px 12px;
     font-size:12px;
   }
@@ -8820,7 +8820,7 @@ function prevSong(){
 loadSong(songIdx);
 
 const RG_LANES = 4;
-const RG_TRAVEL_MS = 1700;
+const RG_TRAVEL_MS = 2050;
 const RG_JUDGE_WINDOWS = { perfect: 110, great: 185, good: 285, miss: 390 };
 const RG_NOTE_SYMBOLS = ['♥','★','◆','●'];
 const RG_ANALYSIS_CACHE = {};

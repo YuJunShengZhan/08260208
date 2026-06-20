@@ -5552,6 +5552,18 @@ function cpblBuildTimeLookup(raw){
         }
       });
     });
+    const text = String(raw || '');
+    const pattern = /\\"gameSno\\":(\d+)[\s\S]{0,400}?\\"preExeDate\\":\\"(\d{4}-\d{2}-\d{2})T(\d{1,2}:\d{2}):\d{2}\\"/g;
+    let match;
+    while((match = pattern.exec(text))){
+      const gameNo = String(match[1] || '').trim();
+      const date = match[2];
+      const time = cpblNormalizeTime(match[3]);
+      if(gameNo && date && time){
+        lookup.set(gameNo, time);
+        lookup.set(`${date}|${gameNo}`, time);
+      }
+    }
   }catch(_err){}
   return lookup;
 }
@@ -5583,8 +5595,9 @@ async function cpblHydrateGameTimes(games){
   let changed = false;
   games.forEach(game=>{
     if(cpblGetGameTime(game)) return;
-    const key = `${game.date}|${game.away}|${game.home}`;
-    const time = lookup.get(key);
+    const key = `${game.date}|${game.no}`;
+    const altKey = String(game.no || '');
+    const time = lookup.get(key) || lookup.get(altKey);
     if(time){
       game.time = time;
       changed = true;

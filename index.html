@@ -5393,9 +5393,19 @@ function cpblNormalizeTime(t){
   if(h>=0 && h<=4) h+=16;
   return `${cpblPad(h)}:${min}`;
 }
+function cpblGetGameTime(game){
+  const raw = String(game?.time || game?.startTime || game?.startDate || game?.startDateTime || '').trim();
+  if(!raw) return '';
+  const direct = raw.match(/\b(\d{1,2}:\d{2})\b/);
+  if(direct) return cpblNormalizeTime(direct[1]);
+  const iso = raw.match(/T(\d{1,2}:\d{2})/);
+  if(iso) return cpblNormalizeTime(iso[1]);
+  return '';
+}
 function cpblGameStart(game){
-  if(!game?.date || !game?.time) return null;
-  const dt = new Date(`${game.date}T${game.time}:00+08:00`);
+  const time = cpblGetGameTime(game);
+  if(!game?.date || !time) return null;
+  const dt = new Date(`${game.date}T${time}:00+08:00`);
   return isNaN(dt) ? null : dt;
 }
 function cpblIsLocked(game){
@@ -5477,7 +5487,7 @@ function cpblRenderGames(){
       return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">猜 ${cpblEscape(team)}</button>`;
     };
     return `<div class="cpblg-game">
-      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(game.time || '')}<br>${cpblEscape(game.field||'')} ${cpblEscape(game.time||'')}</div></div>
+      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblGetGameTime(game))}<br>${cpblEscape(game.field||'')} ${cpblEscape(cpblGetGameTime(game)||'')}</div></div>
       <div class="cpblg-match"><div class="cpblg-team"><span class="cpblg-side">客隊</span>${cpblEscape(game.away)}</div>${score}<div class="cpblg-team"><span class="cpblg-side">主隊</span>${cpblEscape(game.home)}</div></div>
       <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
       <div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div>
@@ -5516,6 +5526,71 @@ function cpblResolveFinishedGames(push=true){
     });
   });
   if(changed) cpblSaveData(push);
+}
+
+function cpblBuildTimeLookup(raw){
+  const lookup = new Map();
+  try{
+    const doc = new DOMParser().parseFromString(String(raw||''), 'text/html');
+    doc.querySelectorAll('script[type="application/ld+json"]').forEach(script=>{
+      let data;
+      try{
+        data = JSON.parse(script.textContent || '');
+      }catch(_err){
+        return;
+      }
+      const items = data?.mainEntity?.itemListElement;
+      if(!Array.isArray(items)) return;
+      items.forEach(entry=>{
+        const item = entry?.item || entry;
+        const startDate = String(item?.startDate || '');
+        const match = startDate.match(/^(\d{4}-\d{2}-\d{2})T(\d{1,2}:\d{2})/);
+        const away = String(item?.awayTeam?.name || '').trim();
+        const home = String(item?.homeTeam?.name || '').trim();
+        if(match && away && home){
+          lookup.set(`${match[1]}|${away}|${home}`, cpblNormalizeTime(match[2]));
+        }
+      });
+    });
+  }catch(_err){}
+  return lookup;
+}
+
+async function cpblFetchOfficialTimeLookup(){
+  const sourceUrl = `https://stats.cpbl.com.tw/schedule?_=${Date.now()}`;
+  const proxies = [
+    {name:'直連', build:u=>u},
+    {name:'allorigins', build:u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`},
+    {name:'codetabs', build:u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`},
+    {name:'corsproxy.io', build:u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`},
+    {name:'r.jina.ai', build:u=>`https://r.jina.ai/${u}`}
+  ];
+  for(const proxy of proxies){
+    try{
+      const raw = await cpblFetchText(proxy.build(sourceUrl), 9000);
+      const lookup = cpblBuildTimeLookup(raw);
+      if(lookup.size) return lookup;
+    }catch(_err){}
+  }
+  return new Map();
+}
+
+async function cpblHydrateGameTimes(games){
+  if(!Array.isArray(games) || !games.length) return false;
+  if(games.every(game=>cpblGetGameTime(game))) return false;
+  const lookup = await cpblFetchOfficialTimeLookup();
+  if(!lookup.size) return false;
+  let changed = false;
+  games.forEach(game=>{
+    if(cpblGetGameTime(game)) return;
+    const key = `${game.date}|${game.away}|${game.home}`;
+    const time = lookup.get(key);
+    if(time){
+      game.time = time;
+      changed = true;
+    }
+  });
+  return changed;
 }
 
 async function cpblRefreshGames(showAlert=false){
@@ -5984,7 +6059,7 @@ function cpblRenderGames(){
       if(pick?.checked && chosen) cls += pick.correct ? ' correct' : (pick.correct===false ? ' wrong' : '');
       return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick='cpblPick(${JSON.stringify(game.id)},${JSON.stringify(team)})'>${cpblTeamInline(team)}</button>`;
     };
-    return `<div class="cpblg-game"><div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(game.time || '')}<br>${cpblEscape(game.field||'')} ${cpblEscape(game.time||'')}</div></div><div class="cpblg-match">${cpblTeamCard(game.away,'客隊')}${score}${cpblTeamCard(game.home,'主隊')}</div><div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div><div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div></div>`;
+    return `<div class="cpblg-game"><div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblGetGameTime(game))}<br>${cpblEscape(game.field||'')} ${cpblEscape(cpblGetGameTime(game)||'')}</div></div><div class="cpblg-match">${cpblTeamCard(game.away,'客隊')}${score}${cpblTeamCard(game.home,'主隊')}</div><div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div><div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div></div>`;
   }).join('');
 }
 function cpblPick(gameId, team){
@@ -6397,6 +6472,7 @@ async function cpblRefreshGames(showAlert=false){
     const result = await cpblFetchUnifiedSchedule();
     const games = Array.isArray(result.data.games) ? result.data.games : [];
     if(!games.length) throw new Error('今天沒有抓到賽程');
+    await cpblHydrateGameTimes(games);
     cpblgGames = games;
     cpblResolveFinishedGames(true);
     cpblRenderStats();

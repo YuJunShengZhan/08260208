@@ -1204,6 +1204,24 @@ background:var(--pink-light);margin-left:8px;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:10px;
 }
+.rg-best-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  margin:8px 0 0;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(232,99,122,.1);
+  color:var(--text-muted);
+  font-size:11px;
+}
+.rg-best-row strong{
+  color:var(--pink);
+  font-family:'Noto Serif TC',serif;
+  font-size:14px;
+}
 .rg-metric{
   background:rgba(255,255,255,.9);
   border:1px solid rgba(232,99,122,.1);
@@ -3497,6 +3515,7 @@ onclick="hideSpecialForToday()">
           <div class="rg-metric-value" id="rg-accuracy">0%</div>
         </div>
       </div>
+      <div class="rg-best-row">🏆 雲端最高分 <strong id="rg-best-score">0</strong></div>
 
       <div class="rg-song-row">
         <div class="rg-song-meta">
@@ -4202,6 +4221,7 @@ function albumInitFirebase(){
   onValue(ref(db,'albumData'),snap=>{
     albumFirebaseData=snap.val()||{};
     albumSetBadge('☁️ 已同步');
+    if(typeof rgSetCover === 'function' && rgInitDone) rgSetCover();
     albumRenderCal();
     renderMemories();
     if(typeof pzRenderPicker==='function') pzRenderPicker();
@@ -8880,6 +8900,10 @@ let rgAudioCtx = null;
 let rgChartMode = 'auto';
 let rgLastFocusAt = 0;
 let rgLastFrameAt = 0;
+let rgBestScore = 0;
+let rgBestScoreReady = false;
+const RG_BEST_PATH = 'rhythmBest/game1';
+const RG_BEST_LOCAL_KEY = 'rhythmBestGame1';
 const rgHeldLanes = [false, false, false, false];
 
 function rgIsLowPerfMode(){
@@ -9364,6 +9388,7 @@ function rgInit(){
   });
   rgLoadSong(songIdx || 0);
   rgAnalyzeSong(RG_SONGS[0]).catch(()=>{});
+  rgInitBestScore();
 }
 
 function rgEnterScreen(){
@@ -9450,13 +9475,6 @@ function rgSetCover(){
   const img = document.getElementById('rg-cover-img');
   const fallback = document.getElementById('rg-cover-fallback');
   const stage = document.getElementById('rg-stage');
-  if(rgIsLowPerfMode()){
-    cover?.classList.add('empty');
-    img?.classList.add('hidden');
-    if(fallback) fallback.textContent = '?';
-    if(stage) stage.style.setProperty('--rg-cover', 'none');
-    return;
-  }
   const photos = typeof pzCollectPhotos === 'function' ? pzCollectPhotos() : [];
   if(!photos.length){
     cover?.classList.add('empty');
@@ -9472,8 +9490,52 @@ function rgSetCover(){
   }
   cover?.classList.remove('empty');
   if(fallback) fallback.textContent = '';
-  if(stage) stage.style.setProperty('--rg-cover', `url("${pick.src}")`);
+  if(stage){
+    stage.style.setProperty('--rg-cover', rgIsLowPerfMode() ? 'none' : `url("${pick.src}")`);
+  }
 }
+
+function rgSetBestScore(value){
+  rgBestScore = Math.max(0, Number(value) || 0);
+  const best = document.getElementById('rg-best-score');
+  if(best) best.textContent = rgBestScore.toLocaleString();
+}
+
+function rgSaveBestScore(value){
+  const score = Math.max(0, Number(value) || 0);
+  if(score <= 0) return;
+  const localBest = Number(localStorage.getItem(RG_BEST_LOCAL_KEY) || 0);
+  if(score > localBest) localStorage.setItem(RG_BEST_LOCAL_KEY, String(score));
+  if(score > rgBestScore) rgSetBestScore(score);
+  if(!window._fb) return;
+  const {db,ref,runTransaction,set} = window._fb;
+  if(runTransaction){
+    runTransaction(ref(db,RG_BEST_PATH), current => {
+      const cloud = Number(current) || 0;
+      return score > cloud ? score : cloud;
+    }).catch(()=>{});
+  }else if(score > rgBestScore){
+    set(ref(db,RG_BEST_PATH), score).catch(()=>{});
+  }
+}
+
+function rgInitBestScore(){
+  const localBest = Number(localStorage.getItem(RG_BEST_LOCAL_KEY) || 0);
+  if(localBest > rgBestScore) rgSetBestScore(localBest);
+  if(rgBestScoreReady || !window._fb) return;
+  rgBestScoreReady = true;
+  const {db,ref,onValue} = window._fb;
+  onValue(ref(db,RG_BEST_PATH), snapshot => {
+    const cloudBest = Number(snapshot.val()) || 0;
+    const currentLocal = Number(localStorage.getItem(RG_BEST_LOCAL_KEY) || 0);
+    const best = Math.max(cloudBest, currentLocal, rgBestScore);
+    rgSetBestScore(best);
+    if(best > currentLocal) localStorage.setItem(RG_BEST_LOCAL_KEY, String(best));
+    if(best > cloudBest) rgSaveBestScore(best);
+  });
+}
+
+window.addEventListener('firebaseReady', rgInitBestScore);
 
 function rgResetStats(){
   rgScore = 0;
@@ -9807,6 +9869,7 @@ function rgFinish(){
   rgRenderNotes(rgAudio ? rgAudio.currentTime * 1000 : 0);
   const totalHit = rgPerfect + rgGreat + rgGood;
   const accuracy = rgGetAccuracy();
+  rgSaveBestScore(rgScore);
   const rating = accuracy >= 92 ? '超會抓節奏 ✨' : accuracy >= 78 ? '很穩欸 💕' : accuracy >= 55 ? '再玩一次會更順' : '這首有點難';
   rgSetOverlay('這首歌完成了', `${RG_SONGS[rgSongIndex].name} 完成！${rating}｜得分 ${rgScore.toLocaleString()}｜命中 ${totalHit}/${rgChart.length}｜最高連擊 x${rgBestCombo}。`, '再玩一次');
   rgSetStateLine(`完成！命中 ${totalHit} 個拍點，最高連擊 x${rgBestCombo}。`);

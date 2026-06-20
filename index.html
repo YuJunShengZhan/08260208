@@ -1398,6 +1398,10 @@ background:var(--pink-light);margin-left:8px;
   box-shadow:0 10px 18px rgba(232,99,122,.12);
   white-space:nowrap;
 }
+.rg-judgement.perfect{background:#fff5c8;border-color:#f2c94c;color:#9c6b00;box-shadow:0 10px 20px rgba(242,201,76,.18);}
+.rg-judgement.great{background:#ffe7d7;border-color:#ff9f68;color:#bf5b21;box-shadow:0 10px 20px rgba(255,159,104,.16);}
+.rg-judgement.good{background:#e4f0ff;border-color:#7aaef5;color:#2d5fb3;box-shadow:0 10px 20px rgba(122,174,245,.16);}
+.rg-judgement.miss{background:#ffe8ee;border-color:#ff7b9a;color:#b33a5a;box-shadow:0 10px 20px rgba(255,123,154,.16);}
 .rg-overlay{
   inset:0;
   display:flex;
@@ -1470,8 +1474,58 @@ background:var(--pink-light);margin-left:8px;
   font-family:'Noto Sans TC',sans-serif;
   box-shadow:0 12px 22px rgba(110,33,52,.16);
   transition:transform .08s ease,filter .12s ease;
+  position:relative;
+  overflow:hidden;
 }
 .rg-pad.flash{transform:scale(.96);filter:brightness(1.1);}
+.rg-pad.flash-perfect{filter:brightness(1.18) saturate(1.14) drop-shadow(0 0 10px rgba(255,221,102,.4));}
+.rg-pad.flash-great{filter:brightness(1.16) saturate(1.1) drop-shadow(0 0 10px rgba(255,150,102,.38));}
+.rg-pad.flash-good{filter:brightness(1.12) saturate(1.08) drop-shadow(0 0 10px rgba(140,185,255,.34));}
+.rg-pad.flash-miss{filter:brightness(.98) saturate(.96) drop-shadow(0 0 10px rgba(255,110,145,.3));}
+.rg-hit-burst{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:18px;
+  height:18px;
+  margin-left:-9px;
+  margin-top:-9px;
+  border-radius:50%;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(255,255,255,.96) 0%,rgba(255,255,255,.56) 28%,rgba(255,255,255,.18) 52%,rgba(255,255,255,0) 74%);
+  box-shadow:0 0 0 0 rgba(255,255,255,.42);
+  animation:rgBurst .48s ease-out forwards;
+}
+.rg-hit-particles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:visible;
+  z-index:5;
+}
+.rg-hit-particle{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:8px;
+  height:8px;
+  margin-left:-4px;
+  margin-top:-4px;
+  border-radius:50%;
+  background:var(--particle-color,#fff);
+  box-shadow:0 0 8px rgba(255,255,255,.25);
+  animation:rgParticle .62s cubic-bezier(.16,.84,.25,1) forwards;
+}
+@keyframes rgParticle{
+  0%{transform:translate(0,0) scale(.45);opacity:0;}
+  12%{opacity:1;}
+  100%{transform:translate(var(--dx,0px), var(--dy,0px)) scale(0);opacity:0;}
+}
+@keyframes rgBurst{
+  0%{transform:scale(.2);opacity:0;}
+  20%{opacity:1;}
+  100%{transform:scale(6.4);opacity:0;}
+}
 .rg-pad.l0{background:linear-gradient(135deg,#ff8ba7,#f06292);}
 .rg-pad.l1{background:linear-gradient(135deg,#ffb787,#ff8a65);}
 .rg-pad.l2{background:linear-gradient(135deg,#8ec5ff,#5b8dff);}
@@ -1974,16 +2028,22 @@ body.rg-mode #gs-4 *{
 #gs-4 .rg-overlay{
   z-index:4;
 }
-#gs-4 .rg-pad{
-  min-height:clamp(58px,14vw,72px);
-  border-radius:20px;
-  font-size:clamp(22px,6vw,30px);
-  font-weight:900;
-  touch-action:manipulation;
+  #gs-4 .rg-pad{
+    min-height:clamp(58px,14vw,72px);
+    border-radius:20px;
+    font-size:clamp(22px,6vw,30px);
+    font-weight:900;
+    touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;
   user-select:none;
-  box-shadow:0 14px 24px rgba(110,33,52,.18), inset 0 1.5px 0 rgba(255,255,255,.35), inset 0 -4px 0 rgba(0,0,0,.16);
-}
+    box-shadow:0 14px 24px rgba(110,33,52,.18), inset 0 1.5px 0 rgba(255,255,255,.35), inset 0 -4px 0 rgba(0,0,0,.16);
+  }
+  #gs-4 .rg-hit-burst{
+    width:22px;
+    height:22px;
+    margin-left:-11px;
+    margin-top:-11px;
+  }
 #gs-4 .rg-pad.flash{
   transform:scale(.93);
   filter:brightness(1.14) saturate(1.12);
@@ -2101,6 +2161,26 @@ body.rg-mode #gs-4 *{
   --head-half:11px;
   min-height:40px;
   padding-bottom:2px;
+}
+  #gs-4 .rg-hit-burst{
+    width:22px;
+    height:22px;
+    margin-left:-11px;
+    margin-top:-11px;
+  }
+  #gs-4 .rg-hit-particle{
+    width:7px;
+    height:7px;
+    margin-left:-3.5px;
+    margin-top:-3.5px;
+  }
+#gs-4 .rg-note.hit-pop{
+  animation:rgNotePop .36s ease-out forwards;
+}
+@keyframes rgNotePop{
+  0%{transform:translateY(-50%) scale(var(--note-scale-x,1), var(--note-scale-y,1));filter:brightness(1.18);}
+  50%{transform:translateY(-50%) scale(calc(var(--note-scale-x,1) * 1.22), calc(var(--note-scale-y,1) * 1.22));filter:brightness(1.35);}
+  100%{transform:translateY(-50%) scale(.2,.2);opacity:0;filter:brightness(1);}
 }
   #gs-4 .rg-judgement{
     bottom:72px;
@@ -9889,7 +9969,7 @@ function rgRenderNotes(now){
   if(!box) return;
   const active = rgChart.filter(note => {
     const endTime = note.t + (note.holdMs || 0);
-    return !note.judged && note.t - now < RG_TRAVEL_MS && now - endTime < RG_JUDGE_WINDOWS.miss;
+    return (!note.judged && note.t - now < RG_TRAVEL_MS && now - endTime < RG_JUDGE_WINDOWS.miss) || (note.popUntil && note.popUntil > now);
   });
   box.innerHTML = active.map(note => {
     const progress = ((now - note.t) + RG_TRAVEL_MS) / RG_TRAVEL_MS;
@@ -9903,8 +9983,10 @@ function rgRenderNotes(now){
     const remainingHold = note.holdMs ? Math.max(0, note.holdMs - Math.max(0, now - note.t)) : 0;
     const holdHeight = note.holdMs ? Math.max(38, remainingHold / RG_TRAVEL_MS * box.clientHeight + 24) : 0;
     const holdClass = note.holdMs ? ' hold' : '';
+    const popClass = note.popUntil && note.popUntil > now ? ' hit-pop' : '';
     const holdStyle = note.holdMs ? `height:${holdHeight}px;` : '';
-    return `<div class="rg-note l${note.lane}${holdClass}" style="--lane:${note.lane};top:${top}%;--note-scale-x:${scaleX};--note-scale-y:${scaleY};${holdStyle}">${symbol}</div>`;
+    const noteKey = `${note.t}-${note.lane}-${note.holdMs || 0}-${note.intensity || 0}`;
+    return `<div class="rg-note l${note.lane}${holdClass}${popClass}" data-note-key="${noteKey}" style="--lane:${note.lane};top:${top}%;--note-scale-x:${scaleX};--note-scale-y:${scaleY};${holdStyle}">${symbol}</div>`;
   }).join('');
 }
 
@@ -9946,6 +10028,7 @@ function rgCompleteHold(note){
 function rgHit(lane){
   if(!rgRunning || !rgAudio) return;
   rgFlashPad(lane);
+  rgSpawnPadBurst(lane);
   const now = rgAudio.currentTime * 1000;
   let candidate = null;
   let bestDelta = Infinity;
@@ -9968,13 +10051,19 @@ function rgHit(lane){
   else if(bestDelta <= RG_JUDGE_WINDOWS.great) grade = 'great';
   else if(bestDelta <= RG_JUDGE_WINDOWS.good) grade = 'good';
   if(grade && candidate.holdMs){
+    rgFlashPad(lane, grade);
+    rgSpawnPadBurst(lane);
     candidate.holding = true;
     candidate.hit = true;
     candidate.holdGrade = grade;
     rgShowJudge('按住不要放');
     return;
   }
-  if(grade) return rgApplyJudge(grade, candidate, true);
+  if(grade){
+    rgFlashPad(lane, grade);
+    rgSpawnPadBurst(lane);
+    return rgApplyJudge(grade, candidate, true);
+  }
   rgShowJudge(now < candidate.t ? '太早' : '太晚');
 }
 
@@ -9983,53 +10072,121 @@ function rgApplyJudge(type, note, fromHit = false){
   note.judged = true;
   note.hit = type !== 'miss';
   note.holding = false;
+  note.popUntil = (rgAudio ? rgAudio.currentTime * 1000 : Date.now()) + (type === 'miss' ? 0 : 340);
 
   if(type === 'perfect'){
     rgPerfect++;
     rgCombo++;
     rgScore += 1000 + rgCombo * 8;
-    rgShowJudge('Perfect');
+    rgShowJudge('Perfect', 'perfect');
   } else if(type === 'great'){
     rgGreat++;
     rgCombo++;
     rgScore += 760 + rgCombo * 6;
-    rgShowJudge('Great');
+    rgShowJudge('Great', 'great');
   } else if(type === 'good'){
     rgGood++;
     rgCombo++;
     rgScore += 480 + rgCombo * 4;
-    rgShowJudge('Good');
+    rgShowJudge('Good', 'good');
   } else {
     rgMiss++;
     rgCombo = 0;
-    rgShowJudge('Miss');
+    rgShowJudge('Miss', 'miss');
   }
 
   if(fromHit && navigator.vibrate){
     try{ navigator.vibrate(type === 'perfect' ? 10 : type === 'miss' ? 22 : 14); }catch(_err){}
   }
+  if(type !== 'miss'){
+    rgSpawnNoteBurst(note);
+  }
+  rgSpawnHitParticles(note.lane, type);
   rgBestCombo = Math.max(rgBestCombo, rgCombo);
   rgUpdateStats();
   rgRenderNotes(rgAudio ? rgAudio.currentTime * 1000 : 0);
 }
 
-function rgShowJudge(text){
+function rgShowJudge(text, tone='neutral'){
   const el = document.getElementById('rg-judgement');
   if(!el) return;
+  el.classList.remove('perfect','great','good','miss');
+  if(tone && tone !== 'neutral') el.classList.add(tone);
   el.textContent = text;
   clearTimeout(rgJudgeTimer);
   rgJudgeTimer = setTimeout(() => {
+    el.classList.remove('perfect','great','good','miss');
     if(el.textContent === text) el.textContent = rgRunning ? '跟著節奏點擊' : '準備好了就開始';
   }, 620);
 }
 
-function rgFlashPad(lane){
+function rgFlashPad(lane, tone='neutral'){
   const pad = document.getElementById(`rg-pad-${lane}`);
   if(!pad) return;
-  pad.classList.remove('flash');
+  pad.classList.remove('flash','flash-perfect','flash-great','flash-good','flash-miss');
   void pad.offsetWidth;
   pad.classList.add('flash');
+  if(tone && tone !== 'neutral') pad.classList.add(`flash-${tone}`);
   setTimeout(()=>pad.classList.remove('flash'), 120);
+  setTimeout(()=>pad.classList.remove('flash-perfect','flash-great','flash-good','flash-miss'), 180);
+}
+
+function rgSpawnPadBurst(lane){
+  const pad = document.getElementById(`rg-pad-${lane}`);
+  if(!pad) return;
+  const burst = document.createElement('span');
+  burst.className = 'rg-hit-burst';
+  pad.appendChild(burst);
+  burst.addEventListener('animationend', () => burst.remove(), { once:true });
+}
+
+function rgSpawnNoteBurst(note){
+  const stage = document.getElementById('rg-stage');
+  if(!stage || !note) return;
+  const noteKey = `${note.t}-${note.lane}-${note.holdMs || 0}-${note.intensity || 0}`;
+  const noteEl = document.querySelector(`.rg-note[data-note-key="${noteKey}"]`);
+  if(!noteEl) return;
+  noteEl.classList.add('hit-pop');
+  setTimeout(() => noteEl.classList.remove('hit-pop'), 420);
+}
+
+function rgSpawnHitParticles(lane, tone='neutral'){
+  const stage = document.getElementById('rg-stage');
+  const pad = document.getElementById(`rg-pad-${lane}`);
+  if(!stage || !pad) return;
+  const stageRect = stage.getBoundingClientRect();
+  const padRect = pad.getBoundingClientRect();
+  const colors = tone === 'perfect'
+    ? ['#ffe66d','#fff4a8','#fff']
+    : tone === 'great'
+      ? ['#ffb17b','#ffd7bf','#fff']
+      : tone === 'good'
+        ? ['#7fb5ff','#dce9ff','#fff']
+        : tone === 'miss'
+          ? ['#ff7f9f','#ffd1dc','#fff']
+          : ['#fff','#ffe5eb','#fff2f5'];
+  const count = tone === 'perfect' ? 14 : tone === 'great' ? 12 : tone === 'good' ? 10 : 8;
+  const wrap = document.createElement('div');
+  wrap.className = 'rg-hit-particles';
+  wrap.style.left = `${padRect.left - stageRect.left}px`;
+  wrap.style.top = `${padRect.top - stageRect.top}px`;
+  wrap.style.width = `${padRect.width}px`;
+  wrap.style.height = `${padRect.height}px`;
+  stage.appendChild(wrap);
+  for(let i=0;i<count;i++){
+    const particle = document.createElement('span');
+    particle.className = 'rg-hit-particle';
+    const angle = (Math.PI * 2 * i / count) + (Math.random() * 0.6 - 0.3);
+    const distance = tone === 'perfect' ? 78 : tone === 'great' ? 66 : tone === 'good' ? 56 : 46;
+    const dx = Math.cos(angle) * (distance + Math.random() * 18);
+    const dy = Math.sin(angle) * (distance + Math.random() * 18) - (tone === 'miss' ? 2 : 0);
+    particle.style.setProperty('--dx', `${dx.toFixed(1)}px`);
+    particle.style.setProperty('--dy', `${dy.toFixed(1)}px`);
+    particle.style.setProperty('--particle-color', colors[i % colors.length]);
+    particle.style.animationDelay = `${Math.random() * 0.05}s`;
+    wrap.appendChild(particle);
+  }
+  setTimeout(() => wrap.remove(), 740);
 }
 
 function rgFinish(){

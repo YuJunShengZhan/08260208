@@ -1845,7 +1845,16 @@ body.rg-mode{
   border-radius:28px;
   overflow:hidden;
   touch-action:none;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
   background:linear-gradient(180deg,#fff8fb 0%,#ffdce6 100%);
+}
+body.rg-mode #gs-4,
+body.rg-mode #gs-4 *{
+  -webkit-user-select:none!important;
+  user-select:none!important;
+  -webkit-touch-callout:none!important;
 }
 #gs-4 .rg-stage::before{
   opacity:.42;
@@ -9349,6 +9358,10 @@ function rgInit(){
 
   document.addEventListener('keydown', rgHandleKeydown);
   document.addEventListener('keyup', rgHandleKeyup);
+  const stage = document.getElementById('rg-stage');
+  ['contextmenu','selectstart','dragstart'].forEach(eventName => {
+    stage?.addEventListener(eventName, event => event.preventDefault());
+  });
   rgLoadSong(songIdx || 0);
   rgAnalyzeSong(RG_SONGS[0]).catch(()=>{});
 }
@@ -9657,6 +9670,7 @@ function rgPadPress(e, lane){
     e.preventDefault();
     try{ e.currentTarget?.setPointerCapture?.(e.pointerId); }catch(_err){}
   }
+  try{ window.getSelection?.()?.removeAllRanges(); }catch(_selectionError){}
   rgHeldLanes[lane] = true;
   document.getElementById(`rg-pad-${lane}`)?.classList.add('holding');
   rgHit(lane);

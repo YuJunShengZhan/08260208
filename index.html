@@ -3552,10 +3552,12 @@ onclick="hideSpecialForToday()">
       <div class="rg-best-row">🏆 雲端最高分 <strong id="rg-best-score">0</strong></div>
 
       <div class="rg-song-row">
+        <button class="pz-btn secondary rg-song-nav" aria-label="上一首" onclick="rgPrevSong()">‹</button>
         <div class="rg-song-meta">
-          <div class="rg-song-label">目前曲目</div>
+          <div class="rg-song-label" id="rg-song-label">目前曲目</div>
           <div class="rg-song-name" id="rg-song-name">載入中...</div>
         </div>
+        <button class="pz-btn secondary rg-song-nav" aria-label="下一首" onclick="rgNextSong()">›</button>
       </div>
 
       <div class="rg-stage" id="rg-stage">
@@ -8823,7 +8825,19 @@ const SONGS=[
   {file:'music20.mp3',name:'偷偷的'},
 ];
 const RG_SONGS=[
-  {file:'game1.mp3',name:'跳樓機 鋼琴版'}
+  {file:'game1.mp3',name:'跳樓機 鋼琴版'},
+  {file:'game2.mp3',name:'海嶼你'},
+  {file:'game3.mp3',name:'友誼長存'},
+  {file:'game4.mp3',name:'離開我的依賴'},
+  {file:'game5.mp3',name:'太陽與地球'},
+  {file:'game6.mp3',name:'逆光 Against The Light'},
+  {file:'game7.mp3',name:'我知道'},
+  {file:'game8.mp3',name:'反方向的鐘'},
+  {file:'game9.mp3',name:'再見的時候'},
+  {file:'game10.mp3',name:'幸福在歌唱'},
+  {file:'game11.mp3',name:'Enchanted'},
+  {file:'game12.mp3',name:'Zoo'},
+  {file:'game13.mp3',name:'專屬天使'}
 ];
 for(let i=SONGS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[SONGS[i],SONGS[j]]=[SONGS[j],SONGS[i]];}
 let songIdx=Math.floor(Math.random()*SONGS.length);
@@ -8935,9 +8949,8 @@ let rgChartMode = 'auto';
 let rgLastFocusAt = 0;
 let rgLastFrameAt = 0;
 let rgBestScore = 0;
-let rgBestScoreReady = false;
-const RG_BEST_PATH = 'rhythmBest/game1';
-const RG_BEST_LOCAL_KEY = 'rhythmBestGame1';
+let rgBestScoreSong = '';
+let rgBestUnsubscribe = null;
 const rgHeldLanes = [false, false, false, false];
 
 function rgIsLowPerfMode(){
@@ -9363,9 +9376,10 @@ function rgBuildChartFromAudioBeatGrid(buffer){
 async function rgAnalyzeSong(song){
   const key = `piano-beat-grid-v4:${song?.file || song?.name || 'song'}`;
   if(RG_ANALYSIS_CACHE[key]) return RG_ANALYSIS_CACHE[key];
-  if(song?.file === 'game1.mp3'){
+  const gameMatch = String(song?.file || '').match(/^(game\d+)\.mp3$/i);
+  if(gameMatch){
     try{
-      const chartResponse = await fetch('game1-chart.json?v=2', { cache:'no-cache' });
+      const chartResponse = await fetch(`${gameMatch[1]}-chart.json?v=2`, { cache:'no-cache' });
       if(chartResponse.ok){
         const savedChart = await chartResponse.json();
         if(Array.isArray(savedChart?.notes) && savedChart.notes.length >= 16){
@@ -9420,8 +9434,8 @@ function rgInit(){
   ['contextmenu','selectstart','dragstart'].forEach(eventName => {
     stage?.addEventListener(eventName, event => event.preventDefault());
   });
-  rgLoadSong(songIdx || 0);
-  rgAnalyzeSong(RG_SONGS[0]).catch(()=>{});
+  rgLoadSong(0);
+  rgAnalyzeSong(RG_SONGS[rgSongIndex]).catch(()=>{});
   rgInitBestScore();
 }
 
@@ -9499,8 +9513,10 @@ function rgSetStateLine(text){
 function rgSetSongName(){
   const song = RG_SONGS[rgSongIndex];
   const name = document.getElementById('rg-song-name');
+  const label = document.getElementById('rg-song-label');
   const select = document.getElementById('rg-song-select');
   if(name) name.textContent = song?.name || '未選擇';
+  if(label) label.textContent = `目前曲目 ${rgSongIndex + 1} / ${RG_SONGS.length}`;
   if(select) select.value = String(rgSongIndex);
 }
 
@@ -9535,36 +9551,51 @@ function rgSetBestScore(value){
   if(best) best.textContent = rgBestScore.toLocaleString();
 }
 
+function rgCurrentBestKey(){
+  return String(RG_SONGS[rgSongIndex]?.file || 'game1.mp3')
+    .replace(/\.mp3$/i,'')
+    .replace(/[^a-z0-9_-]/gi,'') || 'game1';
+}
+
+function rgBestPath(){ return `rhythmBest/${rgCurrentBestKey()}`; }
+function rgBestLocalKey(){ return `rhythmBest_${rgCurrentBestKey()}`; }
+
 function rgSaveBestScore(value){
   const score = Math.max(0, Number(value) || 0);
   if(score <= 0) return;
-  const localBest = Number(localStorage.getItem(RG_BEST_LOCAL_KEY) || 0);
-  if(score > localBest) localStorage.setItem(RG_BEST_LOCAL_KEY, String(score));
+  const localKey = rgBestLocalKey();
+  const cloudPath = rgBestPath();
+  const localBest = Number(localStorage.getItem(localKey) || 0);
+  if(score > localBest) localStorage.setItem(localKey, String(score));
   if(score > rgBestScore) rgSetBestScore(score);
   if(!window._fb) return;
-  const {db,ref,runTransaction,set} = window._fb;
+  const {db,ref,runTransaction} = window._fb;
   if(runTransaction){
-    runTransaction(ref(db,RG_BEST_PATH), current => {
+    runTransaction(ref(db,cloudPath), current => {
       const cloud = Number(current) || 0;
       return score > cloud ? score : cloud;
     }).catch(()=>{});
-  }else if(score > rgBestScore){
-    set(ref(db,RG_BEST_PATH), score).catch(()=>{});
   }
 }
 
 function rgInitBestScore(){
-  const localBest = Number(localStorage.getItem(RG_BEST_LOCAL_KEY) || 0);
-  if(localBest > rgBestScore) rgSetBestScore(localBest);
-  if(rgBestScoreReady || !window._fb) return;
-  rgBestScoreReady = true;
+  const songKey = rgCurrentBestKey();
+  const localKey = rgBestLocalKey();
+  const cloudPath = rgBestPath();
+  if(rgBestScoreSong === songKey && rgBestUnsubscribe) return;
+  if(typeof rgBestUnsubscribe === 'function') rgBestUnsubscribe();
+  rgBestUnsubscribe = null;
+  rgBestScoreSong = songKey;
+  const localBest = Number(localStorage.getItem(localKey) || 0);
+  rgSetBestScore(localBest);
+  if(!window._fb) return;
   const {db,ref,onValue} = window._fb;
-  onValue(ref(db,RG_BEST_PATH), snapshot => {
+  rgBestUnsubscribe = onValue(ref(db,cloudPath), snapshot => {
     const cloudBest = Number(snapshot.val()) || 0;
-    const currentLocal = Number(localStorage.getItem(RG_BEST_LOCAL_KEY) || 0);
+    const currentLocal = Number(localStorage.getItem(localKey) || 0);
     const best = Math.max(cloudBest, currentLocal, rgBestScore);
     rgSetBestScore(best);
-    if(best > currentLocal) localStorage.setItem(RG_BEST_LOCAL_KEY, String(best));
+    if(best > currentLocal) localStorage.setItem(localKey, String(best));
     if(best > cloudBest) rgSaveBestScore(best);
   });
 }
@@ -9615,6 +9646,7 @@ function rgLoadSong(index){
   rgRaf = 0;
   rgSongIndex = (Number(index) + RG_SONGS.length) % RG_SONGS.length;
   rgSetSongName();
+  rgInitBestScore();
   rgSetCover();
   rgResetStats();
   rgChart = [];

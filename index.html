@@ -5487,7 +5487,7 @@ function cpblRenderGames(){
       return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">猜 ${cpblEscape(team)}</button>`;
     };
     return `<div class="cpblg-game">
-      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblGetGameTime(game))}<br>${cpblEscape(game.field||'')} ${cpblEscape(cpblGetGameTime(game)||'')}</div></div>
+      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblGetGameTime(game))}<br>${cpblEscape(game.field||'')}</div></div>
       <div class="cpblg-match"><div class="cpblg-team"><span class="cpblg-side">客隊</span>${cpblEscape(game.away)}</div>${score}<div class="cpblg-team"><span class="cpblg-side">主隊</span>${cpblEscape(game.home)}</div></div>
       <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
       <div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div>
@@ -5553,9 +5553,10 @@ function cpblBuildTimeLookup(raw){
       });
     });
     const text = String(raw || '');
-    const pattern = /\\"gameSno\\":(\d+)[\s\S]{0,400}?\\"preExeDate\\":\\"(\d{4}-\d{2}-\d{2})T(\d{1,2}:\d{2}):\d{2}\\"/g;
+    const normalizedText = text.replace(/\\"/g, '"');
+    const pattern = /"gameSno":(\d+)[\s\S]{0,800}?"preExeDate":"(\d{4}-\d{2}-\d{2})T(\d{1,2}:\d{2}):\d{2}"/g;
     let match;
-    while((match = pattern.exec(text))){
+    while((match = pattern.exec(normalizedText))){
       const gameNo = String(match[1] || '').trim();
       const date = match[2];
       const time = cpblNormalizeTime(match[3]);
@@ -6072,7 +6073,7 @@ function cpblRenderGames(){
       if(pick?.checked && chosen) cls += pick.correct ? ' correct' : (pick.correct===false ? ' wrong' : '');
       return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick='cpblPick(${JSON.stringify(game.id)},${JSON.stringify(team)})'>${cpblTeamInline(team)}</button>`;
     };
-    return `<div class="cpblg-game"><div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblGetGameTime(game))}<br>${cpblEscape(game.field||'')} ${cpblEscape(cpblGetGameTime(game)||'')}</div></div><div class="cpblg-match">${cpblTeamCard(game.away,'客隊')}${score}${cpblTeamCard(game.home,'主隊')}</div><div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div><div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div></div>`;
+    return `<div class="cpblg-game"><div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblGetGameTime(game))}<br>${cpblEscape(game.field||'')}</div></div><div class="cpblg-match">${cpblTeamCard(game.away,'客隊')}${score}${cpblTeamCard(game.home,'主隊')}</div><div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div><div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div></div>`;
   }).join('');
 }
 function cpblPick(gameId, team){

@@ -1994,6 +1994,14 @@ body.rg-mode{
     height:clamp(232px,40dvh,310px);
     border-radius:24px;
   }
+  #gs-4 .rg-stage::before{
+    filter:none;
+    opacity:.16;
+    transform:none;
+  }
+  #gs-4 .rg-stage::after{
+    background:linear-gradient(180deg,rgba(255,255,255,.32) 0%,rgba(255,222,232,.48) 100%);
+  }
   #gs-4 .rg-lanes,
   #gs-4 .rg-notes{
     inset:8px 8px 64px;
@@ -2003,6 +2011,7 @@ body.rg-mode{
   #gs-4 .rg-note{
     height:18px;
     border-radius:10px;
+    box-shadow:none;
   }
   #gs-4 .rg-judgement{
     bottom:52px;
@@ -8833,6 +8842,11 @@ let rgJudgeTimer = null;
 let rgAudioCtx = null;
 let rgChartMode = 'auto';
 let rgLastFocusAt = 0;
+let rgLastFrameAt = 0;
+
+function rgIsLowPerfMode(){
+  return window.matchMedia && window.matchMedia('(max-width: 520px)').matches;
+}
 
 function rgHash(text){
   let hash = 2166136261;
@@ -9199,6 +9213,13 @@ function rgSetCover(){
   const img = document.getElementById('rg-cover-img');
   const fallback = document.getElementById('rg-cover-fallback');
   const stage = document.getElementById('rg-stage');
+  if(rgIsLowPerfMode()){
+    cover?.classList.add('empty');
+    img?.classList.add('hidden');
+    if(fallback) fallback.textContent = '?';
+    if(stage) stage.style.setProperty('--rg-cover', 'none');
+    return;
+  }
   const photos = typeof pzCollectPhotos === 'function' ? pzCollectPhotos() : [];
   if(!photos.length){
     cover?.classList.add('empty');
@@ -9252,6 +9273,7 @@ function rgLoadSong(index){
   rgInit();
   rgRunning = false;
   rgStarting = false;
+  rgLastFrameAt = 0;
   cancelAnimationFrame(rgRaf);
   rgRaf = 0;
   rgSongIndex = (Number(index) + SONGS.length) % SONGS.length;
@@ -9315,6 +9337,7 @@ async function rgStart(){
   document.body.classList.remove('pz-mode');
   document.body.classList.add('rg-mode');
   rgStarting = true;
+  rgLastFrameAt = 0;
   audio.pause();
   setUI(false);
   rgResetStats();
@@ -9351,6 +9374,12 @@ async function rgStart(){
 
 function rgTick(){
   if(!rgRunning || !rgAudio) return;
+  const frameNow = performance.now();
+  if(rgIsLowPerfMode() && frameNow - rgLastFrameAt < 33){
+    rgRaf = requestAnimationFrame(rgTick);
+    return;
+  }
+  rgLastFrameAt = frameNow;
   const now = rgAudio.currentTime * 1000;
   for(const note of rgChart){
     if(!note.judged && now - note.t > RG_JUDGE_WINDOWS.miss){

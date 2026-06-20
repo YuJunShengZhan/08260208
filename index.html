@@ -5462,8 +5462,12 @@ function cpblRenderGames(){
     const resultNote = winner && winner!=='和局' && pick?.checked ? (pick.correct?`<span class="cpblg-ok">猜對了！</span>`:`<span class="cpblg-bad">猜錯了，勝隊是 ${cpblEscape(winner)}</span>`) : (winner==='和局' ? '和局不列入勝率' : '');
     const score = game.awayScore!=null && game.homeScore!=null ? `<div class="cpblg-score">${game.awayScore} : ${game.homeScore}</div>` : `<div class="cpblg-vs">VS</div>`;
     const noteBits=[];
-    if(!cpblgPlayer) noteBits.push('先選「我是聖展」或「我是予君」再猜。');
-    if(pick?.team) noteBits.push(`${cpblgPlayer} 目前猜：${pick.team}`);
+    const picksForGame = cpblgData.picks?.[game.id] || {};
+    ['聖展','予君'].forEach(name=>{
+      const playerPick = picksForGame[name];
+      if(playerPick?.team) noteBits.push(`${name} 已選 ${cpblEscape(playerPick.team)}`);
+    });
+    if(!noteBits.length && !cpblgPlayer) noteBits.push('先選「我是聖展」或「我是予君」再猜。');
     if(locked) noteBits.push('這場已開賽或已有結果，不能再修改。');
     if(resultNote) noteBits.push(resultNote);
     const btn=(team)=>{
@@ -5965,8 +5969,12 @@ function cpblRenderGames(){
     const resultNote = winner && pick?.checked ? (winner==='和局' ? '本場和局，不列入勝率' : (pick.correct ? `<span class="cpblg-ok">猜對了！</span>` : `<span class="cpblg-bad">猜錯了，勝隊是 ${cpblEscape(winner)}</span>`)) : '';
     const score = game.awayScore!=null && game.homeScore!=null ? `<div class="cpblg-score">${game.awayScore} : ${game.homeScore}</div>` : `<div class="cpblg-vs">VS</div>`;
     const noteBits=[];
-    if(!cpblgPlayer) noteBits.push('先選擇你是誰，才會記錄預測。');
-    if(pick?.team) noteBits.push(`${cpblgPlayer} 目前猜 ${pick.team}`);
+    const picksForGame = cpblgData.picks?.[game.id] || {};
+    ['聖展','予君'].forEach(name=>{
+      const playerPick = picksForGame[name];
+      if(playerPick?.team) noteBits.push(`${name} 已選 ${cpblEscape(playerPick.team)}`);
+    });
+    if(!noteBits.length && !cpblgPlayer) noteBits.push('先選擇你是誰，才會記錄預測。');
     if(locked && !winner) noteBits.push('這場已鎖定，開賽後不能修改。');
     if(resultNote) noteBits.push(resultNote);
     const btn=(team)=>{

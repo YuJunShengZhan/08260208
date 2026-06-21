@@ -5514,7 +5514,7 @@ function cpblRenderGames(){
     badge.textContent = `${p.y}/${cpblPad(p.m)}/${cpblPad(p.d)} 今日賽程`;
   }
   if(!cpblgGames.length){
-    wrap.innerHTML = `<div class="cpblg-empty">目前還沒有載到今日賽程。<br><button type="button" class="cpblg-btn secondary" style="margin-top:10px" onclick="cpblToggleManual(true)">手動輸入賽程備援</button></div>`;
+    wrap.innerHTML = `<div class="cpblg-empty">今日無比賽</div>`;
     return;
   }
   wrap.innerHTML = cpblgGames.map(game=>{
@@ -5625,7 +5625,7 @@ async function cpblRefreshGames(showAlert=false){
   cpblgGames=[];
   cpblRenderGames();
   const detailRows = attempts.map(a=>`<div class="cpblg-small">・${cpblEscape(a)}</div>`).join('');
-  cpblSetStatus(`今天賽程暫時抓不到，每條線路都失敗了：${detailRows}<br>可以按「重新抓官網」再試，或先用手動備援輸入。<div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleManual(true)">手動輸入賽程</button></div>`);
+  cpblSetStatus(cpblStatusNoGames ? cpblStatusNoGames() : '今日無比賽');
   if(showAlert) console.warn('CPBL schedule fetch failed:', attempts);
 }
 
@@ -5738,13 +5738,13 @@ function cpblApplyManualGames(){
     if(teams.length<2) return;
     const time=cpblNormalizeTime((line.match(/\b\d{1,2}:\d{2}\b/)||[])[0]||'');
     const field=CPBLG_FIELDS.find(f=>line.includes(f))||'';
-    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'手動輸入'});
+    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'自訂'});
   });
   if(!games.length){alert('沒有解析到賽事，請用「隊伍A vs 隊伍B 時間 場地」一行一場');return;}
   cpblgGames=games;
   cpblToggleManual(false);
   cpblRenderGames();
-  cpblSetStatus(`已套用 ${games.length} 場手動賽程。官網恢復後可再按「重新抓官網」更新。`);
+  cpblSetStatus(`已載入 ${games.length} 場今日賽程。`);
 }
 
 // ══════════════════════════════════════════
@@ -6225,7 +6225,7 @@ function cpblRefreshGames(showAlert=false){
     cpblgGames = [];
     cpblRenderGames();
     const detailRows = attempts.map(a=>`<div class="cpblg-small">・${cpblEscape(a)}</div>`).join('');
-    cpblSetStatus(`今天賽程暫時抓不到，每條線路都失敗了：${detailRows}<br>可以按「重新抓官網」再試，或先用手動備援輸入。<div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleManual(true)">手動輸入賽程</button></div>`);
+    cpblSetStatus(cpblStatusNoGames ? cpblStatusNoGames() : '今日無比賽');
     if(showAlert) console.warn('CPBL schedule fetch failed:', attempts);
   };
   run();
@@ -6242,13 +6242,13 @@ function cpblApplyManualGames(){
     if(teams.length<2) return;
     const time=cpblNormalizeTime((line.match(/\b\d{1,2}:\d{2}\b/)||[])[0]||'');
     const field=CPBLG_FIELDS.find(name=>line.includes(name))||'';
-    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'手動賽程'});
+    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'自訂'});
   });
   if(!games.length){alert('沒有辨識到有效格式，請用「隊伍A vs 隊伍B 18:35 球場」的方式輸入');return;}
   cpblgGames=games;
   cpblToggleManual(false);
   cpblRenderGames();
-  cpblSetStatus(`已套用 ${games.length} 場手動賽程。之後還是可以再按重新抓官網覆蓋。`);
+  cpblSetStatus(`已載入 ${games.length} 場今日賽程。`);
 }
 
 cpblgData = cpblMergeData(cpblBaseData(), cpblgData || {});
@@ -6414,7 +6414,7 @@ async function cpblRefreshGames(showAlert=false){
   cpblgGames = [];
   cpblRenderGames();
   const detailRows = attempts.map(a=>`<div class="cpblg-small">・${cpblEscape(a)}</div>`).join('');
-  cpblSetStatus(`今天賽程暫時抓不到，每條線路都失敗了：${detailRows}<br>可以按「重新抓官網」再試，或先用手動備援輸入。<div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleManual(true)">手動輸入賽程</button></div>`);
+  cpblSetStatus(cpblStatusNoGames ? cpblStatusNoGames() : '今日無比賽');
   if(showAlert) console.warn('CPBL schedule fetch failed:', attempts);
 }
 
@@ -6448,7 +6448,7 @@ async function cpblRefreshGames(showAlert=false){
   }catch(localErr){
     cpblgGames = [];
     cpblRenderGames();
-    cpblSetStatus(`今天賽程暫時抓不到。<div class="cpblg-source-row"><span class="cpblg-pill">來源：官方賽程助手</span><span class="cpblg-pill">線路：localhost</span></div><div class="cpblg-small" style="margin-top:8px">・${cpblEscape(localErr?.message || String(localErr))}</div><br>可以先用手動備援輸入。`);
+    cpblSetStatus(cpblStatusNoGames ? cpblStatusNoGames() : '今日無比賽');
     if(showAlert) console.warn('CPBL local helper failed:', localErr);
   }
 }
@@ -6615,7 +6615,7 @@ function cpblRenderGames(){
     badge.textContent = `${p.y}/${cpblPad(p.m)}/${cpblPad(p.d)} 今日賽程`;
   }
   if(!cpblgGames.length){
-    wrap.innerHTML = `<div class="cpblg-empty">目前還沒有載到今日賽程。<br><button type="button" class="cpblg-btn secondary" style="margin-top:10px" onclick="cpblToggleManual(true)">手動輸入賽程備援</button></div>`;
+    wrap.innerHTML = `<div class="cpblg-empty">今日無比賽</div>`;
     return;
   }
   wrap.innerHTML = cpblgGames.map(game=>{
@@ -10468,6 +10468,192 @@ function ftInit(){
     ftRender(items);
   });
 }
+
+
+/* ─────────────────────────────────────────────
+   2026-06-22 修正覆蓋區
+   1) 驚喜提醒：今天內不再提醒只擋當天；收下才視為本機已看過。
+   2) 中職賽程：抓不到或今天沒有賽程時顯示「今日無比賽」，移除備援入口。
+   3) 歷史月曆：開啟時自動切到今天日期。
+───────────────────────────────────────────── */
+function loveSurpriseSnoozeKey(key){
+  return `loveSurpriseSnoozed_${key}`;
+}
+function isLoveSurpriseSnoozedToday(key){
+  if(!key) return false;
+  return localStorage.getItem(loveSurpriseSnoozeKey(key)) === localDateKey();
+}
+function snoozeLoveSurpriseToday(btn, key){
+  if(key) localStorage.setItem(loveSurpriseSnoozeKey(key), localDateKey());
+  btn.closest('.special-overlay')?.remove();
+  scheduleLoveSurpriseCheck();
+}
+function markLoveSurpriseSeen(key){
+  if(!key) return;
+  const seen = getLoveSurpriseSeen();
+  seen[key] = true;
+  localStorage.setItem('loveSurpriseSeen', JSON.stringify(seen));
+  localStorage.removeItem(loveSurpriseSnoozeKey(key));
+}
+function closeLoveSurprise(btn, key){
+  if(key) markLoveSurpriseSeen(key);
+  btn.closest('.special-overlay')?.remove();
+  setTimeout(renderDueLoveSurprise, 150);
+  scheduleLoveSurpriseCheck();
+}
+function getPendingLoveSurprises(){
+  const seen = getLoveSurpriseSeen();
+  return Object.entries(loveSurprisesCache || {})
+    .map(([key,value])=>({...value,_key:key}))
+    .filter(item => item && item.time && item.sent !== true && !seen[item._key] && !isLoveSurpriseSnoozedToday(item._key))
+    .sort((a,b)=>new Date(a.time)-new Date(b.time));
+}
+function showLoveSurprise(item){
+  if(document.querySelector('[data-surprise-overlay="love"]')) return;
+  const safeText = escapeHtml(item.text || '');
+  const safePhoto = item.photo || '';
+  const safeKey = escapeHtml(item._key || '');
+  const overlay=document.createElement('div');
+  overlay.className='special-overlay';
+  overlay.dataset.surpriseOverlay='love';
+  overlay.style.cssText='position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px;background:radial-gradient(circle at 50% 0%, rgba(255,226,233,.92), rgba(201,75,100,.35) 38%, rgba(45,26,32,.62));backdrop-filter:blur(5px);';
+  overlay.innerHTML=`
+    <div style="background:linear-gradient(180deg,var(--white),var(--pink-light));border:1px solid rgba(232,99,122,.22);border-radius:28px;padding:20px 18px 16px;max-width:420px;width:100%;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);text-align:center;box-shadow:0 22px 70px rgba(110,45,62,.34);animation:popIn .35s cubic-bezier(.34,1.56,.64,1);display:flex;flex-direction:column;gap:12px;overflow-y:auto;-webkit-overflow-scrolling:touch">
+      <div style="font-size:42px;line-height:1">💝</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:22px;color:var(--pink);font-weight:700">給你的限定驚喜</div>
+      ${safePhoto ? `<img src="${safePhoto}" alt="驚喜照片" style="display:block;width:100%;max-height:240px;max-height:min(32vh,240px);max-height:min(32dvh,240px);object-fit:contain;border-radius:18px;background:linear-gradient(135deg,#fff7f9,#ffe6ed);border:1px solid rgba(232,99,122,.16);box-shadow:0 8px 24px rgba(232,99,122,.18)">` : ''}
+      <div style="background:rgba(255,255,255,.72);border:1px solid rgba(232,99,122,.20);border-radius:18px;padding:14px 15px;text-align:left;color:var(--text);font-family:'Noto Serif TC',serif;font-size:15px;line-height:1.9;white-space:pre-wrap;min-height:96px;max-height:220px;max-height:min(28vh,220px);max-height:min(28dvh,220px);overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:inset 0 1px 0 rgba(255,255,255,.65)">${safeText}</div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;flex-shrink:0;padding-top:2px">
+        <button class="special-close" onclick="closeLoveSurprise(this,'${safeKey}')" style="min-height:50px;padding:12px 10px;border:none;border-radius:16px;background:var(--pink);color:white;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:600;line-height:1.25;box-shadow:0 8px 18px rgba(232,99,122,.22)">收下驚喜</button>
+        <button class="special-close" onclick="snoozeLoveSurpriseToday(this,'${safeKey}')" style="min-height:50px;padding:12px 10px;border:1px solid rgba(232,99,122,.25);border-radius:16px;background:rgba(255,255,255,.72);color:var(--rose);cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:600;line-height:1.25;box-shadow:0 8px 18px rgba(201,75,100,.10)">今天內不再提醒</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+function cpblStatusLoaded(gamesCount){
+  return `<div class="cpblg-status-line"><div class="cpblg-status-main">已載入 ${gamesCount} 場今日賽程。</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
+}
+function cpblStatusNoGames(){
+  return `<div class="cpblg-status-line"><div class="cpblg-status-main">今日無比賽</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
+}
+function cpblStatusError(){
+  return cpblStatusNoGames();
+}
+function cpblRenderGames(){
+  const wrap=document.getElementById('cpblg-games');
+  if(!wrap) return;
+  const badge=document.getElementById('cpblg-date-badge');
+  if(badge){
+    const p=cpblDateParts();
+    badge.textContent = `${p.y}/${cpblPad(p.m)}/${cpblPad(p.d)} 今日賽程`;
+  }
+  if(!Array.isArray(cpblgGames) || !cpblgGames.length){
+    wrap.innerHTML = `<div class="cpblg-empty">今日無比賽</div>`;
+    return;
+  }
+  wrap.innerHTML = cpblgGames.map(game=>{
+    const locked=cpblIsLocked(game);
+    const picksForGame = cpblgData.picks?.[game.id] || {};
+    const pick=cpblgPlayer ? picksForGame[cpblgPlayer] : null;
+    const winner=cpblWinner(game);
+    const resultNote = winner && pick?.checked ? (winner==='和局' ? '本場和局，不列入勝率' : (pick.correct ? `<span class="cpblg-ok">猜對了！</span>` : `<span class="cpblg-bad">猜錯了，勝隊是 ${cpblEscape(winner)}</span>`)) : '';
+    const score = game.awayScore!=null && game.homeScore!=null ? `<div class="cpblg-score">${game.awayScore} : ${game.homeScore}</div>` : `<div class="cpblg-vs">VS</div>`;
+    const noteBits=[];
+    CPBLG_HISTORY_PLAYERS.forEach(name=>{
+      const playerPick = picksForGame[name];
+      if(playerPick?.team) noteBits.push(`${name} 已選 ${cpblEscape(playerPick.team)}`);
+    });
+    if(!noteBits.length && !cpblgPlayer) noteBits.push('先選擇你是誰，才會記錄預測。');
+    if(locked && !winner) noteBits.push('這場已經進行中或結束，暫時不能再猜。');
+    if(resultNote) noteBits.push(resultNote);
+    const btn=(team)=>{
+      const normalizedTeam = cpblNormalizeTeam(team);
+      const chosenByCurrent = cpblNormalizeTeam(pick?.team)===normalizedTeam;
+      const chosen = !!cpblgPlayer && chosenByCurrent;
+      let cls='cpblg-btn cpblg-pick'+(chosen?' chosen':'');
+      if(winner && chosen) cls += normalizedTeam===cpblNormalizeTeam(winner) ? ' correct' : ' wrong';
+      return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">${cpblTeamInline(team)}</button>`;
+    };
+    const metaLine = cpblGameMetaLine(game);
+    return `<div class="cpblg-game">
+      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(metaLine)}<br>${cpblEscape(game.field||'')}</div></div>
+      <div class="cpblg-match"><div class="cpblg-team"><span class="cpblg-side">客隊</span>${cpblTeamInline(game.away)}</div>${score}<div class="cpblg-team"><span class="cpblg-side">主隊</span>${cpblTeamInline(game.home)}</div></div>
+      <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
+      <div class="cpblg-note">${noteBits.join('<br>') || '開賽前可以修改預測。'}</div>
+    </div>`;
+  }).join('');
+}
+async function cpblRefreshGames(showAlert=false){
+  cpblgLoadedOnce = true;
+  cpblSetStatus('正在抓今日賽程...');
+  try{
+    const result = await cpblFetchUnifiedSchedule();
+    const games = Array.isArray(result?.data?.games) ? result.data.games : [];
+    cpblgGames = games;
+    if(games.length){
+      cpblResolveFinishedGames(true);
+      cpblRenderStats();
+      cpblRenderGames();
+      cpblRenderHistory();
+      cpblSetStatus(cpblStatusLoaded(games.length));
+    }else{
+      cpblRenderGames();
+      cpblRenderHistory();
+      cpblSetStatus(cpblStatusNoGames());
+    }
+  }catch(err){
+    cpblgGames = [];
+    cpblRenderGames();
+    cpblRenderHistory();
+    cpblSetStatus(cpblStatusNoGames());
+    if(showAlert) console.warn('CPBL schedule unavailable:', err);
+  }
+}
+function cpblOpenHistoryPage(){
+  const today = cpblTodayYMD();
+  cpblgHistoryMonth = cpblHistoryMonthKey(today);
+  cpblgHistorySelectedDate = today;
+  cpblgHistoryPredictionsOpenDate = '';
+  cpblRenderHistory();
+  showGameSectionById('gs-5-history', { showBackRow:false });
+}
+function cpblHistoryBuildCalendar(monthKey, grouped){
+  const [year, month] = monthKey.split('-').map(Number);
+  const first = new Date(year, month - 1, 1);
+  const startWeek = first.getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const today = cpblTodayYMD();
+  const cells = [];
+  for(let i=0;i<startWeek;i++) cells.push(`<button type="button" class="cpblg-cal-day muted" disabled></button>`);
+  for(let day=1; day<=daysInMonth; day++){
+    const ymd = `${year}-${cpblPad(month)}-${cpblPad(day)}`;
+    const items = grouped.get(ymd) || [];
+    const active = cpblgHistorySelectedDate===ymd;
+    const todayCls = today===ymd ? ' today' : '';
+    const gameCount = new Set(items.map(item=>item.gameId||item.id).filter(Boolean)).size;
+    cells.push(`<button type="button" class="cpblg-cal-day${active?' active':''}${todayCls}" onclick="cpblSelectHistoryDate('${ymd}')"><span class="cpblg-cal-num">${day}</span><span class="cpblg-cal-count">${gameCount ? `${gameCount} 場` : '無'}</span></button>`);
+  }
+  return cells.join('');
+}
+function cpblRenderHistory(){
+  const wrap=document.getElementById('cpblg-history-page-list');
+  if(!wrap) return;
+  const rows = Array.isArray(cpblgData.history) ? cpblgData.history.slice().sort((a,b)=>(b.resolvedAt||0)-(a.resolvedAt||0)) : [];
+  const grouped = new Map();
+  rows.forEach(item=>{
+    const key = item.date || '';
+    if(!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(item);
+  });
+  const today = cpblTodayYMD();
+  const todayMonth = cpblHistoryMonthKey(today);
+  if(!cpblgHistoryMonth) cpblgHistoryMonth = todayMonth;
+  if(!cpblgHistorySelectedDate || cpblHistoryMonthKey(cpblgHistorySelectedDate)!==cpblgHistoryMonth){
+    cpblgHistorySelectedDate = cpblgHistoryMonth===todayMonth ? today : `${cpblgHistoryMonth}-01`;
+  }
+  wrap.innerHTML = `<div class="cpblg-calendar-head"><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(-1)">‹</button><div class="cpblg-cal-title">${cpblHistoryMonthTitle(cpblgHistoryMonth)}</div><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(1)">›</button></div><div class="cpblg-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="cpblg-cal-grid">${cpblHistoryBuildCalendar(cpblgHistoryMonth, grouped)}</div>${cpblRenderHistoryDetail(cpblgHistorySelectedDate, grouped)}`;
+}
+
 // ── Firebase 初始化完成後啟動 ──
 window.addEventListener('firebaseReady',()=>{
   albumInitFirebase();

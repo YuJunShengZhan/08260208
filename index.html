@@ -6126,7 +6126,7 @@ function xrgPlayStepSound(){
     oscillator.type = 'triangle';
     oscillator.frequency.setValueAtTime(285,startAt);
     oscillator.frequency.exponentialRampToValueAtTime(205,startAt+.055);
-    gain.gain.setValueAtTime(.075,startAt);
+    gain.gain.setValueAtTime(.14,startAt);
     gain.gain.exponentialRampToValueAtTime(.0001,startAt+.065);
     oscillator.connect(gain);
     gain.connect(context.destination);

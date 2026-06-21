@@ -5962,15 +5962,15 @@ const XRG_BEST_KEY = 'xrg_best_distance_v1';
 const XRG_ECONOMY_KEY = 'xrg_economy_v1';
 const XRG_CHARACTERS = [
   {id:'chick',name:'小雞',emoji:'🐥',price:0},
-  {id:'bunny',name:'兔兔',emoji:'🐰',price:200},
-  {id:'cat',name:'小貓',emoji:'🐱',price:350},
-  {id:'frog',name:'青蛙',emoji:'🐸',price:500},
-  {id:'fox',name:'狐狸',emoji:'🦊',price:750},
-  {id:'panda',name:'熊貓',emoji:'🐼',price:1000},
-  {id:'dog',name:'狗狗',emoji:'🐶',price:1200},
-  {id:'shiba',name:'柴犬',emoji:'🐕',price:1500},
-  {id:'orange-cat',name:'橘貓',emoji:'😺',price:1800},
-  {id:'black-cat',name:'黑貓',emoji:'🐈‍⬛',price:2200}
+  {id:'bunny',name:'兔兔',emoji:'🐰',price:50},
+  {id:'cat',name:'小貓',emoji:'🐱',price:80},
+  {id:'frog',name:'青蛙',emoji:'🐸',price:120},
+  {id:'fox',name:'狐狸',emoji:'🦊',price:170},
+  {id:'panda',name:'熊貓',emoji:'🐼',price:230},
+  {id:'dog',name:'狗狗',emoji:'🐶',price:300},
+  {id:'shiba',name:'柴犬',emoji:'🐕',price:360},
+  {id:'orange-cat',name:'橘貓',emoji:'😺',price:430},
+  {id:'black-cat',name:'黑貓',emoji:'🐈‍⬛',price:500}
 ];
 let xrgCanvas = null;
 let xrgCtx = null;
@@ -6107,6 +6107,32 @@ function xrgPlayCoinSound(){
       gain.connect(xrgAudioContext.destination);
       oscillator.start(noteStart);
       oscillator.stop(noteStart+.17);
+    });
+  }catch(_err){}
+}
+
+function xrgPlayCrashSound(){
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if(!AudioContextClass) return;
+  try{
+    xrgAudioContext = xrgAudioContext || new AudioContextClass();
+    if(xrgAudioContext.state==='suspended') xrgAudioContext.resume();
+    const startAt = xrgAudioContext.currentTime;
+    const gain = xrgAudioContext.createGain();
+    gain.gain.setValueAtTime(.24,startAt);
+    gain.gain.exponentialRampToValueAtTime(.0001,startAt+.38);
+    gain.connect(xrgAudioContext.destination);
+    [
+      {type:'sawtooth',start:150,end:48,delay:0},
+      {type:'square',start:86,end:34,delay:.035}
+    ].forEach(note=>{
+      const oscillator = xrgAudioContext.createOscillator();
+      oscillator.type = note.type;
+      oscillator.frequency.setValueAtTime(note.start,startAt+note.delay);
+      oscillator.frequency.exponentialRampToValueAtTime(note.end,startAt+.34);
+      oscillator.connect(gain);
+      oscillator.start(startAt+note.delay);
+      oscillator.stop(startAt+.38);
     });
   }catch(_err){}
 }
@@ -6352,6 +6378,7 @@ function xrgShowOverlay(title,sub,button,emoji='🐥'){
 
 function xrgGameOverNow(){
   if(xrgGameOver) return;
+  xrgPlayCrashSound();
   xrgRunning = false;
   xrgGameOver = true;
   cancelAnimationFrame(xrgRaf);

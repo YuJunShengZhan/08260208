@@ -6087,24 +6087,70 @@ function xrgCollectCoin(){
   }
 }
 
-function xrgPlayCoinSound(){
+function xrgEnsureAudioContext(){
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if(!AudioContextClass) return;
+  if(!AudioContextClass) return null;
   try{
     xrgAudioContext = xrgAudioContext || new AudioContextClass();
-    if(xrgAudioContext.state==='suspended') xrgAudioContext.resume();
-    const startAt = xrgAudioContext.currentTime;
+    if(xrgAudioContext.state==='suspended'){
+      const resumePromise = xrgAudioContext.resume();
+      if(resumePromise && typeof resumePromise.catch==='function') resumePromise.catch(()=>{});
+    }
+    return xrgAudioContext;
+  }catch(_err){
+    return null;
+  }
+}
+
+function xrgUnlockAudio(){
+  const context = xrgEnsureAudioContext();
+  if(!context) return;
+  try{
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    gain.gain.setValueAtTime(.0001,context.currentTime);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start();
+    oscillator.stop(context.currentTime+.015);
+  }catch(_err){}
+}
+
+function xrgPlayStepSound(){
+  const context = xrgEnsureAudioContext();
+  if(!context) return;
+  try{
+    const startAt = context.currentTime+.005;
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.type = 'triangle';
+    oscillator.frequency.setValueAtTime(285,startAt);
+    oscillator.frequency.exponentialRampToValueAtTime(205,startAt+.055);
+    gain.gain.setValueAtTime(.075,startAt);
+    gain.gain.exponentialRampToValueAtTime(.0001,startAt+.065);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(startAt);
+    oscillator.stop(startAt+.07);
+  }catch(_err){}
+}
+
+function xrgPlayCoinSound(){
+  const context = xrgEnsureAudioContext();
+  if(!context) return;
+  try{
+    const startAt = context.currentTime+.005;
     [880,1320,1760].forEach((frequency,index)=>{
-      const oscillator = xrgAudioContext.createOscillator();
-      const gain = xrgAudioContext.createGain();
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
       const noteStart = startAt + index * .055;
       oscillator.type = index===2 ? 'sine' : 'triangle';
       oscillator.frequency.setValueAtTime(frequency,noteStart);
       gain.gain.setValueAtTime(.0001,noteStart);
-      gain.gain.exponentialRampToValueAtTime(.16,noteStart+.012);
+      gain.gain.exponentialRampToValueAtTime(.24,noteStart+.012);
       gain.gain.exponentialRampToValueAtTime(.0001,noteStart+.16);
       oscillator.connect(gain);
-      gain.connect(xrgAudioContext.destination);
+      gain.connect(context.destination);
       oscillator.start(noteStart);
       oscillator.stop(noteStart+.17);
     });
@@ -6112,21 +6158,19 @@ function xrgPlayCoinSound(){
 }
 
 function xrgPlayCrashSound(){
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if(!AudioContextClass) return;
+  const context = xrgEnsureAudioContext();
+  if(!context) return;
   try{
-    xrgAudioContext = xrgAudioContext || new AudioContextClass();
-    if(xrgAudioContext.state==='suspended') xrgAudioContext.resume();
-    const startAt = xrgAudioContext.currentTime;
-    const gain = xrgAudioContext.createGain();
-    gain.gain.setValueAtTime(.24,startAt);
+    const startAt = context.currentTime+.005;
+    const gain = context.createGain();
+    gain.gain.setValueAtTime(.34,startAt);
     gain.gain.exponentialRampToValueAtTime(.0001,startAt+.38);
-    gain.connect(xrgAudioContext.destination);
+    gain.connect(context.destination);
     [
       {type:'sawtooth',start:150,end:48,delay:0},
       {type:'square',start:86,end:34,delay:.035}
     ].forEach(note=>{
-      const oscillator = xrgAudioContext.createOscillator();
+      const oscillator = context.createOscillator();
       oscillator.type = note.type;
       oscillator.frequency.setValueAtTime(note.start,startAt+note.delay);
       oscillator.frequency.exponentialRampToValueAtTime(note.end,startAt+.34);
@@ -6407,6 +6451,7 @@ function xrgTick(timestamp){
 
 function xrgStart(){
   xrgInit();
+  xrgUnlockAudio();
   cancelAnimationFrame(xrgRaf);
   xrgPlayer = {col:3,row:0};
   xrgCameraRow = 0;
@@ -6433,7 +6478,9 @@ function xrgMove(direction){
   if(direction==='down') nextRow = Math.max(xrgCameraRow,nextRow-1);
   if(direction==='left') nextCol = Math.max(0,nextCol-1);
   if(direction==='right') nextCol = Math.min(XRG_COLS-1,nextCol+1);
+  if(nextCol===xrgPlayer.col && nextRow===xrgPlayer.row) return;
   xrgPlayer = {col:nextCol,row:nextRow};
+  xrgPlayStepSound();
   xrgCollectCoin();
   if(nextRow > xrgMaxRow){
     xrgMaxRow = nextRow;

@@ -5529,7 +5529,7 @@ function gsgEscape(text){
 }
 
 function gsgSongPool(){
-  return Array.isArray(SONGS) ? SONGS.filter(song => song && song.file && song.name) : [];
+  return Array.isArray(RG_SONGS) ? RG_SONGS.filter(song => song && /^game\d+\.mp3$/i.test(song.file || '') && song.name) : [];
 }
 
 function gsgFormatTime(ms){

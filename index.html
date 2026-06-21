@@ -5611,7 +5611,7 @@ function gsgEnsureReady(){
 function gsgRenderLeaderboard(){
   const wrap = document.getElementById('gsg-rank-list');
   if(!wrap) return;
-  const rows = gsgLeaderboard.slice().sort(gsgCompareRecords).slice(0,10);
+  const rows = gsgLeaderboard.slice().sort(gsgCompareRecords).slice(0,5);
   if(!rows.length){
     wrap.innerHTML = '<div class="gsg-rank-empty">還沒有完成紀錄，等你拿下第一名！</div>';
     gsgRenderBest();

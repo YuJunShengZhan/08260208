@@ -5445,6 +5445,14 @@ function showGameHub(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+function pauseBackgroundMusicForInteractiveGame(){
+  const backgroundAudio = document.getElementById('audio-player');
+  if(backgroundAudio && !backgroundAudio.paused) backgroundAudio.pause();
+  document.getElementById('music-disc')?.classList.remove('playing');
+  const backgroundPlayButton = document.getElementById('play-btn');
+  if(backgroundPlayButton) backgroundPlayButton.textContent = '▶️';
+}
+
 function openGame(i,btn){
   document.getElementById('game-hub')?.classList.add('hidden');
   document.getElementById('game-back-row')?.classList.remove('hidden');
@@ -5459,6 +5467,7 @@ function openGame(i,btn){
   document.body.classList.toggle('pz-mode', i===3);
   document.body.classList.toggle('rg-mode', i===4);
 
+  if(i===4 || i===6) pauseBackgroundMusicForInteractiveGame();
   if(i!==4 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(i!==6 && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
@@ -5732,6 +5741,7 @@ function gsgStopPreview(){
 function gsgPlayPreview(){
   if(!gsgCurrent || !gsgAudio) return;
   if(!gsgEnsureReady()) return;
+  pauseBackgroundMusicForInteractiveGame();
   gsgStartTimer();
   const start = Math.max(0, gsgPreviewStart || 0);
   gsgAudio.src = gsgCurrent.file;

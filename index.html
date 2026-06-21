@@ -5755,18 +5755,31 @@ function cpblMergeData(base, incoming){
     data.players[name].correct = Number(data.players[name].correct)||0;
     data.players[name].total = Number(data.players[name].total)||0;
   });
-  data.picks = Object.assign({}, data.picks||{}, incoming.picks||{});
-  data.history = (Array.isArray(incoming.history) ? incoming.history : Array.isArray(data.history) ? data.history : []).map(cpblNormalizeHistoryItem).filter(item=>item.id && item.gameId);
+  data.picks = data.picks || {};
+  Object.entries(incoming.picks||{}).forEach(([gameId, players])=>{
+    data.picks[gameId] = data.picks[gameId] || {};
+    Object.entries(players||{}).forEach(([player, pick])=>{
+      const current = data.picks[gameId][player];
+      const incomingTime = Number(pick?.pickedAt)||0;
+      const currentTime = Number(current?.pickedAt)||0;
+      if(!current || incomingTime>=currentTime || (pick?.checked && !current?.checked)){
+        data.picks[gameId][player] = pick;
+      }
+    });
+  });
+  const historyById = new Map();
+  [...(Array.isArray(data.history)?data.history:[]), ...(Array.isArray(incoming.history)?incoming.history:[])].forEach(item=>{
+    const row = cpblNormalizeHistoryItem(item);
+    if(!row.id || !row.gameId) return;
+    const current = historyById.get(row.id);
+    if(!current || row.resolvedAt>=current.resolvedAt) historyById.set(row.id,row);
+  });
+  data.history = Array.from(historyById.values());
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
   return data;
 }
 function cpblResetForRelease(){
-  localStorage.removeItem('cpblgPlayer');
-  cpblgPlayer = '';
-  cpblgData = cpblBaseData();
-  localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
   localStorage.setItem(CPBLG_RESET_TOKEN, '1');
-  cpblgNeedsRemoteReset = true;
 }
 if(localStorage.getItem(CPBLG_RESET_TOKEN)!=='1'){
   cpblResetForRelease();
@@ -5778,22 +5791,27 @@ function cpblSaveData(pushFirebase=true){
   cpblRenderGames();
   cpblRenderHistory();
   if(pushFirebase && window._fb){
-    const {db,ref,set}=window._fb;
-    set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
+    const {db,ref,runTransaction,set}=window._fb;
+    const dataRef = ref(db,'cpblGuess');
+    if(runTransaction){
+      runTransaction(dataRef, current=>{
+        const merged = cpblMergeData(cpblMergeData(cpblBaseData(), current||{}), cpblgData);
+        merged.updatedAt = cpblgData.updatedAt;
+        return merged;
+      }).catch(()=>{});
+    }else{
+      set(dataRef,cpblgData).catch(()=>{});
+    }
   }
 }
 function cpblInitFirebase(){
   if(cpblgFirebaseReady || !window._fb) return;
   cpblgFirebaseReady = true;
   const {db,ref,onValue,set}=window._fb;
-  if(cpblgNeedsRemoteReset){
-    set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
-    cpblgNeedsRemoteReset = false;
-  }
   onValue(ref(db,'cpblGuess'), snap=>{
     const remote = snap.val();
     if(remote){
-      cpblgData = cpblMergeData(cpblBaseData(), remote);
+      cpblgData = cpblMergeData(cpblMergeData(cpblBaseData(), remote), cpblgData);
       localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
       cpblResolveFinishedGames(false);
       cpblRenderStats();
@@ -6430,7 +6448,7 @@ async function cpblRefreshGames(showAlert=false){
 
 function cpblIsFinalGame(game){
   const status = String(game?.status || '').trim();
-  return /已結束|比賽結束|結束|取消|延賽|保留/.test(status);
+  return /已結束|比賽結束|結束/.test(status) && !/取消|延賽|保留/.test(status);
 }
 
 function cpblWinner(game){

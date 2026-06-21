@@ -6482,7 +6482,8 @@ function cpblHistoryPredictions(items, selectedDate){
   const rows = Array.from(byGame.values()).map(game=>{
     const picks = CPBLG_HISTORY_PLAYERS.map(player=>{
       const pick = game.picks.find(item=>item.player===player);
-      const result = !pick ? '未預測' : `${pick.pickTeam || '未預測'}${pick.winner==='和局'?'（和局）':pick.correct?'（猜對）':'（猜錯）'}`;
+      const isCorrect = !!pick?.pickTeam && pick.pickTeam===pick.winner;
+      const result = !pick ? '未預測' : `${pick.pickTeam || '未預測'}${pick.winner==='和局'?'（和局）':isCorrect?'（猜對）':'（猜錯）'}`;
       return `<span class="cpblg-history-prediction-player"><strong>${cpblEscape(player)}</strong>　${cpblEscape(result)}</span>`;
     }).join('');
     return `<div class="cpblg-history-prediction-row"><span class="cpblg-history-prediction-game">GAME ${cpblEscape(game.gameNo||'')}</span>${picks}</div>`;
@@ -6500,10 +6501,10 @@ function cpblRecountPlayerStats(){
     const row = cpblNormalizeHistoryItem(item);
     if(!row.id || seen.has(row.id)) return;
     seen.add(row.id);
-    if(row.correct === null || row.correct === undefined || row.winner === '和局') return;
+    if(!row.pickTeam || !row.winner || row.winner === '和局') return;
     stats[row.player] = stats[row.player] || {correct:0,total:0};
     stats[row.player].total += 1;
-    if(row.correct) stats[row.player].correct += 1;
+    if(row.pickTeam===row.winner) stats[row.player].correct += 1;
   });
   cpblgData.players = stats;
   return stats;
@@ -6641,9 +6642,10 @@ function cpblResolveFinishedGames(push=true){
     CPBLG_HISTORY_PLAYERS.forEach(name=>{
       const p=gp[name];
       if(!p) return;
-      if(!p.checked){
+      const correct = winner==='和局' ? null : p.team===winner;
+      if(!p.checked || p.correct!==correct){
         p.checked=true;
-        p.correct=winner==='和局' ? null : p.team===winner;
+        p.correct=correct;
         changed=true;
       }
       if(cpblUpsertHistoryRecord(game, name, p)) changed=true;
@@ -8825,17 +8827,25 @@ function pdSaveSettings(){
   if(!s){alert('請選擇最近一次生理期開始日');return;}
   const newSettings={start:s,end:document.getElementById('pd-end').value,cycle:parseInt(document.getElementById('pd-cycle').value),dur:parseInt(document.getElementById('pd-dur').value)};
   if(!window._fb){ alert('Firebase 尚未連線'); return; }
-  const {db,ref,set,push,get}=window._fb;
-  get(ref(db,'pdPeriodHistory')).then(snap=>{
-    const exists = snap.exists();
-    const writes = [set(ref(db,'pdSettings'),newSettings)];
-    if(!exists){
-      writes.push(push(ref(db,'pdPeriodHistory'),{...newSettings,createdAt:Date.now()}));
-    }
-    return Promise.all(writes);
-  }).then(()=>{
+  pdSaveSettingsWithHistory(newSettings).then(()=>{
     alert('已儲存 ✅');
   });
+}
+
+async function pdSaveSettingsWithHistory(newSettings){
+  const {db,ref,set,push,get}=window._fb;
+  const historyRef = ref(db,'pdPeriodHistory');
+  const snap = await get(historyRef);
+  const entries = Object.entries(snap.val() || {});
+  const existing = entries.find(([,value])=>String(value?.start||'').slice(0,10)===newSettings.start);
+  const record = {...newSettings,createdAt:existing ? Number(existing[1]?.createdAt)||Date.now() : Date.now()};
+  const historyWrite = existing
+    ? set(ref(db,`pdPeriodHistory/${existing[0]}`),record)
+    : push(historyRef,record);
+  await Promise.all([
+    set(ref(db,'pdSettings'),newSettings),
+    historyWrite
+  ]);
 }
 function pdGetSeedCycles(){
   const cycles = pdCycleHistory.map(item=>{
@@ -9049,15 +9059,7 @@ function pdConfirmStart(){
   };
   
   if(!window._fb){ alert('Firebase 尚未連線'); return; }
-  const {db, ref, set, push} = window._fb;
-  
-  // 同時做兩件事：
-  // 1. 更新 pdSettings（用於預測）
-  // 2. 把這次記錄存進 pdPeriodHistory
-  Promise.all([
-    set(ref(db,'pdSettings'), newSettings),
-    push(ref(db,'pdPeriodHistory'), { ...newSettings, createdAt: Date.now() })
-  ]).then(()=>{
+  pdSaveSettingsWithHistory(newSettings).then(()=>{
     document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
     alert(`已記錄！月經開始日：${startDate} 🩸`);
   });

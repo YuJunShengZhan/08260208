@@ -3097,11 +3097,26 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 .gsg-result-emoji{font-size:54px;margin-bottom:6px}
 .gsg-result-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:6px}
 .gsg-result-score{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:var(--rose);margin-bottom:6px}
+.gsg-player-select{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.gsg-player{min-height:42px;border-radius:13px;border:1.5px solid rgba(232,99,122,.18);background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;transition:.18s ease}
+.gsg-player.active{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 8px 18px rgba(232,99,122,.18)}
+.gsg-leaderboard{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
+.gsg-leaderboard-title{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:var(--pink);margin-bottom:8px}
+.gsg-rank-list{display:flex;flex-direction:column;gap:7px}
+.gsg-rank-row{display:grid;grid-template-columns:38px 1fr auto auto;gap:8px;align-items:center;background:var(--pink-light);border-radius:12px;padding:9px 10px;font-size:12px}
+.gsg-rank-no{font-weight:800;color:var(--rose)}
+.gsg-rank-name{font-weight:700;color:var(--text)}
+.gsg-rank-score{color:var(--rose);font-weight:700}
+.gsg-rank-time{font-variant-numeric:tabular-nums;color:var(--text)}
+.gsg-rank-empty{text-align:center;color:var(--text-muted);font-size:12px;padding:10px}
 [data-theme="dark"] .gsg-hero,[data-theme="dark"] .gsg-panel,[data-theme="dark"] .gsg-result{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}
 [data-theme="dark"] .gsg-stat{background:#3a1f28}
 [data-theme="dark"] .gsg-btn{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
 [data-theme="dark"] .gsg-btn.secondary{background:#3a1f28;color:#ffd9e2}
 [data-theme="dark"] .gsg-option{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
+[data-theme="dark"] .gsg-player,[data-theme="dark"] .gsg-leaderboard{background:rgba(58,33,42,.9);color:var(--text);border-color:rgba(232,99,122,.18)}
+[data-theme="dark"] .gsg-player.active{background:var(--pink);color:#fff}
+[data-theme="dark"] .gsg-rank-row{background:#3a1f28}
 @media(max-width:520px){.gsg-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.gsg-controls,.gsg-options{grid-template-columns:1fr}}
 
 .cpblg-source-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.cpblg-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 9px;background:var(--pink-light);color:var(--rose);font-size:11px}.cpblg-pickrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.cpblg-pick{background:var(--white);color:var(--text);border:1.5px solid rgba(232,99,122,.16)}.cpblg-pick.correct{background:#e8f5e9!important;border-color:#4caf50!important;color:#2e7d32!important}.cpblg-pick.wrong{background:#fff0f3!important;border-color:var(--pink)!important;color:var(--rose)!important}.cpblg-manual{display:none;margin-top:12px;background:var(--pink-light);border-radius:16px;padding:12px}.cpblg-manual.open{display:block}.cpblg-manual textarea{width:100%;min-height:88px;border:1px solid var(--card-border);border-radius:12px;background:var(--white);color:var(--text);padding:10px;font-family:'Noto Sans TC',sans-serif;resize:vertical}.cpblg-manual-hint{font-size:11px;color:var(--text-muted);line-height:1.7;margin:6px 0 10px}.cpblg-team-head{display:flex;align-items:center;justify-content:center;gap:8px}.cpblg-logo{width:34px;height:34px;border-radius:12px;overflow:hidden;flex:0 0 34px;box-shadow:0 6px 14px rgba(0,0,0,.12);background:#fff}.cpblg-logo img{width:100%;height:100%;display:block;object-fit:cover}.cpblg-team-name{line-height:1.35}.cpblg-pick .cpblg-team-head{justify-content:center}.cpblg-pick .cpblg-logo{width:28px;height:28px;flex-basis:28px}.cpblg-history{display:none;margin-top:12px;background:rgba(255,255,255,.82);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-history.open{display:block}.cpblg-history-list{display:flex;flex-direction:column;gap:10px}.cpblg-history-card{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:16px;padding:12px}.cpblg-history-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.cpblg-history-date{font-size:12px;color:var(--text-muted)}.cpblg-history-result{font-size:13px;color:var(--rose);font-weight:700}.cpblg-history-match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.cpblg-history-score{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700}.cpblg-history-picks{display:flex;flex-direction:column;gap:6px}.cpblg-history-pick{display:flex;justify-content:space-between;gap:8px;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;line-height:1.5}.cpblg-history-player{font-weight:700;color:var(--text)}.cpblg-history-empty{text-align:center;padding:16px 8px;color:var(--text-muted);font-size:13px}[data-theme="dark"] .cpblg-pick{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-manual textarea{background:#24151c;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history,[data-theme="dark"] .cpblg-history-card{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history-pick{background:#3a1f28}
@@ -3761,7 +3776,11 @@ onclick="hideSpecialForToday()">
     <div class="gsg-shell">
       <div class="gsg-hero">
         <div class="gsg-title">聽前奏，猜出歌曲名字</div>
-        <div class="gsg-sub">每題先播放一小段片段，再從 4 個選項中選出正確答案。</div>
+        <div class="gsg-sub">先比答對題數，答對一樣再比完成時間。開始前請先選擇你是誰。</div>
+        <div class="gsg-player-select">
+          <button type="button" class="gsg-player" id="gsg-player-sheng" onclick="gsgSelectPlayer('聖展')">我是聖展</button>
+          <button type="button" class="gsg-player" id="gsg-player-yujun" onclick="gsgSelectPlayer('予君')">我是予君</button>
+        </div>
       </div>
 
       <div class="gsg-row gsg-stats">
@@ -3769,7 +3788,7 @@ onclick="hideSpecialForToday()">
         <div class="gsg-stat"><div class="gsg-small">分數</div><div class="gsg-big" id="gsg-score">0</div></div>
         <div class="gsg-stat"><div class="gsg-small">連對</div><div class="gsg-big" id="gsg-streak">0</div></div>
         <div class="gsg-stat"><div class="gsg-small">用時</div><div class="gsg-big" id="gsg-time">00:00</div></div>
-        <div class="gsg-stat"><div class="gsg-small">最佳用時</div><div class="gsg-big" id="gsg-best">—</div></div>
+        <div class="gsg-stat"><div class="gsg-small">個人最佳</div><div class="gsg-big" id="gsg-best">—</div></div>
       </div>
 
       <div class="gsg-panel">
@@ -3800,6 +3819,12 @@ onclick="hideSpecialForToday()">
         <div class="gsg-result-score" id="gsg-final-score">0 / 0</div>
         <div class="gsg-result-msg" id="gsg-final-msg"></div>
         <button type="button" class="gsg-btn primary" onclick="gsgRestart()">再玩一次</button>
+      </div>
+
+      <div class="gsg-leaderboard">
+        <div class="gsg-leaderboard-title">🏆 猜歌排行榜</div>
+        <div class="gsg-sub" style="margin-bottom:8px">答對題數較多優先；題數相同時，完成時間較少者排名較前。</div>
+        <div class="gsg-rank-list" id="gsg-rank-list"><div class="gsg-rank-empty">排行榜載入中…</div></div>
       </div>
 
       <audio id="gsg-audio" preload="auto"></audio>
@@ -5469,14 +5494,20 @@ let gsgDeck = [];
 let gsgRoundIndex = 0;
 let gsgScore = 0;
 let gsgStreak = 0;
-let gsgBest = 0;
 let gsgCurrent = null;
 let gsgOptions = [];
 let gsgAnswered = false;
 let gsgPreviewTimer = null;
 let gsgPreviewStart = 8;
 let gsgReady = false;
-const GSG_BEST_KEY = 'gsg_best_score';
+let gsgPlayer = localStorage.getItem('gsgPlayer') || '';
+let gsgStartedAt = 0;
+let gsgElapsedMs = 0;
+let gsgTimerTick = null;
+let gsgFinished = false;
+let gsgLeaderboard = [];
+let gsgLeaderboardListening = false;
+const GSG_PENDING_KEY = 'gsg_pending_results_v1';
 
 function gsgShuffle(list){
   const arr = list.slice();
@@ -5501,19 +5532,142 @@ function gsgSongPool(){
   return Array.isArray(SONGS) ? SONGS.filter(song => song && song.file && song.name) : [];
 }
 
-function gsgLoadBest(){
-  gsgBest = Number(localStorage.getItem(GSG_BEST_KEY) || 0);
-  const el = document.getElementById('gsg-best');
-  if(el) el.textContent = String(gsgBest);
+function gsgFormatTime(ms){
+  const value = Math.max(0, Number(ms) || 0);
+  const minutes = Math.floor(value / 60000);
+  const seconds = Math.floor((value % 60000) / 1000);
+  const tenths = Math.floor((value % 1000) / 100);
+  return `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}.${tenths}`;
 }
 
-function gsgSaveBest(){
-  if(gsgScore > gsgBest){
-    gsgBest = gsgScore;
-    localStorage.setItem(GSG_BEST_KEY, String(gsgBest));
+function gsgElapsed(){
+  return gsgElapsedMs + (gsgStartedAt ? Date.now() - gsgStartedAt : 0);
+}
+
+function gsgStartTimer(){
+  if(gsgFinished || gsgStartedAt) return;
+  gsgStartedAt = Date.now();
+  clearInterval(gsgTimerTick);
+  gsgTimerTick = setInterval(gsgUpdateTime, 100);
+  gsgUpdateTime();
+}
+
+function gsgStopTimer(){
+  if(gsgStartedAt){
+    gsgElapsedMs += Date.now() - gsgStartedAt;
+    gsgStartedAt = 0;
   }
+  clearInterval(gsgTimerTick);
+  gsgTimerTick = null;
+  gsgUpdateTime();
+}
+
+function gsgUpdateTime(){
+  const el = document.getElementById('gsg-time');
+  if(el) el.textContent = gsgFormatTime(gsgElapsed());
+}
+
+function gsgCompareRecords(a,b){
+  return (Number(b.score)||0) - (Number(a.score)||0)
+    || (Number(a.timeMs)||0) - (Number(b.timeMs)||0)
+    || (Number(a.completedAt)||0) - (Number(b.completedAt)||0);
+}
+
+function gsgPlayerBest(){
+  return gsgLeaderboard.filter(item=>item.player===gsgPlayer).sort(gsgCompareRecords)[0] || null;
+}
+
+function gsgRenderBest(){
   const el = document.getElementById('gsg-best');
-  if(el) el.textContent = String(gsgBest);
+  if(!el) return;
+  const best = gsgPlayerBest();
+  el.textContent = best ? `${best.score}題 ${gsgFormatTime(best.timeMs)}` : '—';
+}
+
+function gsgSelectPlayer(name){
+  if((gsgStartedAt || gsgElapsedMs) && !gsgFinished){
+    alert('這一輪已經開始，請重新開始後再切換身分。');
+    return;
+  }
+  gsgPlayer = name;
+  localStorage.setItem('gsgPlayer', name);
+  document.querySelectorAll('.gsg-player').forEach(button=>button.classList.remove('active'));
+  document.getElementById(name==='聖展'?'gsg-player-sheng':'gsg-player-yujun')?.classList.add('active');
+  gsgRenderBest();
+}
+
+function gsgEnsureReady(){
+  if(!gsgPlayer){
+    alert('請先選擇你是聖展還是予君。');
+    return false;
+  }
+  if(!window._fb){
+    alert('排行榜伺服器還在連線，請稍後再試一次。');
+    return false;
+  }
+  return true;
+}
+
+function gsgRenderLeaderboard(){
+  const wrap = document.getElementById('gsg-rank-list');
+  if(!wrap) return;
+  const rows = gsgLeaderboard.slice().sort(gsgCompareRecords).slice(0,10);
+  if(!rows.length){
+    wrap.innerHTML = '<div class="gsg-rank-empty">還沒有完成紀錄，等你拿下第一名！</div>';
+    gsgRenderBest();
+    return;
+  }
+  wrap.innerHTML = rows.map((item,index)=>`<div class="gsg-rank-row"><div class="gsg-rank-no">#${index+1}</div><div class="gsg-rank-name">${gsgEscape(item.player)}</div><div class="gsg-rank-score">${Number(item.score)||0} / ${Number(item.total)||10} 題</div><div class="gsg-rank-time">${gsgFormatTime(item.timeMs)}</div></div>`).join('');
+  gsgRenderBest();
+}
+
+function gsgPendingResults(){
+  try{return JSON.parse(localStorage.getItem(GSG_PENDING_KEY)||'{}') || {};}catch(_err){return {};}
+}
+
+function gsgStorePending(id,record){
+  const pending = gsgPendingResults();
+  pending[id] = record;
+  localStorage.setItem(GSG_PENDING_KEY, JSON.stringify(pending));
+}
+
+function gsgFlushPending(){
+  if(!window._fb) return;
+  const pending = gsgPendingResults();
+  const entries = Object.entries(pending);
+  if(!entries.length) return;
+  const {db,ref,set}=window._fb;
+  entries.forEach(([id,record])=>{
+    set(ref(db,`guessSongLeaderboard/${id}`),record).then(()=>{
+      const latest = gsgPendingResults();
+      delete latest[id];
+      localStorage.setItem(GSG_PENDING_KEY, JSON.stringify(latest));
+    }).catch(()=>{});
+  });
+}
+
+function gsgSaveResult(){
+  if(!window._fb || !gsgPlayer || !gsgElapsedMs) return;
+  const completedAt = Date.now();
+  const id = `${gsgPlayer}_${completedAt}_${Math.random().toString(36).slice(2,8)}`;
+  const record = {player:gsgPlayer,score:gsgScore,total:gsgDeck.length,timeMs:Math.round(gsgElapsedMs),completedAt};
+  const {db,ref,set}=window._fb;
+  set(ref(db,`guessSongLeaderboard/${id}`),record).catch(()=>{
+    gsgStorePending(id,record);
+    alert('成績已先保存在這台裝置，恢復連線後會自動補傳排行榜。');
+  });
+}
+
+function gsgInitLeaderboard(){
+  if(gsgLeaderboardListening || !window._fb) return;
+  gsgLeaderboardListening = true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'guessSongLeaderboard'),snapshot=>{
+    const value = snapshot.val() || {};
+    gsgLeaderboard = Object.entries(value).map(([id,item])=>({id,...item})).filter(item=>item.player && Number(item.timeMs)>0);
+    gsgRenderLeaderboard();
+  });
+  gsgFlushPending();
 }
 
 function gsgUpdateStats(){
@@ -5526,6 +5680,7 @@ function gsgUpdateStats(){
   if(roundEl) roundEl.textContent = `${Math.min(gsgRoundIndex + 1, total || 1)} / ${total}`;
   if(scoreEl) scoreEl.textContent = String(gsgScore);
   if(streakEl) streakEl.textContent = String(gsgStreak);
+  gsgUpdateTime();
   if(progressFill) progressFill.style.width = total ? `${Math.round((Math.min(gsgRoundIndex, total) / total) * 100)}%` : '0%';
   if(progressText) progressText.textContent = total ? `第 ${Math.min(gsgRoundIndex + 1, total)} 題 / 共 ${total} 題` : '尚未開始';
 }
@@ -5573,6 +5728,8 @@ function gsgStopPreview(){
 
 function gsgPlayPreview(){
   if(!gsgCurrent || !gsgAudio) return;
+  if(!gsgEnsureReady()) return;
+  gsgStartTimer();
   const start = Math.max(0, gsgPreviewStart || 0);
   gsgAudio.src = gsgCurrent.file;
   const playAt = () => {
@@ -5626,6 +5783,8 @@ function gsgLoadRound(index){
 
 function gsgAnswer(index){
   if(gsgAnswered || !gsgCurrent) return;
+  if(!gsgEnsureReady()) return;
+  gsgStartTimer();
   gsgAnswered = true;
   gsgStopPreview();
   const picked = gsgOptions[index];
@@ -5649,11 +5808,16 @@ function gsgAnswer(index){
   }
   gsgSetCurrentSong(true);
   gsgUpdateStats();
-  gsgSaveBest();
+  if(gsgRoundIndex + 1 >= gsgDeck.length){
+    gsgStopTimer();
+    setTimeout(()=>gsgFinish(), 650);
+  }
 }
 
 function gsgNextRound(){
   if(!gsgCurrent) return;
+  if(!gsgEnsureReady()) return;
+  gsgStartTimer();
   if(!gsgAnswered){
     gsgStopPreview();
     gsgSetFeedback('已跳過這題，直接看下一首。', 'neutral');
@@ -5666,15 +5830,18 @@ function gsgNextRound(){
 }
 
 function gsgFinish(){
+  if(gsgFinished) return;
+  gsgFinished = true;
   gsgStopPreview();
+  gsgStopTimer();
   const result = document.getElementById('gsg-result');
   const finalScore = document.getElementById('gsg-final-score');
   const finalMsg = document.getElementById('gsg-final-msg');
   const total = gsgDeck.length || 0;
   const rate = total ? Math.round(gsgScore / total * 100) : 0;
-  gsgSaveBest();
   if(finalScore) finalScore.textContent = `${gsgScore} / ${total}`;
-  if(finalMsg) finalMsg.textContent = `正確率 ${rate}%｜目前最佳 ${gsgBest} 分`;
+  if(finalMsg) finalMsg.textContent = `${gsgPlayer}｜正確率 ${rate}%｜完成時間 ${gsgFormatTime(gsgElapsedMs)}｜成績已送上排行榜`;
+  gsgSaveResult();
   result?.classList.add('show');
   const playBtn = document.getElementById('gsg-play-btn');
   if(playBtn) playBtn.disabled = true;
@@ -5683,15 +5850,20 @@ function gsgFinish(){
 
 function gsgRestart(){
   gsgInit();
+  gsgStopTimer();
   gsgDeck = gsgBuildDeck();
   gsgRoundIndex = 0;
   gsgScore = 0;
   gsgStreak = 0;
   gsgAnswered = false;
+  gsgElapsedMs = 0;
+  gsgStartedAt = 0;
+  gsgFinished = false;
   gsgSetFeedback('先播放片段，再從下方選答案。', 'neutral');
   const result = document.getElementById('gsg-result');
   result?.classList.remove('show');
-  gsgLoadBest();
+  gsgUpdateTime();
+  gsgRenderBest();
   gsgLoadRound(0);
 }
 
@@ -5716,9 +5888,13 @@ function gsgInit(){
     gsgAudio.preload = 'auto';
     gsgAudio.addEventListener('ended', () => gsgStopPreview());
   }
-  gsgLoadBest();
+  if(gsgPlayer) gsgSelectPlayer(gsgPlayer);
+  gsgRenderLeaderboard();
+  gsgInitLeaderboard();
   if(!gsgDeck.length) gsgDeck = gsgBuildDeck();
 }
+
+window.addEventListener('firebaseReady', gsgInitLeaderboard);
 
 function switchGame(i,btn){
   openGame(i,btn);

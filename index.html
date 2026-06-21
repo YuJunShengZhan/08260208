@@ -635,6 +635,17 @@ transition:background .3s,border-color .3s,box-shadow .3s;
 [data-theme="dark"] #pd-status-banner{
 box-shadow:0 12px 28px rgba(0,0,0,.28);
 }
+#pd-history-list{
+max-height:147px;
+overflow-y:auto;
+overscroll-behavior:contain;
+-webkit-overflow-scrolling:touch;
+scrollbar-width:thin;
+scrollbar-color:var(--pink) transparent;
+}
+#pd-history-list::-webkit-scrollbar{width:5px;}
+#pd-history-list::-webkit-scrollbar-thumb{background:var(--pink);border-radius:999px;}
+.pd-history-row{min-height:49px;box-sizing:border-box;}
 
 .music-player{
 position:fixed;
@@ -8806,7 +8817,7 @@ function pdRenderHistory(val){
     return;
   }
   el.innerHTML = records.map(r=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--card-border)">
+    <div class="pd-history-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--card-border)">
       <div>
         <span style="font-size:14px">🩸</span>
         <span style="font-size:13px;margin-left:6px;color:var(--text)">${r.start} ～ ${r.end||'未記錄結束'}</span>

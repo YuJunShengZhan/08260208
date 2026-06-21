@@ -5984,10 +5984,10 @@ function xrgMakeLane(row){
   const colors = ['#ff758f','#f8b84e','#6aa8ff','#9d7bea','#53c5a1','#ff8b61'];
   return {
     type:'road',
-    speed:direction * Math.min(205, 62 + row * 2.6 + Math.random() * 48),
-    gap:125 + Math.random() * 72,
-    offset:Math.random() * 180,
-    carWidth:48 + Math.random() * 24,
+    speed:direction * Math.min(165, 48 + row * 2 + Math.random() * 34),
+    gap:225 + Math.random() * 105,
+    offset:Math.random() * 280,
+    carWidth:46 + Math.random() * 18,
     color:colors[Math.floor(Math.random() * colors.length)]
   };
 }

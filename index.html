@@ -5980,6 +5980,8 @@ let xrgCameraRow = 0;
 let xrgMaxRow = 0;
 let xrgLanes = [];
 let xrgCoinRows = new Map();
+let xrgCoinEffects = [];
+let xrgAudioContext = null;
 let xrgBest = Number(localStorage.getItem(XRG_BEST_KEY) || 0);
 let xrgPointerStart = null;
 let xrgLastTouchEnd = 0;
@@ -6070,6 +6072,8 @@ function xrgBuyOrSelectCharacter(characterId){
 
 function xrgCollectCoin(){
   if(xrgCoinRows.get(xrgPlayer.row)!==xrgPlayer.col) return;
+  xrgSpawnCoinEffect(xrgPlayer.col,xrgPlayer.row);
+  xrgPlayCoinSound();
   xrgCoinRows.delete(xrgPlayer.row);
   xrgEconomy.coins += 1;
   xrgSaveEconomyLocal();
@@ -6077,6 +6081,77 @@ function xrgCollectCoin(){
     const {db,ref,runTransaction}=window._fb;
     runTransaction(ref(db,'crossyEconomy/coins'),current=>(Math.max(0,Number(current)||0)+1)).catch(()=>{});
   }
+}
+
+function xrgPlayCoinSound(){
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if(!AudioContextClass) return;
+  try{
+    xrgAudioContext = xrgAudioContext || new AudioContextClass();
+    if(xrgAudioContext.state==='suspended') xrgAudioContext.resume();
+    const startAt = xrgAudioContext.currentTime;
+    [880,1320,1760].forEach((frequency,index)=>{
+      const oscillator = xrgAudioContext.createOscillator();
+      const gain = xrgAudioContext.createGain();
+      const noteStart = startAt + index * .055;
+      oscillator.type = index===2 ? 'sine' : 'triangle';
+      oscillator.frequency.setValueAtTime(frequency,noteStart);
+      gain.gain.setValueAtTime(.0001,noteStart);
+      gain.gain.exponentialRampToValueAtTime(.16,noteStart+.012);
+      gain.gain.exponentialRampToValueAtTime(.0001,noteStart+.16);
+      oscillator.connect(gain);
+      gain.connect(xrgAudioContext.destination);
+      oscillator.start(noteStart);
+      oscillator.stop(noteStart+.17);
+    });
+  }catch(_err){}
+}
+
+function xrgSpawnCoinEffect(col,row){
+  const x = col * XRG_COL_WIDTH + 30;
+  const y = xrgRowY(row) + 27;
+  const particles = Array.from({length:12},(_,index)=>{
+    const angle = (Math.PI*2*index/12) + Math.random()*.18;
+    const speed = 48 + Math.random()*58;
+    return {x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-22,size:2.5+Math.random()*3};
+  });
+  xrgCoinEffects.push({x,y,life:.72,maxLife:.72,particles});
+}
+
+function xrgUpdateCoinEffects(delta){
+  xrgCoinEffects.forEach(effect=>{
+    effect.life -= delta;
+    effect.particles.forEach(particle=>{
+      particle.x += particle.vx*delta;
+      particle.y += particle.vy*delta;
+      particle.vy += 105*delta;
+    });
+  });
+  xrgCoinEffects = xrgCoinEffects.filter(effect=>effect.life>0);
+}
+
+function xrgDrawCoinEffects(){
+  xrgCoinEffects.forEach(effect=>{
+    const alpha = Math.max(0,effect.life/effect.maxLife);
+    xrgCtx.save();
+    xrgCtx.globalAlpha = alpha;
+    effect.particles.forEach((particle,index)=>{
+      xrgCtx.fillStyle = index%2 ? '#fff3a6' : '#ffd43b';
+      xrgCtx.beginPath();
+      xrgCtx.arc(particle.x,particle.y,particle.size,0,Math.PI*2);
+      xrgCtx.fill();
+    });
+    xrgCtx.fillStyle = '#fff7b8';
+    xrgCtx.strokeStyle = '#b87912';
+    xrgCtx.lineWidth = 3;
+    xrgCtx.font = 'bold 22px Arial';
+    xrgCtx.textAlign = 'center';
+    xrgCtx.textBaseline = 'middle';
+    const textY = effect.y - 18 - (1-alpha)*28;
+    xrgCtx.strokeText('+1',effect.x,textY);
+    xrgCtx.fillText('+1',effect.x,textY);
+    xrgCtx.restore();
+  });
 }
 
 function xrgInitEconomyFirebase(){
@@ -6232,6 +6307,7 @@ function xrgDraw(){
   xrgCtx.fillRect(0,0,XRG_WIDTH,XRG_HEIGHT);
   for(let row=xrgCameraRow;row<=xrgCameraRow+12;row++) xrgDrawLane(row,xrgLanes[row]);
   xrgDrawCoins();
+  xrgDrawCoinEffects();
   xrgDrawPlayer();
 }
 
@@ -6289,6 +6365,7 @@ function xrgTick(timestamp){
   const delta = xrgLastFrame ? Math.min(.05,(timestamp-xrgLastFrame)/1000) : 0;
   xrgLastFrame = timestamp;
   xrgElapsed += delta;
+  xrgUpdateCoinEffects(delta);
   xrgDraw();
   if(xrgCheckCollision()){
     xrgGameOverNow();
@@ -6307,6 +6384,7 @@ function xrgStart(){
   xrgLastFrame = 0;
   xrgLanes = [];
   xrgCoinRows = new Map();
+  xrgCoinEffects = [];
   xrgGameOver = false;
   xrgRunning = true;
   xrgEnsureLanes(16);

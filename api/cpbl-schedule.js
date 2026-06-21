@@ -50,6 +50,14 @@ function normalizeTeam(line) {
   return '';
 }
 
+function normalizeGameTime(value) {
+  const match = String(value || '').match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return '';
+  let hour = Number(match[1]);
+  if (hour >= 0 && hour <= 4) hour += 16;
+  return `${pad(hour)}:${match[2]}`;
+}
+
 function parseSchedule(raw, ymd) {
   const lines = htmlToLines(raw);
   const parts = ymd.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -116,6 +124,7 @@ function parseSchedule(raw, ymd) {
 
     const field = seg.find((line) => FIELDS.includes(line)) || '';
     const status = seg.find((line) => STATUS_WORDS.includes(line)) || '未開始';
+    const timeLine = seg.find((line) => /^\d{1,2}:\d{2}$/.test(line)) || '';
 
     if (teams.length >= 2 && no) {
       games.push({
@@ -125,7 +134,7 @@ function parseSchedule(raw, ymd) {
         away: teams[0],
         home: teams[1],
         field,
-        time: '',
+        time: normalizeGameTime(timeLine),
         status,
         awayScore,
         homeScore,

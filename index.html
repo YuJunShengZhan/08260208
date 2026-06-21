@@ -3070,7 +3070,7 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 .gsg-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--pink);margin-bottom:4px;line-height:1.5}
 .gsg-sub,.gsg-current,.gsg-feedback,.gsg-progress-text,.gsg-result-msg{font-size:13px;line-height:1.7;color:var(--text-muted)}
 .gsg-row{display:grid;gap:8px}
-.gsg-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.gsg-stats{grid-template-columns:repeat(5,minmax(0,1fr))}
 .gsg-stat{background:var(--pink-light);border-radius:14px;padding:10px 8px;text-align:center}
 .gsg-small{font-size:11px;color:var(--text-muted);margin-bottom:4px}
 .gsg-big{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--rose)}
@@ -3768,7 +3768,8 @@ onclick="hideSpecialForToday()">
         <div class="gsg-stat"><div class="gsg-small">題數</div><div class="gsg-big" id="gsg-round">0 / 0</div></div>
         <div class="gsg-stat"><div class="gsg-small">分數</div><div class="gsg-big" id="gsg-score">0</div></div>
         <div class="gsg-stat"><div class="gsg-small">連對</div><div class="gsg-big" id="gsg-streak">0</div></div>
-        <div class="gsg-stat"><div class="gsg-small">最佳</div><div class="gsg-big" id="gsg-best">0</div></div>
+        <div class="gsg-stat"><div class="gsg-small">用時</div><div class="gsg-big" id="gsg-time">00:00</div></div>
+        <div class="gsg-stat"><div class="gsg-small">最佳用時</div><div class="gsg-big" id="gsg-best">—</div></div>
       </div>
 
       <div class="gsg-panel">
@@ -5752,12 +5753,10 @@ const CPBLG_TEAM_ALIASES = {
 const CPBLG_TEAMS = Object.values(CPBLG_TEAM_ALIASES).filter((v,i,a)=>a.indexOf(v)===i);
 const CPBLG_FIELDS = ['天母','大巨蛋','樂天桃園','桃園','澄清湖','洲際','新莊','亞太主','台南亞太','斗六','嘉義市','花蓮'];
 const CPBLG_STORE = 'cpbl_guess_game_v4';
-const CPBLG_RESET_TOKEN = 'cpbl_guess_cleanup_20260620_v1';
 let cpblgPlayer = '';
 let cpblgGames = [];
 let cpblgLoadedOnce = false;
 let cpblgFirebaseReady = false;
-let cpblgNeedsRemoteReset = false;
 let cpblgData = cpblLoadLocalData();
 
 function cpblBaseData(){
@@ -6282,17 +6281,6 @@ function cpblMergeData(base, incoming){
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
   return data;
 }
-function cpblResetForRelease(){
-  localStorage.removeItem('cpblgPlayer');
-  cpblgPlayer = '';
-  cpblgData = cpblBaseData();
-  localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
-  localStorage.setItem(CPBLG_RESET_TOKEN, '1');
-  cpblgNeedsRemoteReset = true;
-}
-if(localStorage.getItem(CPBLG_RESET_TOKEN)!=='1'){
-  cpblResetForRelease();
-}
 function cpblSaveData(pushFirebase=true){
   cpblgData.updatedAt = Date.now();
   localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
@@ -6308,10 +6296,6 @@ function cpblInitFirebase(){
   if(cpblgFirebaseReady || !window._fb) return;
   cpblgFirebaseReady = true;
   const {db,ref,onValue,set}=window._fb;
-  if(cpblgNeedsRemoteReset){
-    set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
-    cpblgNeedsRemoteReset = false;
-  }
   onValue(ref(db,'cpblGuess'), snap=>{
     const remote = snap.val();
     if(remote){
@@ -6527,8 +6511,21 @@ function cpblPick(gameId, team){
   cpblgData.picks[gameId] = cpblgData.picks[gameId] || {};
   const old = cpblgData.picks[gameId][cpblgPlayer];
   if(old?.checked){alert('這場已經結算，不能修改');return;}
-  cpblgData.picks[gameId][cpblgPlayer] = {team, checked:false, correct:null, pickedAt:Date.now()};
-  cpblSaveData(true);
+  const player = cpblgPlayer;
+  const pick = {team, checked:false, correct:null, pickedAt:Date.now()};
+  cpblgData.picks[gameId][player] = pick;
+  cpblSaveData(false);
+  if(!window._fb){
+    alert('預測已暫存在這台裝置，但目前尚未連上伺服器，請稍後再點一次確認同步。');
+    return;
+  }
+  const {db,ref,update}=window._fb;
+  update(ref(db,'cpblGuess'), {
+    [`picks/${gameId}/${player}`]: pick,
+    updatedAt: Date.now()
+  }).catch(()=>{
+    alert('預測暫時無法同步到伺服器，請確認網路後再點一次。');
+  });
 }
 function cpblStatusLoaded(gamesCount){
   return `<div class="cpblg-status-line"><div class="cpblg-status-main">已載入 ${gamesCount} 場今日賽程。</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;

@@ -6097,8 +6097,11 @@ function xrgRectsOverlap(a,b){
 function xrgCheckCollision(){
   const lane = xrgLanes[xrgPlayer.row];
   if(!lane || lane.type!=='road') return false;
-  const playerRect = {x:xrgPlayer.col*XRG_COL_WIDTH+15,y:xrgRowY(xrgPlayer.row)+14,w:30,h:31};
-  return xrgCarRects(lane,xrgRowY(xrgPlayer.row)).some(car=>xrgRectsOverlap(playerRect,car));
+  const playerRect = {x:xrgPlayer.col*XRG_COL_WIDTH+18,y:xrgRowY(xrgPlayer.row)+17,w:24,h:25};
+  return xrgCarRects(lane,xrgRowY(xrgPlayer.row)).some(car=>{
+    const carHitbox = {x:car.x+5,y:car.y+4,w:Math.max(1,car.w-10),h:car.h-8};
+    return xrgRectsOverlap(playerRect,carHitbox);
+  });
 }
 
 function xrgUpdateStats(){

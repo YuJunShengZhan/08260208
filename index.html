@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>林聖展 ♡ 蘇予君</title>
+<link rel="stylesheet" href="crossy-road.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
 
@@ -3294,6 +3295,7 @@ onclick="hideSpecialForToday()">
       <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🧩 回憶拼圖</button>
       <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
       <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
+      <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(6,this)">🐥 天天過馬路</button>
     </div>
   </div>
 
@@ -3626,6 +3628,48 @@ onclick="hideSpecialForToday()">
   </div>
 </div>
 
+<!-- 天天過馬路 -->
+<div class="game-section" id="gs-7">
+  <div class="card">
+    <div class="card-title">🐥 天天過馬路</div>
+    <div class="xrg-shell">
+      <div class="xrg-hero">
+        <div class="xrg-title">天天過馬路</div>
+        <div class="xrg-sub">閃過來往車輛，不斷往前走！走得越遠，車速會越快。</div>
+      </div>
+      <div class="xrg-stats">
+        <div class="xrg-stat"><div class="xrg-stat-label">目前距離</div><div class="xrg-stat-value" id="xrg-score">0</div></div>
+        <div class="xrg-stat"><div class="xrg-stat-label">最高紀錄</div><div class="xrg-stat-value" id="xrg-best">0</div></div>
+        <div class="xrg-stat"><div class="xrg-stat-label">金幣</div><div class="xrg-stat-value" id="xrg-coins">0</div></div>
+      </div>
+      <button type="button" class="xrg-shop-btn" onclick="xrgToggleShop()">🛍️ 角色商城</button>
+      <div class="xrg-shop hidden" id="xrg-shop">
+        <div class="xrg-shop-head"><div class="xrg-shop-title">角色商城</div><button type="button" class="xrg-shop-close" onclick="xrgToggleShop(false)">✕</button></div>
+        <div class="xrg-shop-grid" id="xrg-shop-grid"></div>
+      </div>
+      <div class="xrg-stage" id="xrg-stage">
+        <canvas class="xrg-canvas" id="xrg-canvas" width="420" height="720" aria-label="天天過馬路遊戲畫面"></canvas>
+        <div class="xrg-hud hidden" id="xrg-hud">
+          <div class="xrg-hud-distance" id="xrg-hud-distance">距離 0</div>
+          <button type="button" class="xrg-pause-btn" id="xrg-pause-btn" onclick="xrgPause()" aria-label="暫停遊戲">⏸</button>
+        </div>
+        <div class="xrg-overlay" id="xrg-overlay">
+          <div class="xrg-overlay-card">
+            <div class="xrg-overlay-emoji" id="xrg-overlay-emoji">🐥</div>
+            <div class="xrg-overlay-title" id="xrg-overlay-title">準備過馬路</div>
+            <div class="xrg-overlay-sub" id="xrg-overlay-sub">點一下前進一格，滑動可以控制方向，別被車撞到囉！</div>
+            <div class="xrg-overlay-actions" id="xrg-overlay-actions">
+              <button type="button" class="xrg-start xrg-resume hidden" id="xrg-resume-btn" onclick="xrgResume()">繼續</button>
+              <button type="button" class="xrg-start" id="xrg-start-btn" onclick="xrgStart()">開始挑戰</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="xrg-tip">點一下往前一格，滑動可控制方向；電腦可使用方向鍵／WASD。</div>
+    </div>
+  </div>
+</div>
+
 <div class="game-section" id="gs-5-history">
   <div class="card">
     <div style="margin-bottom:14px">
@@ -3677,7 +3721,7 @@ onclick="hideSpecialForToday()">
     <div id="pd-banner-emoji" style="font-size:40px;margin-bottom:6px">🌸</div>
     <div id="pd-banner-title" style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--pink);font-weight:700">載入中...</div>
     <div id="pd-banner-sub" style="font-size:13px;color:var(--text-muted);margin-top:4px"></div>
-	<button onclick="pdRecordStart()" 
+  <button id="pd-record-action" onclick="pdRecordAction()"
   style="margin-top:12px;background:var(--pink);color:white;border:none;border-radius:12px;padding:10px 20px;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif">
   🩸 月經來了，記錄今天
 </button>
@@ -4230,8 +4274,9 @@ function showPage(id,btn){
   document.body.classList.toggle('game-mode', isGamePage);
 
   if(!isGamePage && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(!isGamePage && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   if(!isGamePage){
-    document.body.classList.remove('pz-mode','rg-mode');
+    document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   }
 
   if(id==='period') pdRefresh();
@@ -5244,8 +5289,9 @@ function showGameHub(){
   document.querySelectorAll('.game-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.game-tab,.game-menu-btn').forEach(b=>b.classList.remove('active'));
   document.body.classList.add('game-mode');
-  document.body.classList.remove('pz-mode','rg-mode');
+  document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -5261,11 +5307,14 @@ function openGame(i,btn){
   document.body.classList.add('game-mode');
   document.body.classList.toggle('pz-mode', i===3);
   document.body.classList.toggle('rg-mode', i===4);
+  document.body.classList.toggle('xrg-mode', i===6);
 
   if(i!==4 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(i!==6 && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
   if(i===4 && typeof rgEnterScreen==='function') rgEnterScreen();
   if(i===5 && typeof cpblEnterScreen==='function') cpblEnterScreen();
+  if(i===6 && typeof xrgEnterScreen==='function') xrgEnterScreen();
 
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
@@ -5280,8 +5329,9 @@ function showGameSectionById(id, options={}){
   document.querySelectorAll('.game-tab,.game-menu-btn').forEach(btn=>btn.classList.remove('active'));
   document.getElementById('game-menu-cpbl')?.classList.add('active');
   document.body.classList.add('game-mode');
-  document.body.classList.remove('pz-mode','rg-mode');
+  document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
 }
@@ -8803,6 +8853,7 @@ function pdNormalizeHistoryItem(item, key=''){
     end,
     cycle,
     dur,
+    completed:item?.completed===true,
     createdAt: Number(item?.createdAt) || 0
   };
 }
@@ -8889,7 +8940,8 @@ function pdGetSeedCycles(){
     if(Number.isNaN(pStart.getTime())) return null;
     const cycle = Number(item.cycle) || Number(pdSettings.cycle) || 28;
     const dur = Number(item.dur) || Number(pdSettings.dur) || 5;
-    const pEnd = new Date(pStart.getTime() + (dur - 1) * 864e5);
+    const savedEnd = item.end ? new Date(item.end+'T00:00:00') : null;
+    const pEnd = savedEnd && !Number.isNaN(savedEnd.getTime()) ? savedEnd : new Date(pStart.getTime() + (dur - 1) * 864e5);
     const ovulate = new Date(pStart.getTime() + Math.max(0, cycle - 14) * 864e5);
     const fertileStart = new Date(ovulate.getTime() - 5 * 864e5);
     const fertileEnd = new Date(ovulate.getTime() + 864e5);
@@ -8934,6 +8986,7 @@ function pdDayType(dateObj,cycles){
   return 'safe';
 }
 function pdRefresh(){
+  pdUpdateRecordAction();
   if(!pdSettings.start){
     document.getElementById('pd-banner-title').textContent='尚未設定週期';
     document.getElementById('pd-banner-sub').textContent='請先到下方設定生理期資訊';
@@ -9054,6 +9107,31 @@ function pdUpdateSettingsSummary(){
   `;
 }
 
+function pdDateString(date=new Date()){
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+
+function pdIsCurrentPeriodActive(){
+  if(!pdSettings.start || pdSettings.completed===true) return false;
+  const start = new Date(pdSettings.start+'T00:00:00');
+  const estimatedEnd = pdSettings.end
+    ? new Date(pdSettings.end+'T00:00:00')
+    : new Date(start.getTime()+((Number(pdSettings.dur)||5)-1)*864e5);
+  const now = today();
+  return !Number.isNaN(start.getTime()) && now.getTime()>=start.getTime() && now.getTime()<=estimatedEnd.getTime();
+}
+
+function pdUpdateRecordAction(){
+  const button = document.getElementById('pd-record-action');
+  if(!button) return;
+  button.textContent = pdIsCurrentPeriodActive() ? '✅ 設定月經結束日' : '🩸 月經來了，記錄今天';
+}
+
+function pdRecordAction(){
+  if(pdIsCurrentPeriodActive()) pdRecordEnd();
+  else pdRecordStart();
+}
+
 function pdRecordStart(){
   // 跳出選日期的對話框
   const today = new Date();
@@ -9091,13 +9169,53 @@ function pdConfirmStart(){
     start: startDate,
     end: endStr,
     cycle: pdSettings.cycle || 28,
-    dur: pdSettings.dur || 5
+    dur: pdSettings.dur || 5,
+    completed: false
   };
   
   if(!window._fb){ alert('Firebase 尚未連線'); return; }
   pdSaveSettingsWithHistory(newSettings).then(()=>{
     document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
     alert(`已記錄！月經開始日：${startDate} 🩸`);
+  });
+}
+
+function pdRecordEnd(){
+  const todayStr = pdDateString();
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.innerHTML = `
+    <div style="background:var(--white);border-radius:24px;padding:28px 24px;width:100%;max-width:320px;text-align:center">
+      <div style="font-size:36px;margin-bottom:8px">✅</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--pink);font-weight:700;margin-bottom:6px">設定月經結束日</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px">請選擇這次月經實際結束的日期</div>
+      <input type="date" id="pd-record-end-date" min="${pdSettings.start}" value="${todayStr}"
+        style="width:100%;padding:11px;border:1px solid var(--card-border);border-radius:12px;font-size:14px;font-family:'Noto Sans TC',sans-serif;background:var(--pink-light);color:var(--text);margin-bottom:14px">
+      <div style="display:flex;gap:10px">
+        <button onclick="this.closest('div[style*=fixed]').remove()"
+          style="flex:1;padding:11px;border:1.5px solid var(--card-border);border-radius:12px;background:none;cursor:pointer;font-size:14px;font-family:'Noto Sans TC',sans-serif;color:var(--text-muted)">取消</button>
+        <button onclick="pdConfirmEnd()"
+          style="flex:1;padding:11px;background:var(--pink);color:white;border:none;border-radius:12px;cursor:pointer;font-size:14px;font-family:'Noto Sans TC',sans-serif">確認結束</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function pdConfirmEnd(){
+  const endDate = document.getElementById('pd-record-end-date')?.value;
+  if(!endDate){alert('請選擇結束日期');return;}
+  const start = new Date(pdSettings.start+'T00:00:00');
+  const end = new Date(endDate+'T00:00:00');
+  if(Number.isNaN(start.getTime()) || end.getTime()<start.getTime()){
+    alert('結束日期不能早於開始日期');
+    return;
+  }
+  const dur = Math.floor((end.getTime()-start.getTime())/864e5)+1;
+  const newSettings = {...pdSettings,end:endDate,dur,completed:true};
+  if(!window._fb){alert('Firebase 尚未連線');return;}
+  pdSaveSettingsWithHistory(newSettings).then(()=>{
+    document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
+    alert(`已設定月經結束日：${endDate} ✅`);
   });
 }
 // ── Music Player ──
@@ -10366,6 +10484,7 @@ window.addEventListener('firebaseReady',()=>{
   checkLoveSurprise();
 });
 </script>
+<script src="crossy-road.js"></script>
 <!-- 拖曳幽靈 -->
 <div id="bb-drag-ghost"></div>
 

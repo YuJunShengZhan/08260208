@@ -1,181 +1,101 @@
-const TEAM_ALIASES = {
-  '中信兄弟': '中信兄弟',
-  '兄弟': '中信兄弟',
-  'CTBC Brothers': '中信兄弟',
-  '統一7-ELEVEn獅': '統一7-ELEVEn獅',
-  '統一7-ELEVEN獅': '統一7-ELEVEn獅',
-  '統一獅': '統一7-ELEVEn獅',
-  'Uni-Lions': '統一7-ELEVEn獅',
-  '樂天桃猿': '樂天桃猿',
-  'Rakuten Monkeys': '樂天桃猿',
-  '富邦悍將': '富邦悍將',
-  'Fubon Guardians': '富邦悍將',
-  '味全龍': '味全龍',
-  'Wei Chuan Dragons': '味全龍',
-  '台鋼雄鷹': '台鋼雄鷹',
-  'TSG Hawks': '台鋼雄鷹'
+const STATUS_MAP = {
+  SCHEDULED: '未開始',
+  START: '進行中',
+  PLAYING: '進行中',
+  IN_PROGRESS: '進行中',
+  FINISHED: '已結束',
+  POSTPONED: '延賽',
+  CANCELLED: '取消',
+  CANCELED: '取消',
+  RESERVED: '保留'
 };
 
-const FIELDS = ['天母', '大巨蛋', '樂天桃園', '桃園', '澄清湖', '洲際', '新莊', '亞太主', '台南亞太', '斗六', '嘉義市', '花蓮', '青埔'];
-const STATUS_WORDS = ['已結束', '進行中', '比賽中', '未開始', '延賽', '取消', '保留'];
-
-function pad(n) {
-  return String(n).padStart(2, '0');
+function pad(value) {
+  return String(value).padStart(2, '0');
 }
 
 function todayYmdInTaipei() {
-  const dt = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
-  return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
+  const date = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
-function htmlToLines(raw) {
-  return String(raw || '')
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, '\n')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\u00a0/g, ' ')
-    .replace(/\r/g, '\n')
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n+/g, '\n')
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean);
+function normalizeDate(value) {
+  return String(value || '').slice(0, 10);
 }
 
-function normalizeTeam(line) {
-  for (const [alias, team] of Object.entries(TEAM_ALIASES)) {
-    if (line.includes(alias)) return team;
-  }
-  return '';
+function normalizeTime(value) {
+  const match = String(value || '').match(/T(\d{2}):(\d{2})/);
+  if (!match || `${match[1]}:${match[2]}` === '00:00') return '';
+  return `${match[1]}:${match[2]}`;
 }
 
-function normalizeGameTime(value) {
-  const match = String(value || '').match(/^(\d{1,2}):(\d{2})$/);
-  if (!match) return '';
-  let hour = Number(match[1]);
-  if (hour >= 0 && hour <= 4) hour += 16;
-  return `${pad(hour)}:${match[2]}`;
+function normalizeStatus(value) {
+  const status = String(value || '').trim().toUpperCase();
+  return STATUS_MAP[status] || '未開始';
 }
 
-function parseSchedule(raw, ymd) {
-  const lines = htmlToLines(raw);
-  const parts = ymd.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!parts) return [];
+function normalizeScore(value, status) {
+  if (!['進行中', '已結束'].includes(status)) return null;
+  const score = Number(value);
+  return Number.isFinite(score) ? score : null;
+}
 
-  const month = Number(parts[2]);
-  const day = Number(parts[3]);
-  const header = `${month}/${day} 週`;
-  const anyDateHeaderReg = /^\d{1,2}\/\d{1,2}\s+週[一二三四五六日]$/;
+function normalizeGame(game, ymd) {
+  const gameNo = String(game?.GameSno ?? game?.gameSno ?? '').trim();
+  const away = String(game?.Visiting?.Team?.Name ?? game?.visiting?.team?.name ?? '').trim();
+  const home = String(game?.Home?.Team?.Name ?? game?.home?.team?.name ?? '').trim();
+  if (!gameNo || !away || !home) return null;
 
-  const start = lines.findIndex((line) => line.startsWith(header));
-  if (start < 0) return [];
+  const rawStatus = game?.GameStatus ?? game?.gameStatus;
+  const status = normalizeStatus(rawStatus);
+  const preExeDate = game?.PreExeDate ?? game?.preExeDate ?? '';
+  return {
+    id: `${ymd}-A-${gameNo}`,
+    date: ymd,
+    no: gameNo,
+    away,
+    home,
+    field: String(game?.Field?.Abbe ?? game?.field?.abbe ?? '').trim(),
+    time: normalizeTime(preExeDate),
+    status,
+    awayScore: normalizeScore(game?.Visiting?.Score ?? game?.visiting?.score, status),
+    homeScore: normalizeScore(game?.Home?.Score ?? game?.home?.score, status),
+    source: '中職官方賽程 API'
+  };
+}
 
-  let end = lines.length;
-  for (let i = start + 1; i < lines.length; i++) {
-    if (anyDateHeaderReg.test(lines[i])) {
-      end = i;
-      break;
-    }
-  }
-
-  let block = lines.slice(start, end);
-  const minorIdx = block.findIndex((line) => line === '二軍例行賽');
-  if (minorIdx >= 0) block = block.slice(0, minorIdx);
-
-  const games = [];
-  for (let i = 0; i < block.length; i++) {
-    if (block[i] !== '一軍例行賽') continue;
-
-    let j = i + 1;
-    while (j < block.length && block[j] !== '一軍例行賽' && block[j] !== '二軍例行賽') {
-      j += 1;
-    }
-    const seg = block.slice(i, j);
-
-    const teams = [];
-    for (const line of seg) {
-      const team = normalizeTeam(line);
-      if (team && !teams.includes(team)) teams.push(team);
-    }
-
-    let no = '';
-    for (let k = 0; k < seg.length; k++) {
-      if (seg[k] === 'GAME' && /^\d+$/.test(seg[k + 1] || '')) {
-        no = seg[k + 1];
-        break;
-      }
-      const match = seg[k].match(/^GAME\s*(\d+)$/);
-      if (match) {
-        no = match[1];
-        break;
-      }
-    }
-
-    let awayScore = null;
-    let homeScore = null;
-    for (let k = 0; k < seg.length - 2; k++) {
-      if (/^\d+$/.test(seg[k]) && seg[k + 1] === ':' && /^\d+$/.test(seg[k + 2])) {
-        awayScore = Number(seg[k]);
-        homeScore = Number(seg[k + 2]);
-        break;
-      }
-    }
-
-    const field = seg.find((line) => FIELDS.includes(line)) || '';
-    const status = seg.find((line) => STATUS_WORDS.includes(line)) || '未開始';
-    const timeLine = seg.find((line) => /^\d{1,2}:\d{2}$/.test(line)) || '';
-
-    if (teams.length >= 2 && no) {
-      games.push({
-        id: `${ymd}-A-${no}`,
-        date: ymd,
-        no,
-        away: teams[0],
-        home: teams[1],
-        field,
-        time: normalizeGameTime(timeLine),
-        status,
-        awayScore,
-        homeScore,
-        source: 'Vercel 官方賽程 API'
-      });
-    }
-
-    i = j - 1;
-  }
-
-  return games.sort((a, b) => Number(a.no) - Number(b.no));
+async function fetchMonthlySchedule(year, month) {
+  const query = new URLSearchParams({ kindCode: 'A', year: String(year), month: String(month) });
+  const upstream = await fetch(`https://stats.cpbl.com.tw/api/proxy/v1/games/schedule?${query}`, {
+    headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0' }
+  });
+  if (!upstream.ok) throw new Error(`upstream HTTP ${upstream.status}`);
+  const payload = await upstream.json();
+  return payload?.Data?.Games || payload?.data?.games || [];
 }
 
 module.exports = async (req, res) => {
   const ymd = String(req.query?.date || todayYmdInTaipei());
+  const match = ymd.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    res.status(400).json({ ok: false, error: '日期格式錯誤' });
+    return;
+  }
 
   try {
-    const upstream = await fetch(`https://stats.cpbl.com.tw/schedule?_=${Date.now()}`, {
-      headers: { 'User-Agent': 'Mozilla/5.0' }
-    });
-
-    if (!upstream.ok) {
-      throw new Error(`upstream HTTP ${upstream.status}`);
-    }
-
-    const raw = await upstream.text();
-    const games = parseSchedule(raw, ymd);
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const rawGames = await fetchMonthlySchedule(year, month);
+    const games = rawGames
+      .filter(game => normalizeDate(game?.PreExeDate ?? game?.preExeDate) === ymd)
+      .map(game => normalizeGame(game, ymd))
+      .filter(Boolean)
+      .sort((left, right) => Number(left.no) - Number(right.no));
 
     res.setHeader('Cache-Control', 'no-store');
-    res.status(200).json({
-      ok: true,
-      date: ymd,
-      games,
-      source: 'Vercel 官方賽程 API',
-      fetchedAt: new Date().toISOString()
-    });
+    res.status(200).json({ ok: true, date: ymd, games, source: '中職官方賽程 API', fetchedAt: new Date().toISOString() });
   } catch (error) {
     res.setHeader('Cache-Control', 'no-store');
-    res.status(500).json({
-      ok: false,
-      error: error?.message || String(error)
-    });
+    res.status(500).json({ ok: false, error: error?.message || String(error) });
   }
 };

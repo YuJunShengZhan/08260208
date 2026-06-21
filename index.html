@@ -2,7 +2,7 @@
 <html lang="zh-TW" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>林聖展 ♡ 蘇予君</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
@@ -1352,7 +1352,7 @@ background:var(--pink-light);margin-left:8px;
   position:absolute;
   left:calc(var(--lane) * (var(--lane-size) + var(--gap)));
   width:var(--lane-size);
-  height:30px;
+  height:26px;
   border-radius:13px;
   transform:translateY(-50%);
   box-shadow:0 10px 18px rgba(117,35,54,.22), inset 0 1px 0 rgba(255,255,255,.36);
@@ -1363,11 +1363,11 @@ background:var(--pink-light);margin-left:8px;
 .rg-note.l3{background:linear-gradient(180deg,#262626,#070707);}
 .rg-note.hold{
   --head-half:18px;
-  min-height:48px;
+  min-height:44px;
   align-items:flex-end !important;
   padding-bottom:5px;
   border-radius:16px !important;
-  transform:translateY(calc(-100% + var(--head-half))) scale(var(--note-scale-x,1), var(--note-scale-y,1)) !important;
+  transform:translateY(calc(-100% + var(--head-half))) scale(var(--note-scale,1)) !important;
   box-sizing:border-box;
 }
 .rg-note.hold::after{
@@ -1398,10 +1398,6 @@ background:var(--pink-light);margin-left:8px;
   box-shadow:0 10px 18px rgba(232,99,122,.12);
   white-space:nowrap;
 }
-.rg-judgement.perfect{background:#fff5c8;border-color:#f2c94c;color:#9c6b00;box-shadow:0 10px 20px rgba(242,201,76,.18);}
-.rg-judgement.great{background:#ffe7d7;border-color:#ff9f68;color:#bf5b21;box-shadow:0 10px 20px rgba(255,159,104,.16);}
-.rg-judgement.good{background:#e4f0ff;border-color:#7aaef5;color:#2d5fb3;box-shadow:0 10px 20px rgba(122,174,245,.16);}
-.rg-judgement.miss{background:#ffe8ee;border-color:#ff7b9a;color:#b33a5a;box-shadow:0 10px 20px rgba(255,123,154,.16);}
 .rg-overlay{
   inset:0;
   display:flex;
@@ -1474,58 +1470,8 @@ background:var(--pink-light);margin-left:8px;
   font-family:'Noto Sans TC',sans-serif;
   box-shadow:0 12px 22px rgba(110,33,52,.16);
   transition:transform .08s ease,filter .12s ease;
-  position:relative;
-  overflow:hidden;
 }
 .rg-pad.flash{transform:scale(.96);filter:brightness(1.1);}
-.rg-pad.flash-perfect{filter:brightness(1.18) saturate(1.14) drop-shadow(0 0 10px rgba(255,221,102,.4));}
-.rg-pad.flash-great{filter:brightness(1.16) saturate(1.1) drop-shadow(0 0 10px rgba(255,150,102,.38));}
-.rg-pad.flash-good{filter:brightness(1.12) saturate(1.08) drop-shadow(0 0 10px rgba(140,185,255,.34));}
-.rg-pad.flash-miss{filter:brightness(.98) saturate(.96) drop-shadow(0 0 10px rgba(255,110,145,.3));}
-.rg-hit-burst{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:18px;
-  height:18px;
-  margin-left:-9px;
-  margin-top:-9px;
-  border-radius:50%;
-  pointer-events:none;
-  background:radial-gradient(circle,rgba(255,255,255,.96) 0%,rgba(255,255,255,.56) 28%,rgba(255,255,255,.18) 52%,rgba(255,255,255,0) 74%);
-  box-shadow:0 0 0 0 rgba(255,255,255,.42);
-  animation:rgBurst .48s ease-out forwards;
-}
-.rg-hit-particles{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  overflow:visible;
-  z-index:5;
-}
-.rg-hit-particle{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:8px;
-  height:8px;
-  margin-left:-4px;
-  margin-top:-4px;
-  border-radius:50%;
-  background:var(--particle-color,#fff);
-  box-shadow:0 0 8px rgba(255,255,255,.25);
-  animation:rgParticle .62s cubic-bezier(.16,.84,.25,1) forwards;
-}
-@keyframes rgParticle{
-  0%{transform:translate(0,0) scale(.45);opacity:0;}
-  12%{opacity:1;}
-  100%{transform:translate(var(--dx,0px), var(--dy,0px)) scale(0);opacity:0;}
-}
-@keyframes rgBurst{
-  0%{transform:scale(.2);opacity:0;}
-  20%{opacity:1;}
-  100%{transform:scale(6.4);opacity:0;}
-}
 .rg-pad.l0{background:linear-gradient(135deg,#ff8ba7,#f06292);}
 .rg-pad.l1{background:linear-gradient(135deg,#ffb787,#ff8a65);}
 .rg-pad.l2{background:linear-gradient(135deg,#8ec5ff,#5b8dff);}
@@ -1984,16 +1930,16 @@ body.rg-mode #gs-4 *{
   inset:12px 12px 64px;
 }
 #gs-4 .rg-note{
-  height:clamp(42px,10.4vw,56px);
+  height:clamp(36px,9.6vw,48px);
   border-radius:999px;
   display:flex;
   align-items:center;
   justify-content:center;
   color:#fff;
-  font-size:clamp(18px,5.4vw,24px);
+  font-size:clamp(17px,5vw,22px);
   font-weight:800;
   text-shadow:0 1px 3px rgba(0,0,0,.25);
-  transform:translateY(-50%) scale(var(--note-scale-x,1), var(--note-scale-y,1));
+  transform:translateY(-50%) scale(var(--note-scale,1));
   box-shadow:0 12px 20px rgba(117,35,54,.25), inset 0 1.5px 0 rgba(255,255,255,.42), inset 0 -4px 0 rgba(0,0,0,.16);
   border:1px solid rgba(255,255,255,.28);
 }
@@ -2028,22 +1974,16 @@ body.rg-mode #gs-4 *{
 #gs-4 .rg-overlay{
   z-index:4;
 }
-  #gs-4 .rg-pad{
-    min-height:clamp(58px,14vw,72px);
-    border-radius:20px;
-    font-size:clamp(22px,6vw,30px);
-    font-weight:900;
-    touch-action:manipulation;
+#gs-4 .rg-pad{
+  min-height:clamp(58px,14vw,72px);
+  border-radius:20px;
+  font-size:clamp(22px,6vw,30px);
+  font-weight:900;
+  touch-action:manipulation;
   -webkit-tap-highlight-color:transparent;
   user-select:none;
-    box-shadow:0 14px 24px rgba(110,33,52,.18), inset 0 1.5px 0 rgba(255,255,255,.35), inset 0 -4px 0 rgba(0,0,0,.16);
-  }
-  #gs-4 .rg-hit-burst{
-    width:22px;
-    height:22px;
-    margin-left:-11px;
-    margin-top:-11px;
-  }
+  box-shadow:0 14px 24px rgba(110,33,52,.18), inset 0 1.5px 0 rgba(255,255,255,.35), inset 0 -4px 0 rgba(0,0,0,.16);
+}
 #gs-4 .rg-pad.flash{
   transform:scale(.93);
   filter:brightness(1.14) saturate(1.12);
@@ -2153,35 +2093,15 @@ body.rg-mode #gs-4 *{
   }
   #gs-4 .rg-notes{--gap:6px;}
   #gs-4 .rg-note{
-    height:26px;
-    border-radius:12px;
+    height:22px;
+    border-radius:10px;
     box-shadow:none;
   }
-#gs-4 .rg-note.hold{
-  --head-half:11px;
-  min-height:40px;
-  padding-bottom:2px;
-}
-  #gs-4 .rg-hit-burst{
-    width:22px;
-    height:22px;
-    margin-left:-11px;
-    margin-top:-11px;
+  #gs-4 .rg-note.hold{
+    --head-half:11px;
+    min-height:34px;
+    padding-bottom:2px;
   }
-  #gs-4 .rg-hit-particle{
-    width:7px;
-    height:7px;
-    margin-left:-3.5px;
-    margin-top:-3.5px;
-  }
-#gs-4 .rg-note.hit-pop{
-  animation:rgNotePop .36s ease-out forwards;
-}
-@keyframes rgNotePop{
-  0%{transform:translateY(-50%) scale(var(--note-scale-x,1), var(--note-scale-y,1));filter:brightness(1.18);}
-  50%{transform:translateY(-50%) scale(calc(var(--note-scale-x,1) * 1.22), calc(var(--note-scale-y,1) * 1.22));filter:brightness(1.35);}
-  100%{transform:translateY(-50%) scale(.2,.2);opacity:0;filter:brightness(1);}
-}
   #gs-4 .rg-judgement{
     bottom:72px;
     padding:6px 12px;
@@ -3059,76 +2979,13 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 .cpblg-player-select{margin-top:12px;padding:10px 12px;background:rgba(255,255,255,.72);border:1px solid rgba(232,99,122,.12);border-radius:16px}.cpblg-player-select .cpblg-row{margin:8px 0 0}.cpblg-player-hint{text-align:center;font-size:12px;color:var(--text-muted)}
 .cpblg-rate{font-family:'Noto Serif TC',serif;font-size:27px;font-weight:700;color:var(--rose)}.cpblg-toolbar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.cpblg-badge{font-size:12px;color:var(--rose);background:var(--pink-light);border-radius:999px;padding:7px 11px}.cpblg-toolbar-actions{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}.cpblg-status-line{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.cpblg-status-main{min-width:0}.cpblg-status-action{margin-left:auto;flex:0 0 auto}
 .cpblg-games{display:flex;flex-direction:column;gap:10px}.cpblg-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px}.cpblg-no{background:#888;color:#fff;border-radius:999px;padding:5px 10px;font-size:12px}.cpblg-meta{text-align:right;color:var(--text-muted);font-size:11px;line-height:1.5}
-.cpblg-today-records{margin-top:12px;border-top:1px dashed rgba(232,99,122,.22);padding-top:12px}.cpblg-today-titlebar{display:flex;align-items:center;justify-content:space-between;gap:8px}.cpblg-today-title{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:var(--rose)}.cpblg-today-toggle{border:1px solid rgba(232,99,122,.18);border-radius:999px;background:var(--pink-light);color:var(--rose);padding:6px 12px;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:700;cursor:pointer}.cpblg-today-body{display:none;margin-top:8px}.cpblg-today-body.open{display:block}.cpblg-today-list{display:flex;flex-direction:column;gap:8px}.cpblg-today-card{background:var(--white);border:1px solid rgba(232,99,122,.14);border-radius:15px;padding:10px}.cpblg-today-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.cpblg-today-match{text-align:center;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}.cpblg-today-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.cpblg-today-pick{background:var(--pink-light);border-radius:11px;padding:8px;font-size:12px;line-height:1.6}.cpblg-today-player{font-weight:700;color:var(--rose);display:block}.cpblg-today-choice{color:var(--text)}
-#gs-5-history .card{max-width:920px;margin-left:auto;margin-right:auto}#gs-5-history .cpblg-shell{max-width:840px}
-.cpblg-match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:10px 0}.cpblg-team{background:var(--pink-light);border:1px solid rgba(232,99,122,.16);border-radius:16px;padding:12px 6px;text-align:center;font-weight:700;min-height:62px;display:flex;flex-direction:column;justify-content:center;gap:3px}.cpblg-side{font-size:10px;color:var(--text-muted);font-weight:400}.cpblg-vs{color:var(--text-muted);font-family:'Noto Serif TC',serif}.cpblg-score{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--rose);font-weight:700}.cpblg-pick:disabled{opacity:.45;cursor:not-allowed}.cpblg-note{margin-top:8px;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--text-muted);line-height:1.7;display:flex;flex-direction:column;gap:2px}.cpblg-note-line{display:block}.cpblg-ok{color:#2e7d32;font-weight:700}.cpblg-bad{color:var(--rose);font-weight:700}.cpblg-empty{text-align:center;padding:24px 12px;color:var(--text-muted);background:rgba(255,255,255,.72);border:1px dashed rgba(232,99,122,.22);border-radius:18px;font-size:13px;line-height:1.8}
+.cpblg-match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:10px 0}.cpblg-team{background:var(--pink-light);border:1px solid rgba(232,99,122,.16);border-radius:16px;padding:12px 6px;text-align:center;font-weight:700;min-height:62px;display:flex;flex-direction:column;justify-content:center;gap:3px}.cpblg-side{font-size:10px;color:var(--text-muted);font-weight:400}.cpblg-vs{color:var(--text-muted);font-family:'Noto Serif TC',serif}.cpblg-score{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--rose);font-weight:700}.cpblg-pick:disabled{opacity:.45;cursor:not-allowed}.cpblg-note{margin-top:8px;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--text-muted);line-height:1.7}.cpblg-ok{color:#2e7d32;font-weight:700}.cpblg-bad{color:var(--rose);font-weight:700}.cpblg-empty{text-align:center;padding:24px 12px;color:var(--text-muted);background:rgba(255,255,255,.72);border:1px dashed rgba(232,99,122,.22);border-radius:18px;font-size:13px;line-height:1.8}
 [data-theme="dark"] .cpblg-shell{background:linear-gradient(180deg,#311a22,#241219);border-color:rgba(232,99,122,.2)}[data-theme="dark"] .cpblg-hero,[data-theme="dark"] .cpblg-stat,[data-theme="dark"] .cpblg-game,[data-theme="dark"] .cpblg-empty{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-player{background:#382029;color:var(--text)}[data-theme="dark"] .cpblg-team,[data-theme="dark"] .cpblg-note,[data-theme="dark"] .cpblg-badge,[data-theme="dark"] .cpblg-btn.secondary{background:#3a1f28;color:#ffd9e2;border-color:rgba(232,99,122,.2)}
 [data-theme="dark"] .cpblg-player-select{background:rgba(58,33,42,.72);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .cpblg-today-card{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-today-pick{background:#3a1f28}
-@media(max-width:520px){.cpblg-shell{padding:13px}.cpblg-row{gap:8px}.cpblg-match{gap:6px}.cpblg-team{font-size:13px}.cpblg-pickrow,.cpblg-today-picks{grid-template-columns:1fr}#gs-5-history .card{padding:12px}}
-
-/* Guess song game */
-.gsg-shell{display:flex;flex-direction:column;gap:12px;max-width:760px;margin:0 auto}
-.gsg-hero,.gsg-panel,.gsg-result{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
-.gsg-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--pink);margin-bottom:4px;line-height:1.5}
-.gsg-sub,.gsg-current,.gsg-feedback,.gsg-progress-text,.gsg-result-msg{font-size:13px;line-height:1.7;color:var(--text-muted)}
-.gsg-row{display:grid;gap:8px}
-.gsg-stats{grid-template-columns:repeat(5,minmax(0,1fr))}
-.gsg-stat{background:var(--pink-light);border-radius:14px;padding:10px 8px;text-align:center}
-.gsg-small{font-size:11px;color:var(--text-muted);margin-bottom:4px}
-.gsg-big{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--rose)}
-.gsg-panel{display:flex;flex-direction:column;gap:12px}
-.gsg-progress-wrap{display:flex;flex-direction:column;gap:8px}
-.gsg-progress-bar{height:8px;border-radius:999px;background:rgba(232,99,122,.12);overflow:hidden}
-.gsg-progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--pink),#ff9db0);transition:width .28s ease}
-.gsg-cover{width:92px;height:92px;border-radius:26px;margin:0 auto;background:linear-gradient(180deg,#fff,#fce4ea);border:1px solid rgba(232,99,122,.14);display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 12px 30px rgba(232,99,122,.12)}
-.gsg-current{text-align:center;color:var(--text);font-weight:600}
-.gsg-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.gsg-btn{min-height:42px;border-radius:12px;border:1px solid rgba(232,99,122,.16);background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:10px 12px;cursor:pointer;transition:.2s ease}
-.gsg-btn:hover,.gsg-btn:focus-visible{transform:translateY(-1px);border-color:var(--pink);box-shadow:0 8px 18px rgba(232,99,122,.12)}
-.gsg-btn.primary{background:var(--pink);color:#fff;border-color:var(--pink)}
-.gsg-btn.secondary{background:var(--pink-light)}
-.gsg-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
-.gsg-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.gsg-option{min-height:54px;border-radius:14px;border:1.5px solid rgba(232,99,122,.18);background:var(--white);color:var(--text);font-size:13px;line-height:1.5;padding:10px 12px;cursor:pointer;transition:.18s ease;text-align:left}
-.gsg-option:hover,.gsg-option:focus-visible{border-color:var(--pink);background:var(--pink-light)}
-.gsg-option.correct{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
-.gsg-option.wrong{background:#fff0f3;border-color:var(--pink);color:var(--rose)}
-.gsg-feedback{min-height:24px;text-align:center;font-weight:600;color:var(--rose)}
-.gsg-result{display:none;text-align:center}
-.gsg-result.show{display:block}
-.gsg-result-emoji{font-size:54px;margin-bottom:6px}
-.gsg-result-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:6px}
-.gsg-result-score{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:var(--rose);margin-bottom:6px}
-.gsg-player-select{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
-.gsg-player{min-height:42px;border-radius:13px;border:1.5px solid rgba(232,99,122,.18);background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;transition:.18s ease}
-.gsg-player.active{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 8px 18px rgba(232,99,122,.18)}
-.gsg-leaderboard{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
-.gsg-leaderboard-title{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:var(--pink);margin-bottom:8px}
-.gsg-rank-list{display:flex;flex-direction:column;gap:7px}
-.gsg-rank-row{display:grid;grid-template-columns:38px 1fr auto auto;gap:8px;align-items:center;background:var(--pink-light);border-radius:12px;padding:9px 10px;font-size:12px}
-.gsg-rank-no{font-weight:800;color:var(--rose)}
-.gsg-rank-name{font-weight:700;color:var(--text)}
-.gsg-rank-score{color:var(--rose);font-weight:700}
-.gsg-rank-time{font-variant-numeric:tabular-nums;color:var(--text)}
-.gsg-rank-empty{text-align:center;color:var(--text-muted);font-size:12px;padding:10px}
-[data-theme="dark"] .gsg-hero,[data-theme="dark"] .gsg-panel,[data-theme="dark"] .gsg-result{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-stat{background:#3a1f28}
-[data-theme="dark"] .gsg-btn{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-btn.secondary{background:#3a1f28;color:#ffd9e2}
-[data-theme="dark"] .gsg-option{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-player,[data-theme="dark"] .gsg-leaderboard{background:rgba(58,33,42,.9);color:var(--text);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-player.active{background:var(--pink);color:#fff}
-[data-theme="dark"] .gsg-rank-row{background:#3a1f28}
-@media(max-width:520px){.gsg-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.gsg-controls,.gsg-options{grid-template-columns:1fr}}
-
-/* 天天過馬路 */
-#gs-7,#gs-7 button,#gs-7 canvas{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-#gs-7{touch-action:manipulation;overscroll-behavior:contain;-webkit-user-select:none;user-select:none}.xrg-shell{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:12px}.xrg-hero{background:linear-gradient(135deg,#edfff0,#fff3d9);border:1px solid rgba(83,164,92,.18);border-radius:20px;padding:13px;text-align:center}.xrg-title{font-family:'Noto Serif TC',serif;font-size:21px;font-weight:700;color:#438c50}.xrg-sub{font-size:12px;color:var(--text-muted);line-height:1.7;margin-top:4px}.xrg-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.xrg-stat{background:var(--white);border:1px solid rgba(83,164,92,.16);border-radius:15px;padding:10px 5px;text-align:center}.xrg-stat-label{font-size:11px;color:var(--text-muted)}.xrg-stat-value{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;color:#438c50;margin-top:2px}.xrg-shop-btn{border:none;border-radius:14px;background:linear-gradient(135deg,#f6bd3f,#f29b38);color:#fff;font-family:'Noto Sans TC',sans-serif;font-weight:700;padding:11px 14px;cursor:pointer;box-shadow:0 8px 18px rgba(224,152,35,.2)}.xrg-shop{background:var(--white);border:1px solid rgba(224,152,35,.2);border-radius:18px;padding:12px}.xrg-shop.hidden{display:none}.xrg-shop-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}.xrg-shop-title{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:#b97716}.xrg-shop-close{border:none;background:var(--pink-light);color:var(--rose);border-radius:999px;width:32px;height:32px;cursor:pointer}.xrg-shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.xrg-shop-item{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;background:var(--pink-light);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:9px}.xrg-shop-emoji{font-size:34px;text-align:center}.xrg-shop-name{font-size:13px;font-weight:700;color:var(--text)}.xrg-shop-price{font-size:11px;color:var(--text-muted);margin:2px 0 5px}.xrg-shop-action{width:100%;border:none;border-radius:9px;background:#58a963;color:#fff;font-size:11px;font-weight:700;padding:6px;cursor:pointer}.xrg-shop-action:disabled{background:#aaa;cursor:default}.xrg-stage{position:relative;width:min(100%,420px);margin:0 auto;border-radius:22px;overflow:hidden;border:3px solid rgba(83,164,92,.24);box-shadow:0 16px 34px rgba(45,105,56,.16);background:#82c96f;touch-action:none}.xrg-canvas{width:100%;height:auto;display:block;aspect-ratio:420/720;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.xrg-hud{position:absolute;top:10px;left:10px;right:10px;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:10px;pointer-events:none}.xrg-hud.hidden{display:none}.xrg-hud-distance{min-width:86px;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid rgba(83,164,92,.22);box-shadow:0 8px 20px rgba(0,0,0,.14);padding:7px 12px;font-size:13px;font-weight:800;color:#357d41;text-align:center;backdrop-filter:blur(8px)}.xrg-pause-btn{width:42px;height:42px;border:none;border-radius:50%;background:rgba(255,255,255,.9);color:#357d41;box-shadow:0 8px 20px rgba(0,0,0,.16);font-size:18px;font-weight:900;cursor:pointer;pointer-events:auto;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}.xrg-pause-btn:active{transform:scale(.94)}.xrg-overlay{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;background:rgba(25,45,30,.32);backdrop-filter:blur(3px);padding:20px}.xrg-overlay.hidden{display:none}.xrg-overlay-card{width:min(100%,280px);background:rgba(255,255,255,.94);border-radius:22px;padding:20px;text-align:center;box-shadow:0 16px 38px rgba(0,0,0,.18)}.xrg-overlay-emoji{font-size:52px}.xrg-overlay-title{font-family:'Noto Serif TC',serif;font-size:21px;font-weight:700;color:#438c50;margin:5px 0}.xrg-overlay-sub{font-size:12px;line-height:1.7;color:var(--text-muted);margin-bottom:13px}.xrg-overlay-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.xrg-start{border:none;border-radius:13px;background:#58a963;color:#fff;font-family:'Noto Sans TC',sans-serif;font-weight:700;padding:11px 22px;cursor:pointer}.xrg-resume{background:#f4a937}.xrg-tip{text-align:center;font-size:11px;color:var(--text-muted)}[data-theme="dark"] .xrg-hero{background:linear-gradient(135deg,#1d3423,#382c18);border-color:rgba(117,197,127,.2)}[data-theme="dark"] .xrg-stat,[data-theme="dark"] .xrg-overlay-card,[data-theme="dark"] .xrg-shop{background:#2a1820;border-color:rgba(117,197,127,.2)}[data-theme="dark"] .xrg-hud-distance,[data-theme="dark"] .xrg-pause-btn{background:rgba(42,24,32,.9);color:#bdf0c6;border-color:rgba(117,197,127,.22)}[data-theme="dark"] .xrg-shop-item{background:#3a1f28}
-@media(max-width:420px){.xrg-shop-grid{grid-template-columns:1fr}.xrg-stat-value{font-size:19px}}
+@media(max-width:520px){.cpblg-shell{padding:13px}.cpblg-row{gap:8px}.cpblg-match{gap:6px}.cpblg-team{font-size:13px}.cpblg-pickrow{grid-template-columns:1fr}}
 
 .cpblg-source-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.cpblg-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 9px;background:var(--pink-light);color:var(--rose);font-size:11px}.cpblg-pickrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.cpblg-pick{background:var(--white);color:var(--text);border:1.5px solid rgba(232,99,122,.16)}.cpblg-pick.correct{background:#e8f5e9!important;border-color:#4caf50!important;color:#2e7d32!important}.cpblg-pick.wrong{background:#fff0f3!important;border-color:var(--pink)!important;color:var(--rose)!important}.cpblg-manual{display:none;margin-top:12px;background:var(--pink-light);border-radius:16px;padding:12px}.cpblg-manual.open{display:block}.cpblg-manual textarea{width:100%;min-height:88px;border:1px solid var(--card-border);border-radius:12px;background:var(--white);color:var(--text);padding:10px;font-family:'Noto Sans TC',sans-serif;resize:vertical}.cpblg-manual-hint{font-size:11px;color:var(--text-muted);line-height:1.7;margin:6px 0 10px}.cpblg-team-head{display:flex;align-items:center;justify-content:center;gap:8px}.cpblg-logo{width:34px;height:34px;border-radius:12px;overflow:hidden;flex:0 0 34px;box-shadow:0 6px 14px rgba(0,0,0,.12);background:#fff}.cpblg-logo img{width:100%;height:100%;display:block;object-fit:cover}.cpblg-team-name{line-height:1.35}.cpblg-pick .cpblg-team-head{justify-content:center}.cpblg-pick .cpblg-logo{width:28px;height:28px;flex-basis:28px}.cpblg-history{display:none;margin-top:12px;background:rgba(255,255,255,.82);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-history.open{display:block}.cpblg-history-list{display:flex;flex-direction:column;gap:10px}.cpblg-history-card{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:16px;padding:12px}.cpblg-history-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.cpblg-history-date{font-size:12px;color:var(--text-muted)}.cpblg-history-result{font-size:13px;color:var(--rose);font-weight:700}.cpblg-history-match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.cpblg-history-score{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700}.cpblg-history-picks{display:flex;flex-direction:column;gap:6px}.cpblg-history-pick{display:flex;justify-content:space-between;gap:8px;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;line-height:1.5}.cpblg-history-player{font-weight:700;color:var(--text)}.cpblg-history-empty{text-align:center;padding:16px 8px;color:var(--text-muted);font-size:13px}[data-theme="dark"] .cpblg-pick{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-manual textarea{background:#24151c;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history,[data-theme="dark"] .cpblg-history-card{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history-pick{background:#3a1f28}
-.cpblg-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.cpblg-cal-nav{min-width:42px;padding:8px 0;border:none;border-radius:12px;background:var(--pink-light);color:var(--rose);font-weight:700;cursor:pointer}.cpblg-cal-title{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--rose);font-weight:700}.cpblg-cal-legend{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.cpblg-cal-legend-item{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;background:var(--pink-light);font-size:10px;color:var(--text)}.cpblg-cal-legend-dot{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;font-size:10px;font-weight:700}.cpblg-cal-legend-dot.correct{background:#e8f5e9;color:#2e7d32}.cpblg-cal-legend-dot.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-cal-legend-dot.draw{background:#fff8e1;color:#9a6a00}.cpblg-cal-legend-dot.none{background:var(--white);color:var(--text-muted);border:1px solid rgba(232,99,122,.14)}.cpblg-cal-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:6px}.cpblg-cal-week span{font-size:11px;color:var(--text-muted);text-align:center}.cpblg-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cpblg-cal-day{min-height:76px;border:1px solid rgba(232,99,122,.14);border-radius:14px;background:var(--white);padding:8px 6px;cursor:pointer;display:flex;flex-direction:column;gap:6px}.cpblg-cal-day.muted{opacity:.34;cursor:default}.cpblg-cal-day.active{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.15)}.cpblg-cal-num{font-size:13px;font-weight:700;color:var(--text)}.cpblg-cal-marks{display:flex;flex-direction:column;gap:4px}.cpblg-cal-mark{border-radius:999px;padding:3px 6px;font-size:10px;line-height:1;text-align:center;font-weight:700}.cpblg-cal-mark.correct{background:#e8f5e9;color:#2e7d32}.cpblg-cal-mark.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-cal-mark.draw{background:#fff8e1;color:#9a6a00}.cpblg-cal-mark.none{background:var(--pink-light);color:var(--text-muted)}.cpblg-history-detail{margin-top:12px;border-top:1px dashed rgba(232,99,122,.18);padding-top:12px}.cpblg-history-datebar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}.cpblg-history-datebar strong{color:var(--rose)}.cpblg-history-daylist{display:flex;flex-direction:column;gap:8px}.cpblg-history-simple{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px}.cpblg-history-simple-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:6px}.cpblg-history-line{font-size:13px;line-height:1.6;color:var(--text)}.cpblg-history-matchup{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:8px}.cpblg-history-side{display:flex;justify-content:center}.cpblg-history-team{background:var(--pink-light);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px 8px;display:flex;justify-content:center}.cpblg-history-scoreline{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700;text-align:center}.cpblg-history-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.cpblg-history-tag{border-radius:999px;padding:4px 8px;font-size:11px;background:var(--pink-light);color:var(--rose)}.cpblg-history-tag.correct{background:#e8f5e9;color:#2e7d32}.cpblg-history-tag.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-history-tag.draw{background:#fff8e1;color:#9a6a00}.cpblg-history-tag.none{background:var(--pink-light);color:var(--text-muted)}[data-theme="dark"] .cpblg-cal-day,[data-theme="dark"] .cpblg-history-simple{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-cal-nav{background:#3a1f28;color:#ffd9e2}[data-theme="dark"] .cpblg-cal-legend-item,[data-theme="dark"] .cpblg-history-team{background:#3a1f28;border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-cal-legend-dot.none,[data-theme="dark"] .cpblg-history-tag.none{background:#382029;border-color:rgba(232,99,122,.18)}
+.cpblg-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.cpblg-cal-nav{min-width:42px;padding:8px 0;border:none;border-radius:12px;background:var(--pink-light);color:var(--rose);font-weight:700;cursor:pointer}.cpblg-cal-title{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--rose);font-weight:700}.cpblg-cal-legend{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.cpblg-cal-legend-item{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;background:var(--pink-light);font-size:10px;color:var(--text)}.cpblg-cal-legend-dot{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;font-size:10px;font-weight:700}.cpblg-cal-legend-dot.correct{background:#e8f5e9;color:#2e7d32}.cpblg-cal-legend-dot.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-cal-legend-dot.draw{background:#fff8e1;color:#9a6a00}.cpblg-cal-legend-dot.none{background:var(--white);color:var(--text-muted);border:1px solid rgba(232,99,122,.14)}.cpblg-cal-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:6px}.cpblg-cal-week span{font-size:11px;color:var(--text-muted);text-align:center}.cpblg-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cpblg-cal-day{min-height:98px;border:1px solid rgba(232,99,122,.14);border-radius:14px;background:var(--white);padding:8px 6px;cursor:pointer;display:flex;flex-direction:column;gap:6px}.cpblg-cal-day.muted{opacity:.34;cursor:default}.cpblg-cal-day.active{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.15)}.cpblg-cal-num{font-size:13px;font-weight:700;color:var(--text)}.cpblg-cal-count{font-size:11px;font-weight:700;color:var(--rose);line-height:1}.cpblg-cal-summaries{display:flex;flex-direction:column;gap:4px;margin-top:auto}.cpblg-cal-summary{display:flex;justify-content:space-between;gap:6px;font-size:10px;line-height:1.2;color:var(--text-muted);background:var(--pink-light);border-radius:999px;padding:4px 6px}.cpblg-cal-summary-player{font-weight:700;color:var(--rose);flex:0 0 auto}.cpblg-cal-summary-value{text-align:right;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cpblg-cal-mark{border-radius:999px;padding:3px 6px;font-size:10px;line-height:1;text-align:center;font-weight:700}.cpblg-cal-mark.correct{background:#e8f5e9;color:#2e7d32}.cpblg-cal-mark.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-cal-mark.draw{background:#fff8e1;color:#9a6a00}.cpblg-cal-mark.none{background:var(--pink-light);color:var(--text-muted)}.cpblg-history-detail{margin-top:12px;border-top:1px dashed rgba(232,99,122,.18);padding-top:12px}.cpblg-history-datebar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}.cpblg-history-datebar strong{color:var(--rose)}.cpblg-history-day-overview{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.cpblg-history-day-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 8px;background:var(--pink-light);font-size:11px;color:var(--text-muted)}.cpblg-history-day-pill strong{color:var(--rose)}.cpblg-history-daylist{display:flex;flex-direction:column;gap:8px}.cpblg-history-simple{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px}.cpblg-history-simple-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:6px}.cpblg-history-line{font-size:13px;line-height:1.6;color:var(--text)}.cpblg-history-matchup{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:8px}.cpblg-history-side{display:flex;justify-content:center}.cpblg-history-team{background:var(--pink-light);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px 8px;display:flex;justify-content:center}.cpblg-history-scoreline{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700;text-align:center}.cpblg-history-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.cpblg-history-tag{border-radius:999px;padding:4px 8px;font-size:11px;background:var(--pink-light);color:var(--rose)}.cpblg-history-tag.correct{background:#e8f5e9;color:#2e7d32}.cpblg-history-tag.wrong{background:#ffe5ea;color:#c43d5d}.cpblg-history-tag.draw{background:#fff8e1;color:#9a6a00}.cpblg-history-tag.none{background:var(--pink-light);color:var(--text-muted)}[data-theme="dark"] .cpblg-cal-day,[data-theme="dark"] .cpblg-history-simple{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-cal-nav{background:#3a1f28;color:#ffd9e2}[data-theme="dark"] .cpblg-cal-legend-item,[data-theme="dark"] .cpblg-history-team{background:#3a1f28;border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-cal-legend-dot.none,[data-theme="dark"] .cpblg-history-tag.none{background:#382029;border-color:rgba(232,99,122,.18)}
 
 
 </style>
@@ -3426,8 +3283,6 @@ onclick="hideSpecialForToday()">
       <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🧩 回憶拼圖</button>
       <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
       <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
-      <button type="button" class="game-menu-btn" id="game-menu-gsg" onclick="openGame(6,this)">🎤 猜歌遊戲</button>
-      <button type="button" class="game-menu-btn" id="game-menu-xrg" onclick="openGame(7,this)">🐥 天天過馬路</button>
     </div>
   </div>
 
@@ -3773,114 +3628,9 @@ onclick="hideSpecialForToday()">
       </div>
       <div id="cpblg-history-page-list">
         <div class="cpblg-history-empty">目前還沒有已結算的比賽紀錄。</div>
+      </div>
     </div>
   </div>
-</div>
- 
- </div>
-
-<div class="game-section" id="gs-6">
-  <div class="card">
-    <div class="card-title">🎤 猜歌遊戲</div>
-    <div class="gsg-shell">
-      <div class="gsg-hero">
-        <div class="gsg-title">聽前奏，猜出歌曲名字</div>
-        <div class="gsg-sub">先比答對題數，答對一樣再比完成時間。開始前請先選擇你是誰。</div>
-        <div class="gsg-player-select">
-          <button type="button" class="gsg-player" id="gsg-player-sheng" onclick="gsgSelectPlayer('聖展')">我是聖展</button>
-          <button type="button" class="gsg-player" id="gsg-player-yujun" onclick="gsgSelectPlayer('予君')">我是予君</button>
-        </div>
-      </div>
-
-      <div class="gsg-row gsg-stats">
-        <div class="gsg-stat"><div class="gsg-small">題數</div><div class="gsg-big" id="gsg-round">0 / 0</div></div>
-        <div class="gsg-stat"><div class="gsg-small">分數</div><div class="gsg-big" id="gsg-score">0</div></div>
-        <div class="gsg-stat"><div class="gsg-small">連對</div><div class="gsg-big" id="gsg-streak">0</div></div>
-        <div class="gsg-stat"><div class="gsg-small">用時</div><div class="gsg-big" id="gsg-time">00:00</div></div>
-        <div class="gsg-stat"><div class="gsg-small">個人最佳</div><div class="gsg-big" id="gsg-best">—</div></div>
-      </div>
-
-      <div class="gsg-panel">
-        <div class="gsg-progress-wrap">
-          <div class="gsg-progress-bar"><div class="gsg-progress-fill" id="gsg-progress-fill"></div></div>
-          <div class="gsg-progress-text" id="gsg-progress-text">準備開始</div>
-        </div>
-
-        <div class="gsg-cover" id="gsg-cover">🎵</div>
-
-        <div class="gsg-current" id="gsg-current">點「播放片段」開始猜歌</div>
-
-        <div class="gsg-controls">
-          <button type="button" class="gsg-btn primary" id="gsg-play-btn" onclick="gsgPlayPreview()">▶️ 播放片段</button>
-          <button type="button" class="gsg-btn secondary" onclick="gsgReplayRound()">🔁 再聽一次</button>
-          <button type="button" class="gsg-btn secondary" onclick="gsgNextRound()">➡️ 下一題</button>
-          <button type="button" class="gsg-btn secondary" onclick="gsgRestart()">重新開始</button>
-        </div>
-
-        <div class="gsg-options" id="gsg-options"></div>
-
-        <div class="gsg-feedback" id="gsg-feedback">先播放片段，再從下面選答案。</div>
-      </div>
-
-      <div id="gsg-result" class="gsg-result">
-        <div class="gsg-result-emoji">🎉</div>
-        <div class="gsg-result-title">猜歌完成</div>
-        <div class="gsg-result-score" id="gsg-final-score">0 / 0</div>
-        <div class="gsg-result-msg" id="gsg-final-msg"></div>
-        <button type="button" class="gsg-btn primary" onclick="gsgRestart()">再玩一次</button>
-      </div>
-
-      <div class="gsg-leaderboard">
-        <div class="gsg-leaderboard-title">🏆 猜歌排行榜</div>
-        <div class="gsg-sub" style="margin-bottom:8px">答對題數較多優先；題數相同時，完成時間較少者排名較前。</div>
-        <div class="gsg-rank-list" id="gsg-rank-list"><div class="gsg-rank-empty">排行榜載入中…</div></div>
-      </div>
-
-      <audio id="gsg-audio" preload="auto"></audio>
-    </div>
-  </div>
-</div>
-
-<div class="game-section" id="gs-7">
-  <div class="card">
-    <div class="card-title">🐥 天天過馬路</div>
-    <div class="xrg-shell">
-      <div class="xrg-hero">
-        <div class="xrg-title">天天過馬路</div>
-        <div class="xrg-sub">閃過來往車輛，不斷往前走！走得越遠，車速會越快。</div>
-      </div>
-      <div class="xrg-stats">
-        <div class="xrg-stat"><div class="xrg-stat-label">目前距離</div><div class="xrg-stat-value" id="xrg-score">0</div></div>
-        <div class="xrg-stat"><div class="xrg-stat-label">最高紀錄</div><div class="xrg-stat-value" id="xrg-best">0</div></div>
-        <div class="xrg-stat"><div class="xrg-stat-label">金幣</div><div class="xrg-stat-value" id="xrg-coins">0</div></div>
-      </div>
-      <button type="button" class="xrg-shop-btn" onclick="xrgToggleShop()">🛍️ 角色商城</button>
-      <div class="xrg-shop hidden" id="xrg-shop">
-        <div class="xrg-shop-head"><div class="xrg-shop-title">角色商城</div><button type="button" class="xrg-shop-close" onclick="xrgToggleShop(false)">✕</button></div>
-        <div class="xrg-shop-grid" id="xrg-shop-grid"></div>
-      </div>
-      <div class="xrg-stage" id="xrg-stage">
-        <canvas class="xrg-canvas" id="xrg-canvas" width="420" height="720" aria-label="天天過馬路遊戲畫面"></canvas>
-        <div class="xrg-hud hidden" id="xrg-hud">
-          <div class="xrg-hud-distance" id="xrg-hud-distance">距離 0</div>
-          <button type="button" class="xrg-pause-btn" id="xrg-pause-btn" onclick="xrgPause()" aria-label="暫停遊戲">⏸</button>
-        </div>
-        <div class="xrg-overlay" id="xrg-overlay">
-          <div class="xrg-overlay-card">
-            <div class="xrg-overlay-emoji" id="xrg-overlay-emoji">🐥</div>
-            <div class="xrg-overlay-title" id="xrg-overlay-title">準備過馬路</div>
-            <div class="xrg-overlay-sub" id="xrg-overlay-sub">使用方向鍵或下方按鈕移動，別被車撞到囉！</div>
-            <div class="xrg-overlay-actions" id="xrg-overlay-actions">
-              <button type="button" class="xrg-start xrg-resume hidden" id="xrg-resume-btn" onclick="xrgResume()">繼續</button>
-              <button type="button" class="xrg-start" id="xrg-start-btn" onclick="xrgStart()">開始挑戰</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="xrg-tip">點一下往前一格，滑動可控制方向；電腦可使用方向鍵／WASD。</div>
-    </div>
-  </div>
-</div>
 </div>
 
 <div id="pz-picker-modal" class="pz-picker-modal hidden" onclick="pzClosePicker(event)">
@@ -4469,8 +4219,6 @@ function showPage(id,btn){
   document.body.classList.toggle('game-mode', isGamePage);
 
   if(!isGamePage && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
-  if(!isGamePage && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
-  if(!isGamePage && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   if(!isGamePage){
     document.body.classList.remove('pz-mode','rg-mode');
   }
@@ -5479,8 +5227,6 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ── Game tabs ──
-const GAME_SECTION_IDS = ['gs-0','gs-1','gs-2','gs-3','gs-4','gs-5','gs-6','gs-7','gs-5-history'];
-
 function showGameHub(){
   document.getElementById('game-hub')?.classList.remove('hidden');
   document.getElementById('game-back-row')?.classList.add('hidden');
@@ -5489,25 +5235,14 @@ function showGameHub(){
   document.body.classList.add('game-mode');
   document.body.classList.remove('pz-mode','rg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
-  if(typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
-  if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function pauseBackgroundMusicForInteractiveGame(){
-  const backgroundAudio = document.getElementById('audio-player');
-  if(backgroundAudio && !backgroundAudio.paused) backgroundAudio.pause();
-  document.getElementById('music-disc')?.classList.remove('playing');
-  const backgroundPlayButton = document.getElementById('play-btn');
-  if(backgroundPlayButton) backgroundPlayButton.textContent = '▶️';
 }
 
 function openGame(i,btn){
   document.getElementById('game-hub')?.classList.add('hidden');
   document.getElementById('game-back-row')?.classList.remove('hidden');
 
-  const targetId = GAME_SECTION_IDS[i] || GAME_SECTION_IDS[0];
-  document.querySelectorAll('.game-section').forEach(section => section.classList.toggle('active', section.id === targetId));
+  document.querySelectorAll('.game-section').forEach((s,idx)=>s.classList.toggle('active',idx===i));
   document.querySelectorAll('.game-tab').forEach((b,idx)=>b.classList.toggle('active',idx===i));
   document.querySelectorAll('.game-menu-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -5516,15 +5251,10 @@ function openGame(i,btn){
   document.body.classList.toggle('pz-mode', i===3);
   document.body.classList.toggle('rg-mode', i===4);
 
-  if(i===4 || i===6) pauseBackgroundMusicForInteractiveGame();
   if(i!==4 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
-  if(i!==6 && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
-  if(i!==7 && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
   if(i===4 && typeof rgEnterScreen==='function') rgEnterScreen();
   if(i===5 && typeof cpblEnterScreen==='function') cpblEnterScreen();
-  if(i===6 && typeof gsgEnterScreen==='function') gsgEnterScreen();
-  if(i===7 && typeof xrgEnterScreen==='function') xrgEnterScreen();
 
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
@@ -5551,1119 +5281,6 @@ function cpblOpenHistoryPage(){
 function cpblCloseHistoryPage(){
   showGameSectionById('gs-5', { showBackRow:true });
 }
-
-let gsgAudio = null;
-let gsgDeck = [];
-let gsgRoundIndex = 0;
-let gsgScore = 0;
-let gsgStreak = 0;
-let gsgCurrent = null;
-let gsgOptions = [];
-let gsgAnswered = false;
-let gsgPreviewTimer = null;
-let gsgPreviewStart = 8;
-let gsgReady = false;
-let gsgPlayer = localStorage.getItem('gsgPlayer') || '';
-let gsgStartedAt = 0;
-let gsgElapsedMs = 0;
-let gsgTimerTick = null;
-let gsgFinished = false;
-let gsgLeaderboard = [];
-let gsgLeaderboardListening = false;
-const GSG_PENDING_KEY = 'gsg_pending_results_v1';
-
-function gsgShuffle(list){
-  const arr = list.slice();
-  for(let i=arr.length-1;i>0;i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function gsgEscape(text){
-  return String(text ?? '').replace(/[&<>"']/g, char => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  })[char]);
-}
-
-function gsgSongPool(){
-  return Array.isArray(RG_SONGS) ? RG_SONGS.filter(song => song && /^game\d+\.mp3$/i.test(song.file || '') && song.name) : [];
-}
-
-function gsgFormatTime(ms){
-  const value = Math.max(0, Number(ms) || 0);
-  const minutes = Math.floor(value / 60000);
-  const seconds = Math.floor((value % 60000) / 1000);
-  const tenths = Math.floor((value % 1000) / 100);
-  return `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}.${tenths}`;
-}
-
-function gsgElapsed(){
-  return gsgElapsedMs + (gsgStartedAt ? Date.now() - gsgStartedAt : 0);
-}
-
-function gsgStartTimer(){
-  if(gsgFinished || gsgStartedAt) return;
-  gsgStartedAt = Date.now();
-  clearInterval(gsgTimerTick);
-  gsgTimerTick = setInterval(gsgUpdateTime, 100);
-  gsgUpdateTime();
-}
-
-function gsgStopTimer(){
-  if(gsgStartedAt){
-    gsgElapsedMs += Date.now() - gsgStartedAt;
-    gsgStartedAt = 0;
-  }
-  clearInterval(gsgTimerTick);
-  gsgTimerTick = null;
-  gsgUpdateTime();
-}
-
-function gsgUpdateTime(){
-  const el = document.getElementById('gsg-time');
-  if(el) el.textContent = gsgFormatTime(gsgElapsed());
-}
-
-function gsgCompareRecords(a,b){
-  return (Number(b.score)||0) - (Number(a.score)||0)
-    || (Number(a.timeMs)||0) - (Number(b.timeMs)||0)
-    || (Number(a.completedAt)||0) - (Number(b.completedAt)||0);
-}
-
-function gsgPlayerBest(){
-  return gsgLeaderboard.filter(item=>item.player===gsgPlayer).sort(gsgCompareRecords)[0] || null;
-}
-
-function gsgRenderBest(){
-  const el = document.getElementById('gsg-best');
-  if(!el) return;
-  const best = gsgPlayerBest();
-  el.textContent = best ? `${best.score}題 ${gsgFormatTime(best.timeMs)}` : '—';
-}
-
-function gsgSelectPlayer(name){
-  if((gsgStartedAt || gsgElapsedMs) && !gsgFinished){
-    alert('這一輪已經開始，請重新開始後再切換身分。');
-    return;
-  }
-  gsgPlayer = name;
-  localStorage.setItem('gsgPlayer', name);
-  document.querySelectorAll('.gsg-player').forEach(button=>button.classList.remove('active'));
-  document.getElementById(name==='聖展'?'gsg-player-sheng':'gsg-player-yujun')?.classList.add('active');
-  gsgRenderBest();
-}
-
-function gsgEnsureReady(){
-  if(!gsgPlayer){
-    alert('請先選擇你是聖展還是予君。');
-    return false;
-  }
-  if(!window._fb){
-    alert('排行榜伺服器還在連線，請稍後再試一次。');
-    return false;
-  }
-  return true;
-}
-
-function gsgRenderLeaderboard(){
-  const wrap = document.getElementById('gsg-rank-list');
-  if(!wrap) return;
-  const rows = gsgLeaderboard.slice().sort(gsgCompareRecords).slice(0,5);
-  if(!rows.length){
-    wrap.innerHTML = '<div class="gsg-rank-empty">還沒有完成紀錄，等你拿下第一名！</div>';
-    gsgRenderBest();
-    return;
-  }
-  wrap.innerHTML = rows.map((item,index)=>`<div class="gsg-rank-row"><div class="gsg-rank-no">#${index+1}</div><div class="gsg-rank-name">${gsgEscape(item.player)}</div><div class="gsg-rank-score">${Number(item.score)||0} / ${Number(item.total)||10} 題</div><div class="gsg-rank-time">${gsgFormatTime(item.timeMs)}</div></div>`).join('');
-  gsgRenderBest();
-}
-
-function gsgPendingResults(){
-  try{return JSON.parse(localStorage.getItem(GSG_PENDING_KEY)||'{}') || {};}catch(_err){return {};}
-}
-
-function gsgStorePending(id,record){
-  const pending = gsgPendingResults();
-  pending[id] = record;
-  localStorage.setItem(GSG_PENDING_KEY, JSON.stringify(pending));
-}
-
-function gsgFlushPending(){
-  if(!window._fb) return;
-  const pending = gsgPendingResults();
-  const entries = Object.entries(pending);
-  if(!entries.length) return;
-  const {db,ref,set}=window._fb;
-  entries.forEach(([id,record])=>{
-    set(ref(db,`guessSongLeaderboard/${id}`),record).then(()=>{
-      const latest = gsgPendingResults();
-      delete latest[id];
-      localStorage.setItem(GSG_PENDING_KEY, JSON.stringify(latest));
-    }).catch(()=>{});
-  });
-}
-
-function gsgSaveResult(){
-  if(!window._fb || !gsgPlayer || !gsgElapsedMs) return;
-  const completedAt = Date.now();
-  const id = `${gsgPlayer}_${completedAt}_${Math.random().toString(36).slice(2,8)}`;
-  const record = {player:gsgPlayer,score:gsgScore,total:gsgDeck.length,timeMs:Math.round(gsgElapsedMs),completedAt};
-  const {db,ref,set}=window._fb;
-  set(ref(db,`guessSongLeaderboard/${id}`),record).catch(()=>{
-    gsgStorePending(id,record);
-    alert('成績已先保存在這台裝置，恢復連線後會自動補傳排行榜。');
-  });
-}
-
-function gsgInitLeaderboard(){
-  if(gsgLeaderboardListening || !window._fb) return;
-  gsgLeaderboardListening = true;
-  const {db,ref,onValue}=window._fb;
-  onValue(ref(db,'guessSongLeaderboard'),snapshot=>{
-    const value = snapshot.val() || {};
-    gsgLeaderboard = Object.entries(value).map(([id,item])=>({id,...item})).filter(item=>item.player && Number(item.timeMs)>0);
-    gsgRenderLeaderboard();
-  });
-  gsgFlushPending();
-}
-
-function gsgUpdateStats(){
-  const total = gsgDeck.length || 0;
-  const roundEl = document.getElementById('gsg-round');
-  const scoreEl = document.getElementById('gsg-score');
-  const streakEl = document.getElementById('gsg-streak');
-  const progressFill = document.getElementById('gsg-progress-fill');
-  const progressText = document.getElementById('gsg-progress-text');
-  if(roundEl) roundEl.textContent = `${Math.min(gsgRoundIndex + 1, total || 1)} / ${total}`;
-  if(scoreEl) scoreEl.textContent = String(gsgScore);
-  if(streakEl) streakEl.textContent = String(gsgStreak);
-  gsgUpdateTime();
-  if(progressFill) progressFill.style.width = total ? `${Math.round((Math.min(gsgRoundIndex, total) / total) * 100)}%` : '0%';
-  if(progressText) progressText.textContent = total ? `第 ${Math.min(gsgRoundIndex + 1, total)} 題 / 共 ${total} 題` : '尚未開始';
-}
-
-function gsgBuildDeck(){
-  const pool = gsgShuffle(gsgSongPool());
-  const roundCount = Math.min(10, pool.length);
-  return pool.slice(0, roundCount);
-}
-
-function gsgBuildOptions(current){
-  const pool = gsgSongPool().filter(song => song.file !== current.file);
-  const others = gsgShuffle(pool).slice(0, 3);
-  return gsgShuffle([current, ...others].filter(Boolean));
-}
-
-function gsgSetFeedback(text, tone='neutral'){
-  const el = document.getElementById('gsg-feedback');
-  if(!el) return;
-  el.textContent = text;
-  el.style.color = tone === 'good' ? '#2e7d32' : tone === 'bad' ? 'var(--rose)' : 'var(--text-muted)';
-}
-
-function gsgRenderOptions(){
-  const grid = document.getElementById('gsg-options');
-  if(!grid) return;
-  grid.innerHTML = gsgOptions.map((song, idx) =>
-    `<button type="button" class="gsg-option" data-index="${idx}" onclick="gsgAnswer(${idx})">${gsgEscape(song.name)}</button>`
-  ).join('');
-}
-
-function gsgSetCurrentSong(showName=false){
-  const el = document.getElementById('gsg-current');
-  if(!el || !gsgCurrent) return;
-  el.textContent = showName ? `正確答案：${gsgCurrent.name}` : `第 ${gsgRoundIndex + 1} 題，聽前奏猜歌名`;
-}
-
-function gsgStopPreview(){
-  clearTimeout(gsgPreviewTimer);
-  gsgPreviewTimer = null;
-  if(gsgAudio){
-    try{ gsgAudio.pause(); }catch(_err){}
-  }
-}
-
-function gsgPlayPreview(){
-  if(!gsgCurrent || !gsgAudio) return;
-  if(!gsgEnsureReady()) return;
-  pauseBackgroundMusicForInteractiveGame();
-  gsgStartTimer();
-  const start = Math.max(0, gsgPreviewStart || 0);
-  gsgAudio.src = gsgCurrent.file;
-  const playAt = () => {
-    const safeStart = gsgAudio.duration ? Math.max(0, Math.min(start, Math.max(0, gsgAudio.duration - 7))) : start;
-    try{ gsgAudio.currentTime = safeStart; }catch(_err){}
-    const playPromise = gsgAudio.play();
-    if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(()=>{});
-    clearTimeout(gsgPreviewTimer);
-    gsgPreviewTimer = setTimeout(() => gsgStopPreview(), 8000);
-    gsgSetFeedback('已播放片段，快選答案！', 'neutral');
-  };
-  if(gsgAudio.readyState < 1){
-    gsgAudio.addEventListener('loadedmetadata', playAt, { once:true });
-    gsgAudio.load();
-  }else{
-    playAt();
-  }
-}
-
-function gsgReplayRound(){
-  if(!gsgCurrent) return;
-  gsgPlayPreview();
-}
-
-function gsgLoadRound(index){
-  gsgRoundIndex = index;
-  gsgAnswered = false;
-  gsgCurrent = gsgDeck[gsgRoundIndex] || null;
-  gsgOptions = gsgCurrent ? gsgBuildOptions(gsgCurrent) : [];
-  gsgPreviewStart = 6 + Math.floor(Math.random() * 18);
-  gsgSetCurrentSong(false);
-  gsgUpdateStats();
-  gsgRenderOptions();
-  gsgSetFeedback('先播放片段，再從下方選答案。', 'neutral');
-  const btn = document.getElementById('gsg-play-btn');
-  if(btn) btn.disabled = !gsgCurrent;
-  if(!gsgCurrent){
-    gsgFinish();
-    return;
-  }
-  if(gsgAudio){
-    gsgAudio.pause();
-    gsgAudio.src = gsgCurrent.file;
-    gsgAudio.load();
-  }
-  const cover = document.getElementById('gsg-cover');
-  if(cover) cover.textContent = '🎵';
-  const result = document.getElementById('gsg-result');
-  result?.classList.remove('show');
-}
-
-function gsgAnswer(index){
-  if(gsgAnswered || !gsgCurrent) return;
-  if(!gsgEnsureReady()) return;
-  gsgStartTimer();
-  gsgAnswered = true;
-  gsgStopPreview();
-  const picked = gsgOptions[index];
-  const buttons = document.querySelectorAll('#gsg-options .gsg-option');
-  buttons.forEach((button, idx) => {
-    button.disabled = true;
-    if(gsgOptions[idx]?.file === gsgCurrent.file){
-      button.classList.add('correct');
-    }else if(idx === index){
-      button.classList.add('wrong');
-    }
-  });
-  const correct = picked?.file === gsgCurrent.file;
-  if(correct){
-    gsgScore += 1;
-    gsgStreak += 1;
-    gsgSetFeedback(`答對了！這首是《${gsgCurrent.name}》`, 'good');
-  }else{
-    gsgStreak = 0;
-    gsgSetFeedback(`答錯了，正解是《${gsgCurrent.name}》`, 'bad');
-  }
-  gsgSetCurrentSong(true);
-  gsgUpdateStats();
-  if(gsgRoundIndex + 1 >= gsgDeck.length){
-    gsgStopTimer();
-    setTimeout(()=>gsgFinish(), 650);
-  }
-}
-
-function gsgNextRound(){
-  if(!gsgCurrent) return;
-  if(!gsgEnsureReady()) return;
-  gsgStartTimer();
-  if(!gsgAnswered){
-    gsgStopPreview();
-    gsgSetFeedback('已跳過這題，直接看下一首。', 'neutral');
-  }
-  if(gsgRoundIndex + 1 >= gsgDeck.length){
-    gsgFinish();
-    return;
-  }
-  gsgLoadRound(gsgRoundIndex + 1);
-}
-
-function gsgFinish(){
-  if(gsgFinished) return;
-  gsgFinished = true;
-  gsgStopPreview();
-  gsgStopTimer();
-  const result = document.getElementById('gsg-result');
-  const finalScore = document.getElementById('gsg-final-score');
-  const finalMsg = document.getElementById('gsg-final-msg');
-  const total = gsgDeck.length || 0;
-  const rate = total ? Math.round(gsgScore / total * 100) : 0;
-  if(finalScore) finalScore.textContent = `${gsgScore} / ${total}`;
-  if(finalMsg) finalMsg.textContent = `${gsgPlayer}｜正確率 ${rate}%｜完成時間 ${gsgFormatTime(gsgElapsedMs)}｜成績已送上排行榜`;
-  gsgSaveResult();
-  result?.classList.add('show');
-  const playBtn = document.getElementById('gsg-play-btn');
-  if(playBtn) playBtn.disabled = true;
-  gsgSetFeedback('這一輪已經完成了，按重新開始可以再挑戰一次。', 'neutral');
-}
-
-function gsgRestart(){
-  gsgInit();
-  gsgStopTimer();
-  gsgDeck = gsgBuildDeck();
-  gsgRoundIndex = 0;
-  gsgScore = 0;
-  gsgStreak = 0;
-  gsgAnswered = false;
-  gsgElapsedMs = 0;
-  gsgStartedAt = 0;
-  gsgFinished = false;
-  gsgSetFeedback('先播放片段，再從下方選答案。', 'neutral');
-  const result = document.getElementById('gsg-result');
-  result?.classList.remove('show');
-  gsgUpdateTime();
-  gsgRenderBest();
-  gsgLoadRound(0);
-}
-
-function gsgEnterScreen(){
-  gsgInit();
-  if(!gsgCurrent) gsgRestart();
-  const target = document.getElementById('gs-6');
-  if(target && window.matchMedia && window.matchMedia('(max-width: 520px)').matches){
-    target.scrollIntoView({ block:'start', behavior:'smooth' });
-  }
-}
-
-function gsgPauseIfHidden(){
-  gsgStopPreview();
-}
-
-function gsgInit(){
-  if(gsgReady) return;
-  gsgReady = true;
-  gsgAudio = document.getElementById('gsg-audio');
-  if(gsgAudio){
-    gsgAudio.preload = 'auto';
-    gsgAudio.addEventListener('ended', () => gsgStopPreview());
-  }
-  if(gsgPlayer) gsgSelectPlayer(gsgPlayer);
-  gsgRenderLeaderboard();
-  gsgInitLeaderboard();
-  if(!gsgDeck.length) gsgDeck = gsgBuildDeck();
-}
-
-window.addEventListener('firebaseReady', gsgInitLeaderboard);
-
-// ── 天天過馬路 ──
-const XRG_WIDTH = 420;
-const XRG_HEIGHT = 720;
-const XRG_COLS = 7;
-const XRG_COL_WIDTH = 60;
-const XRG_ROW_HEIGHT = 56;
-const XRG_BEST_KEY = 'xrg_best_distance_v1';
-const XRG_ECONOMY_KEY = 'xrg_economy_v1';
-const XRG_CHARACTERS = [
-  {id:'chick',name:'小雞',emoji:'🐥',price:0},
-  {id:'bunny',name:'兔兔',emoji:'🐰',price:50},
-  {id:'cat',name:'小貓',emoji:'🐱',price:80},
-  {id:'frog',name:'青蛙',emoji:'🐸',price:120},
-  {id:'fox',name:'狐狸',emoji:'🦊',price:170},
-  {id:'panda',name:'熊貓',emoji:'🐼',price:230},
-  {id:'dog',name:'狗狗',emoji:'🐶',price:300},
-  {id:'shiba',name:'柴犬',emoji:'🐕',price:360},
-  {id:'orange-cat',name:'橘貓',emoji:'😺',price:430},
-  {id:'black-cat',name:'黑貓',emoji:'🐈‍⬛',price:500}
-];
-let xrgCanvas = null;
-let xrgCtx = null;
-let xrgRunning = false;
-let xrgPaused = false;
-let xrgGameOver = false;
-let xrgRaf = 0;
-let xrgLastFrame = 0;
-let xrgElapsed = 0;
-let xrgPlayer = {col:3,row:0};
-let xrgCameraRow = 0;
-let xrgMaxRow = 0;
-let xrgLanes = [];
-let xrgCoinRows = new Map();
-let xrgCoinEffects = [];
-let xrgAudioContext = null;
-let xrgAudioUnlocked = false;
-let xrgBest = Number(localStorage.getItem(XRG_BEST_KEY) || 0);
-let xrgPointerStart = null;
-let xrgLastTouchEnd = 0;
-let xrgEconomyListening = false;
-let xrgEconomy = xrgLoadEconomy();
-
-function xrgIsActiveScreen(){
-  return !!document.getElementById('gs-7')?.classList.contains('active');
-}
-
-function xrgPreventGameGestureZoom(event){
-  if(!xrgIsActiveScreen()) return;
-  event.preventDefault();
-}
-
-function xrgBindNoZoomGuards(){
-  if(window.__xrgNoZoomGuardsBound) return;
-  window.__xrgNoZoomGuardsBound = true;
-  document.addEventListener('gesturestart',xrgPreventGameGestureZoom,{passive:false});
-  document.addEventListener('gesturechange',xrgPreventGameGestureZoom,{passive:false});
-  document.addEventListener('touchmove',event=>{
-    if(xrgIsActiveScreen() && event.touches && event.touches.length > 1) event.preventDefault();
-  },{passive:false});
-  document.addEventListener('touchend',event=>{
-    if(!xrgIsActiveScreen()) return;
-    const now = Date.now();
-    if(now - xrgLastTouchEnd < 380){
-      event.preventDefault();
-      if(typeof event.stopPropagation==='function') event.stopPropagation();
-    }
-    xrgLastTouchEnd = now;
-  },{passive:false,capture:true});
-}
-
-function xrgNormalizeEconomy(value){
-  const owned = Array.isArray(value?.owned) ? value.owned.filter(id=>XRG_CHARACTERS.some(character=>character.id===id)) : ['chick'];
-  if(!owned.includes('chick')) owned.unshift('chick');
-  const selected = owned.includes(value?.selected) ? value.selected : 'chick';
-  return {coins:Math.max(0,Math.floor(Number(value?.coins)||0)),owned:[...new Set(owned)],selected};
-}
-
-function xrgLoadEconomy(){
-  try{return xrgNormalizeEconomy(JSON.parse(localStorage.getItem(XRG_ECONOMY_KEY)||'null')||{});}catch(_err){return xrgNormalizeEconomy({});}
-}
-
-function xrgSaveEconomyLocal(){
-  localStorage.setItem(XRG_ECONOMY_KEY,JSON.stringify(xrgEconomy));
-  xrgUpdateStats();
-  xrgRenderShop();
-}
-
-function xrgCurrentCharacter(){
-  return XRG_CHARACTERS.find(character=>character.id===xrgEconomy.selected) || XRG_CHARACTERS[0];
-}
-
-function xrgRenderShop(){
-  const grid = document.getElementById('xrg-shop-grid');
-  if(!grid) return;
-  grid.innerHTML = XRG_CHARACTERS.map(character=>{
-    const owned = xrgEconomy.owned.includes(character.id);
-    const selected = xrgEconomy.selected===character.id;
-    const label = selected ? '使用中' : owned ? '使用角色' : `${character.price} 金幣購買`;
-    return `<div class="xrg-shop-item"><div class="xrg-shop-emoji">${character.emoji}</div><div><div class="xrg-shop-name">${character.name}</div><div class="xrg-shop-price">${owned ? '已擁有' : `價格：${character.price} 🪙`}</div><button type="button" class="xrg-shop-action" ${selected?'disabled':''} onclick="xrgBuyOrSelectCharacter('${character.id}')">${label}</button></div></div>`;
-  }).join('');
-}
-
-function xrgToggleShop(force){
-  const shop = document.getElementById('xrg-shop');
-  if(!shop) return;
-  const open = typeof force==='boolean' ? force : shop.classList.contains('hidden');
-  shop.classList.toggle('hidden',!open);
-  if(open){
-    xrgPauseIfHidden();
-    xrgRenderShop();
-  }
-}
-
-function xrgBuyOrSelectCharacter(characterId){
-  const character = XRG_CHARACTERS.find(item=>item.id===characterId);
-  if(!character) return;
-  if(xrgEconomy.owned.includes(characterId)){
-    xrgEconomy.selected = characterId;
-    xrgSaveEconomyLocal();
-    if(window._fb){
-      const {db,ref,set}=window._fb;
-      set(ref(db,'crossyEconomy/selected'),characterId).catch(()=>{});
-    }
-    xrgDraw();
-    return;
-  }
-  if(xrgEconomy.coins < character.price){
-    alert(`還差 ${character.price-xrgEconomy.coins} 枚金幣才能購買 ${character.name}。`);
-    return;
-  }
-  xrgEconomy.coins -= character.price;
-  xrgEconomy.owned.push(characterId);
-  xrgEconomy.selected = characterId;
-  xrgSaveEconomyLocal();
-  if(window._fb){
-    const {db,ref,runTransaction}=window._fb;
-    runTransaction(ref(db,'crossyEconomy'),current=>{
-      const economy = xrgNormalizeEconomy(current || xrgEconomy);
-      if(economy.owned.includes(characterId)){
-        economy.selected = characterId;
-        return economy;
-      }
-      if(economy.coins < character.price) return economy;
-      economy.coins -= character.price;
-      economy.owned.push(characterId);
-      economy.selected = characterId;
-      return economy;
-    }).catch(()=>{});
-  }
-  xrgDraw();
-}
-
-function xrgCollectCoin(){
-  if(xrgCoinRows.get(xrgPlayer.row)!==xrgPlayer.col) return;
-  xrgSpawnCoinEffect(xrgPlayer.col,xrgPlayer.row);
-  xrgPlayCoinSound();
-  xrgCoinRows.delete(xrgPlayer.row);
-  xrgEconomy.coins += 1;
-  xrgSaveEconomyLocal();
-  if(window._fb){
-    const {db,ref,runTransaction}=window._fb;
-    runTransaction(ref(db,'crossyEconomy/coins'),current=>(Math.max(0,Number(current)||0)+1)).catch(()=>{});
-  }
-}
-
-function xrgEnsureAudioContext(){
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if(!AudioContextClass) return null;
-  try{
-    if(!xrgAudioContext) xrgAudioContext = new AudioContextClass();
-    return xrgAudioContext;
-  }catch(_err){
-    return null;
-  }
-}
-
-function xrgWithAudioContext(callback){
-  const context = xrgEnsureAudioContext();
-  if(!context) return;
-  const run = () => {
-    if(context.state !== 'running') return;
-    xrgAudioUnlocked = true;
-    try{ callback(context); }catch(_err){}
-  };
-  if(context.state === 'suspended'){
-    try{
-      const resumePromise = context.resume();
-      if(resumePromise && typeof resumePromise.then==='function'){
-        resumePromise.then(run).catch(()=>{});
-      }else{
-        setTimeout(run,0);
-      }
-    }catch(_err){}
-    return;
-  }
-  run();
-}
-
-function xrgUnlockAudio(){
-  xrgWithAudioContext(context=>{
-    try{
-      const gain = context.createGain();
-      gain.gain.setValueAtTime(.0001,context.currentTime);
-      gain.connect(context.destination);
-      if(context.createBuffer && context.createBufferSource){
-        const buffer = context.createBuffer(1,1,22050);
-        const source = context.createBufferSource();
-        source.buffer = buffer;
-        source.connect(gain);
-        source.start(context.currentTime);
-        source.stop(context.currentTime+.01);
-      }else{
-        const oscillator = context.createOscillator();
-        oscillator.connect(gain);
-        oscillator.start(context.currentTime);
-        oscillator.stop(context.currentTime+.01);
-      }
-    }catch(_err){}
-  });
-}
-
-function xrgPlayStepSound(){
-  xrgWithAudioContext(context=>{
-    const startAt = context.currentTime+.005;
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    oscillator.type = 'triangle';
-    oscillator.frequency.setValueAtTime(285,startAt);
-    oscillator.frequency.exponentialRampToValueAtTime(205,startAt+.055);
-    gain.gain.setValueAtTime(.14,startAt);
-    gain.gain.exponentialRampToValueAtTime(.0001,startAt+.065);
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-    oscillator.start(startAt);
-    oscillator.stop(startAt+.07);
-  });
-}
-
-function xrgPlayCoinSound(){
-  xrgWithAudioContext(context=>{
-    const startAt = context.currentTime+.005;
-    [880,1320,1760].forEach((frequency,index)=>{
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      const noteStart = startAt + index * .055;
-      oscillator.type = index===2 ? 'sine' : 'triangle';
-      oscillator.frequency.setValueAtTime(frequency,noteStart);
-      gain.gain.setValueAtTime(.0001,noteStart);
-      gain.gain.exponentialRampToValueAtTime(.24,noteStart+.012);
-      gain.gain.exponentialRampToValueAtTime(.0001,noteStart+.16);
-      oscillator.connect(gain);
-      gain.connect(context.destination);
-      oscillator.start(noteStart);
-      oscillator.stop(noteStart+.17);
-    });
-  });
-}
-
-function xrgPlayCrashSound(){
-  xrgWithAudioContext(context=>{
-    const startAt = context.currentTime+.005;
-    const gain = context.createGain();
-    gain.gain.setValueAtTime(.34,startAt);
-    gain.gain.exponentialRampToValueAtTime(.0001,startAt+.38);
-    gain.connect(context.destination);
-    [
-      {type:'sawtooth',start:150,end:48,delay:0},
-      {type:'square',start:86,end:34,delay:.035}
-    ].forEach(note=>{
-      const oscillator = context.createOscillator();
-      oscillator.type = note.type;
-      oscillator.frequency.setValueAtTime(note.start,startAt+note.delay);
-      oscillator.frequency.exponentialRampToValueAtTime(note.end,startAt+.34);
-      oscillator.connect(gain);
-      oscillator.start(startAt+note.delay);
-      oscillator.stop(startAt+.38);
-    });
-  });
-}
-
-function xrgSpawnCoinEffect(col,row){
-  const x = col * XRG_COL_WIDTH + 30;
-  const y = xrgRowY(row) + 27;
-  const particles = Array.from({length:12},(_,index)=>{
-    const angle = (Math.PI*2*index/12) + Math.random()*.18;
-    const speed = 48 + Math.random()*58;
-    return {x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-22,size:2.5+Math.random()*3};
-  });
-  xrgCoinEffects.push({x,y,life:.72,maxLife:.72,particles});
-}
-
-function xrgUpdateCoinEffects(delta){
-  xrgCoinEffects.forEach(effect=>{
-    effect.life -= delta;
-    effect.particles.forEach(particle=>{
-      particle.x += particle.vx*delta;
-      particle.y += particle.vy*delta;
-      particle.vy += 105*delta;
-    });
-  });
-  xrgCoinEffects = xrgCoinEffects.filter(effect=>effect.life>0);
-}
-
-function xrgDrawCoinEffects(){
-  xrgCoinEffects.forEach(effect=>{
-    const alpha = Math.max(0,effect.life/effect.maxLife);
-    xrgCtx.save();
-    xrgCtx.globalAlpha = alpha;
-    effect.particles.forEach((particle,index)=>{
-      xrgCtx.fillStyle = index%2 ? '#fff3a6' : '#ffd43b';
-      xrgCtx.beginPath();
-      xrgCtx.arc(particle.x,particle.y,particle.size,0,Math.PI*2);
-      xrgCtx.fill();
-    });
-    xrgCtx.fillStyle = '#fff7b8';
-    xrgCtx.strokeStyle = '#b87912';
-    xrgCtx.lineWidth = 3;
-    xrgCtx.font = 'bold 22px Arial';
-    xrgCtx.textAlign = 'center';
-    xrgCtx.textBaseline = 'middle';
-    const textY = effect.y - 18 - (1-alpha)*28;
-    xrgCtx.strokeText('+1',effect.x,textY);
-    xrgCtx.fillText('+1',effect.x,textY);
-    xrgCtx.restore();
-  });
-}
-
-function xrgInitEconomyFirebase(){
-  if(xrgEconomyListening || !window._fb) return;
-  xrgEconomyListening = true;
-  const {db,ref,onValue,set}=window._fb;
-  onValue(ref(db,'crossyEconomy'),snapshot=>{
-    const remote = snapshot.val();
-    if(remote){
-      const cloud = xrgNormalizeEconomy(remote);
-      const mergedOwned = [...new Set([...cloud.owned,...xrgEconomy.owned])];
-      const mergedSelected = mergedOwned.includes(xrgEconomy.selected) ? xrgEconomy.selected : cloud.selected;
-      xrgEconomy = xrgNormalizeEconomy({coins:Math.max(cloud.coins,xrgEconomy.coins),owned:mergedOwned,selected:mergedSelected});
-      xrgSaveEconomyLocal();
-      xrgDraw();
-      if(JSON.stringify(cloud)!==JSON.stringify(xrgEconomy)) set(ref(db,'crossyEconomy'),xrgEconomy).catch(()=>{});
-    }else{
-      set(ref(db,'crossyEconomy'),xrgEconomy).catch(()=>{});
-    }
-  });
-}
-
-function xrgMod(value, divisor){
-  return ((value % divisor) + divisor) % divisor;
-}
-
-function xrgMakeLane(row){
-  if(row < 3 || row % 6 === 0){
-    return {type:'grass',shade:row % 2};
-  }
-  const direction = Math.random() > .5 ? 1 : -1;
-  const colors = ['#ff758f','#f8b84e','#6aa8ff','#9d7bea','#53c5a1','#ff8b61'];
-  return {
-    type:'road',
-    speed:direction * Math.min(165, 48 + row * 2 + Math.random() * 34),
-    gap:225 + Math.random() * 105,
-    offset:Math.random() * 280,
-    carWidth:46 + Math.random() * 18,
-    color:colors[Math.floor(Math.random() * colors.length)]
-  };
-}
-
-function xrgEnsureLanes(targetRow){
-  while(xrgLanes.length <= targetRow){
-    const row = xrgLanes.length;
-    xrgLanes.push(xrgMakeLane(row));
-    if(row>=3 && Math.random()<.42) xrgCoinRows.set(row,Math.floor(Math.random()*XRG_COLS));
-  }
-}
-
-function xrgRowY(row){
-  return XRG_HEIGHT - ((row - xrgCameraRow) + 1) * XRG_ROW_HEIGHT;
-}
-
-function xrgCarRects(lane,rowY){
-  if(!lane || lane.type!=='road') return [];
-  const phase = xrgMod(lane.offset + xrgElapsed * lane.speed, lane.gap);
-  const cars = [];
-  for(let x=phase-lane.gap; x<XRG_WIDTH+lane.gap; x+=lane.gap){
-    cars.push({x,y:rowY+11,w:lane.carWidth,h:34});
-  }
-  return cars;
-}
-
-function xrgRoundedRect(ctx,x,y,w,h,r){
-  const radius = Math.min(r,w/2,h/2);
-  ctx.beginPath();
-  ctx.moveTo(x+radius,y);
-  ctx.arcTo(x+w,y,x+w,y+h,radius);
-  ctx.arcTo(x+w,y+h,x,y+h,radius);
-  ctx.arcTo(x,y+h,x,y,radius);
-  ctx.arcTo(x,y,x+w,y,radius);
-  ctx.closePath();
-}
-
-function xrgDrawLane(row,lane){
-  const y = xrgRowY(row);
-  if(y < -XRG_ROW_HEIGHT || y > XRG_HEIGHT) return;
-  if(lane.type==='grass'){
-    xrgCtx.fillStyle = lane.shade ? '#82cb70' : '#75be66';
-    xrgCtx.fillRect(0,y,XRG_WIDTH,XRG_ROW_HEIGHT+1);
-    xrgCtx.fillStyle = 'rgba(255,255,255,.10)';
-    for(let x=14+(row%3)*19;x<XRG_WIDTH;x+=74) xrgCtx.fillRect(x,y+13,5,5);
-    return;
-  }
-  xrgCtx.fillStyle = '#4c4f58';
-  xrgCtx.fillRect(0,y,XRG_WIDTH,XRG_ROW_HEIGHT+1);
-  xrgCtx.fillStyle = 'rgba(255,255,255,.4)';
-  for(let x=(row%2)*26;x<XRG_WIDTH;x+=62) xrgCtx.fillRect(x,y+27,34,3);
-  xrgCarRects(lane,y).forEach(car=>{
-    xrgCtx.fillStyle = 'rgba(0,0,0,.18)';
-    xrgRoundedRect(xrgCtx,car.x+3,car.y+4,car.w,car.h,8);
-    xrgCtx.fill();
-    xrgCtx.fillStyle = lane.color;
-    xrgRoundedRect(xrgCtx,car.x,car.y,car.w,car.h,8);
-    xrgCtx.fill();
-    xrgCtx.fillStyle = '#dff3ff';
-    const front = lane.speed > 0 ? car.x+car.w-18 : car.x+6;
-    xrgCtx.fillRect(front,car.y+6,12,9);
-    xrgCtx.fillStyle = '#252830';
-    xrgCtx.fillRect(car.x+8,car.y+29,11,7);
-    xrgCtx.fillRect(car.x+car.w-19,car.y+29,11,7);
-  });
-}
-
-function xrgDrawCoins(){
-  xrgCtx.save();
-  xrgCoinRows.forEach((col,row)=>{
-    const y = xrgRowY(row);
-    if(y < -XRG_ROW_HEIGHT || y > XRG_HEIGHT) return;
-    const x = col * XRG_COL_WIDTH + 30;
-    xrgCtx.fillStyle = 'rgba(0,0,0,.18)';
-    xrgCtx.beginPath();
-    xrgCtx.arc(x+2,y+31,13,0,Math.PI*2);
-    xrgCtx.fill();
-    xrgCtx.fillStyle = '#ffd34e';
-    xrgCtx.beginPath();
-    xrgCtx.arc(x,y+27,13,0,Math.PI*2);
-    xrgCtx.fill();
-    xrgCtx.strokeStyle = '#e5a91e';
-    xrgCtx.lineWidth = 3;
-    xrgCtx.stroke();
-    xrgCtx.fillStyle = '#9a6710';
-    xrgCtx.font = 'bold 15px Arial';
-    xrgCtx.textAlign = 'center';
-    xrgCtx.textBaseline = 'middle';
-    xrgCtx.fillText('$',x,y+27);
-  });
-  xrgCtx.restore();
-}
-
-function xrgDrawPlayer(){
-  const x = xrgPlayer.col * XRG_COL_WIDTH + 30;
-  const y = xrgRowY(xrgPlayer.row) + 31;
-  const character = xrgCurrentCharacter();
-  xrgCtx.save();
-  xrgCtx.fillStyle = 'rgba(0,0,0,.18)';
-  xrgCtx.beginPath();
-  xrgCtx.ellipse(x+2,y+18,18,6,0,0,Math.PI*2);
-  xrgCtx.fill();
-  xrgCtx.font = '40px "Apple Color Emoji","Segoe UI Emoji",sans-serif';
-  xrgCtx.textAlign = 'center';
-  xrgCtx.textBaseline = 'middle';
-  xrgCtx.fillText(character.emoji,x,y);
-  xrgCtx.restore();
-}
-
-function xrgDraw(){
-  if(!xrgCtx) return;
-  xrgEnsureLanes(xrgCameraRow + 13);
-  xrgCtx.clearRect(0,0,XRG_WIDTH,XRG_HEIGHT);
-  xrgCtx.fillStyle = '#75be66';
-  xrgCtx.fillRect(0,0,XRG_WIDTH,XRG_HEIGHT);
-  for(let row=xrgCameraRow;row<=xrgCameraRow+12;row++) xrgDrawLane(row,xrgLanes[row]);
-  xrgDrawCoins();
-  xrgDrawCoinEffects();
-  xrgDrawPlayer();
-}
-
-function xrgRectsOverlap(a,b){
-  return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
-}
-
-function xrgCheckCollision(){
-  const lane = xrgLanes[xrgPlayer.row];
-  if(!lane || lane.type!=='road') return false;
-  const playerRect = {x:xrgPlayer.col*XRG_COL_WIDTH+18,y:xrgRowY(xrgPlayer.row)+17,w:24,h:25};
-  return xrgCarRects(lane,xrgRowY(xrgPlayer.row)).some(car=>{
-    const carHitbox = {x:car.x+5,y:car.y+4,w:Math.max(1,car.w-10),h:car.h-8};
-    return xrgRectsOverlap(playerRect,carHitbox);
-  });
-}
-
-function xrgUpdateStats(){
-  const score = document.getElementById('xrg-score');
-  const best = document.getElementById('xrg-best');
-  const coins = document.getElementById('xrg-coins');
-  const hudDistance = document.getElementById('xrg-hud-distance');
-  if(score) score.textContent = String(xrgMaxRow);
-  if(best) best.textContent = String(xrgBest);
-  if(coins) coins.textContent = String(xrgEconomy.coins);
-  if(hudDistance) hudDistance.textContent = `距離 ${xrgMaxRow}`;
-}
-
-function xrgSetHudVisible(visible){
-  const hud = document.getElementById('xrg-hud');
-  if(hud) hud.classList.toggle('hidden',!visible);
-}
-
-function xrgShowOverlay(title,sub,button,emoji='🐥',mode='start'){
-  document.getElementById('xrg-overlay')?.classList.remove('hidden');
-  const titleEl = document.getElementById('xrg-overlay-title');
-  const subEl = document.getElementById('xrg-overlay-sub');
-  const buttonEl = document.getElementById('xrg-start-btn');
-  const resumeEl = document.getElementById('xrg-resume-btn');
-  const emojiEl = document.getElementById('xrg-overlay-emoji');
-  if(titleEl) titleEl.textContent = title;
-  if(subEl) subEl.textContent = sub;
-  if(buttonEl) buttonEl.textContent = button;
-  if(resumeEl) resumeEl.classList.toggle('hidden',mode !== 'pause');
-  if(emojiEl) emojiEl.textContent = emoji;
-}
-
-function xrgGameOverNow(){
-  if(xrgGameOver) return;
-  xrgPlayCrashSound();
-  xrgRunning = false;
-  xrgPaused = false;
-  xrgGameOver = true;
-  cancelAnimationFrame(xrgRaf);
-  xrgRaf = 0;
-  if(xrgMaxRow > xrgBest){
-    xrgBest = xrgMaxRow;
-    localStorage.setItem(XRG_BEST_KEY,String(xrgBest));
-  }
-  xrgUpdateStats();
-  xrgShowOverlay('被車撞到了！',`這次前進 ${xrgMaxRow} 格，避開車流再挑戰一次吧。`,'再玩一次','💥');
-}
-
-function xrgTick(timestamp){
-  if(!xrgRunning) return;
-  const delta = xrgLastFrame ? Math.min(.05,(timestamp-xrgLastFrame)/1000) : 0;
-  xrgLastFrame = timestamp;
-  xrgElapsed += delta;
-  xrgUpdateCoinEffects(delta);
-  xrgDraw();
-  if(xrgCheckCollision()){
-    xrgGameOverNow();
-    return;
-  }
-  xrgRaf = requestAnimationFrame(xrgTick);
-}
-
-function xrgStart(){
-  xrgInit();
-  xrgUnlockAudio();
-  setTimeout(xrgUnlockAudio,80);
-  cancelAnimationFrame(xrgRaf);
-  xrgPlayer = {col:3,row:0};
-  xrgCameraRow = 0;
-  xrgMaxRow = 0;
-  xrgElapsed = 0;
-  xrgLastFrame = 0;
-  xrgLanes = [];
-  xrgCoinRows = new Map();
-  xrgCoinEffects = [];
-  xrgGameOver = false;
-  xrgPaused = false;
-  xrgRunning = true;
-  xrgEnsureLanes(16);
-  xrgUpdateStats();
-  xrgSetHudVisible(true);
-  document.getElementById('xrg-overlay')?.classList.add('hidden');
-  xrgDraw();
-  xrgRaf = requestAnimationFrame(xrgTick);
-}
-
-function xrgMove(direction){
-  if(!xrgRunning || xrgGameOver) return;
-  let nextCol = xrgPlayer.col;
-  let nextRow = xrgPlayer.row;
-  if(direction==='up') nextRow += 1;
-  if(direction==='down') nextRow = Math.max(xrgCameraRow,nextRow-1);
-  if(direction==='left') nextCol = Math.max(0,nextCol-1);
-  if(direction==='right') nextCol = Math.min(XRG_COLS-1,nextCol+1);
-  if(nextCol===xrgPlayer.col && nextRow===xrgPlayer.row) return;
-  xrgPlayer = {col:nextCol,row:nextRow};
-  xrgPlayStepSound();
-  xrgCollectCoin();
-  if(nextRow > xrgMaxRow){
-    xrgMaxRow = nextRow;
-    xrgCameraRow = Math.max(xrgCameraRow,nextRow-3);
-    xrgEnsureLanes(nextRow+13);
-    xrgUpdateStats();
-  }
-  xrgDraw();
-  if(xrgCheckCollision()) xrgGameOverNow();
-}
-
-function xrgPause(fromHidden=false){
-  if(!xrgRunning || xrgGameOver) return;
-  xrgRunning = false;
-  xrgPaused = true;
-  cancelAnimationFrame(xrgRaf);
-  xrgRaf = 0;
-  xrgUpdateStats();
-  xrgSetHudVisible(true);
-  const sub = fromHidden ? '你離開了過馬路畫面，可以按繼續接著玩，或重新開始。' : `目前距離 ${xrgMaxRow}，要繼續還是重新開始？`;
-  xrgShowOverlay('遊戲已暫停',sub,'重新開始','⏸️','pause');
-}
-
-function xrgResume(){
-  if(!xrgPaused || xrgGameOver) return;
-  xrgUnlockAudio();
-  document.getElementById('xrg-overlay')?.classList.add('hidden');
-  xrgPaused = false;
-  xrgRunning = true;
-  xrgLastFrame = 0;
-  xrgSetHudVisible(true);
-  xrgDraw();
-  cancelAnimationFrame(xrgRaf);
-  xrgRaf = requestAnimationFrame(xrgTick);
-}
-
-function xrgPauseIfHidden(){
-  xrgPause(true);
-}
-
-function xrgEnterScreen(){
-  xrgInit();
-  xrgInitEconomyFirebase();
-  xrgUpdateStats();
-  xrgRenderShop();
-  xrgDraw();
-}
-
-function xrgInit(){
-  if(xrgCanvas) return;
-  xrgCanvas = document.getElementById('xrg-canvas');
-  if(!xrgCanvas) return;
-  xrgCtx = xrgCanvas.getContext('2d');
-  xrgEnsureLanes(16);
-  xrgUpdateStats();
-  xrgRenderShop();
-  xrgDraw();
-  xrgSetHudVisible(xrgRunning || xrgPaused || xrgGameOver);
-  xrgBindNoZoomGuards();
-  const preventCanvasGesture = event=>{
-    if(typeof event.preventDefault==='function') event.preventDefault();
-  };
-  xrgCanvas.addEventListener('pointerdown',event=>{
-    preventCanvasGesture(event);
-    xrgUnlockAudio();
-    xrgPointerStart = {x:event.clientX,y:event.clientY};
-    try{ xrgCanvas.setPointerCapture?.(event.pointerId); }catch(_err){}
-  });
-  xrgCanvas.addEventListener('pointerup',event=>{
-    preventCanvasGesture(event);
-    xrgUnlockAudio();
-    if(!xrgPointerStart) return;
-    const dx = event.clientX-xrgPointerStart.x;
-    const dy = event.clientY-xrgPointerStart.y;
-    xrgPointerStart = null;
-    if(Math.max(Math.abs(dx),Math.abs(dy)) < 24){
-      xrgMove('up');
-      return;
-    }
-    if(Math.abs(dx)>Math.abs(dy)) xrgMove(dx>0?'right':'left');
-    else xrgMove(dy>0?'down':'up');
-  });
-  xrgCanvas.addEventListener('pointercancel',()=>{xrgPointerStart=null;});
-  xrgCanvas.addEventListener('dblclick',event=>event.preventDefault());
-  const gamePage = document.getElementById('gs-7');
-  const unlockFromGesture = () => xrgUnlockAudio();
-  gamePage?.addEventListener('touchstart',unlockFromGesture,{passive:true});
-  gamePage?.addEventListener('pointerdown',unlockFromGesture,{passive:true});
-  gamePage?.addEventListener('mousedown',unlockFromGesture);
-  gamePage?.addEventListener('click',unlockFromGesture);
-  gamePage?.addEventListener('dblclick',event=>event.preventDefault());
-}
-
-document.addEventListener('keydown',event=>{
-  if(!document.getElementById('gs-7')?.classList.contains('active')) return;
-  const map = {ArrowUp:'up',w:'up',W:'up',ArrowDown:'down',s:'down',S:'down',ArrowLeft:'left',a:'left',A:'left',ArrowRight:'right',d:'right',D:'right'};
-  if(event.key === 'Escape'){
-    event.preventDefault();
-    if(xrgPaused) xrgResume();
-    else xrgPause();
-    return;
-  }
-  const direction = map[event.key];
-  if(!direction) return;
-  event.preventDefault();
-  xrgUnlockAudio();
-  xrgMove(direction);
-});
-document.addEventListener('visibilitychange',()=>{if(document.hidden) xrgPauseIfHidden();});
-window.addEventListener('firebaseReady',xrgInitEconomyFirebase);
-if(window._fb) xrgInitEconomyFirebase();
 
 function switchGame(i,btn){
   openGame(i,btn);
@@ -6698,10 +5315,12 @@ const CPBLG_TEAM_ALIASES = {
 const CPBLG_TEAMS = Object.values(CPBLG_TEAM_ALIASES).filter((v,i,a)=>a.indexOf(v)===i);
 const CPBLG_FIELDS = ['天母','大巨蛋','樂天桃園','桃園','澄清湖','洲際','新莊','亞太主','台南亞太','斗六','嘉義市','花蓮'];
 const CPBLG_STORE = 'cpbl_guess_game_v4';
+const CPBLG_RESET_TOKEN = 'cpbl_guess_cleanup_20260620_v1';
 let cpblgPlayer = '';
 let cpblgGames = [];
 let cpblgLoadedOnce = false;
 let cpblgFirebaseReady = false;
+let cpblgNeedsRemoteReset = false;
 let cpblgData = cpblLoadLocalData();
 
 function cpblBaseData(){
@@ -6774,19 +5393,9 @@ function cpblNormalizeTime(t){
   if(h>=0 && h<=4) h+=16;
   return `${cpblPad(h)}:${min}`;
 }
-function cpblGetGameTime(game){
-  const raw = String(game?.time || game?.startTime || game?.startDate || game?.startDateTime || '').trim();
-  if(!raw) return '';
-  const direct = raw.match(/\b(\d{1,2}:\d{2})\b/);
-  if(direct) return cpblNormalizeTime(direct[1]);
-  const iso = raw.match(/T(\d{1,2}:\d{2})/);
-  if(iso) return cpblNormalizeTime(iso[1]);
-  return '';
-}
 function cpblGameStart(game){
-  const time = cpblGetGameTime(game);
-  if(!game?.date || !time) return null;
-  const dt = new Date(`${game.date}T${time}:00+08:00`);
+  if(!game?.date || !game?.time) return null;
+  const dt = new Date(`${game.date}T${game.time}:00+08:00`);
   return isNaN(dt) ? null : dt;
 }
 function cpblIsLocked(game){
@@ -6830,14 +5439,8 @@ function cpblRenderStats(){
 
 function cpblStatusText(game){
   if(!game) return '';
-  const status = String(game.status || '').trim();
-  if(/取消|延賽|保留/.test(status)) return status;
-  if(/已結束|比賽結束|結束/.test(status)) return '比賽結束';
-  if(/進行中|比賽中|暫停/.test(status)) return '進行中';
-  if(game.awayScore!=null && game.homeScore!=null) return '比賽結束';
-  const start = cpblGameStart(game);
-  if(start && Date.now() >= start.getTime()) return '進行中';
-  return cpblGetGameTime(game) || '';
+  if(game.status) return game.status;
+  return cpblIsLocked(game) ? '已鎖定' : '未開始';
 }
 function cpblSetStatus(msg){const el=document.getElementById('cpblg-status'); if(el) el.innerHTML=msg;}
 function cpblRenderGames(){
@@ -6874,10 +5477,10 @@ function cpblRenderGames(){
       return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">猜 ${cpblEscape(team)}</button>`;
     };
     return `<div class="cpblg-game">
-      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblStatusText(game))}<br>${cpblEscape(game.field||'')}</div></div>
+      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblStatusText(game))}<br>${cpblEscape(game.field||'')} ${cpblEscape(game.time||'')}</div></div>
       <div class="cpblg-match"><div class="cpblg-team"><span class="cpblg-side">客隊</span>${cpblEscape(game.away)}</div>${score}<div class="cpblg-team"><span class="cpblg-side">主隊</span>${cpblEscape(game.home)}</div></div>
       <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
-      <div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div>
+      <div class="cpblg-note">${noteBits.join('<br>') || '開賽前可以修改預測。'}</div>
     </div>`;
   }).join('');
 }
@@ -6913,85 +5516,6 @@ function cpblResolveFinishedGames(push=true){
     });
   });
   if(changed) cpblSaveData(push);
-}
-
-function cpblBuildTimeLookup(raw){
-  const lookup = new Map();
-  try{
-    const doc = new DOMParser().parseFromString(String(raw||''), 'text/html');
-    doc.querySelectorAll('script[type="application/ld+json"]').forEach(script=>{
-      let data;
-      try{
-        data = JSON.parse(script.textContent || '');
-      }catch(_err){
-        return;
-      }
-      const items = data?.mainEntity?.itemListElement;
-      if(!Array.isArray(items)) return;
-      items.forEach(entry=>{
-        const item = entry?.item || entry;
-        const startDate = String(item?.startDate || '');
-        const match = startDate.match(/^(\d{4}-\d{2}-\d{2})T(\d{1,2}:\d{2})/);
-        const away = String(item?.awayTeam?.name || '').trim();
-        const home = String(item?.homeTeam?.name || '').trim();
-        if(match && away && home){
-          lookup.set(`${match[1]}|${away}|${home}`, cpblNormalizeTime(match[2]));
-        }
-      });
-    });
-    const text = String(raw || '');
-    const normalizedText = text.replace(/\\"/g, '"');
-    const pattern = /"gameSno":(\d+)[\s\S]{0,800}?"preExeDate":"(\d{4}-\d{2}-\d{2})T(\d{1,2}:\d{2}):\d{2}"/g;
-    let match;
-    while((match = pattern.exec(normalizedText))){
-      const gameNo = String(match[1] || '').trim();
-      const date = match[2];
-      const time = cpblNormalizeTime(match[3]);
-      if(gameNo && date && time){
-        lookup.set(gameNo, time);
-        lookup.set(`${date}|${gameNo}`, time);
-      }
-    }
-  }catch(_err){}
-  return lookup;
-}
-
-async function cpblFetchOfficialTimeLookup(){
-  const sourceUrl = `https://stats.cpbl.com.tw/schedule?_=${Date.now()}`;
-  const proxies = [
-    {name:'直連', build:u=>u},
-    {name:'allorigins', build:u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`},
-    {name:'codetabs', build:u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`},
-    {name:'corsproxy.io', build:u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`},
-    {name:'r.jina.ai', build:u=>`https://r.jina.ai/${u}`}
-  ];
-  for(const proxy of proxies){
-    try{
-      const raw = await cpblFetchText(proxy.build(sourceUrl), 9000);
-      const lookup = cpblBuildTimeLookup(raw);
-      if(lookup.size) return lookup;
-    }catch(_err){}
-  }
-  return new Map();
-}
-
-async function cpblHydrateGameTimes(games){
-  if(!Array.isArray(games) || !games.length) return false;
-  if(games.every(game=>cpblGetGameTime(game))) return false;
-  const lookup = await cpblFetchOfficialTimeLookup();
-  if(!lookup.size) return false;
-  let changed = false;
-  games.forEach(game=>{
-    if(cpblGetGameTime(game)) return;
-    const key = `${game.date}|${game.no}`;
-    const altKey = String(game.no || '');
-    const time = lookup.get(key) || lookup.get(altKey);
-    if(time){
-      game.time = time;
-      changed = true;
-    }
-  });
-  return changed;
 }
 
 async function cpblRefreshGames(showAlert=false){
@@ -7091,13 +5615,13 @@ function cpblParseSchedule(raw, sourceName=''){
     const seg=block.slice(i,j);
     const no=gm[1];
     const statusRaw=(gm[2]||seg.join(' '));
-    let status='';
+    let status='未開始';
     if(/取消/.test(statusRaw)) status='取消';
     else if(/延賽/.test(statusRaw)) status='延賽';
     else if(/保留/.test(statusRaw)) status='保留';
     else if(/已結束|比賽結束|結束/.test(statusRaw)) status='已結束';
     else if(/進行中|比賽中|暫停/.test(statusRaw)) status='進行中';
-    else if(/先發|未開始|vs/i.test(statusRaw)) status='';
+    else if(/先發|未開始|vs/i.test(statusRaw)) status='未開始';
 
     const teamList=[];
     seg.forEach(l=>{
@@ -7112,8 +5636,8 @@ function cpblParseSchedule(raw, sourceName=''){
       const sm=scoreLine.match(/(\d+)\s*[:：]\s*(\d+)/);
       awayScore=Number(sm[1]); homeScore=Number(sm[2]);
     }
-    const timeMatch=seg.map(line=>line.match(/(\d{1,2})\s*[:：]\s*(\d{2})/)).find(Boolean);
-    const time=cpblNormalizeTime(timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '');
+    const rawTime=seg.find(l=>/^\d{1,2}:\d{2}$/.test(l));
+    const time=cpblNormalizeTime(rawTime);
     const field=seg.find(l=>CPBLG_FIELDS.includes(l)) || '';
     games.push({
       id:`${ymd}-A-${no}`,
@@ -7150,10 +5674,9 @@ function cpblApplyManualGames(){
       }
     });
     if(teams.length<2) return;
-    const timeMatch=line.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
-    const time=cpblNormalizeTime(timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : '');
+    const time=cpblNormalizeTime((line.match(/\b\d{1,2}:\d{2}\b/)||[])[0]||'');
     const field=CPBLG_FIELDS.find(f=>line.includes(f))||'';
-    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'',awayScore:null,homeScore:null,source:'手動輸入'});
+    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'手動輸入'});
   });
   if(!games.length){alert('沒有解析到賽事，請用「隊伍A vs 隊伍B 時間 場地」一行一場');return;}
   cpblgGames=games;
@@ -7226,6 +5749,17 @@ function cpblMergeData(base, incoming){
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
   return data;
 }
+function cpblResetForRelease(){
+  localStorage.removeItem('cpblgPlayer');
+  cpblgPlayer = '';
+  cpblgData = cpblBaseData();
+  localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
+  localStorage.setItem(CPBLG_RESET_TOKEN, '1');
+  cpblgNeedsRemoteReset = true;
+}
+if(localStorage.getItem(CPBLG_RESET_TOKEN)!=='1'){
+  cpblResetForRelease();
+}
 function cpblSaveData(pushFirebase=true){
   cpblgData.updatedAt = Date.now();
   localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
@@ -7233,28 +5767,18 @@ function cpblSaveData(pushFirebase=true){
   cpblRenderGames();
   cpblRenderHistory();
   if(pushFirebase && window._fb){
-    const {db,ref,runTransaction}=window._fb;
-    runTransaction(ref(db,'cpblGuess'), current=>{
-      const remote = cpblMergeData(cpblBaseData(), current || {});
-      const mergedPicks = {...(remote.picks || {})};
-      Object.entries(cpblgData.picks || {}).forEach(([gameId, picks])=>{
-        mergedPicks[gameId] = {...(mergedPicks[gameId] || {}), ...(picks || {})};
-      });
-      const historyById = new Map((remote.history || []).map(item=>[item.id,item]));
-      (cpblgData.history || []).forEach(item=>historyById.set(item.id,item));
-      return {
-        players: cpblgData.players,
-        picks: mergedPicks,
-        history: Array.from(historyById.values()),
-        updatedAt: cpblgData.updatedAt
-      };
-    }).catch(()=>{});
+    const {db,ref,set}=window._fb;
+    set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
   }
 }
 function cpblInitFirebase(){
   if(cpblgFirebaseReady || !window._fb) return;
   cpblgFirebaseReady = true;
   const {db,ref,onValue,set}=window._fb;
+  if(cpblgNeedsRemoteReset){
+    set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
+    cpblgNeedsRemoteReset = false;
+  }
   onValue(ref(db,'cpblGuess'), snap=>{
     const remote = snap.val();
     if(remote){
@@ -7372,56 +5896,27 @@ function cpblRenderHistoryDetail(selectedDate, grouped){
   }).join('');
   return `<div class="cpblg-history-detail"><div class="cpblg-history-datebar"><strong>${cpblFormatDateLabel(selectedDate)}</strong><span class="cpblg-small">點其他日期可切換</span></div><div class="cpblg-history-daylist">${cards}</div></div>`;
 }
-function cpblRenderTodayPredictions(){
-  const today = cpblTodayYMD();
-  const gamesById = new Map(cpblgGames.filter(game=>game.date===today).map(game=>[game.id,game]));
-  const todayGameIds = new Set([...gamesById.keys(), ...Object.keys(cpblgData.picks || {}).filter(gameId=>gameId.startsWith(today))]);
-  const cards = Array.from(todayGameIds).map(gameId=>{
-    const picks = cpblgData.picks?.[gameId] || {};
-    if(!picks['聖展']?.team && !picks['予君']?.team) return '';
-    const stored = picks['聖展'] || picks['予君'] || {};
-    const game = gamesById.get(gameId) || {
-      no: stored.gameNo || gameId.split('-').pop(),
-      away: stored.away || '',
-      home: stored.home || '',
-      field: stored.field || '',
-      time: stored.time || ''
-    };
-    const meta = [cpblGetGameTime(game), game.field].filter(Boolean).map(cpblEscape).join('・') || '賽事資料載入中';
-    const matchup = game.away && game.home ? `<div class="cpblg-today-match">${cpblEscape(game.away)}　VS　${cpblEscape(game.home)}</div>` : '';
-    const pickRows = ['聖展','予君'].map(player=>{
-      const pick = picks[player];
-      return `<div class="cpblg-today-pick"><span class="cpblg-today-player">${player}</span><span class="cpblg-today-choice">${pick?.team ? `已選 ${cpblEscape(pick.team)}` : '尚未猜'}</span></div>`;
-    }).join('');
-    return `<div class="cpblg-today-card"><div class="cpblg-today-head"><strong>GAME ${cpblEscape(game.no||'')}</strong><span class="cpblg-small">${meta}</span></div>${matchup}<div class="cpblg-today-picks">${pickRows}</div></div>`;
-  }).filter(Boolean);
-  const content = cards.length ? `<div class="cpblg-today-list">${cards.join('')}</div>` : '<div class="cpblg-history-empty">今天還沒有猜測紀錄。</div>';
-  return `<div class="cpblg-today-records"><div class="cpblg-today-titlebar"><div class="cpblg-today-title">今天的猜測紀錄</div><button type="button" class="cpblg-today-toggle" aria-expanded="false" onclick="cpblToggleTodayPredictions(this)">展開</button></div><div class="cpblg-today-body">${content}</div></div>`;
-}
-function cpblToggleTodayPredictions(button){
-  const body = button?.closest('.cpblg-today-records')?.querySelector('.cpblg-today-body');
-  if(!body) return;
-  const isOpen = body.classList.toggle('open');
-  button.textContent = isOpen ? '收起' : '展開';
-  button.setAttribute('aria-expanded', String(isOpen));
-}
 function cpblRenderHistory(){
   const wrap=document.getElementById('cpblg-history-page-list');
   if(!wrap) return;
   const rows = Array.isArray(cpblgData.history) ? cpblgData.history.slice().sort((a,b)=>(b.resolvedAt||0)-(a.resolvedAt||0)) : [];
+  if(!rows.length){
+    wrap.innerHTML = `<div class="cpblg-history-empty">目前還沒有已結算的比賽紀錄。</div>`;
+    return;
+  }
   const grouped = new Map();
   rows.forEach(item=>{
     const key = item.date || '';
     if(!grouped.has(key)) grouped.set(key, []);
     grouped.get(key).push(item);
   });
-  const latestDate = rows[0]?.date || cpblTodayYMD();
+  const latestDate = rows[0].date || cpblTodayYMD();
   if(!cpblgHistoryMonth) cpblgHistoryMonth = cpblHistoryMonthKey(latestDate);
   const currentMonthItems = rows.filter(item=>cpblHistoryMonthKey(item.date)===cpblgHistoryMonth);
   if(!cpblgHistorySelectedDate){
-    cpblgHistorySelectedDate = currentMonthItems[0]?.date || (cpblHistoryMonthKey(cpblTodayYMD())===cpblgHistoryMonth ? cpblTodayYMD() : `${cpblgHistoryMonth}-01`);
+    cpblgHistorySelectedDate = currentMonthItems[0]?.date || `${cpblgHistoryMonth}-01`;
   }
-  wrap.innerHTML = `<div class="cpblg-calendar-head"><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(-1)">‹</button><div class="cpblg-cal-title">${cpblHistoryMonthTitle(cpblgHistoryMonth)}</div><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(1)">›</button></div><div class="cpblg-cal-legend"><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot correct">勝</span>代表猜對</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot wrong">負</span>代表猜錯</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot draw">平</span>代表沒輸沒贏</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot none">無</span>代表沒猜</span></div><div class="cpblg-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="cpblg-cal-grid">${cpblHistoryBuildCalendar(cpblgHistoryMonth, grouped)}</div>${cpblRenderTodayPredictions()}${cpblRenderHistoryDetail(cpblgHistorySelectedDate, grouped)}`;
+  wrap.innerHTML = `<div class="cpblg-calendar-head"><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(-1)">‹</button><div class="cpblg-cal-title">${cpblHistoryMonthTitle(cpblgHistoryMonth)}</div><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(1)">›</button></div><div class="cpblg-cal-legend"><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot correct">勝</span>代表猜對</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot wrong">負</span>代表猜錯</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot draw">平</span>代表沒輸沒贏</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot none">無</span>代表沒猜</span></div><div class="cpblg-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="cpblg-cal-grid">${cpblHistoryBuildCalendar(cpblgHistoryMonth, grouped)}</div>${cpblRenderHistoryDetail(cpblgHistorySelectedDate, grouped)}`;
 }
 function cpblEnterScreen(){
   cpblInitFirebase();
@@ -7455,13 +5950,6 @@ function cpblSetStatus(msg){
   const el=document.getElementById('cpblg-status');
   if(el) el.innerHTML=msg;
 }
-function cpblGameMetaHtml(game){
-  const time = cpblGetGameTime(game) || '時間待公布';
-  const field = game?.field || '球場待公布';
-  const status = cpblStatusText(game);
-  const statusLine = status && status!==time ? `<br>${cpblEscape(status)}` : '';
-  return `${cpblEscape(time)}<br>${cpblEscape(field)}${statusLine}`;
-}
 function cpblRenderGames(){
   const wrap=document.getElementById('cpblg-games');
   if(!wrap) return;
@@ -7471,7 +5959,7 @@ function cpblRenderGames(){
     badge.textContent = `${p.y}/${cpblPad(p.m)}/${cpblPad(p.d)} 今日賽程`;
   }
   if(!cpblgGames.length){
-    wrap.innerHTML = `<div class="cpblg-empty">今日無比賽。</div>`;
+    wrap.innerHTML = `<div class="cpblg-empty">目前還沒有載到今日賽程。</div>`;
     return;
   }
   wrap.innerHTML = cpblgGames.map(game=>{
@@ -7495,7 +5983,7 @@ function cpblRenderGames(){
       if(pick?.checked && chosen) cls += pick.correct ? ' correct' : (pick.correct===false ? ' wrong' : '');
       return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick='cpblPick(${JSON.stringify(game.id)},${JSON.stringify(team)})'>${cpblTeamInline(team)}</button>`;
     };
-    return `<div class="cpblg-game"><div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblGameMetaHtml(game)}</div></div><div class="cpblg-match">${cpblTeamCard(game.away,'客隊')}${score}${cpblTeamCard(game.home,'主隊')}</div><div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div><div class="cpblg-note">${noteBits.length ? noteBits.map(bit=>`<div class="cpblg-note-line">${bit}</div>`).join('') : '<div class="cpblg-note-line">開賽前可以修改預測。</div>'}</div></div>`;
+    return `<div class="cpblg-game"><div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblStatusText(game))}<br>${cpblEscape(game.field||'')} ${cpblEscape(game.time||'')}</div></div><div class="cpblg-match">${cpblTeamCard(game.away,'客隊')}${score}${cpblTeamCard(game.home,'主隊')}</div><div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div><div class="cpblg-note">${noteBits.join('<br>') || '開賽前可以修改預測。'}</div></div>`;
   }).join('');
 }
 function cpblPick(gameId, team){
@@ -7506,36 +5994,14 @@ function cpblPick(gameId, team){
   cpblgData.picks[gameId] = cpblgData.picks[gameId] || {};
   const old = cpblgData.picks[gameId][cpblgPlayer];
   if(old?.checked){alert('這場已經結算，不能修改');return;}
-  const player = cpblgPlayer;
-  const pick = {team, checked:false, correct:null, pickedAt:Date.now(),gameNo:game.no,date:game.date,away:game.away,home:game.home,field:game.field,time:cpblGetGameTime(game)};
-  cpblgData.picks[gameId][player] = pick;
-  cpblSaveData(false);
-  if(!window._fb){
-    alert('預測已暫存在這台裝置，但目前尚未連上伺服器，請稍後再點一次確認同步。');
-    return;
-  }
-  const {db,ref,update}=window._fb;
-  update(ref(db,'cpblGuess'), {
-    [`picks/${gameId}/${player}`]: pick,
-    updatedAt: Date.now()
-  }).catch(()=>{
-    alert('預測暫時無法同步到伺服器，請確認網路後再點一次。');
-  });
+  cpblgData.picks[gameId][cpblgPlayer] = {team, checked:false, correct:null, pickedAt:Date.now()};
+  cpblSaveData(true);
 }
 function cpblStatusLoaded(gamesCount){
-  const now = cpblTaipeiNow();
-  const updated = `${cpblPad(now.getHours())}:${cpblPad(now.getMinutes())}`;
-  return `<div class="cpblg-status-line"><div class="cpblg-status-main">已載入 ${gamesCount} 場｜更新時間 ${updated}</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
-}
-function cpblStatusNoGames(){
-  const now = cpblTaipeiNow();
-  const updated = `${cpblPad(now.getHours())}:${cpblPad(now.getMinutes())}`;
-  return `<div class="cpblg-status-line"><div class="cpblg-status-main">今日無比賽｜更新時間 ${updated}</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
+  return `<div class="cpblg-status-line"><div class="cpblg-status-main">已載入 ${gamesCount} 場今日賽程。</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
 }
 function cpblStatusError(message){
-  const now = cpblTaipeiNow();
-  const updated = `${cpblPad(now.getHours())}:${cpblPad(now.getMinutes())}`;
-  return `<div class="cpblg-status-line"><div class="cpblg-status-main">${cpblEscape(message)}｜更新時間 ${updated}</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
+  return `<div class="cpblg-status-line"><div class="cpblg-status-main">${cpblEscape(message)}</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
 }
 function cpblHistoryId(gameId, player){return `${gameId}__${player}`;}
 function cpblUpsertHistoryRecord(game, player, pick){
@@ -7585,7 +6051,7 @@ function cpblParseGameStatus(text){
   if(/保留/.test(raw)) return '保留';
   if(/已結束|比賽結束|結束/.test(raw)) return '已結束';
   if(/進行中|比賽中|暫停/.test(raw)) return '進行中';
-  return '';
+  return '未開始';
 }
 function cpblParseGameSegment(seg, no, date, sourceName=''){
   const joined = seg.join(' ');
@@ -7602,7 +6068,7 @@ function cpblParseGameSegment(seg, no, date, sourceName=''){
   }
   if(teamList.length<2) return null;
   const scoreMatch = joined.match(/(\d+)\s*[:：]\s*(\d+)/);
-  const timeMatch = joined.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
+  const timeMatch = joined.match(/\b(\d{1,2}:\d{2})\b/);
   const field = CPBLG_FIELDS.find(name=>seg.some(line=>line.includes(name))) || '';
   return {id:`${date}-A-${no}`,date,no,away:teamList[0],home:teamList[1],field,time:cpblNormalizeTime(timeMatch ? timeMatch[1] : ''),status:cpblParseGameStatus(joined),awayScore:scoreMatch ? Number(scoreMatch[1]) : null,homeScore:scoreMatch ? Number(scoreMatch[2]) : null,source:sourceName};
 }
@@ -7690,7 +6156,7 @@ function cpblApplyManualGames(){
     if(teams.length<2) return;
     const time=cpblNormalizeTime((line.match(/\b\d{1,2}:\d{2}\b/)||[])[0]||'');
     const field=CPBLG_FIELDS.find(name=>line.includes(name))||'';
-    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'',awayScore:null,homeScore:null,source:'手動賽程'});
+    games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'手動賽程'});
   });
   if(!games.length){alert('沒有辨識到有效格式，請用「隊伍A vs 隊伍B 18:35 球場」的方式輸入');return;}
   cpblgGames=games;
@@ -7731,7 +6197,7 @@ function cpblParseGameStatus(text){
   if(/保留/.test(raw)) return '保留';
   if(/已結束|比賽結束|結束/.test(raw)) return '已結束';
   if(/進行中|比賽中|暫停/.test(raw)) return '進行中';
-  return '';
+  return '未開始';
 }
 
 function cpblGetTodayBlock(raw){
@@ -7786,7 +6252,7 @@ function cpblParseGameSegment(seg, no, date, sourceName=''){
   }
   if(teamList.length < 2) return null;
   const scoreMatch = joined.match(/(\d+)\s*[:：]\s*(\d+)/);
-  const timeMatch = joined.match(/(\d{1,2})\s*[:：]\s*(\d{2})/);
+  const timeMatch = joined.match(/\b(\d{1,2}:\d{2})\b/);
   const field = CPBLG_FIELDS.find(name=>seg.some(line=>line.includes(name))) || '';
   return {
     id:`${date}-A-${no}`,
@@ -7795,7 +6261,7 @@ function cpblParseGameSegment(seg, no, date, sourceName=''){
     away:teamList[0],
     home:teamList[1],
     field,
-    time:cpblNormalizeTime(timeMatch ? `${timeMatch[1]}:${timeMatch[2]}` : ''),
+    time:cpblNormalizeTime(timeMatch ? timeMatch[1] : ''),
     status:cpblParseGameStatus(joined),
     awayScore:scoreMatch ? Number(scoreMatch[1]) : null,
     homeScore:scoreMatch ? Number(scoreMatch[2]) : null,
@@ -7929,13 +6395,7 @@ async function cpblRefreshGames(showAlert=false){
   try{
     const result = await cpblFetchUnifiedSchedule();
     const games = Array.isArray(result.data.games) ? result.data.games : [];
-    if(!games.length){
-      cpblgGames = [];
-      cpblRenderGames();
-      cpblSetStatus(cpblStatusNoGames());
-      return;
-    }
-    await cpblHydrateGameTimes(games);
+    if(!games.length) throw new Error('今天沒有抓到賽程');
     cpblgGames = games;
     cpblResolveFinishedGames(true);
     cpblRenderStats();
@@ -7948,6 +6408,229 @@ async function cpblRefreshGames(showAlert=false){
     cpblRenderGames();
     cpblSetStatus(cpblStatusError(`今天賽程暫時抓不到：${err?.message || String(err)}`));
     if(showAlert) console.warn('CPBL unified fetch failed:', err);
+  }
+}
+
+function cpblIsFinalGame(game){
+  const status = String(game?.status || '').trim();
+  return /已結束|比賽結束|結束|取消|延賽|保留/.test(status);
+}
+
+function cpblWinner(game){
+  if(!game || !cpblIsFinalGame(game)) return '';
+  const awayScore = Number(game.awayScore);
+  const homeScore = Number(game.homeScore);
+  if(!Number.isFinite(awayScore) || !Number.isFinite(homeScore)) return '';
+  if(awayScore === homeScore) return '和局';
+  return awayScore > homeScore ? game.away : game.home;
+}
+
+function cpblStatusText(game){
+  const status = String(game?.status || '').trim();
+  if(/進行中|比賽中/.test(status)) return '比賽進行中';
+  if(/已結束|比賽結束|結束/.test(status)) return '比賽結束';
+  if(/延賽/.test(status)) return '延賽';
+  if(/取消/.test(status)) return '取消';
+  if(/保留/.test(status)) return '保留';
+  return game?.time || '時間待公佈';
+}
+
+function cpblGameMetaLine(game){
+  const status = String(game?.status || '').trim();
+  if(/進行中|比賽中|已結束|比賽結束|結束|取消|延賽|保留/.test(status)) return cpblStatusText(game);
+  return game?.time || '時間待公佈';
+}
+
+function cpblHistoryPlayerSummary(items, player){
+  const mine = (items||[]).filter(item=>item.player===player);
+  if(!mine.length) return '無';
+  if(mine.length===1){
+    if(mine[0].winner==='和局') return '平';
+    return mine[0].correct ? '勝' : '負';
+  }
+  const correct = mine.filter(item=>item.correct===true).length;
+  const wrong = mine.filter(item=>item.correct===false).length;
+  const draw = mine.filter(item=>item.winner==='和局').length;
+  const parts = [];
+  if(correct) parts.push(`${correct}勝`);
+  if(wrong) parts.push(`${wrong}敗`);
+  if(draw) parts.push(`${draw}平`);
+  return parts.join(' ') || '無';
+}
+
+function cpblHistoryDayOverview(items){
+  const total = Array.isArray(items) ? items.length : 0;
+  const chips = [
+    `<span class="cpblg-history-day-pill"><strong>場次</strong>${total} 場</span>`,
+    ...CPBLG_HISTORY_PLAYERS.map(player=>`<span class="cpblg-history-day-pill"><strong>${cpblEscape(player)}</strong>${cpblEscape(cpblHistoryPlayerSummary(items, player))}</span>`)
+  ];
+  return `<div class="cpblg-history-day-overview">${chips.join('')}</div>`;
+}
+
+function cpblRecountPlayerStats(){
+  const stats = {};
+  CPBLG_HISTORY_PLAYERS.forEach(name=>{
+    stats[name] = {correct:0,total:0};
+  });
+  const seen = new Set();
+  (Array.isArray(cpblgData.history) ? cpblgData.history : []).forEach(item=>{
+    const row = cpblNormalizeHistoryItem(item);
+    if(!row.id || seen.has(row.id)) return;
+    seen.add(row.id);
+    if(row.correct === null || row.correct === undefined || row.winner === '和局') return;
+    stats[row.player] = stats[row.player] || {correct:0,total:0};
+    stats[row.player].total += 1;
+    if(row.correct) stats[row.player].correct += 1;
+  });
+  cpblgData.players = stats;
+  return stats;
+}
+
+function cpblRenderStats(){
+  const stats = cpblRecountPlayerStats();
+  CPBLG_HISTORY_PLAYERS.forEach(name=>{
+    const st = stats[name] || {correct:0,total:0};
+    const rate = st.total ? Math.round(st.correct / st.total * 100) : 0;
+    const suffix = name==='聖展' ? 'sheng' : 'yujun';
+    const rateEl=document.getElementById(`cpblg-rate-${suffix}`);
+    const recEl=document.getElementById(`cpblg-record-${suffix}`);
+    if(rateEl) rateEl.textContent = `${rate}%`;
+    if(recEl) recEl.textContent = `${st.correct} / ${st.total}`;
+  });
+  document.querySelectorAll('.cpblg-player').forEach(b=>b.classList.remove('active'));
+  if(cpblgPlayer) document.getElementById(cpblgPlayer==='聖展'?'cpblg-player-sheng':'cpblg-player-yujun')?.classList.add('active');
+}
+
+function cpblRenderGames(){
+  const wrap=document.getElementById('cpblg-games');
+  if(!wrap) return;
+  const badge=document.getElementById('cpblg-date-badge');
+  if(badge){
+    const p=cpblDateParts();
+    badge.textContent = `${p.y}/${cpblPad(p.m)}/${cpblPad(p.d)} 今日賽程`;
+  }
+  if(!cpblgGames.length){
+    wrap.innerHTML = `<div class="cpblg-empty">目前還沒有載到今日賽程。<br><button type="button" class="cpblg-btn secondary" style="margin-top:10px" onclick="cpblToggleManual(true)">手動輸入賽程備援</button></div>`;
+    return;
+  }
+  wrap.innerHTML = cpblgGames.map(game=>{
+    const locked=cpblIsLocked(game);
+    const pick=cpblgPlayer ? cpblgData.picks?.[game.id]?.[cpblgPlayer] : null;
+    const winner=cpblWinner(game);
+    const resultNote = winner && pick?.checked ? (winner==='和局' ? '本場和局，不列入勝率' : (pick.correct ? `<span class="cpblg-ok">猜對了！</span>` : `<span class="cpblg-bad">猜錯了，勝隊是 ${cpblEscape(winner)}</span>`)) : '';
+    const score = game.awayScore!=null && game.homeScore!=null ? `<div class="cpblg-score">${game.awayScore} : ${game.homeScore}</div>` : `<div class="cpblg-vs">VS</div>`;
+    const noteBits=[];
+    const picksForGame = cpblgData.picks?.[game.id] || {};
+    CPBLG_HISTORY_PLAYERS.forEach(name=>{
+      const playerPick = picksForGame[name];
+      if(playerPick?.team) noteBits.push(`${name} 已選 ${cpblEscape(playerPick.team)}`);
+    });
+    if(!noteBits.length && !cpblgPlayer) noteBits.push('先選擇你是誰，才會記錄預測。');
+    if(locked && !winner) noteBits.push('這場已經進行中或結束，暫時不能再猜。');
+    if(resultNote) noteBits.push(resultNote);
+    const btn=(team)=>{
+      const chosen=pick?.team===team;
+      let cls='cpblg-btn cpblg-pick'+(chosen?' chosen':'');
+      if(pick?.checked && chosen) cls += pick.correct ? ' correct' : ' wrong';
+      return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">${cpblTeamInline(team)}</button>`;
+    };
+    const metaLine = cpblGameMetaLine(game);
+    return `<div class="cpblg-game">
+      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(metaLine)}<br>${cpblEscape(game.field||'')}</div></div>
+      <div class="cpblg-match"><div class="cpblg-team"><span class="cpblg-side">客隊</span>${cpblEscape(game.away)}</div>${score}<div class="cpblg-team"><span class="cpblg-side">主隊</span>${cpblEscape(game.home)}</div></div>
+      <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
+      <div class="cpblg-note">${noteBits.join('<br>') || '開賽前可以修改預測。'}</div>
+    </div>`;
+  }).join('');
+}
+
+function cpblHistoryBuildCalendar(monthKey, grouped){
+  const [year, month] = monthKey.split('-').map(Number);
+  const first = new Date(year, month - 1, 1);
+  const startWeek = first.getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const cells = [];
+  for(let i=0;i<startWeek;i++) cells.push(`<button type="button" class="cpblg-cal-day muted" disabled></button>`);
+  for(let day=1; day<=daysInMonth; day++){
+    const ymd = `${year}-${cpblPad(month)}-${cpblPad(day)}`;
+    const items = grouped.get(ymd) || [];
+    const active = cpblgHistorySelectedDate===ymd;
+    const summaries = CPBLG_HISTORY_PLAYERS.map(player=>`<span class="cpblg-cal-summary"><span class="cpblg-cal-summary-player">${cpblEscape(player)}</span><span class="cpblg-cal-summary-value">${cpblEscape(cpblHistoryPlayerSummary(items, player))}</span></span>`).join('');
+    cells.push(`<button type="button" class="cpblg-cal-day${active?' active':''}" onclick="cpblSelectHistoryDate('${ymd}')"><span class="cpblg-cal-num">${day}</span><span class="cpblg-cal-count">${items.length ? `${items.length} 場` : '無'}</span><span class="cpblg-cal-summaries">${summaries}</span></button>`);
+  }
+  return cells.join('');
+}
+
+function cpblRenderHistoryDetail(selectedDate, grouped){
+  const items = grouped.get(selectedDate) || [];
+  if(!selectedDate){
+    return `<div class="cpblg-history-detail"><div class="cpblg-history-empty">先點一下月曆上的日期，就能看那天的詳細資料。</div></div>`;
+  }
+  if(!items.length){
+    return `<div class="cpblg-history-detail"><div class="cpblg-history-empty">${cpblFormatDateLabel(selectedDate)} 這天沒有已結算紀錄。</div></div>`;
+  }
+  const byGame = new Map();
+  items.forEach(item=>{
+    const key = item.gameId || item.id;
+    if(!byGame.has(key)){
+      byGame.set(key,{date:item.date,gameNo:item.gameNo,away:item.away,home:item.home,awayScore:item.awayScore,homeScore:item.homeScore,winner:item.winner,field:item.field,picks:[]});
+    }
+    byGame.get(key).picks.push(item);
+  });
+  const cards = Array.from(byGame.values()).map(game=>{
+    const result = game.winner==='和局' ? '和局' : `${game.winner} 勝`;
+    const score = game.awayScore!=='' && game.homeScore!=='' ? `${game.awayScore} : ${game.homeScore}` : 'VS';
+    return `<div class="cpblg-history-simple"><div class="cpblg-history-simple-top"><div><strong>GAME ${cpblEscape(game.gameNo||'')}</strong><div class="cpblg-history-date">${cpblEscape(game.field||'')}</div></div><div class="cpblg-history-result">${cpblEscape(result)}</div></div><div class="cpblg-history-matchup"><div class="cpblg-history-side"><div class="cpblg-history-team">${cpblTeamInline(game.away)}</div></div><div class="cpblg-history-scoreline">${cpblEscape(score)}</div><div class="cpblg-history-side"><div class="cpblg-history-team">${cpblTeamInline(game.home)}</div></div></div></div>`;
+  }).join('');
+  return `<div class="cpblg-history-detail">${cpblHistoryDayOverview(items)}<div class="cpblg-history-datebar"><strong>${cpblFormatDateLabel(selectedDate)}</strong><span class="cpblg-small">點其他日期可切換</span></div><div class="cpblg-history-daylist">${cards}</div></div>`;
+}
+
+function cpblRenderHistory(){
+  const wrap=document.getElementById('cpblg-history-page-list');
+  if(!wrap) return;
+  const rows = Array.isArray(cpblgData.history) ? cpblgData.history.slice().sort((a,b)=>(b.resolvedAt||0)-(a.resolvedAt||0)) : [];
+  if(!rows.length){
+    wrap.innerHTML = `<div class="cpblg-history-empty">目前還沒有已結算的比賽紀錄。</div>`;
+    return;
+  }
+  const grouped = new Map();
+  rows.forEach(item=>{
+    const key = item.date || '';
+    if(!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key).push(item);
+  });
+  const latestDate = rows[0].date || cpblTodayYMD();
+  if(!cpblgHistoryMonth) cpblgHistoryMonth = cpblHistoryMonthKey(latestDate);
+  const currentMonthItems = rows.filter(item=>cpblHistoryMonthKey(item.date)===cpblgHistoryMonth);
+  if(!cpblgHistorySelectedDate){
+    cpblgHistorySelectedDate = currentMonthItems[0]?.date || `${cpblgHistoryMonth}-01`;
+  }else if(cpblgHistorySelectedDate && !grouped.has(cpblgHistorySelectedDate) && currentMonthItems.length){
+    cpblgHistorySelectedDate = currentMonthItems[0].date;
+  }
+  wrap.innerHTML = `<div class="cpblg-calendar-head"><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(-1)">‹</button><div class="cpblg-cal-title">${cpblHistoryMonthTitle(cpblgHistoryMonth)}</div><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(1)">›</button></div><div class="cpblg-cal-legend"><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot correct">勝</span>代表猜對</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot wrong">負</span>代表猜錯</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot draw">平</span>代表沒輸沒贏</span><span class="cpblg-cal-legend-item"><span class="cpblg-cal-legend-dot none">無</span>代表沒猜</span></div><div class="cpblg-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="cpblg-cal-grid">${cpblHistoryBuildCalendar(cpblgHistoryMonth, grouped)}</div>${cpblRenderHistoryDetail(cpblgHistorySelectedDate, grouped)}`;
+}
+
+function cpblResolveFinishedGames(push=true){
+  if(!cpblgGames.length) return;
+  let changed=false;
+  cpblgGames.forEach(game=>{
+    const winner=cpblWinner(game);
+    if(!winner) return;
+    const gp=cpblgData.picks?.[game.id] || {};
+    CPBLG_HISTORY_PLAYERS.forEach(name=>{
+      const p=gp[name];
+      if(!p) return;
+      if(!p.checked){
+        p.checked=true;
+        p.correct=winner==='和局' ? null : p.team===winner;
+        changed=true;
+      }
+      if(cpblUpsertHistoryRecord(game, name, p)) changed=true;
+    });
+  });
+  if(changed){
+    cpblRecountPlayerStats();
+    cpblSaveData(push);
   }
 }
 
@@ -8587,56 +7270,6 @@ const MC_QUESTION_BANK=[
   {q:'如果要送對方一份禮物，你會選？',opts:['手寫的信','一起的旅行','喜歡的食物','親手做的東西']},
   {q:'你覺得你們最甜蜜的時刻是？',opts:['睡前說晚安','一起吃飯','突然被抱住','對方記得你說過的小事']},
   {q:'你希望老了之後兩人一起做什麼？',opts:['環遊世界','種花種菜','每天散步','窩在家回憶年輕']},
-  {q:'週末早餐最想一起吃什麼？',opts:['傳統早餐店','早午餐拼盤','便利商店','睡飽直接吃午餐']},
-  {q:'半夜突然嘴饞，最想吃哪一種？',opts:['鹹酥雞','泡麵','甜點','水果']},
-  {q:'假日最理想的起床時間是？',opts:['早上七點前','九點左右','中午以前','睡到自然醒']},
-  {q:'兩人自駕旅行時，誰最適合負責什麼？',opts:['開車','導航','找美食','播放音樂']},
-  {q:'一起迷路時，你們最可能怎麼做？',opts:['馬上查地圖','問路人','邊走邊找','當成意外探險']},
-  {q:'壓力很大時，最希望對方怎麼陪？',opts:['安靜抱抱','聽我說話','帶我吃東西','陪我出去走走']},
-  {q:'最喜歡收到哪種小驚喜？',opts:['突然出現','小禮物','手寫卡片','準備喜歡的食物']},
-  {q:'如果一起佈置房間，最重視哪個部分？',opts:['舒服的床','溫暖燈光','收納空間','漂亮裝飾']},
-  {q:'最適合兩人約會的季節是？',opts:['春天','夏天','秋天','冬天']},
-  {q:'一起去飲料店最常選哪一類？',opts:['奶茶','純茶','水果茶','咖啡']},
-  {q:'拍合照時，你們最常出現哪種狀況？',opts:['認真擺拍','一直笑場','拍很多張才滿意','隨手拍就很好看']},
-  {q:'一起逛街時最容易停在哪一區？',opts:['服飾店','生活用品','美食區','遊戲玩具']},
-  {q:'去唱歌時最想一起唱哪種歌？',opts:['甜蜜情歌','經典老歌','熱血快歌','搞笑歌曲']},
-  {q:'去遊樂園第一個想玩什麼？',opts:['雲霄飛車','摩天輪','旋轉木馬','鬼屋']},
-  {q:'到海邊最想一起做什麼？',opts:['踏浪','看夕陽','拍照','吃海鮮']},
-  {q:'去山上最期待哪件事？',opts:['看風景','看星星','露營','吃山產']},
-  {q:'下雨天臨時取消行程，你們會？',opts:['在家追劇','去逛百貨','找咖啡廳','撐傘照樣出去']},
-  {q:'紀念日最想怎麼度過？',opts:['吃一頓大餐','安排小旅行','交換禮物','重走回憶地點']},
-  {q:'如果一起存一筆錢，最想拿來做什麼？',opts:['旅行','買房','買車','享受美食']},
-  {q:'夢想中的家最想要哪個空間？',opts:['大廚房','影音室','漂亮陽台','寵物房']},
-  {q:'家事最想負責哪一項？',opts:['洗碗','洗衣服','掃地拖地','倒垃圾']},
-  {q:'一起下廚時最適合做哪道料理？',opts:['火鍋','義大利麵','咖哩飯','甜點']},
-  {q:'早上鬧鐘響了最可能是誰先起床？',opts:['聖展','予君','兩個一起起床','兩個都繼續睡']},
-  {q:'平常傳訊息最常傳什麼？',opts:['報備行程','可愛貼圖','分享食物','想你了']},
-  {q:'惹對方生氣後，最有效的道歉方式是？',opts:['好好說清楚','買好吃的','寫一段長訊息','先抱再說']},
-  {q:'看到對方和別人聊得很開心，你會？',opts:['完全放心','有一點吃醋','直接加入聊天','回家再撒嬌']},
-  {q:'一起參加聚會時，你們最像哪一型？',opts:['全場最熱鬧','安靜坐一起','分開各自聊天','負責吃東西']},
-  {q:'最想一起培養哪種運動習慣？',opts:['散步慢跑','健身','游泳','騎腳踏車']},
-  {q:'兩人玩遊戲時最在意什麼？',opts:['一定要贏','合作過關','互相陷害','開心就好']},
-  {q:'最想一起學會哪項新技能？',opts:['做菜','攝影','跳舞','一種新語言']},
-  {q:'如果一起看演唱會，最期待哪個瞬間？',opts:['歌手登場','全場合唱','安可曲','一起拍紀念照']},
-  {q:'搭長途交通工具時最想坐哪裡？',opts:['靠窗','靠走道','最後一排','只要坐一起都好']},
-  {q:'旅行住飯店時最重視什麼？',opts:['床好不好睡','早餐好不好吃','浴室漂亮','交通方便']},
-  {q:'旅行回來最想帶哪種紀念品？',opts:['當地零食','實用小物','情侶紀念品','拍很多照片就好']},
-  {q:'吃完正餐後最想共享哪種甜點？',opts:['蛋糕','冰淇淋','豆花','鬆餅']},
-  {q:'吃火鍋時最不能少的是？',opts:['肉片','火鍋料','蔬菜','最後的麵或粥']},
-  {q:'逛便利商店時最容易買什麼？',opts:['飲料','零食','冰品','關東煮']},
-  {q:'半夜兩個人都睡不著會做什麼？',opts:['繼續聊天','看影片','找東西吃','出去兜風']},
-  {q:'如果對方生病，最先做什麼？',opts:['陪去看醫生','準備藥和水','煮東西給他吃','守在旁邊照顧']},
-  {q:'生日最希望對方準備什麼？',opts:['生日蛋糕','精心禮物','驚喜行程','真心的一段話']},
-  {q:'最適合彼此的親暱稱呼是哪種？',opts:['名字疊字','寶貝類','動物暱稱','專屬搞笑稱呼']},
-  {q:'手機桌布最適合放什麼？',opts:['兩人合照','對方單人照','一起去過的風景','可愛插圖']},
-  {q:'最想嘗試哪種情侶穿搭？',opts:['同色系','一模一樣','低調小配件','各穿各的最自在']},
-  {q:'哪樣東西最適合收藏你們的回憶？',opts:['照片書','票根盒','影片日記','紀念小物櫃']},
-  {q:'未來最理想的普通週末是？',opts:['一起採買煮飯','睡飽出門吃飯','安排近郊小旅行','在家做各自喜歡的事']},
-  {q:'退休後最想住在哪裡？',opts:['熱鬧城市','安靜郊區','海邊小鎮','山裡的小屋']},
-  {q:'如果遇到殭屍世界，你們會怎麼分工？',opts:['一個戰鬥一個找物資','一起躲起來','開車逃到遠方','先去超商補貨']},
-  {q:'如果一起中了大獎，第一件事會做什麼？',opts:['立刻旅行','買一個家','請家人吃飯','先存起來慢慢想']},
-  {q:'如果可以回到過去，最想重溫哪個時刻？',opts:['第一次見面','第一次約會','第一次旅行','某個平凡但幸福的晚上']},
-  {q:'你們的感情最適合哪種音樂風格？',opts:['甜甜流行情歌','溫柔鋼琴曲','熱血搖滾','輕鬆爵士']},
 ];
 
 // 本局使用的題目（從 Firebase 同步）
@@ -10433,18 +9066,18 @@ const SONGS=[
 ];
 const RG_SONGS=[
   {file:'game1.mp3',name:'跳樓機 鋼琴版'},
-  {file:'game2.mp3',name:'海嶼你 鋼琴版'},
-  {file:'game3.mp3',name:'友誼長存 鋼琴版'},
-  {file:'game4.mp3',name:'離開我的依賴 鋼琴版'},
-  {file:'game5.mp3',name:'太陽與地球 鋼琴版'},
-  {file:'game6.mp3',name:'逆光 Against The Light 鋼琴版'},
-  {file:'game7.mp3',name:'我知道 鋼琴版'},
-  {file:'game8.mp3',name:'反方向的鐘 鋼琴版'},
-  {file:'game9.mp3',name:'再見的時候 鋼琴版'},
-  {file:'game10.mp3',name:'幸福在歌唱 鋼琴版'},
-  {file:'game11.mp3',name:'Enchanted 鋼琴版'},
-  {file:'game12.mp3',name:'Zoo 鋼琴版'},
-  {file:'game13.mp3',name:'專屬天使 鋼琴版'}
+  {file:'game2.mp3',name:'海嶼你'},
+  {file:'game3.mp3',name:'友誼長存'},
+  {file:'game4.mp3',name:'離開我的依賴'},
+  {file:'game5.mp3',name:'太陽與地球'},
+  {file:'game6.mp3',name:'逆光 Against The Light'},
+  {file:'game7.mp3',name:'我知道'},
+  {file:'game8.mp3',name:'反方向的鐘'},
+  {file:'game9.mp3',name:'再見的時候'},
+  {file:'game10.mp3',name:'幸福在歌唱'},
+  {file:'game11.mp3',name:'Enchanted'},
+  {file:'game12.mp3',name:'Zoo'},
+  {file:'game13.mp3',name:'專屬天使'}
 ];
 for(let i=SONGS.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[SONGS[i],SONGS[j]]=[SONGS[j],SONGS[i]];}
 let songIdx=Math.floor(Math.random()*SONGS.length);
@@ -11066,22 +9699,15 @@ function rgEnterScreen(){
 
 function rgPauseIfHidden(){
   document.body.classList.remove('rg-mode');
-  if(!rgInitDone) return;
-  const hasActiveAudio = !!(rgAudio && !rgAudio.paused);
-  if(!rgRunning && !rgStarting && !hasActiveAudio) return;
+  if(!rgInitDone || !rgRunning) return;
   rgRunning = false;
   rgStarting = false;
   cancelAnimationFrame(rgRaf);
   rgRaf = 0;
-  if(rgAudio) rgAudio.pause();
+  rgAudio.pause();
   rgSetOverlay('先休息一下', '你離開了節奏畫面，回來後按開始就能重新挑戰。', '繼續');
   rgSetStateLine('節奏挑戰已暫停。');
 }
-
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden) rgPauseIfHidden();
-});
-window.addEventListener('pagehide',()=>rgPauseIfHidden());
 
 function rgPauseForExternalPlay(){
   if(!rgInitDone || (!rgRunning && (rgAudio?.paused ?? true))) return;
@@ -11389,7 +10015,7 @@ function rgRenderNotes(now){
   if(!box) return;
   const active = rgChart.filter(note => {
     const endTime = note.t + (note.holdMs || 0);
-    return (!note.judged && note.t - now < RG_TRAVEL_MS && now - endTime < RG_JUDGE_WINDOWS.miss) || (note.popUntil && note.popUntil > now);
+    return !note.judged && note.t - now < RG_TRAVEL_MS && now - endTime < RG_JUDGE_WINDOWS.miss;
   });
   box.innerHTML = active.map(note => {
     const progress = ((now - note.t) + RG_TRAVEL_MS) / RG_TRAVEL_MS;
@@ -11397,16 +10023,13 @@ function rgRenderNotes(now){
     const top = note.holdMs
       ? rgClamp(Math.min(progress * targetTop, targetTop), -12, targetTop)
       : rgClamp(progress * targetTop, -12, 112);
-    const scaleX = rgClamp(1.08 + (note.intensity || .78) * .18, 1.12, 1.32);
-    const scaleY = rgClamp(1.02 + (note.intensity || .78) * .08, 1.04, 1.14);
+    const scale = rgClamp(.96 + (note.intensity || .78) * .16, 1.02, 1.18);
     const symbol = RG_NOTE_SYMBOLS[note.lane] || '♪';
     const remainingHold = note.holdMs ? Math.max(0, note.holdMs - Math.max(0, now - note.t)) : 0;
     const holdHeight = note.holdMs ? Math.max(38, remainingHold / RG_TRAVEL_MS * box.clientHeight + 24) : 0;
     const holdClass = note.holdMs ? ' hold' : '';
-    const popClass = note.popUntil && note.popUntil > now ? ' hit-pop' : '';
     const holdStyle = note.holdMs ? `height:${holdHeight}px;` : '';
-    const noteKey = `${note.t}-${note.lane}-${note.holdMs || 0}-${note.intensity || 0}`;
-    return `<div class="rg-note l${note.lane}${holdClass}${popClass}" data-note-key="${noteKey}" style="--lane:${note.lane};top:${top}%;--note-scale-x:${scaleX};--note-scale-y:${scaleY};${holdStyle}">${symbol}</div>`;
+    return `<div class="rg-note l${note.lane}${holdClass}" style="--lane:${note.lane};top:${top}%;--note-scale:${scale};${holdStyle}">${symbol}</div>`;
   }).join('');
 }
 
@@ -11448,7 +10071,6 @@ function rgCompleteHold(note){
 function rgHit(lane){
   if(!rgRunning || !rgAudio) return;
   rgFlashPad(lane);
-  rgSpawnPadBurst(lane);
   const now = rgAudio.currentTime * 1000;
   let candidate = null;
   let bestDelta = Infinity;
@@ -11471,19 +10093,13 @@ function rgHit(lane){
   else if(bestDelta <= RG_JUDGE_WINDOWS.great) grade = 'great';
   else if(bestDelta <= RG_JUDGE_WINDOWS.good) grade = 'good';
   if(grade && candidate.holdMs){
-    rgFlashPad(lane, grade);
-    rgSpawnPadBurst(lane);
     candidate.holding = true;
     candidate.hit = true;
     candidate.holdGrade = grade;
     rgShowJudge('按住不要放');
     return;
   }
-  if(grade){
-    rgFlashPad(lane, grade);
-    rgSpawnPadBurst(lane);
-    return rgApplyJudge(grade, candidate, true);
-  }
+  if(grade) return rgApplyJudge(grade, candidate, true);
   rgShowJudge(now < candidate.t ? '太早' : '太晚');
 }
 
@@ -11492,121 +10108,53 @@ function rgApplyJudge(type, note, fromHit = false){
   note.judged = true;
   note.hit = type !== 'miss';
   note.holding = false;
-  note.popUntil = (rgAudio ? rgAudio.currentTime * 1000 : Date.now()) + (type === 'miss' ? 0 : 340);
 
   if(type === 'perfect'){
     rgPerfect++;
     rgCombo++;
     rgScore += 1000 + rgCombo * 8;
-    rgShowJudge('Perfect', 'perfect');
+    rgShowJudge('Perfect');
   } else if(type === 'great'){
     rgGreat++;
     rgCombo++;
     rgScore += 760 + rgCombo * 6;
-    rgShowJudge('Great', 'great');
+    rgShowJudge('Great');
   } else if(type === 'good'){
     rgGood++;
     rgCombo++;
     rgScore += 480 + rgCombo * 4;
-    rgShowJudge('Good', 'good');
+    rgShowJudge('Good');
   } else {
     rgMiss++;
     rgCombo = 0;
-    rgShowJudge('Miss', 'miss');
+    rgShowJudge('Miss');
   }
 
   if(fromHit && navigator.vibrate){
     try{ navigator.vibrate(type === 'perfect' ? 10 : type === 'miss' ? 22 : 14); }catch(_err){}
   }
-  if(type !== 'miss'){
-    rgSpawnNoteBurst(note);
-  }
-  rgSpawnHitParticles(note.lane, type);
   rgBestCombo = Math.max(rgBestCombo, rgCombo);
   rgUpdateStats();
   rgRenderNotes(rgAudio ? rgAudio.currentTime * 1000 : 0);
 }
 
-function rgShowJudge(text, tone='neutral'){
+function rgShowJudge(text){
   const el = document.getElementById('rg-judgement');
   if(!el) return;
-  el.classList.remove('perfect','great','good','miss');
-  if(tone && tone !== 'neutral') el.classList.add(tone);
   el.textContent = text;
   clearTimeout(rgJudgeTimer);
   rgJudgeTimer = setTimeout(() => {
-    el.classList.remove('perfect','great','good','miss');
     if(el.textContent === text) el.textContent = rgRunning ? '跟著節奏點擊' : '準備好了就開始';
   }, 620);
 }
 
-function rgFlashPad(lane, tone='neutral'){
+function rgFlashPad(lane){
   const pad = document.getElementById(`rg-pad-${lane}`);
   if(!pad) return;
-  pad.classList.remove('flash','flash-perfect','flash-great','flash-good','flash-miss');
+  pad.classList.remove('flash');
   void pad.offsetWidth;
   pad.classList.add('flash');
-  if(tone && tone !== 'neutral') pad.classList.add(`flash-${tone}`);
   setTimeout(()=>pad.classList.remove('flash'), 120);
-  setTimeout(()=>pad.classList.remove('flash-perfect','flash-great','flash-good','flash-miss'), 180);
-}
-
-function rgSpawnPadBurst(lane){
-  const pad = document.getElementById(`rg-pad-${lane}`);
-  if(!pad) return;
-  const burst = document.createElement('span');
-  burst.className = 'rg-hit-burst';
-  pad.appendChild(burst);
-  burst.addEventListener('animationend', () => burst.remove(), { once:true });
-}
-
-function rgSpawnNoteBurst(note){
-  const stage = document.getElementById('rg-stage');
-  if(!stage || !note) return;
-  const noteKey = `${note.t}-${note.lane}-${note.holdMs || 0}-${note.intensity || 0}`;
-  const noteEl = document.querySelector(`.rg-note[data-note-key="${noteKey}"]`);
-  if(!noteEl) return;
-  noteEl.classList.add('hit-pop');
-  setTimeout(() => noteEl.classList.remove('hit-pop'), 420);
-}
-
-function rgSpawnHitParticles(lane, tone='neutral'){
-  const stage = document.getElementById('rg-stage');
-  const pad = document.getElementById(`rg-pad-${lane}`);
-  if(!stage || !pad) return;
-  const stageRect = stage.getBoundingClientRect();
-  const padRect = pad.getBoundingClientRect();
-  const colors = tone === 'perfect'
-    ? ['#ffe66d','#fff4a8','#fff']
-    : tone === 'great'
-      ? ['#ffb17b','#ffd7bf','#fff']
-      : tone === 'good'
-        ? ['#7fb5ff','#dce9ff','#fff']
-        : tone === 'miss'
-          ? ['#ff7f9f','#ffd1dc','#fff']
-          : ['#fff','#ffe5eb','#fff2f5'];
-  const count = tone === 'perfect' ? 14 : tone === 'great' ? 12 : tone === 'good' ? 10 : 8;
-  const wrap = document.createElement('div');
-  wrap.className = 'rg-hit-particles';
-  wrap.style.left = `${padRect.left - stageRect.left}px`;
-  wrap.style.top = `${padRect.top - stageRect.top}px`;
-  wrap.style.width = `${padRect.width}px`;
-  wrap.style.height = `${padRect.height}px`;
-  stage.appendChild(wrap);
-  for(let i=0;i<count;i++){
-    const particle = document.createElement('span');
-    particle.className = 'rg-hit-particle';
-    const angle = (Math.PI * 2 * i / count) + (Math.random() * 0.6 - 0.3);
-    const distance = tone === 'perfect' ? 78 : tone === 'great' ? 66 : tone === 'good' ? 56 : 46;
-    const dx = Math.cos(angle) * (distance + Math.random() * 18);
-    const dy = Math.sin(angle) * (distance + Math.random() * 18) - (tone === 'miss' ? 2 : 0);
-    particle.style.setProperty('--dx', `${dx.toFixed(1)}px`);
-    particle.style.setProperty('--dy', `${dy.toFixed(1)}px`);
-    particle.style.setProperty('--particle-color', colors[i % colors.length]);
-    particle.style.animationDelay = `${Math.random() * 0.05}s`;
-    wrap.appendChild(particle);
-  }
-  setTimeout(() => wrap.remove(), 740);
 }
 
 function rgFinish(){

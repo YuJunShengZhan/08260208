@@ -6511,7 +6511,7 @@ function cpblHistoryPredictions(items, selectedDate){
   const rows = Array.from(byGame.values()).map(game=>{
     const picks = CPBLG_HISTORY_PLAYERS.map(player=>{
       const pick = game.picks.find(item=>item.player===player);
-      const isCorrect = !!pick?.pickTeam && pick.pickTeam===pick.winner;
+      const isCorrect = !!pick?.pickTeam && cpblNormalizeTeam(pick.pickTeam)===cpblNormalizeTeam(pick.winner);
       const result = !pick ? '未預測' : `${pick.pickTeam || '未預測'}${pick.winner==='和局'?'（和局）':isCorrect?'（猜對）':'（猜錯）'}`;
       return `<span class="cpblg-history-prediction-player"><strong>${cpblEscape(player)}</strong>　${cpblEscape(result)}</span>`;
     }).join('');
@@ -6533,7 +6533,7 @@ function cpblRecountPlayerStats(){
     if(!row.pickTeam || !row.winner || row.winner === '和局') return;
     stats[row.player] = stats[row.player] || {correct:0,total:0};
     stats[row.player].total += 1;
-    if(row.pickTeam===row.winner) stats[row.player].correct += 1;
+    if(cpblNormalizeTeam(row.pickTeam)===cpblNormalizeTeam(row.winner)) stats[row.player].correct += 1;
   });
   cpblgData.players = stats;
   return stats;
@@ -6568,12 +6568,12 @@ function cpblRenderGames(){
   }
   wrap.innerHTML = cpblgGames.map(game=>{
     const locked=cpblIsLocked(game);
-    const pick=cpblgPlayer ? cpblgData.picks?.[game.id]?.[cpblgPlayer] : null;
+    const picksForGame = cpblgData.picks?.[game.id] || {};
+    const pick=cpblgPlayer ? picksForGame[cpblgPlayer] : null;
     const winner=cpblWinner(game);
     const resultNote = winner && pick?.checked ? (winner==='和局' ? '本場和局，不列入勝率' : (pick.correct ? `<span class="cpblg-ok">猜對了！</span>` : `<span class="cpblg-bad">猜錯了，勝隊是 ${cpblEscape(winner)}</span>`)) : '';
     const score = game.awayScore!=null && game.homeScore!=null ? `<div class="cpblg-score">${game.awayScore} : ${game.homeScore}</div>` : `<div class="cpblg-vs">VS</div>`;
     const noteBits=[];
-    const picksForGame = cpblgData.picks?.[game.id] || {};
     CPBLG_HISTORY_PLAYERS.forEach(name=>{
       const playerPick = picksForGame[name];
       if(playerPick?.team) noteBits.push(`${name} 已選 ${cpblEscape(playerPick.team)}`);
@@ -6582,9 +6582,12 @@ function cpblRenderGames(){
     if(locked && !winner) noteBits.push('這場已經進行中或結束，暫時不能再猜。');
     if(resultNote) noteBits.push(resultNote);
     const btn=(team)=>{
-      const chosen=pick?.team===team;
+      const normalizedTeam = cpblNormalizeTeam(team);
+      const chosenByCurrent = cpblNormalizeTeam(pick?.team)===normalizedTeam;
+      const chosenByAnyone = CPBLG_HISTORY_PLAYERS.some(name=>cpblNormalizeTeam(picksForGame[name]?.team)===normalizedTeam);
+      const chosen = cpblgPlayer ? chosenByCurrent : chosenByAnyone;
       let cls='cpblg-btn cpblg-pick'+(chosen?' chosen':'');
-      if(pick?.checked && chosen) cls += pick.correct ? ' correct' : ' wrong';
+      if(winner && chosen) cls += normalizedTeam===cpblNormalizeTeam(winner) ? ' correct' : ' wrong';
       return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">${cpblTeamInline(team)}</button>`;
     };
     const metaLine = cpblGameMetaLine(game);
@@ -6671,7 +6674,7 @@ function cpblResolveFinishedGames(push=true){
     CPBLG_HISTORY_PLAYERS.forEach(name=>{
       const p=gp[name];
       if(!p) return;
-      const correct = winner==='和局' ? null : p.team===winner;
+      const correct = winner==='和局' ? null : cpblNormalizeTeam(p.team)===cpblNormalizeTeam(winner);
       if(!p.checked || p.correct!==correct){
         p.checked=true;
         p.correct=correct;

@@ -10300,15 +10300,22 @@ function rgEnterScreen(){
 
 function rgPauseIfHidden(){
   document.body.classList.remove('rg-mode');
-  if(!rgInitDone || !rgRunning) return;
+  if(!rgInitDone) return;
+  const hasActiveAudio = !!(rgAudio && !rgAudio.paused);
+  if(!rgRunning && !rgStarting && !hasActiveAudio) return;
   rgRunning = false;
   rgStarting = false;
   cancelAnimationFrame(rgRaf);
   rgRaf = 0;
-  rgAudio.pause();
+  if(rgAudio) rgAudio.pause();
   rgSetOverlay('先休息一下', '你離開了節奏畫面，回來後按開始就能重新挑戰。', '繼續');
   rgSetStateLine('節奏挑戰已暫停。');
 }
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden) rgPauseIfHidden();
+});
+window.addEventListener('pagehide',()=>rgPauseIfHidden());
 
 function rgPauseForExternalPlay(){
   if(!rgInitDone || (!rgRunning && (rgAudio?.paused ?? true))) return;

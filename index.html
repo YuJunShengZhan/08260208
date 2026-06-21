@@ -5393,7 +5393,11 @@ function cpblEscape(s){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','
 function cpblNormalizeTeam(s){
   const raw=String(s||'').replace(/\s+/g,' ').trim();
   if(!raw || /二軍/.test(raw)) return '';
-  for(const [k,v] of Object.entries(CPBLG_TEAM_ALIASES)) if(raw.includes(k)) return v;
+  const normalizedRaw=raw.replace(/[\s\-‐‑–—_]+/g,'').toLowerCase();
+  for(const [k,v] of Object.entries(CPBLG_TEAM_ALIASES)){
+    const normalizedKey=String(k).replace(/[\s\-‐‑–—_]+/g,'').toLowerCase();
+    if(normalizedRaw.includes(normalizedKey)) return v;
+  }
   return '';
 }
 function cpblNormalizeTime(t){

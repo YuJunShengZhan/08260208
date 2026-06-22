@@ -118,27 +118,19 @@ function sdApplyDifference(ctx,difference,index){
     ctx.clip();
     ctx.drawImage(sdBaseCanvas,sourceX,sourceY,size,size,x-radius,y-radius,radius*2,radius*2);
   }else if(mode===1){
-    const colors=['#ff5f86','#ffd34f','#65cfff','#8ad66f'];
-    ctx.globalAlpha=SD_LEVELS[sdDifficulty].opacity;
-    ctx.fillStyle=colors[index%colors.length];
     ctx.beginPath();
-    ctx.arc(x,y,radius*.72,0,Math.PI*2);
-    ctx.fill();
-    ctx.globalAlpha=.5;
-    ctx.strokeStyle='#fff';
-    ctx.lineWidth=Math.max(2,radius*.12);
-    ctx.stroke();
+    ctx.arc(x,y,radius,0,Math.PI*2);
+    ctx.clip();
+    ctx.filter=`hue-rotate(${index%2?18:-18}deg) saturate(${sdDifficulty==='hard'?1.12:1.28}) brightness(${seed>.5?1.1:.9})`;
+    ctx.drawImage(sdBaseCanvas,0,0);
   }else{
-    ctx.globalAlpha=SD_LEVELS[sdDifficulty].opacity;
-    ctx.font=`bold ${Math.max(18,radius*1.45)}px Arial`;
-    ctx.textAlign='center';
-    ctx.textBaseline='middle';
-    ctx.fillStyle=index%2?'#fff0f5':'#ffe45c';
-    ctx.strokeStyle='rgba(70,20,35,.65)';
-    ctx.lineWidth=3;
-    const symbol=index%2?'♥':'★';
-    ctx.strokeText(symbol,x,y);
-    ctx.fillText(symbol,x,y);
+    const size=radius*1.8;
+    const shift=Math.max(5,radius*(sdDifficulty==='hard'?.24:.38));
+    ctx.beginPath();
+    ctx.ellipse(x,y,radius,radius*.78,0,0,Math.PI*2);
+    ctx.clip();
+    ctx.globalAlpha=.96;
+    ctx.drawImage(sdBaseCanvas,x-size/2+shift,y-size/2,size,size,x-size/2,y-size/2,size,size);
   }
   ctx.restore();
 }

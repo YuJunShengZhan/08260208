@@ -138,6 +138,7 @@ function parseSchedule(raw, ymd) {
         status,
         awayScore,
         homeScore,
+        started: status === '保留' || (awayScore !== null && homeScore !== null),
         source: 'Vercel 官方賽程 API'
       });
     }

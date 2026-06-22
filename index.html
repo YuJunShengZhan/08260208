@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>林聖展 ♡ 蘇予君</title>
 <link rel="stylesheet" href="crossy-road.css">
+<link rel="stylesheet" href="spot-difference.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
 
@@ -3058,6 +3059,24 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 [data-theme="dark"] .gsg-rank-row{background:#3a1f28}
 @media(max-width:520px){.gsg-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.gsg-controls,.gsg-options{grid-template-columns:1fr}}
 
+/* 節奏遊戲：加長舞台、放大音符與命中特效 */
+#gs-4 .rg-stage{width:min(100%,460px);height:clamp(500px,68dvh,650px)}
+#gs-4 .rg-note{height:clamp(46px,11vw,60px);min-width:0;border-radius:999px;box-shadow:0 14px 25px rgba(10,10,10,.34),inset 0 2px 0 rgba(255,255,255,.36),inset 0 -5px 0 rgba(0,0,0,.28)}
+#gs-4 .rg-pad{position:relative;overflow:hidden;isolation:isolate}
+#gs-4 .rg-pad::after{content:'';position:absolute;left:50%;top:50%;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.76);opacity:0;transform:translate(-50%,-50%) scale(.2);pointer-events:none}
+#gs-4 .rg-pad.flash::after{animation:rgPadRipple .42s ease-out}
+#gs-4 .rg-effects{position:absolute;inset:12px 12px 66px;z-index:3;pointer-events:none;overflow:hidden}
+#gs-4 .rg-hit-burst{position:absolute;bottom:7px;width:12px;height:12px;transform:translateX(-50%);pointer-events:none}
+#gs-4 .rg-hit-burst::before{content:'';position:absolute;inset:-24px;border:4px solid rgba(255,255,255,.9);border-radius:50%;animation:rgHitRing .55s ease-out forwards}
+#gs-4 .rg-hit-burst span{position:absolute;left:50%;top:50%;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 10px currentColor;animation:rgHitParticle .62s ease-out forwards;transform:rotate(calc(var(--i)*45deg)) translateY(-8px)}
+#gs-4 .rg-hit-burst.perfect{color:#ffe45c}#gs-4 .rg-hit-burst.great{color:#77e2ff}#gs-4 .rg-hit-burst.good{color:#8bf0aa}
+#gs-4 .rg-stage.rg-stage-hit{animation:rgStageHit .2s ease-out}
+@keyframes rgPadRipple{0%{opacity:.9;transform:translate(-50%,-50%) scale(.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(8)}}
+@keyframes rgHitRing{0%{opacity:1;transform:scale(.25)}100%{opacity:0;transform:scale(1.8)}}
+@keyframes rgHitParticle{0%{opacity:1;transform:rotate(calc(var(--i)*45deg)) translateY(-8px) scale(1)}100%{opacity:0;transform:rotate(calc(var(--i)*45deg)) translateY(-68px) scale(.15)}}
+@keyframes rgStageHit{0%,100%{filter:none}50%{filter:brightness(1.12) saturate(1.18)}}
+@media(max-width:520px){#gs-4 .rg-stage{width:min(100%,390px);height:clamp(420px,61dvh,560px)}#gs-4 .rg-note{height:clamp(38px,10vw,50px);border-radius:999px;box-shadow:0 10px 18px rgba(10,10,10,.3),inset 0 1.5px 0 rgba(255,255,255,.32),inset 0 -4px 0 rgba(0,0,0,.25)}#gs-4 .rg-note.hold{--head-half:20px;min-height:54px}}
+@media(max-height:680px) and (max-width:520px){#gs-4 .rg-stage{height:clamp(360px,56dvh,460px)}}
 </style>
 </head>
 <body>
@@ -3362,6 +3381,7 @@ onclick="hideSpecialForToday()">
       <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
       <button type="button" class="game-menu-btn" id="game-menu-gsg" onclick="openGame(6,this)">🎤 猜歌遊戲</button>
       <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(7,this)">🐥 天天過馬路</button>
+      <button type="button" class="game-menu-btn" id="game-menu-spot" onclick="openGame(8,this)">🔎 大家來找碴</button>
     </div>
   </div>
 
@@ -3649,6 +3669,7 @@ onclick="hideSpecialForToday()">
           <div class="rg-lane"></div>
         </div>
         <div class="rg-notes" id="rg-notes"></div>
+        <div class="rg-effects" id="rg-effects"></div>
         <div class="rg-judgement" id="rg-judgement">準備好了就開始</div>
         <div class="rg-overlay" id="rg-overlay">
           <div class="rg-overlay-card">
@@ -3794,6 +3815,46 @@ onclick="hideSpecialForToday()">
         </div>
       </div>
       <div class="xrg-tip">點一下往前一格，滑動可控制方向；電腦可使用方向鍵／WASD。</div>
+    </div>
+  </div>
+</div>
+
+<!-- 大家來找碴 -->
+<div class="game-section" id="gs-8">
+  <div class="card sd-card">
+    <div class="card-title">🔎 大家來找碴</div>
+    <div class="sd-shell">
+      <div class="sd-hero">
+        <div class="sd-title">我們的回憶找碴</div>
+        <div class="sd-sub">左邊是原圖，右邊是加工後的照片。找出所有不一樣的地方！</div>
+      </div>
+      <div class="sd-toolbar">
+        <div class="sd-difficulty" role="group" aria-label="選擇找碴難度">
+          <button type="button" class="sd-level active" data-level="easy" onclick="sdSetDifficulty('easy',this)">簡單</button>
+          <button type="button" class="sd-level" data-level="medium" onclick="sdSetDifficulty('medium',this)">中等</button>
+          <button type="button" class="sd-level" data-level="hard" onclick="sdSetDifficulty('hard',this)">困難</button>
+        </div>
+        <button type="button" class="sd-next" onclick="sdStartRound(true)">換一張照片</button>
+      </div>
+      <div class="sd-status-row">
+        <span id="sd-progress">找到 0 / 3</span>
+        <span id="sd-time">00:00</span>
+      </div>
+      <div class="sd-board-wrap" id="sd-board-wrap">
+        <div class="sd-photo-panel">
+          <div class="sd-photo-label">原圖</div>
+          <canvas id="sd-original" class="sd-canvas" aria-label="找碴原圖"></canvas>
+        </div>
+        <div class="sd-photo-panel">
+          <div class="sd-photo-label edited">找碴圖</div>
+          <canvas id="sd-edited" class="sd-canvas" aria-label="加工後的找碴圖片"></canvas>
+        </div>
+      </div>
+      <div class="sd-message" id="sd-message">正在準備相簿照片...</div>
+      <div class="sd-actions">
+        <button type="button" class="sd-hint" onclick="sdShowHint()">💡 提示</button>
+        <button type="button" class="sd-restart" onclick="sdStartRound(false)">重新開始</button>
+      </div>
     </div>
   </div>
 </div>
@@ -4449,6 +4510,7 @@ function showPage(id,btn){
 
   if(!isGamePage && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(!isGamePage && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
+  if(!isGamePage && typeof sdPauseIfHidden==='function') sdPauseIfHidden();
   if(!isGamePage){
     document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   }
@@ -4495,6 +4557,7 @@ function albumInitFirebase(){
   const {db,ref,onValue}=window._fb;
   onValue(ref(db,'albumData'),snap=>{
     albumFirebaseData=snap.val()||{};
+    window.dispatchEvent(new CustomEvent('albumDataReady'));
     albumSetBadge('☁️ 已同步');
     if(typeof rgSetCover === 'function' && rgInitDone) rgSetCover();
     albumRenderCal();
@@ -5457,7 +5520,7 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ── Game tabs ──
-const GAME_SECTION_IDS = ['gs-0','gs-1','gs-2','gs-3','gs-4','gs-5','gs-6','gs-7','gs-5-history'];
+const GAME_SECTION_IDS = ['gs-0','gs-1','gs-2','gs-3','gs-4','gs-5','gs-6','gs-7','gs-8','gs-5-history'];
 
 function showGameHub(){
   document.getElementById('game-hub')?.classList.remove('hidden');
@@ -5469,6 +5532,7 @@ function showGameHub(){
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
+  if(typeof sdPauseIfHidden==='function') sdPauseIfHidden();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -5499,11 +5563,13 @@ function openGame(i,btn){
   if(i!==4 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(i!==6 && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(i!==7 && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
+  if(i!==8 && typeof sdPauseIfHidden==='function') sdPauseIfHidden();
   if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
   if(i===4 && typeof rgEnterScreen==='function') rgEnterScreen();
   if(i===5 && typeof cpblEnterScreen==='function') cpblEnterScreen();
   if(i===6 && typeof gsgEnterScreen==='function') gsgEnterScreen();
   if(i===7 && typeof xrgEnterScreen==='function') xrgEnterScreen();
+  if(i===8 && typeof sdEnterScreen==='function') sdEnterScreen();
 
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
@@ -10908,6 +10974,8 @@ function rgApplyJudge(type, note, fromHit = false){
     rgShowJudge('Miss');
   }
 
+  if(fromHit && type!=='miss') rgSpawnHitEffect(note.lane,type);
+
   if(fromHit && navigator.vibrate){
     try{ navigator.vibrate(type === 'perfect' ? 10 : type === 'miss' ? 22 : 14); }catch(_err){}
   }
@@ -10924,6 +10992,20 @@ function rgShowJudge(text){
   rgJudgeTimer = setTimeout(() => {
     if(el.textContent === text) el.textContent = rgRunning ? '跟著節奏點擊' : '準備好了就開始';
   }, 620);
+}
+
+function rgSpawnHitEffect(lane,type='good'){
+  const layer=document.getElementById('rg-effects');
+  const stage=document.getElementById('rg-stage');
+  if(!layer) return;
+  const burst=document.createElement('div');
+  burst.className=`rg-hit-burst ${type}`;
+  burst.style.left=`${(Number(lane)+.5)*25}%`;
+  burst.innerHTML=Array.from({length:8},(_,index)=>`<span style="--i:${index}"></span>`).join('');
+  layer.appendChild(burst);
+  stage?.classList.remove('rg-stage-hit');
+  if(stage){void stage.offsetWidth;stage.classList.add('rg-stage-hit');}
+  setTimeout(()=>{burst.remove();stage?.classList.remove('rg-stage-hit');},680);
 }
 
 function rgFlashPad(lane){
@@ -11340,6 +11422,7 @@ window.addEventListener('firebaseReady',()=>{
 });
 </script>
 <script src="crossy-road.js"></script>
+<script src="spot-difference.js"></script>
 <!-- 拖曳幽靈 -->
 <div id="bb-drag-ghost"></div>
 

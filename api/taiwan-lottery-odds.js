@@ -66,14 +66,20 @@ function extractOddsNear(text, teamA, teamB) {
   const idxA = text.indexOf(teamA);
   const idxB = text.indexOf(teamB);
   if (idxA < 0 || idxB < 0) return null;
-  const start = Math.max(0, Math.min(idxA, idxB) - 260);
-  const end = Math.min(text.length, Math.max(idxA, idxB) + 520);
+  const minTeamIndex = Math.min(idxA, idxB);
+  const maxTeamIndex = Math.max(idxA, idxB);
+  const labelIndex = text.lastIndexOf('不讓分', minTeamIndex);
+  if (labelIndex < 0 || minTeamIndex - labelIndex > 900) return null;
+  const start = Math.max(0, labelIndex - 80);
+  const end = Math.min(text.length, maxTeamIndex + 520);
   const chunk = text.slice(start, end);
+  if (!chunk.includes('不讓分')) return null;
   const odds = Array.from(chunk.matchAll(/(?<!\d)([1-9]\d?\.\d{2})(?!\d)/g)).map((m) => m[1]);
   if (odds.length < 2) return null;
   return {
     away: teamA,
     home: teamB,
+    market: '不讓分',
     awayOdds: odds[0],
     homeOdds: odds[1],
     raw: chunk.slice(0, 240)

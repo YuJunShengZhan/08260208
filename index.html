@@ -6579,6 +6579,7 @@ function cpblBaseData(){
       '聖展':{coins:1000,owned:{},inventory:[],equipped:'',initialized:true,checkin:{lastDate:'',streak:0,chestReady:false,chestOpenedCycle:0}},
       '予君':{coins:1000,owned:{},inventory:[],equipped:'',initialized:true,checkin:{lastDate:'',streak:0,chestReady:false,chestOpenedCycle:0}}
     },
+    coinRulesVersion:0,
     updatedAt:0
   };
 }
@@ -6639,6 +6640,7 @@ function cpblMergeData(base, incoming){
   });
   data.history = Array.from(historyById.values());
   data.postponed = Object.assign({},data.postponed||{},incoming.postponed||{});
+  data.coinRulesVersion = Number(incoming.coinRulesVersion || data.coinRulesVersion || 0);
   data.economy = data.economy || {};
   CPBLG_HISTORY_PLAYERS.forEach(name=>{
     const current = data.economy[name] || {};
@@ -6658,6 +6660,27 @@ function cpblMergeData(base, incoming){
     data.economy[name].checkin.streak = Number(data.economy[name].checkin.streak)||0;
     data.economy[name].checkin.chestOpenedCycle = Number(data.economy[name].checkin.chestOpenedCycle)||0;
   });
+  if(data.coinRulesVersion < 2){
+    CPBLG_HISTORY_PLAYERS.forEach(name=>{
+      const eco = data.economy[name];
+      let removeLegacyBonus = 0;
+      Object.values(data.picks||{}).forEach(gamePicks=>{
+        const pick = gamePicks?.[name];
+        if(!pick || !pick.coinSettled) return;
+        const stake = Math.max(0, Number(pick.stake)||0);
+        const award = Math.max(0, Number(pick.coinAward)||0);
+        if(stake===0 && award>0){
+          removeLegacyBonus += award;
+          pick.coinAward = 0;
+          pick.coinAwardAdjusted = true;
+        }
+      });
+      if(eco && removeLegacyBonus){
+        eco.coins = Math.max(0, Number(eco.coins||0) - removeLegacyBonus);
+      }
+    });
+    data.coinRulesVersion = 2;
+  }
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
   return data;
 }
@@ -6694,9 +6717,11 @@ function cpblInitFirebase(){
   onValue(ref(db,'cpblGuess'), snap=>{
     const remote = snap.val();
     if(remote){
+      const needsCoinRulePush = Number(remote.coinRulesVersion||0) < 2;
       cpblgData = cpblMergeData(cpblMergeData(cpblBaseData(), remote), cpblgData);
       localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
       cpblResolveFinishedGames(false);
+      if(needsCoinRulePush) set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
       cpblRenderStats();
       cpblRenderGames();
       cpblRenderHistory();
@@ -6918,6 +6943,11 @@ function cpblPick(gameId, team){
   if(old?.checked){alert('這場已經結算，不能修改');return;}
   const stakeEl=document.getElementById(`cpblg-stake-${gameId}`);
   const stake=Math.max(0, Number(stakeEl?.value)||0);
+  const pickOdds = stake ? cpblMoneylineOddForTeam(game, team) : 0;
+  if(stake && (!Number.isFinite(pickOdds) || pickOdds<=0)){
+    alert('目前沒有抓到這隊的台灣運彩不讓分賠率，可以先把下注金額改成 0，只做預測。');
+    return;
+  }
   const oldStake=Number(old?.stake)||0;
   const diff=stake-oldStake;
   const eco=cpblEnsureEconomy(cpblgPlayer);
@@ -6926,7 +6956,7 @@ function cpblPick(gameId, team){
     return;
   }
   eco.coins -= diff;
-  cpblgData.picks[gameId][cpblgPlayer] = {team, stake, checked:false, correct:null, pickedAt:Date.now()};
+  cpblgData.picks[gameId][cpblgPlayer] = {team, stake, odds:pickOdds, oddsMarket:stake?'不讓分':'', checked:false, correct:null, pickedAt:Date.now()};
   cpblSaveData(true);
   cpblRenderEconomy();
 }
@@ -7586,12 +7616,15 @@ function cpblResolveFinishedGames(push=true){
       }
       if(!p.coinSettled){
         const stake = Math.max(0, Number(p.stake)||0);
+        const odds = Math.max(0, Number(p.odds)||Number(cpblMoneylineOddForTeam(game, p.team))||0);
         const award = stake
-          ? (correct === true ? stake * 2 : (correct === null ? stake : 0))
-          : (correct === true ? 30 : (correct === false ? 8 : 5));
+          ? (correct === true ? Math.floor(stake * (odds || 1)) : (correct === null ? stake : 0))
+          : 0;
         cpblAwardCoins(name, award);
         p.coinSettled = true;
         p.coinAward = award;
+        p.settleOdds = stake ? odds : 0;
+        p.oddsMarket = stake ? '不讓分' : '';
         changed = true;
       }
       if(cpblUpsertHistoryRecord(game, name, p)) changed=true;
@@ -11636,18 +11669,45 @@ function cpblUseBackpackTicket(uid){
 function cpblFindOddsForGame(game){
   const matches = Array.isArray(cpblgOddsData?.matches) ? cpblgOddsData.matches : [];
   return matches.find(match=>{
+    const market = String(match.market || match.playType || match.type || '不讓分');
+    if(/讓分/.test(market) && !/不讓分/.test(market)) return false;
     const a=cpblNormalizeTeam(match.away || match.teamA || '');
     const h=cpblNormalizeTeam(match.home || match.teamB || '');
     const ga=cpblNormalizeTeam(game.away), gh=cpblNormalizeTeam(game.home);
     return (a===ga && h===gh) || (a===gh && h===ga);
   });
 }
+function cpblMoneylineOdds(game){
+  const match=cpblFindOddsForGame(game);
+  if(!match) return null;
+  const matchAway=cpblNormalizeTeam(match.away || match.teamA || '');
+  const matchHome=cpblNormalizeTeam(match.home || match.teamB || '');
+  const gameAway=cpblNormalizeTeam(game.away);
+  const gameHome=cpblNormalizeTeam(game.home);
+  const rawAway=match.awayOdds || match.teamAOdds || '';
+  const rawHome=match.homeOdds || match.teamBOdds || '';
+  if(matchAway===gameAway && matchHome===gameHome){
+    return {away:Number(rawAway),home:Number(rawHome),awayText:String(rawAway||'?'),homeText:String(rawHome||'?'),source:match.source||cpblgOddsData?.source||'台灣運彩官網'};
+  }
+  if(matchAway===gameHome && matchHome===gameAway){
+    return {away:Number(rawHome),home:Number(rawAway),awayText:String(rawHome||'?'),homeText:String(rawAway||'?'),source:match.source||cpblgOddsData?.source||'台灣運彩官網'};
+  }
+  return null;
+}
+function cpblMoneylineOddForTeam(game, team){
+  const odds=cpblMoneylineOdds(game);
+  if(!odds) return 0;
+  const normalizedTeam=cpblNormalizeTeam(team);
+  if(normalizedTeam===cpblNormalizeTeam(game.away)) return Number(odds.away)||0;
+  if(normalizedTeam===cpblNormalizeTeam(game.home)) return Number(odds.home)||0;
+  return 0;
+}
 function cpblOddsHtml(game){
-  const odds=cpblFindOddsForGame(game);
+  const odds=cpblMoneylineOdds(game);
   const updated = cpblgOddsData?.updatedAt ? new Date(cpblgOddsData.updatedAt).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}) : '';
   if(odds){
-    const awayOdd = odds.awayOdds || odds.teamAOdds || '?';
-    const homeOdd = odds.homeOdds || odds.teamBOdds || '?';
+    const awayOdd = odds.awayText || '?';
+    const homeOdd = odds.homeText || '?';
     return `<div class="cpblg-odds"><div class="cpblg-odds-head"><div class="cpblg-odds-title">\u53f0\u7063\u904b\u5f69\u4e0d\u8b93\u5206\u8ce0\u7387</div><div class="cpblg-odds-source">${updated ? `\u66f4\u65b0 ${updated}` : '\u5b98\u7db2'}</div></div><div class="cpblg-odds-row"><div class="cpblg-odd-pill"><span>${cpblEscape(game.away)}</span><span class="cpblg-odd-value">${cpblEscape(awayOdd)}</span></div><div class="cpblg-odd-pill"><span>${cpblEscape(game.home)}</span><span class="cpblg-odd-value">${cpblEscape(homeOdd)}</span></div></div></div>`;
   }
   const msg = cpblgOddsLoading ? '\u6b63\u5728\u6293\u53f0\u7063\u904b\u5f69\u5b98\u7db2\u8ce0\u7387...' : (cpblgOddsData?.error || '\u53f0\u7063\u904b\u5f69\u5b98\u7db2\u76ee\u524d\u6c92\u6709\u6293\u5230\u9019\u5834\u8ce0\u7387\uff0c\u53ef\u80fd\u5c1a\u672a\u958b\u76e4\u6216\u5b98\u7db2\u963b\u64cb\u81ea\u52d5\u8b80\u53d6\u3002');

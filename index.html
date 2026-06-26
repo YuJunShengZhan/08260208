@@ -3372,13 +3372,14 @@ onclick="hideSpecialForToday()">
 <div id="page-game" class="page">
   <div id="game-hub" class="game-hub">
     <div class="game-menu-grid">
-      <button type="button" class="game-menu-btn" onclick="openGame(0,this)">💣 踩地雷</button>
-      <button type="button" class="game-menu-btn" onclick="openGame(1,this)">🤝 默契挑戰</button>
-      <button type="button" class="game-menu-btn" onclick="openGame(2,this)">🟦 方塊遊戲</button>
-      <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
-      <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
-      <button type="button" class="game-menu-btn" id="game-menu-gsg" onclick="openGame(6,this)">🎤 猜歌遊戲</button>
-      <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(7,this)">🐥 天天過馬路</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(0,this)">💣 踩地雷</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(1,this)">🤝 默契挑戰</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(2,this)">🟦 方塊遊戲</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🧩 回憶拼圖</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
+        <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
+        <button type="button" class="game-menu-btn" id="game-menu-gsg" onclick="openGame(6,this)">🎤 猜歌遊戲</button>
+        <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(7,this)">🐥 天天過馬路</button>
     </div>
   </div>
 
@@ -3580,6 +3581,55 @@ onclick="hideSpecialForToday()">
 </div>
 
 <!-- 回憶拼圖 -->
+<div class="game-section" id="gs-3">
+  <div class="card">
+    <div class="card-title">🧩 回憶拼圖</div>
+    <div class="pz-hero">
+      <div class="pz-toolbar">
+        <button class="pz-btn" onclick="pzRandomPhoto()">🎲 隨機一張</button>
+        <button class="pz-btn secondary" onclick="pzOpenPicker()">🖼️ 選相簿照片</button>
+      </div>
+    </div>
+
+    <div class="pz-levels">
+      <button class="pz-level-btn active" id="pz-level-3" onclick="pzSetSize(3)">3 × 3<br><span style="font-size:11px;opacity:.75">甜甜入門</span></button>
+      <button class="pz-level-btn" id="pz-level-4" onclick="pzSetSize(4)">4 × 4<br><span style="font-size:11px;opacity:.75">認真挑戰</span></button>
+      <button class="pz-level-btn" id="pz-level-5" onclick="pzSetSize(5)">5 × 5<br><span style="font-size:11px;opacity:.75">回憶大師</span></button>
+    </div>
+
+    <div id="pz-current-info" style="font-size:12px;color:var(--text-muted);background:var(--pink-light);border-radius:14px;padding:12px;line-height:1.7;margin-top:0;margin-bottom:12px;text-align:center">
+      正在為你挑一張隨機照片...
+    </div>
+
+    <div id="pz-game" class="hidden">
+      <div class="pz-game-shell">
+        <div class="pz-stats">
+          <div class="pz-stat"><div class="pz-stat-label">時間</div><div class="pz-stat-val" id="pz-time">00:00</div></div>
+          <div class="pz-stat"><div class="pz-stat-label">步數</div><div class="pz-stat-val" id="pz-moves">0</div></div>
+          <div class="pz-stat"><div class="pz-stat-label">最佳</div><div class="pz-stat-val" id="pz-best">—</div></div>
+        </div>
+
+        <div class="pz-board-wrap">
+          <div id="pz-board" class="pz-board"></div>
+          <div id="pz-start-panel" class="pz-start-panel hidden">
+            <button class="pz-btn pz-start-btn" id="pz-center-btn" onclick="pzHandleCenterAction()">開始</button>
+          </div>
+        </div>
+
+        <div id="pz-action-row" class="pz-action-row hidden">
+          <button class="pz-btn secondary" onclick="pzStartGame()">重新開始</button>
+          <button class="pz-btn secondary" onclick="pzToggleOriginal()">👀 看原圖</button>
+        </div>
+
+        <div id="pz-original" class="pz-original">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">原圖提示</div>
+          <img id="pz-original-img" alt="拼圖原圖">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="game-section" id="gs-4">
   <div class="card">
     <div class="card-title">🎵 節奏點擊</div>
@@ -3663,7 +3713,7 @@ onclick="hideSpecialForToday()">
   </div>
 </div>
 
-<!-- 天天過馬路 -->
+<!-- 猜歌遊戲 -->
 <div class="game-section" id="gs-6">
   <div class="card">
     <div class="card-title">🎤 猜歌遊戲</div>
@@ -3784,6 +3834,31 @@ onclick="hideSpecialForToday()">
     </div>
   </div>
 </div>
+
+<div id="pz-picker-modal" class="pz-picker-modal hidden" onclick="pzClosePicker(event)">
+  <div class="pz-picker-sheet" onclick="event.stopPropagation()">
+    <div class="pz-picker-head">
+      <div>
+        <div class="pz-picker-title">挑一張回憶照片</div>
+        <div class="pz-picker-sub">點一張照片會先放到預覽，再按開始。</div>
+      </div>
+      <button type="button" class="pz-icon-btn" onclick="pzClosePicker()">✕</button>
+    </div>
+    <div class="pz-picker-count" id="pz-picker-count">0 張照片</div>
+    <div id="pz-picker" class="pz-picker"></div>
+  </div>
+</div>
+
+<div class="pz-win-bg hidden" id="pz-win-bg">
+  <div class="pz-win-box">
+    <div class="pz-win-emoji">🎉</div>
+    <div class="pz-win-title">拼圖完成！</div>
+    <div class="pz-win-sub" id="pz-win-sub">這一天是我們的回憶 💕</div>
+    <div style="display:flex;gap:8px;justify-content:center">
+      <button class="pz-btn" onclick="pzOpenMemoryFromWin()">查看回憶</button>
+      <button class="pz-btn secondary" onclick="pzCloseWin();pzRandomPhoto();">下一張回憶</button>
+    </div>
+  </div>
 
 </div>
 
@@ -4436,7 +4511,6 @@ function showPage(id,btn){
 
   if(!isGamePage && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(!isGamePage && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
-  if(!isGamePage && typeof sdPauseIfHidden==='function') sdPauseIfHidden();
   if(!isGamePage){
     document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   }
@@ -5508,7 +5582,7 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ── Game tabs ──
-const GAME_SECTION_IDS = ['gs-0','gs-1','gs-2','gs-3','gs-4','gs-5','gs-6','gs-7','gs-8','gs-5-history'];
+const GAME_SECTION_IDS = ['gs-0','gs-1','gs-2','gs-3','gs-4','gs-5','gs-6','gs-7','gs-5-history'];
 
 function showGameHub(){
   document.getElementById('game-hub')?.classList.remove('hidden');
@@ -5520,7 +5594,6 @@ function showGameHub(){
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
-  if(typeof sdPauseIfHidden==='function') sdPauseIfHidden();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -5551,12 +5624,11 @@ function openGame(i,btn){
   if(i!==4 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(i!==6 && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(i!==7 && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
-  if(i!==8 && typeof sdPauseIfHidden==='function') sdPauseIfHidden();
+  if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
   if(i===4 && typeof rgEnterScreen==='function') rgEnterScreen();
   if(i===5 && typeof cpblEnterScreen==='function') cpblEnterScreen();
   if(i===6 && typeof gsgEnterScreen==='function') gsgEnterScreen();
   if(i===7 && typeof xrgEnterScreen==='function') xrgEnterScreen();
-  if(i===8 && typeof sdEnterScreen==='function') sdEnterScreen();
 
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});

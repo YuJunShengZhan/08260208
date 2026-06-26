@@ -4021,8 +4021,10 @@ import {
   runTransaction,
   query,
   orderByKey,
+  orderByChild,
   startAt,
-  endAt
+  endAt,
+  limitToLast
 }
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import {
@@ -4063,8 +4065,10 @@ window._fb = {
   runTransaction,
   query,
   orderByKey,
+  orderByChild,
   startAt,
   endAt,
+  limitToLast,
   uploadBytes,
   getDownloadURL
 };
@@ -4216,6 +4220,7 @@ function checkLoveDaysMilestone(days){
 
 // ── 首頁給對方驚喜（Firebase同步 + 裝置獨立提醒） ──
 let surprisePhotoBase64='';
+let surprisePhotoFile=null;
 let loveSurprisesCache = {};
 let loveSurpriseTimer = null;
 
@@ -4256,11 +4261,12 @@ function escapeHtml(str=''){
 
 async function previewSurprisePhoto(e){
   const file=e.target.files[0];
+  surprisePhotoFile=null;
+  surprisePhotoBase64='';
   if(!file) return;
   if(!file.type || !file.type.startsWith('image/')){
     alert('只能上傳照片喔');
     e.target.value='';
-    surprisePhotoBase64='';
     return;
   }
 
@@ -4268,19 +4274,30 @@ async function previewSurprisePhoto(e){
   img.style.display='none';
 
   try{
-    surprisePhotoBase64 = await compressToBase64(file, 1280, 0.82);
+    surprisePhotoFile = file;
+    img.src = URL.createObjectURL(file);
   }catch(err){
     alert('照片讀取失敗，請換一張照片試試');
     e.target.value='';
-    surprisePhotoBase64='';
+    surprisePhotoFile=null;
     return;
   }
 
-  img.src=surprisePhotoBase64;
   img.style.display='block';
 }
 
-function saveSurprise(){
+async function uploadSurprisePhotoToStorage(){
+  if(!surprisePhotoFile) return '';
+  const {storage,storageRef,uploadBytes,getDownloadURL}=window._fb;
+  if(!storage || !storageRef || !uploadBytes || !getDownloadURL) throw new Error('Firebase Storage 尚未連線');
+  const blob = await compressToBlob(surprisePhotoFile, 1280, 0.82);
+  const safeName = String(surprisePhotoFile.name || 'surprise.jpg').replace(/[^\w.-]+/g,'-').slice(-80);
+  const photoRef = storageRef(storage, `surprises/${Date.now()}-${safeName || 'surprise.jpg'}`);
+  await uploadBytes(photoRef, blob, {contentType:'image/jpeg'});
+  return await getDownloadURL(photoRef);
+}
+
+async function saveSurprise(){
   const text=document.getElementById('surprise-text').value.trim();
   const time=document.getElementById('surprise-time').value;
 
@@ -4295,24 +4312,30 @@ function saveSurprise(){
   }
 
   const {db,ref,push}=window._fb;
-  push(ref(db,'loveSurprises'),{
-    text,
-    time,
-    photo:surprisePhotoBase64,
-    createdAt:Date.now(),
-    sent:false
-  }).then(()=>{
+  try{
+    const photoUrl = await uploadSurprisePhotoToStorage();
+    await push(ref(db,'loveSurprises'),{
+      text,
+      time,
+      photo:photoUrl || surprisePhotoBase64 || '',
+      createdAt:Date.now(),
+      sent:false
+    });
     document.getElementById('surprise-text').value='';
     document.getElementById('surprise-time').value='';
     updateSurpriseTimeLabel();
     document.getElementById('surprise-photo').value='';
-    document.getElementById('surprise-preview').removeAttribute('src');
-    document.getElementById('surprise-preview').style.display='none';
+    const preview=document.getElementById('surprise-preview');
+    if(preview.src && preview.src.startsWith('blob:')) URL.revokeObjectURL(preview.src);
+    preview.removeAttribute('src');
+    preview.style.display='none';
+    surprisePhotoFile=null;
     surprisePhotoBase64='';
     alert('驚喜已發送，時間到首頁會出現 💕');
-  }).catch(()=>{
-    alert('發送失敗，照片可能太大，請換小一點的照片再試一次');
-  });
+  }catch(err){
+    console.error('發送驚喜失敗', err);
+    alert('發送失敗，請確認 Firebase Storage 規則允許上傳照片');
+  }
 }
 
 function getLoveSurpriseSeen(){
@@ -4442,8 +4465,9 @@ function scheduleLoveSurpriseCheck(){
 
 function checkLoveSurprise(){
   if(!window._fb) return;
-  const {db,ref,onValue}=window._fb;
-  onValue(ref(db,'loveSurprises'),snap=>{
+  const {db,ref,onValue,query,orderByChild,limitToLast}=window._fb;
+  const surprisesQuery = query(ref(db,'loveSurprises'), orderByChild('createdAt'), limitToLast(30));
+  onValue(surprisesQuery,snap=>{
     loveSurprisesCache = snap.val() || {};
     renderLoveSurpriseHistory();
     renderDueLoveSurprise();
@@ -4939,8 +4963,9 @@ function deleteMsg(key){
   remove(ref(db,`messages/${key}`));
 }
 function initMessages(){
-  const {db,ref,onValue}=window._fb;
-  onValue(ref(db,'messages'),snap=>{
+  const {db,ref,onValue,query,orderByKey,limitToLast}=window._fb;
+  const latestMessagesQuery = query(ref(db,'messages'), orderByKey(), limitToLast(50));
+  onValue(latestMessagesQuery,snap=>{
     const val=snap.val();
     const msgs=val?Object.entries(val).map(([k,v])=>({...v,_key:k})):[];
     renderMessages(msgs);
@@ -5852,8 +5877,9 @@ function gsgSaveResult(){
 function gsgInitLeaderboard(){
   if(gsgLeaderboardListening || !window._fb) return;
   gsgLeaderboardListening = true;
-  const {db,ref,onValue}=window._fb;
-  onValue(ref(db,'guessSongLeaderboard'),snapshot=>{
+  const {db,ref,onValue,query,orderByChild,limitToLast}=window._fb;
+  const boardQuery = query(ref(db,'guessSongLeaderboard'), orderByChild('score'), limitToLast(50));
+  onValue(boardQuery,snapshot=>{
     const value = snapshot.val() || {};
     gsgLeaderboard = Object.entries(value).map(([id,item])=>({id,...item})).filter(item=>item.player && Number(item.timeMs)>0);
     gsgRenderLeaderboard();

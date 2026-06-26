@@ -4018,9 +4018,20 @@ import {
   remove,
   update,
   onDisconnect,
-  runTransaction
+  runTransaction,
+  query,
+  orderByKey,
+  startAt,
+  endAt
 }
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL
+}
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCnb0mN8CFMTMPRp-2Z-7LMU2ekw6njybc",
@@ -4035,10 +4046,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const storage = getStorage(app);
 
 window._fb = {
   db,
+  storage,
   ref,
+  storageRef,
   set,
   onValue,
   get,
@@ -4046,7 +4060,13 @@ window._fb = {
   remove,
   update,
   onDisconnect,
-  runTransaction
+  runTransaction,
+  query,
+  orderByKey,
+  startAt,
+  endAt,
+  uploadBytes,
+  getDownloadURL
 };
 window.dispatchEvent(new Event('firebaseReady'));
 </script>
@@ -4546,16 +4566,35 @@ let albumMonth=new Date().getMonth();
 let currentDayKey='';
 let modalEditMode=false;
 let albumFirebaseData={};
+let albumLoadedMonths=new Set();
 
 function albumSetBadge(text){
   const badge=document.getElementById('album-sync-badge');
   if(badge) badge.textContent=text;
 }
 
-function albumInitFirebase(){
-  const {db,ref,onValue}=window._fb;
-  onValue(ref(db,'albumData'),snap=>{
-    albumFirebaseData=snap.val()||{};
+function albumMonthId(y,m){
+  return `${y}-${String(m+1).padStart(2,'0')}`;
+}
+function albumLoadMonth(y=albumYear,m=albumMonth){
+  if(!window._fb) return;
+  const monthId=albumMonthId(y,m);
+  if(albumLoadedMonths.has(monthId)) return;
+  albumLoadedMonths.add(monthId);
+  const {db,ref,onValue,query,orderByKey,startAt,endAt}=window._fb;
+  const monthQuery=query(
+    ref(db,'albumData'),
+    orderByKey(),
+    startAt(`${monthId}-01`),
+    endAt(`${monthId}-31\uf8ff`)
+  );
+  albumSetBadge('☁️ 同步中...');
+  onValue(monthQuery,snap=>{
+    const monthData=snap.val()||{};
+    Object.keys(albumFirebaseData).forEach(key=>{
+      if(key.startsWith(monthId)) delete albumFirebaseData[key];
+    });
+    Object.assign(albumFirebaseData,monthData);
     window.dispatchEvent(new CustomEvent('albumDataReady'));
     albumSetBadge('☁️ 已同步');
     if(typeof rgSetCover === 'function' && rgInitDone) rgSetCover();
@@ -4567,6 +4606,9 @@ function albumInitFirebase(){
       if(!modalEditMode) applyModalMode(dayData);
     }
   });
+}
+function albumInitFirebase(){
+  albumLoadMonth(albumYear, albumMonth);
 }
 
 function albumSaveDay(key,dayData){
@@ -4582,6 +4624,7 @@ function albumSaveDay(key,dayData){
 
 function albumRenderCal(){
   const y=albumYear,m=albumMonth;
+  albumLoadMonth(y,m);
   document.getElementById('album-cal-title').textContent=`${y} 年 ${m+1} 月`;
   const firstDay=new Date(y,m,1).getDay();
   const daysInMonth=new Date(y,m+1,0).getDate();
@@ -4713,6 +4756,44 @@ function openPhotoFullscreen(img){
   overlay.appendChild(imgEl);overlay.onclick=()=>document.body.removeChild(overlay);
   document.body.appendChild(overlay);
 }
+function compressToBlob(file, maxSize=1280, quality=0.82) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      let { width, height } = img;
+      if (width > height && width > maxSize) {
+        height = Math.round(height * maxSize / width);
+        width = maxSize;
+      } else if (height >= width && height > maxSize) {
+        width = Math.round(width * maxSize / height);
+        height = maxSize;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('圖片壓縮失敗')), 'image/jpeg', quality);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error('圖片讀取失敗'));
+    };
+    img.src = objectUrl;
+  });
+}
+async function albumUploadPhotoToStorage(file, index){
+  const {storage,storageRef,uploadBytes,getDownloadURL}=window._fb;
+  if(!storage || !storageRef || !uploadBytes || !getDownloadURL) throw new Error('Firebase Storage 尚未連線');
+  const blob = await compressToBlob(file, 1280, 0.82);
+  const safeName = String(file.name || `photo-${index}.jpg`).replace(/[^\w.-]+/g,'-').slice(-80);
+  const path = `album/${currentDayKey}/${Date.now()}-${index}-${safeName || 'photo.jpg'}`;
+  const photoRef = storageRef(storage, path);
+  await uploadBytes(photoRef, blob, {contentType:'image/jpeg'});
+  return await getDownloadURL(photoRef);
+}
 async function modalUploadPhotos(e) {
   const files = Array.from(e.target.files);
   if (!files.length) return;
@@ -4728,19 +4809,19 @@ async function modalUploadPhotos(e) {
   const loadingDiv = document.createElement('div');
   loadingDiv.id = 'upload-loading';
   loadingDiv.style.cssText = 'text-align:center;padding:10px;font-size:13px;color:var(--rose);background:var(--pink-light);border-radius:10px;margin-bottom:8px;';
-  loadingDiv.textContent = `⏳ 壓縮上傳中 (0/${files.length})...`;
+  loadingDiv.textContent = `⏳ 上傳照片中 (0/${files.length})...`;
   uploadArea.insertAdjacentElement('beforebegin', loadingDiv);
 
   let uploaded = 0;
   for (const file of files) {
     try {
-      const base64 = await compressToBase64(file, 600, 0.55);
-      dayData.photos.push(base64);
+      const url = await albumUploadPhotoToStorage(file, uploaded);
+      dayData.photos.push(url);
       uploaded++;
-      loadingDiv.textContent = `⏳ 壓縮上傳中 (${uploaded}/${files.length})...`;
+      loadingDiv.textContent = `⏳ 上傳照片中 (${uploaded}/${files.length})...`;
     } catch (err) {
-      console.error('壓縮失敗', err);
-      alert('有一張照片壓縮失敗，跳過');
+      console.error('Storage 上傳失敗', err);
+      alert('有一張照片上傳失敗，請確認 Firebase Storage 規則已允許寫入');
     }
   }
 
@@ -4891,6 +4972,7 @@ function renderMemories(){
   if (!container) return;
 
   const mk = `${memoriesYear}-${String(memoriesMonth + 1).padStart(2, '0')}`;
+  albumLoadMonth(memoriesYear, memoriesMonth);
   titleEl.textContent = `${memoriesYear} 年 ${memoriesMonth + 1} 月`;
 
   const photos = [];

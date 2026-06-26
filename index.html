@@ -3001,6 +3001,7 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 
 .cpblg-economy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:rgba(255,255,255,.86);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px;margin:10px 0}.cpblg-economy-actions{display:flex;flex-direction:column;gap:8px}.cpblg-coins{display:flex;align-items:center;gap:8px;color:var(--rose);font-weight:800}.cpblg-coin-num{font-family:'Noto Serif TC',serif;font-size:24px}.cpblg-badge-equip{font-size:12px;color:var(--text-muted);line-height:1.6}.cpblg-shop,.cpblg-backpack{display:none;margin:10px 0;background:var(--pink-light);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-shop.open,.cpblg-backpack.open{display:block}.cpblg-shop-grid,.cpblg-backpack-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.cpblg-shop-item,.cpblg-bag-item{background:var(--white);border:1px solid rgba(232,99,122,.16);border-radius:14px;padding:10px;text-align:left}.cpblg-shop-name,.cpblg-bag-name{font-weight:800;color:var(--rose);margin-bottom:4px}.cpblg-shop-desc,.cpblg-bag-desc{font-size:11px;color:var(--text-muted);line-height:1.5}.cpblg-shop-price,.cpblg-bag-meta{font-size:12px;color:var(--text);font-weight:700;margin:7px 0}.cpblg-odds{margin:8px 0 10px;background:rgba(255,255,255,.76);border:1px dashed rgba(232,99,122,.22);border-radius:14px;padding:9px 10px}.cpblg-odds-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}.cpblg-odds-title{font-size:12px;font-weight:800;color:var(--rose)}.cpblg-odds-source{font-size:10px;color:var(--text-muted)}.cpblg-odds-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cpblg-odd-pill{background:var(--pink-light);border:1px solid rgba(232,99,122,.14);border-radius:12px;padding:7px 8px;font-size:12px;color:var(--text);display:flex;justify-content:space-between;gap:6px}.cpblg-odd-value{font-weight:900;color:var(--rose)}.cpblg-odds-empty{font-size:11px;color:var(--text-muted);line-height:1.6}.cpblg-btn.tiny{padding:7px 10px;font-size:11px;border-radius:999px}@media(max-width:520px){.cpblg-economy{grid-template-columns:1fr}.cpblg-economy-actions{flex-direction:row}.cpblg-shop-grid,.cpblg-backpack-list{grid-template-columns:1fr}.cpblg-odds-row{grid-template-columns:1fr}}
 .cpblg-shop-grid{display:flex!important;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:2px 2px 12px}.cpblg-shop-grid::-webkit-scrollbar{height:6px}.cpblg-shop-grid::-webkit-scrollbar-thumb{background:rgba(232,99,122,.35);border-radius:999px}.cpblg-shop-item{min-width:min(86vw,330px);scroll-snap-align:center;border-radius:20px;padding:12px;box-shadow:0 12px 28px rgba(232,99,122,.12)}.cpblg-coupon-img,.cpblg-bag-img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:16px;background:var(--pink-light);border:1px solid rgba(232,99,122,.16);margin-bottom:10px}.cpblg-shop-buy-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}.cpblg-shop-count{font-size:11px;color:var(--text-muted);margin-top:7px}.cpblg-bag-img{aspect-ratio:16/9;border-radius:14px}.cpblg-bag-item{overflow:hidden}.cpblg-backpack-list{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}@media(max-width:520px){.cpblg-shop-item{min-width:82vw}.cpblg-backpack-list{grid-template-columns:1fr}}
+.cpblg-shop-item{display:grid;grid-template-columns:42% minmax(0,1fr);grid-auto-rows:auto;align-items:center;gap:8px 10px;min-width:min(90vw,360px)}.cpblg-shop-item .cpblg-coupon-img{grid-row:1 / span 4;width:100%;height:128px;aspect-ratio:auto;object-fit:cover;margin:0}.cpblg-shop-item .cpblg-shop-name,.cpblg-shop-item .cpblg-shop-desc,.cpblg-shop-item .cpblg-shop-buy-row,.cpblg-shop-item .cpblg-shop-count{min-width:0}.cpblg-shop-item .cpblg-shop-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.cpblg-shop-item .cpblg-shop-price{margin:0}.cpblg-pick-odds{font-size:12px;color:var(--rose);font-weight:800}@media(max-width:380px){.cpblg-shop-item{grid-template-columns:38% minmax(0,1fr);min-width:86vw}.cpblg-shop-item .cpblg-coupon-img{height:112px}.cpblg-shop-buy-row{flex-direction:column;align-items:flex-start}}
 .cpblg-stake{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 4px;padding:8px 10px;border-radius:13px;background:rgba(255,240,244,.72);font-size:12px;color:var(--text-muted)}.cpblg-stake select{border:1px solid rgba(232,99,122,.2);border-radius:999px;background:var(--white);color:var(--rose);font-weight:800;padding:6px 10px;font-family:'Noto Sans TC',sans-serif}.cpblg-checkin-overlay{position:fixed;inset:0;background:rgba(60,25,35,.42);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.cpblg-checkin-card{width:min(420px,100%);background:linear-gradient(180deg,#fff,#fff0f4);border:1px solid rgba(232,99,122,.22);border-radius:26px;padding:18px;box-shadow:0 22px 70px rgba(120,45,62,.28);text-align:center}.cpblg-checkin-title{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--pink);font-weight:800}.cpblg-checkin-sub{font-size:12px;color:var(--text-muted);line-height:1.7;margin:4px 0 12px}.cpblg-checkin-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:12px 0}.cpblg-checkin-day{border-radius:15px;padding:10px 4px;background:var(--pink-light);border:1px solid rgba(232,99,122,.14);font-size:11px;color:var(--text-muted)}.cpblg-checkin-day.done{background:#e8f5e9;border-color:#78c98a;color:#2e7d32}.cpblg-checkin-day.today{background:#fff;border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.12)}.cpblg-checkin-reward{font-weight:900;color:var(--rose);font-size:13px;margin-top:4px}.cpblg-checkin-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
 [data-theme="dark"] .cpblg-economy,[data-theme="dark"] .cpblg-shop-item,[data-theme="dark"] .cpblg-bag-item,[data-theme="dark"] .cpblg-odds{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.2)}[data-theme="dark"] .cpblg-shop,[data-theme="dark"] .cpblg-backpack{background:#3a1f28}[data-theme="dark"] .cpblg-odd-pill{background:#3a1f28;border-color:rgba(232,99,122,.2)}
 .cpblg-history-prediction-player{padding:5px 8px;border-radius:9px}.cpblg-history-prediction-player.correct{color:#2e7d32;background:#e8f5e9;border:1px solid #78c98a}.cpblg-history-prediction-player.wrong{color:#a9193a;background:#ffd1dc;border:1px solid #ef8ca1}.cpblg-history-prediction-player.draw{color:#a66300;background:#fff3d6}.cpblg-history-prediction-player.correct strong,.cpblg-history-prediction-player.wrong strong,.cpblg-history-prediction-player.draw strong{color:inherit}[data-theme="dark"] .cpblg-history-prediction-player.correct{color:#9ee6a5;background:#1f3b25;border-color:#4f9c61}[data-theme="dark"] .cpblg-history-prediction-player.wrong{color:#ffb0c0;background:#5b1f30;border-color:#a94b62}[data-theme="dark"] .cpblg-history-prediction-player.draw{color:#ffd080;background:#463617}
@@ -6956,7 +6957,7 @@ function cpblPick(gameId, team){
     return;
   }
   eco.coins -= diff;
-  cpblgData.picks[gameId][cpblgPlayer] = {team, stake, odds:pickOdds, oddsMarket:stake?'不讓分':'', checked:false, correct:null, pickedAt:Date.now()};
+  cpblgData.picks[gameId][cpblgPlayer] = {team, stake, odds:pickOdds, oddsMarket:stake?'不讓分':'', oddsLockedAt:stake?Date.now():0, checked:false, correct:null, pickedAt:Date.now()};
   cpblSaveData(true);
   cpblRenderEconomy();
 }
@@ -11509,10 +11510,10 @@ function cpblRenderEconomy(){
     const inventory=Array.isArray(eco.inventory) ? eco.inventory : [];
     const count=inventory.filter(ticket=>ticket.itemId===item.id && !ticket.used).length;
     const alreadyOwned=!!item.once && inventory.some(ticket=>ticket.itemId===item.id);
-    const disabled=!cpblgPlayer || alreadyOwned || eco.coins<item.price;
-    const label=!cpblgPlayer?'\u5148\u9078\u73a9\u5bb6':alreadyOwned?'\u5df2\u64c1\u6709':'\u8cfc\u8cb7';
+    const notEnough=!!cpblgPlayer && eco.coins<item.price;
+    const label=!cpblgPlayer?'\u5148\u9078\u73a9\u5bb6':alreadyOwned?'\u5df2\u64c1\u6709':notEnough?'\u91d1\u5e63\u4e0d\u8db3':'\u8cfc\u8cb7';
     const note=item.once ? '\u9650\u8cfc 1 \u5f35' : (count ? `背包目前 ${count} 張` : '可重複購買');
-    return `<div class="cpblg-shop-item">${item.image?`<img class="cpblg-coupon-img" src="${cpblEscape(item.image)}" alt="${cpblEscape(item.name)}">`:''}<div class="cpblg-shop-name">${cpblEscape(item.name)}${count?` × ${count}`:''}</div><div class="cpblg-shop-desc">${cpblEscape(item.desc)}</div><div class="cpblg-shop-buy-row"><div class="cpblg-shop-price">🪙 ${Number(item.price).toLocaleString('zh-TW')}</div><button type="button" class="cpblg-btn tiny" ${disabled?'disabled':''} onclick="cpblBuyShopItem('${item.id}')">${label}</button></div><div class="cpblg-shop-count">${cpblEscape(note)}</div></div>`;
+    return `<div class="cpblg-shop-item">${item.image?`<img class="cpblg-coupon-img" src="${cpblEscape(item.image)}" alt="${cpblEscape(item.name)}">`:''}<div class="cpblg-shop-name">${cpblEscape(item.name)}${count?` × ${count}`:''}</div><div class="cpblg-shop-desc">${cpblEscape(item.desc)}</div><div class="cpblg-shop-buy-row"><div class="cpblg-shop-price">🪙 ${Number(item.price).toLocaleString('zh-TW')}</div><button type="button" class="cpblg-btn tiny" onclick="cpblBuyShopItem('${item.id}')">${label}</button></div><div class="cpblg-shop-count">${cpblEscape(note)}</div></div>`;
   }).join('');
   cpblRenderBackpack();
 }
@@ -11635,7 +11636,10 @@ function cpblBuyShopItem(id){
     alert(`${item.name} 只能購買一次`);
     return;
   }
-  if(eco.coins<item.price){alert('\u91d1\u5e63\u4e0d\u5920\u5594');return;}
+  if(eco.coins<item.price){
+    alert(`${cpblgPlayer} 目前有 ${eco.coins} 金幣，${item.name} 需要 ${item.price} 金幣，金幣不夠喔`);
+    return;
+  }
   eco.coins-=item.price;
   eco.inventory.push({
     uid:`${item.id}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
@@ -11827,6 +11831,10 @@ function cpblRenderGames(){
     if(/延賽|保留/.test(String(game.status||''))){
       noteBits.push(cpblWasStartedBeforePostpone(game)?'比賽中斷後延賽，預測會保留到補賽日。':'尚未開打就延賽，本場預測已取消。');
     }
+    if(pick?.stake && pick?.odds){
+      const lockedAt = pick.oddsLockedAt ? new Date(pick.oddsLockedAt).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}) : '下注時';
+      noteBits.push(`<span class="cpblg-pick-odds">下注 ${Number(pick.stake).toLocaleString('zh-TW')} 金幣，已鎖定不讓分賠率 ${Number(pick.odds).toFixed(2)}（${lockedAt}）</span>`);
+    }
     if(resultNote) noteBits.push(resultNote);
     const btn=(team)=>{
       const normalizedTeam = cpblNormalizeTeam(team);
@@ -11841,10 +11849,14 @@ function cpblRenderGames(){
       <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(metaLine)}<br>${cpblEscape(game.field||'')}</div></div>
       <div class="cpblg-match"><div class="cpblg-team"><span class="cpblg-side">客隊</span>${cpblTeamInline(game.away)}</div>${score}<div class="cpblg-team"><span class="cpblg-side">主隊</span>${cpblTeamInline(game.home)}</div></div>
       ${cpblOddsHtml(game)}
+      ${cpblStakeHtml(game, pick, locked)}
       <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
       <div class="cpblg-note">${noteBits.join('<br>') || '開賽前可以修改預測。'}</div>
     </div>`;
   }).join('');
+  if(!cpblgOddsData.updatedAt && !cpblgOddsLoading){
+    setTimeout(()=>cpblRefreshOdds(false),0);
+  }
 }
 async function cpblRefreshGames(showAlert=false){
   cpblgLoadedOnce = true;

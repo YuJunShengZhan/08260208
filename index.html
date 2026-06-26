@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -3714,7 +3714,7 @@ onclick="hideSpecialForToday()">
         </div>
       </div>
       <div class="cpblg-row"><div class="cpblg-stat"><div class="cpblg-small">聖展勝率</div><div class="cpblg-rate" id="cpblg-rate-sheng">0%</div><div class="cpblg-small" id="cpblg-record-sheng">0 / 0</div></div><div class="cpblg-stat"><div class="cpblg-small">予君勝率</div><div class="cpblg-rate" id="cpblg-rate-yujun">0%</div><div class="cpblg-small" id="cpblg-record-yujun">0 / 0</div></div></div>
-      <div class="cpblg-economy"><div><div class="cpblg-coins">🪙 <span id="cpblg-coin-player">先選擇玩家</span><span class="cpblg-coin-num" id="cpblg-coin-count">0</span></div><div class="cpblg-badge-equip" id="cpblg-equipped-badge">選擇你是誰後，金幣會自動顯示並同步。</div><div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary tiny" id="cpblg-checkin-btn" onclick="cpblOpenCheckinPopup()" disabled>每日簽到</button><button type="button" class="cpblg-btn secondary tiny" id="cpblg-chest-btn" onclick="cpblOpenCheckinChest()" disabled>開寶箱</button></div><div class="cpblg-badge-equip" id="cpblg-checkin-info">連續簽到 5 天可以開寶箱。</div></div><div class="cpblg-economy-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleShop()">🛍️ 商城</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleBackpack()">🎒 背包</button></div></div>
+      <div class="cpblg-economy"><div><div class="cpblg-coins">💰 <span id="cpblg-coin-player">先選擇玩家</span><span class="cpblg-coin-num" id="cpblg-coin-count">0</span></div><div class="cpblg-badge-equip" id="cpblg-equipped-badge">選擇你是誰後，金幣會自動顯示並同步。</div><div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary tiny" id="cpblg-checkin-btn" onclick="cpblOpenCheckinPopup()" disabled>每日簽到</button><button type="button" class="cpblg-btn secondary tiny" id="cpblg-chest-btn" onclick="cpblOpenCheckinChest()" disabled>開寶箱</button></div><div class="cpblg-badge-equip" id="cpblg-checkin-info">連續簽到 5 天可以開寶箱。</div></div><div class="cpblg-economy-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleShop()">🛍️ 商城</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleBackpack()">🎒 背包</button></div></div>
       <div class="cpblg-shop" id="cpblg-shop"><div class="cpblg-shop-grid" id="cpblg-shop-grid"></div></div>
       <div class="cpblg-backpack" id="cpblg-backpack"><div class="cpblg-backpack-list" id="cpblg-backpack-list"></div></div>
       <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div class="cpblg-toolbar-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshOdds(true)">更新賠率</button><button type="button" class="cpblg-btn secondary" onclick="cpblOpenHistoryPage()">歷史猜測紀錄</button></div></div>
@@ -11514,7 +11514,7 @@ function cpblRenderEconomy(){
     const notEnough=!!cpblgPlayer && eco.coins<item.price;
     const label=!cpblgPlayer?'\u5148\u9078\u73a9\u5bb6':alreadyOwned?'\u5df2\u64c1\u6709':notEnough?'\u91d1\u5e63\u4e0d\u8db3':'\u8cfc\u8cb7';
     const note=item.once ? '\u9650\u8cfc 1 \u5f35' : (count ? `背包目前 ${count} 張` : '可重複購買');
-    return `<div class="cpblg-shop-item">${item.image?`<img class="cpblg-coupon-img" src="${cpblEscape(item.image)}" alt="${cpblEscape(item.name)}">`:''}<div class="cpblg-shop-name">${cpblEscape(item.name)}${count?` × ${count}`:''}</div><div class="cpblg-shop-desc">${cpblEscape(item.desc)}</div><div class="cpblg-shop-buy-row"><div class="cpblg-shop-price">🪙 ${Number(item.price).toLocaleString('zh-TW')}</div><button type="button" class="cpblg-btn tiny" onclick="cpblBuyShopItem('${item.id}')">${label}</button></div><div class="cpblg-shop-count">${cpblEscape(note)}</div></div>`;
+    return `<div class="cpblg-shop-item">${item.image?`<img class="cpblg-coupon-img" src="${cpblEscape(item.image)}" alt="${cpblEscape(item.name)}">`:''}<div class="cpblg-shop-name">${cpblEscape(item.name)}${count?` × ${count}`:''}</div><div class="cpblg-shop-desc">${cpblEscape(item.desc)}</div><div class="cpblg-shop-buy-row"><div class="cpblg-shop-price">💰 ${Number(item.price).toLocaleString('zh-TW')}</div><button type="button" class="cpblg-btn tiny" onclick="cpblBuyShopItem('${item.id}')">${label}</button></div><div class="cpblg-shop-count">${cpblEscape(note)}</div></div>`;
   }).join('');
   cpblRenderBackpack();
 }
@@ -11547,7 +11547,7 @@ function cpblOpenCheckinPopup(){
   const days = rewards.map((reward,idx)=>{
     const day = idx + 1;
     const cls = day <= streak ? ' done' : day === currentDay ? ' today' : '';
-    return `<div class="cpblg-checkin-day${cls}"><div>第 ${day} 天</div><div class="cpblg-checkin-reward">${reward}${reward==='寶箱'?'':' 🪙'}</div></div>`;
+    return `<div class="cpblg-checkin-day${cls}"><div>第 ${day} 天</div><div class="cpblg-checkin-reward">${reward}${reward==='寶箱'?'':' 💰'}</div></div>`;
   }).join('');
   const canCheckin = eco.checkin.lastDate !== today;
   const overlay=document.createElement('div');
@@ -11585,7 +11585,7 @@ function cpblDailyCheckIn(btn){
   cpblRenderEconomy();
   const card = btn?.closest?.('.cpblg-checkin-card');
   if(card){
-    card.innerHTML = `<div style="font-size:52px">${reward?'🪙':'🎁'}</div><div class="cpblg-checkin-title">${reward?'簽到成功':'寶箱解鎖'}</div><div class="cpblg-checkin-sub">${reward ? `獲得 ${reward} 金幣！` : '連續 5 天簽到成功，可以開寶箱了！'}</div><button type="button" class="cpblg-btn" onclick="this.closest('.cpblg-checkin-overlay').remove()">收下</button>`;
+    card.innerHTML = `<div style="font-size:52px">${reward?'💰':'🎁'}</div><div class="cpblg-checkin-title">${reward?'簽到成功':'寶箱解鎖'}</div><div class="cpblg-checkin-sub">${reward ? `獲得 ${reward} 金幣！` : '連續 5 天簽到成功，可以開寶箱了！'}</div><button type="button" class="cpblg-btn" onclick="this.closest('.cpblg-checkin-overlay').remove()">收下</button>`;
   }else{
     alert(reward ? `簽到成功，獲得 ${reward} 金幣！` : '連續 5 天簽到成功，寶箱已解鎖！');
   }

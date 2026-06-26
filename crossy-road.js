@@ -117,10 +117,6 @@ function xrgBuyOrSelectCharacter(characterId){
   if(xrgEconomy.owned.includes(characterId)){
     xrgEconomy.selected = characterId;
     xrgSaveEconomyLocal();
-    if(window._fb){
-      const {db,ref,set}=window._fb;
-      set(ref(db,'crossyEconomy/selected'),characterId).catch(()=>{});
-    }
     xrgDraw();
     return;
   }
@@ -132,21 +128,6 @@ function xrgBuyOrSelectCharacter(characterId){
   xrgEconomy.owned.push(characterId);
   xrgEconomy.selected = characterId;
   xrgSaveEconomyLocal();
-  if(window._fb){
-    const {db,ref,runTransaction}=window._fb;
-    runTransaction(ref(db,'crossyEconomy'),current=>{
-      const economy = xrgNormalizeEconomy(current || xrgEconomy);
-      if(economy.owned.includes(characterId)){
-        economy.selected = characterId;
-        return economy;
-      }
-      if(economy.coins < character.price) return economy;
-      economy.coins -= character.price;
-      economy.owned.push(characterId);
-      economy.selected = characterId;
-      return economy;
-    }).catch(()=>{});
-  }
   xrgDraw();
 }
 
@@ -157,10 +138,6 @@ function xrgCollectCoin(){
   xrgCoinRows.delete(xrgPlayer.row);
   xrgEconomy.coins += 1;
   xrgSaveEconomyLocal();
-  if(window._fb){
-    const {db,ref,runTransaction}=window._fb;
-    runTransaction(ref(db,'crossyEconomy/coins'),current=>(Math.max(0,Number(current)||0)+1)).catch(()=>{});
-  }
 }
 
 function xrgEnsureAudioContext(){
@@ -326,23 +303,9 @@ function xrgDrawCoinEffects(){
 }
 
 function xrgInitEconomyFirebase(){
-  if(xrgEconomyListening || !window._fb) return;
+  if(xrgEconomyListening) return;
   xrgEconomyListening = true;
-  const {db,ref,onValue,set}=window._fb;
-  onValue(ref(db,'crossyEconomy'),snapshot=>{
-    const remote = snapshot.val();
-    if(remote){
-      const cloud = xrgNormalizeEconomy(remote);
-      const mergedOwned = [...new Set([...cloud.owned,...xrgEconomy.owned])];
-      const mergedSelected = mergedOwned.includes(xrgEconomy.selected) ? xrgEconomy.selected : cloud.selected;
-      xrgEconomy = xrgNormalizeEconomy({coins:Math.max(cloud.coins,xrgEconomy.coins),owned:mergedOwned,selected:mergedSelected});
-      xrgSaveEconomyLocal();
-      xrgDraw();
-      if(JSON.stringify(cloud)!==JSON.stringify(xrgEconomy)) set(ref(db,'crossyEconomy'),xrgEconomy).catch(()=>{});
-    }else{
-      set(ref(db,'crossyEconomy'),xrgEconomy).catch(()=>{});
-    }
-  });
+  xrgSaveEconomyLocal();
 }
 
 function xrgMod(value, divisor){
@@ -633,7 +596,7 @@ function xrgPauseIfHidden(){
 
 function xrgEnterScreen(){
   xrgInit();
-  xrgInitEconomyFirebase();
+  xrgSaveEconomyLocal();
   xrgUpdateStats();
   xrgRenderShop();
   xrgDraw();
@@ -700,5 +663,3 @@ document.addEventListener('keydown',event=>{
   xrgMove(direction);
 });
 document.addEventListener('visibilitychange',()=>{if(document.hidden) xrgPauseIfHidden();});
-window.addEventListener('firebaseReady',xrgInitEconomyFirebase);
-if(window._fb) xrgInitEconomyFirebase();

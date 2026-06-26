@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>林聖展 ♡ 蘇予君</title>
 <link rel="stylesheet" href="crossy-road.css">
-<link rel="stylesheet" href="spot-difference.css">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
 
@@ -3376,12 +3375,10 @@ onclick="hideSpecialForToday()">
       <button type="button" class="game-menu-btn" onclick="openGame(0,this)">💣 踩地雷</button>
       <button type="button" class="game-menu-btn" onclick="openGame(1,this)">🤝 默契挑戰</button>
       <button type="button" class="game-menu-btn" onclick="openGame(2,this)">🟦 方塊遊戲</button>
-      <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🧩 回憶拼圖</button>
       <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
       <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
       <button type="button" class="game-menu-btn" id="game-menu-gsg" onclick="openGame(6,this)">🎤 猜歌遊戲</button>
       <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(7,this)">🐥 天天過馬路</button>
-      <button type="button" class="game-menu-btn" id="game-menu-spot" onclick="openGame(8,this)">🔎 大家來找碴</button>
     </div>
   </div>
 
@@ -3583,55 +3580,6 @@ onclick="hideSpecialForToday()">
 </div>
 
 <!-- 回憶拼圖 -->
-<div class="game-section" id="gs-3">
-  <div class="card">
-    <div class="card-title">🧩 回憶拼圖</div>
-    <div class="pz-hero">
-      <div class="pz-toolbar">
-        <button class="pz-btn" onclick="pzRandomPhoto()">🎲 隨機一張</button>
-        <button class="pz-btn secondary" onclick="pzOpenPicker()">🖼️ 選相簿照片</button>
-      </div>
-    </div>
-
-    <div class="pz-levels">
-      <button class="pz-level-btn active" id="pz-level-3" onclick="pzSetSize(3)">3 × 3<br><span style="font-size:11px;opacity:.75">甜甜入門</span></button>
-      <button class="pz-level-btn" id="pz-level-4" onclick="pzSetSize(4)">4 × 4<br><span style="font-size:11px;opacity:.75">認真挑戰</span></button>
-      <button class="pz-level-btn" id="pz-level-5" onclick="pzSetSize(5)">5 × 5<br><span style="font-size:11px;opacity:.75">回憶大師</span></button>
-    </div>
-
-    <div id="pz-current-info" style="font-size:12px;color:var(--text-muted);background:var(--pink-light);border-radius:14px;padding:12px;line-height:1.7;margin-top:0;margin-bottom:12px;text-align:center">
-      正在為你挑一張隨機照片...
-    </div>
-
-    <div id="pz-game" class="hidden">
-      <div class="pz-game-shell">
-        <div class="pz-stats">
-          <div class="pz-stat"><div class="pz-stat-label">時間</div><div class="pz-stat-val" id="pz-time">00:00</div></div>
-          <div class="pz-stat"><div class="pz-stat-label">步數</div><div class="pz-stat-val" id="pz-moves">0</div></div>
-          <div class="pz-stat"><div class="pz-stat-label">最佳</div><div class="pz-stat-val" id="pz-best">—</div></div>
-        </div>
-
-        <div class="pz-board-wrap">
-          <div id="pz-board" class="pz-board"></div>
-          <div id="pz-start-panel" class="pz-start-panel hidden">
-            <button class="pz-btn pz-start-btn" id="pz-center-btn" onclick="pzHandleCenterAction()">開始</button>
-          </div>
-        </div>
-
-        <div id="pz-action-row" class="pz-action-row hidden">
-          <button class="pz-btn secondary" onclick="pzStartGame()">重新開始</button>
-          <button class="pz-btn secondary" onclick="pzToggleOriginal()">👀 看原圖</button>
-        </div>
-
-        <div id="pz-original" class="pz-original">
-          <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">原圖提示</div>
-          <img id="pz-original-img" alt="拼圖原圖">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="game-section" id="gs-4">
   <div class="card">
     <div class="card-title">🎵 節奏點擊</div>
@@ -3650,7 +3598,7 @@ onclick="hideSpecialForToday()">
           <div class="rg-metric-value" id="rg-accuracy">0%</div>
         </div>
       </div>
-      <div class="rg-best-row">🏆 雲端最高分 <strong id="rg-best-score">0</strong></div>
+      <div class="rg-best-row">🏆 本機最高分 <strong id="rg-best-score">0</strong></div>
 
       <div class="rg-song-row">
         <button class="pz-btn secondary rg-song-nav" aria-label="上一首" onclick="rgPrevSong()">‹</button>
@@ -3768,9 +3716,9 @@ onclick="hideSpecialForToday()">
       </div>
 
       <div class="gsg-leaderboard">
-        <div class="gsg-leaderboard-title">🏆 猜歌排行榜</div>
-        <div class="gsg-sub" style="margin-bottom:8px">答對題數較多優先；題數相同時，完成時間較少者排名較前。</div>
-        <div class="gsg-rank-list" id="gsg-rank-list"><div class="gsg-rank-empty">排行榜載入中…</div></div>
+        <div class="gsg-leaderboard-title">🏆 本機猜歌排行榜</div>
+        <div class="gsg-sub" style="margin-bottom:8px">只保存在這台裝置；答對題數較多優先，題數相同時完成時間較少者排名較前。</div>
+        <div class="gsg-rank-list" id="gsg-rank-list"><div class="gsg-rank-empty">還沒有本機紀錄</div></div>
       </div>
 
       <audio id="gsg-audio" preload="auto"></audio>
@@ -3820,45 +3768,6 @@ onclick="hideSpecialForToday()">
 </div>
 
 <!-- 大家來找碴 -->
-<div class="game-section" id="gs-8">
-  <div class="card sd-card">
-    <div class="card-title">🔎 大家來找碴</div>
-    <div class="sd-shell">
-      <div class="sd-hero">
-        <div class="sd-title">我們的回憶找碴</div>
-        <div class="sd-sub">左邊是原圖，右邊是加工後的照片。找出所有不一樣的地方！</div>
-      </div>
-      <div class="sd-toolbar">
-        <div class="sd-difficulty" role="group" aria-label="選擇找碴難度">
-          <button type="button" class="sd-level active" data-level="easy" onclick="sdSetDifficulty('easy',this)">簡單</button>
-          <button type="button" class="sd-level" data-level="medium" onclick="sdSetDifficulty('medium',this)">中等</button>
-          <button type="button" class="sd-level" data-level="hard" onclick="sdSetDifficulty('hard',this)">困難</button>
-        </div>
-        <button type="button" class="sd-next" onclick="sdStartRound(true)">換一張照片</button>
-      </div>
-      <div class="sd-status-row">
-        <span id="sd-progress">找到 0 / 3</span>
-        <span id="sd-time">00:00</span>
-      </div>
-      <div class="sd-board-wrap" id="sd-board-wrap">
-        <div class="sd-photo-panel">
-          <div class="sd-photo-label">原圖</div>
-          <canvas id="sd-original" class="sd-canvas" aria-label="找碴原圖"></canvas>
-        </div>
-        <div class="sd-photo-panel">
-          <div class="sd-photo-label edited">找碴圖</div>
-          <canvas id="sd-edited" class="sd-canvas" aria-label="加工後的找碴圖片"></canvas>
-        </div>
-      </div>
-      <div class="sd-message" id="sd-message">正在準備相簿照片...</div>
-      <div class="sd-actions">
-        <button type="button" class="sd-hint" onclick="sdShowHint()">💡 提示</button>
-        <button type="button" class="sd-restart" onclick="sdStartRound(false)">重新開始</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="game-section" id="gs-5-history">
   <div class="card">
     <div style="margin-bottom:14px">
@@ -3877,33 +3786,6 @@ onclick="hideSpecialForToday()">
   </div>
 </div>
 
-<div id="pz-picker-modal" class="pz-picker-modal hidden" onclick="pzClosePicker(event)">
-  <div class="pz-picker-sheet" onclick="event.stopPropagation()">
-    <div class="pz-picker-head">
-      <div>
-        <div class="pz-picker-title">挑一張回憶照片</div>
-        <div class="pz-picker-sub">點一張照片會先放到預覽，再按開始。</div>
-      </div>
-      <button type="button" class="pz-icon-btn" onclick="pzClosePicker()">✕</button>
-    </div>
-    <div class="pz-picker-count" id="pz-picker-count">0 張照片</div>
-    <div id="pz-picker" class="pz-picker"></div>
-  </div>
-</div>
-
-<div class="pz-win-bg hidden" id="pz-win-bg">
-  <div class="pz-win-box">
-    <div class="pz-win-emoji">🎉</div>
-    <div class="pz-win-title">拼圖完成！</div>
-    <div class="pz-win-sub" id="pz-win-sub">這一天是我們的回憶 💕</div>
-    <div style="display:flex;gap:8px;justify-content:center">
-      <button class="pz-btn" onclick="pzOpenMemoryFromWin()">查看回憶</button>
-      <button class="pz-btn secondary" onclick="pzCloseWin();pzRandomPhoto();">下一張回憶</button>
-    </div>
-  </div>
-</div>
-
-</div>
 <!-- PERIOD -->
 <div id="page-period" class="page">
   <div id="pd-status-banner" style="border-radius:20px;padding:20px;margin-bottom:16px;text-align:center;background:var(--pd-banner-default,var(--white));border:1px solid var(--card-border)">
@@ -4624,7 +4506,6 @@ function albumLoadMonth(y=albumYear,m=albumMonth){
     if(typeof rgSetCover === 'function' && rgInitDone) rgSetCover();
     albumRenderCal();
     renderMemories();
-    if(typeof pzRenderPicker==='function') pzRenderPicker();
     if(!document.getElementById('day-modal-bg').classList.contains('hidden') && currentDayKey){
       const dayData=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
       if(!modalEditMode) applyModalMode(dayData);
@@ -5670,7 +5551,6 @@ function openGame(i,btn){
   if(i!==6 && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(i!==7 && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   if(i!==8 && typeof sdPauseIfHidden==='function') sdPauseIfHidden();
-  if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
   if(i===4 && typeof rgEnterScreen==='function') rgEnterScreen();
   if(i===5 && typeof cpblEnterScreen==='function') cpblEnterScreen();
   if(i===6 && typeof gsgEnterScreen==='function') gsgEnterScreen();
@@ -5724,6 +5604,7 @@ let gsgFinished = false;
 let gsgLeaderboard = [];
 let gsgLeaderboardListening = false;
 const GSG_PENDING_KEY = 'gsg_pending_results_v1';
+const GSG_LOCAL_LEADERBOARD_KEY = 'gsg_local_leaderboard_v1';
 
 function gsgShuffle(list){
   const arr = list.slice();
@@ -5817,10 +5698,6 @@ function gsgEnsureReady(){
     alert('請先選擇你是聖展還是予君。');
     return false;
   }
-  if(!window._fb){
-    alert('排行榜伺服器還在連線，請稍後再試一次。');
-    return false;
-  }
   return true;
 }
 
@@ -5848,42 +5725,38 @@ function gsgStorePending(id,record){
 }
 
 function gsgFlushPending(){
-  if(!window._fb) return;
-  const pending = gsgPendingResults();
-  const entries = Object.entries(pending);
-  if(!entries.length) return;
-  const {db,ref,set}=window._fb;
-  entries.forEach(([id,record])=>{
-    set(ref(db,`guessSongLeaderboard/${id}`),record).then(()=>{
-      const latest = gsgPendingResults();
-      delete latest[id];
-      localStorage.setItem(GSG_PENDING_KEY, JSON.stringify(latest));
-    }).catch(()=>{});
-  });
+  localStorage.removeItem(GSG_PENDING_KEY);
+}
+
+function gsgLoadLocalLeaderboard(){
+  try{
+    const rows = JSON.parse(localStorage.getItem(GSG_LOCAL_LEADERBOARD_KEY)||'[]');
+    return Array.isArray(rows) ? rows.filter(item=>item.player && Number(item.timeMs)>0) : [];
+  }catch(_err){
+    return [];
+  }
+}
+
+function gsgSaveLocalLeaderboard(){
+  const rows = gsgLeaderboard.slice().sort(gsgCompareRecords).slice(0,50);
+  localStorage.setItem(GSG_LOCAL_LEADERBOARD_KEY, JSON.stringify(rows));
 }
 
 function gsgSaveResult(){
-  if(!window._fb || !gsgPlayer || !gsgElapsedMs) return;
+  if(!gsgPlayer || !gsgElapsedMs) return;
   const completedAt = Date.now();
   const id = `${gsgPlayer}_${completedAt}_${Math.random().toString(36).slice(2,8)}`;
   const record = {player:gsgPlayer,score:gsgScore,total:gsgDeck.length,timeMs:Math.round(gsgElapsedMs),completedAt};
-  const {db,ref,set}=window._fb;
-  set(ref(db,`guessSongLeaderboard/${id}`),record).catch(()=>{
-    gsgStorePending(id,record);
-    alert('成績已先保存在這台裝置，恢復連線後會自動補傳排行榜。');
-  });
+  gsgLeaderboard.push({id,...record});
+  gsgSaveLocalLeaderboard();
+  gsgRenderLeaderboard();
 }
 
 function gsgInitLeaderboard(){
-  if(gsgLeaderboardListening || !window._fb) return;
+  if(gsgLeaderboardListening) return;
   gsgLeaderboardListening = true;
-  const {db,ref,onValue,query,orderByChild,limitToLast}=window._fb;
-  const boardQuery = query(ref(db,'guessSongLeaderboard'), orderByChild('score'), limitToLast(50));
-  onValue(boardQuery,snapshot=>{
-    const value = snapshot.val() || {};
-    gsgLeaderboard = Object.entries(value).map(([id,item])=>({id,...item})).filter(item=>item.player && Number(item.timeMs)>0);
-    gsgRenderLeaderboard();
-  });
+  gsgLeaderboard = gsgLoadLocalLeaderboard();
+  gsgRenderLeaderboard();
   gsgFlushPending();
 }
 
@@ -6112,7 +5985,7 @@ function gsgInit(){
   if(!gsgDeck.length) gsgDeck = gsgBuildDeck();
 }
 
-window.addEventListener('firebaseReady', gsgInitLeaderboard);
+gsgInitLeaderboard();
 
 
 
@@ -8815,18 +8688,6 @@ function pzLoadBestDisplay(){
   const cached = pzCloudBestCache[key];
   const best = pzBetterBest(local, cached);
   pzSetBestText(best);
-
-  if(window._fb && !pzCurrent?.local){
-    const {db,ref,get} = window._fb;
-    get(ref(db,`puzzleBest/${key}`)).then(snap=>{
-      const cloud = snap.val();
-      if(cloud && cloud.time){
-        pzCloudBestCache[key] = cloud;
-        const merged = pzBetterBest(pzLocalBest(), cloud);
-        pzSetBestText(merged);
-      }
-    }).catch(()=>{});
-  }
 }
 
 function pzBetterBest(a,b){
@@ -8852,10 +8713,6 @@ function pzSaveBest(time,moves){
     localStorage.setItem(key, JSON.stringify(record));
     pzCloudBestCache[key] = record;
     pzSetBestText(record);
-    if(window._fb && !pzCurrent?.local){
-      const {db,ref,set} = window._fb;
-      set(ref(db,`puzzleBest/${key}`), record).catch(()=>{});
-    }
   }else{
     pzSetBestText(currentBest);
   }
@@ -10755,43 +10612,22 @@ function rgSaveBestScore(value){
   const score = Math.max(0, Number(value) || 0);
   if(score <= 0) return;
   const localKey = rgBestLocalKey();
-  const cloudPath = rgBestPath();
   const localBest = Number(localStorage.getItem(localKey) || 0);
   if(score > localBest) localStorage.setItem(localKey, String(score));
   if(score > rgBestScore) rgSetBestScore(score);
-  if(!window._fb) return;
-  const {db,ref,runTransaction} = window._fb;
-  if(runTransaction){
-    runTransaction(ref(db,cloudPath), current => {
-      const cloud = Number(current) || 0;
-      return score > cloud ? score : cloud;
-    }).catch(()=>{});
-  }
 }
 
 function rgInitBestScore(){
   const songKey = rgCurrentBestKey();
   const localKey = rgBestLocalKey();
-  const cloudPath = rgBestPath();
   if(rgBestScoreSong === songKey && rgBestUnsubscribe) return;
   if(typeof rgBestUnsubscribe === 'function') rgBestUnsubscribe();
   rgBestUnsubscribe = null;
   rgBestScoreSong = songKey;
   const localBest = Number(localStorage.getItem(localKey) || 0);
   rgSetBestScore(localBest);
-  if(!window._fb) return;
-  const {db,ref,onValue} = window._fb;
-  rgBestUnsubscribe = onValue(ref(db,cloudPath), snapshot => {
-    const cloudBest = Number(snapshot.val()) || 0;
-    const currentLocal = Number(localStorage.getItem(localKey) || 0);
-    const best = Math.max(cloudBest, currentLocal, rgBestScore);
-    rgSetBestScore(best);
-    if(best > currentLocal) localStorage.setItem(localKey, String(best));
-    if(best > cloudBest) rgSaveBestScore(best);
-  });
 }
 
-window.addEventListener('firebaseReady', rgInitBestScore);
 
 function rgResetStats(){
   rgScore = 0;
@@ -11524,12 +11360,10 @@ window.addEventListener('firebaseReady',()=>{
   pdLoad();
   ftInit();
   bbInitFirebase();
-  pzRenderPicker();
   checkLoveSurprise();
 });
 </script>
 <script src="crossy-road.js"></script>
-<script src="spot-difference.js"></script>
 <!-- 拖曳幽靈 -->
 <div id="bb-drag-ghost"></div>
 

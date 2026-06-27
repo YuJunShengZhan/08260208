@@ -7629,6 +7629,7 @@ function cpblResolveFinishedGames(push=true){
     CPBLG_HISTORY_PLAYERS.forEach(name=>{
       const p=gp[name];
       if(!p) return;
+      if(p.postponedCanceled) return;
       const correct = winner==='和局' ? null : cpblNormalizeTeam(p.team)===cpblNormalizeTeam(winner);
       if(!p.checked || p.correct!==correct){
         p.checked=true;
@@ -11490,6 +11491,20 @@ function cpblAwardCoins(player, amount){
   const eco=cpblEnsureEconomy(player);
   eco.coins += amount;
 }
+function cpblRefundStake(player, pick, reason='賽事不列入'){
+  if(!player || !pick || pick.stakeRefunded) return 0;
+  const stake = Math.max(0, Number(pick.stake)||0);
+  if(!stake) return 0;
+  cpblAwardCoins(player, stake);
+  pick.stakeRefunded = true;
+  pick.stakeRefundedAt = Date.now();
+  pick.stakeRefundReason = reason;
+  pick.coinSettled = true;
+  pick.coinAward = stake;
+  pick.correct = null;
+  pick.checked = true;
+  return stake;
+}
 function cpblSyncPredictionNow(gameId, player){
   if(!window._fb || !gameId || !player) return;
   const {db,ref,update}=window._fb;
@@ -11725,13 +11740,13 @@ function cpblMoneylineOdds(game){
   const gameHome=cpblNormalizeTeam(game.home);
   const rawAway=match.awayOdds || match.teamAOdds || '';
   const rawHome=match.homeOdds || match.teamBOdds || '';
-  if(matchAway===gameAway && matchHome===gameHome){
-    return {away:Number(rawAway),home:Number(rawHome),awayText:String(rawAway||'?'),homeText:String(rawHome||'?'),source:match.source||cpblgOddsData?.source||'台灣運彩官網'};
-  }
-  if(matchAway===gameHome && matchHome===gameAway){
-    return {away:Number(rawHome),home:Number(rawAway),awayText:String(rawHome||'?'),homeText:String(rawAway||'?'),source:match.source||cpblgOddsData?.source||'台灣運彩官網'};
-  }
-  return null;
+  const oddsByTeam = {};
+  if(matchAway) oddsByTeam[matchAway] = String(rawAway||'');
+  if(matchHome) oddsByTeam[matchHome] = String(rawHome||'');
+  const awayText = oddsByTeam[gameAway] || '';
+  const homeText = oddsByTeam[gameHome] || '';
+  if(!awayText || !homeText) return null;
+  return {away:Number(awayText),home:Number(homeText),awayText,homeText,source:match.source||cpblgOddsData?.source||'台灣運彩官網'};
 }
 function cpblMoneylineOddForTeam(game, team){
   const odds=cpblMoneylineOdds(game);
@@ -11811,10 +11826,12 @@ function cpblProcessPostponedGames(games){
       changed=true;
     }else if(!shouldKeep){
       if(hasPicks){
-        Object.values(existingPicks).forEach(pick=>{
+        Object.entries(existingPicks).forEach(([player,pick])=>{
           if(pick){
+            cpblRefundStake(player, pick, /取消/.test(status)?'賽事取消退款':'尚未開打延賽退款');
             pick.postponedCanceled = true;
             pick.postponedCanceledAt = Date.now();
+            firebaseChanges[`economy/${player}`]=cpblgData.economy?.[player]||null;
           }
         });
         firebaseChanges[`picks/${game.id}`]=existingPicks;
@@ -11871,7 +11888,7 @@ function cpblRenderGames(){
       if(playerPick?.team){
         const stake = Math.max(0, Number(playerPick.stake)||0);
         const stakeText = stake ? `，已下注 ${stake.toLocaleString('zh-TW')} 金幣` : '，未下注';
-        const canceledText = playerPick.postponedCanceled ? '（延賽不列入）' : '';
+        const canceledText = playerPick.postponedCanceled ? (playerPick.stakeRefunded ? '（延賽不列入，已退款）' : '（延賽不列入）') : '';
         noteBits.push(`${name} 已選 ${cpblEscape(playerPick.team)}${stakeText}${canceledText}`);
       }
     });

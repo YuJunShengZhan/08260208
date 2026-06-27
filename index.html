@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -705,6 +705,24 @@ display:inline-flex;align-items:center;gap:4px;
 font-size:11px;color:var(--text-muted);
 padding:3px 8px;border-radius:20px;
 background:var(--pink-light);margin-left:8px;
+}
+
+.album-cloudinary-tools{
+display:flex;flex-direction:column;gap:8px;margin:8px 0 10px;
+}
+.album-cloudinary-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.album-cloudinary-btn{
+flex:1;min-width:130px;padding:10px;
+background:var(--pink-light);color:var(--rose);
+border:1px solid var(--card-border);border-radius:10px;
+cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;
+display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.album-cloudinary-btn.primary{background:var(--pink);color:white;border-color:var(--pink);}
+.album-cloudinary-status{
+font-size:12px;color:var(--text-muted);line-height:1.6;
+background:var(--pink-light);border:1px dashed var(--card-border);
+border-radius:10px;padding:8px 10px;
 }
 
 
@@ -3288,6 +3306,13 @@ onclick="hideSpecialForToday()">
       <div class="modal-section">
         <div class="modal-section-title">📷 照片</div>
         <div class="modal-photos-grid" id="modal-photos-grid"></div>
+        <div class="album-cloudinary-tools">
+          <div class="album-cloudinary-actions">
+            <button type="button" class="album-cloudinary-btn primary" onclick="openCloudinarySettings()">☁️ Cloudinary 設定</button>
+            <button type="button" class="album-cloudinary-btn" onclick="migrateAlbumCurrentMonthToCloudinary()">🔁 搬移本月舊照片</button>
+          </div>
+          <div class="album-cloudinary-status" id="cloudinary-status">Cloudinary 尚未檢查</div>
+        </div>
         <div class="photo-upload-options">
           <label style="cursor:pointer;flex:1">
             <input type="file" accept="image/*" capture="environment" multiple onchange="modalUploadPhotos(event)" style="display:none" id="modal-photo-camera">
@@ -3999,13 +4024,6 @@ import {
   limitToLast
 }
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import {
-  getStorage,
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL
-}
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCnb0mN8CFMTMPRp-2Z-7LMU2ekw6njybc",
@@ -4020,13 +4038,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const storage = getStorage(app);
 
 window._fb = {
   db,
-  storage,
   ref,
-  storageRef,
   set,
   onValue,
   get,
@@ -4040,9 +4055,7 @@ window._fb = {
   orderByChild,
   startAt,
   endAt,
-  limitToLast,
-  uploadBytes,
-  getDownloadURL
+  limitToLast
 };
 window.dispatchEvent(new Event('firebaseReady'));
 </script>
@@ -4258,15 +4271,229 @@ async function previewSurprisePhoto(e){
   img.style.display='block';
 }
 
+
+// ── Cloudinary 圖片上傳設定（Firebase 只存圖片網址）──
+const CLOUDINARY_SETTINGS_KEY = 'love_cloudinary_settings_v1';
+const CLOUDINARY_SETTINGS_DB_PATH = 'appSettings/cloudinary';
+const ALBUM_PENDING_WRITES_KEY = 'love_album_pending_writes_v1';
+
+// 想要「完全不用設定視窗」的話，可以把你的 Cloudinary 資料直接填在這裡。
+// 注意：只填 unsigned upload preset，不要放 API Secret。
+const CLOUDINARY_DEFAULT_SETTINGS = {
+  cloudName: '',
+  uploadPreset: '',
+  folder: 'love-album'
+};
+
+let cloudinarySettingsCache = null;
+let cloudinarySettingsSynced = false;
+
+function normalizeCloudinarySettings(cfg){
+  if(!cfg || !cfg.cloudName || !cfg.uploadPreset) return null;
+  return {
+    cloudName: String(cfg.cloudName).trim(),
+    uploadPreset: String(cfg.uploadPreset).trim(),
+    folder: cloudinarySafeSegment(cfg.folder || 'love-album'),
+    updatedAt: cfg.updatedAt || Date.now()
+  };
+}
+function getDefaultCloudinarySettings(){
+  return normalizeCloudinarySettings(CLOUDINARY_DEFAULT_SETTINGS);
+}
+function getLocalCloudinarySettings(){
+  try{
+    const raw = localStorage.getItem(CLOUDINARY_SETTINGS_KEY);
+    if(!raw) return null;
+    return normalizeCloudinarySettings(JSON.parse(raw));
+  }catch{
+    return null;
+  }
+}
+function saveLocalCloudinarySettings(cfg){
+  const clean = normalizeCloudinarySettings(cfg);
+  if(!clean) return null;
+  localStorage.setItem(CLOUDINARY_SETTINGS_KEY, JSON.stringify(clean));
+  cloudinarySettingsCache = clean;
+  return clean;
+}
+function getCloudinarySettings(){
+  const hardcoded = getDefaultCloudinarySettings();
+  if(hardcoded) return hardcoded;
+  if(cloudinarySettingsCache) return cloudinarySettingsCache;
+  cloudinarySettingsCache = getLocalCloudinarySettings();
+  return cloudinarySettingsCache;
+}
+function hasCloudinarySettings(){
+  return !!getCloudinarySettings();
+}
+function cloudinarySafeSegment(value){
+  return String(value||'')
+    .trim()
+    .replace(/^\/+|\/+$/g,'')
+    .replace(/[^\w\-/]+/g,'-')
+    .replace(/-{2,}/g,'-')
+    .slice(0,120);
+}
+function updateCloudinaryUiStatus(){
+  const status=document.getElementById('cloudinary-status');
+  if(!status) return;
+  const cfg=getCloudinarySettings();
+  const pendingCount=getAlbumPendingWrites().length;
+  if(cfg){
+    const folder=cfg.folder ? `，資料夾：${escapeHtml(cfg.folder)}` : '';
+    const syncText=getDefaultCloudinarySettings() ? '程式內建設定' : (window._fb ? 'Firebase 同步已開啟' : '本機設定，等待 Firebase 同步');
+    status.innerHTML=`✅ 已設定 Cloudinary：${escapeHtml(cfg.cloudName)}${folder}<br>☁️ ${syncText}${pendingCount?`<br>📦 目前有 ${pendingCount} 筆資料等待 Firebase 補同步`:''}`;
+  }else{
+    status.innerHTML='⚠️ 尚未設定 Cloudinary。新增照片前請先設定一次；設定會存到 Firebase，其他裝置之後會自動套用。';
+  }
+}
+function initCloudinarySettingsSync(){
+  if(cloudinarySettingsSynced || !window._fb) return;
+  cloudinarySettingsSynced = true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db, CLOUDINARY_SETTINGS_DB_PATH), snap=>{
+    const remote = normalizeCloudinarySettings(snap.val());
+    if(remote){
+      saveLocalCloudinarySettings(remote);
+    }else{
+      cloudinarySettingsCache = getLocalCloudinarySettings();
+    }
+    updateCloudinaryUiStatus();
+  }, err=>{
+    console.warn('Cloudinary 設定同步失敗', err);
+    cloudinarySettingsSynced = false;
+    updateCloudinaryUiStatus();
+  });
+}
+async function saveCloudinarySettingsToFirebase(cfg){
+  const clean=saveLocalCloudinarySettings(cfg);
+  if(!clean) throw new Error('Cloudinary 設定不完整');
+  if(window._fb){
+    const {db,ref,set}=window._fb;
+    await set(ref(db, CLOUDINARY_SETTINGS_DB_PATH), clean);
+    cloudinarySettingsSynced = true;
+  }
+  updateCloudinaryUiStatus();
+  return clean;
+}
+async function openCloudinarySettings(){
+  const old=getCloudinarySettings() || {};
+  const cloudName=prompt('請輸入 Cloudinary Cloud name（只要設定一次，會同步到其他裝置）', old.cloudName || '');
+  if(cloudName===null) return;
+  const uploadPreset=prompt('請輸入 Cloudinary unsigned upload preset（注意：不是 API Secret）', old.uploadPreset || '');
+  if(uploadPreset===null) return;
+  const folder=prompt('可選：Cloudinary 資料夾名稱', old.folder || 'love-album');
+  if(!cloudName.trim() || !uploadPreset.trim()){
+    alert('Cloud name 和 unsigned upload preset 都要填，照片才可以上傳到 Cloudinary。');
+    return;
+  }
+  const cfg={
+    cloudName: cloudName.trim(),
+    uploadPreset: uploadPreset.trim(),
+    folder: cloudinarySafeSegment(folder || 'love-album'),
+    updatedAt: Date.now()
+  };
+  try{
+    await saveCloudinarySettingsToFirebase(cfg);
+    alert(window._fb
+      ? 'Cloudinary 設定完成，已同步到 Firebase。其他手機或電腦打開網站後會自動套用。'
+      : 'Cloudinary 設定完成。目前 Firebase 尚未連線，先存在本機；之後可再按一次設定同步。');
+  }catch(err){
+    console.error('Cloudinary 設定儲存失敗', err);
+    saveLocalCloudinarySettings(cfg);
+    updateCloudinaryUiStatus();
+    alert('Firebase 同步失敗，但已先存在這台裝置。請確認網路後再按一次 Cloudinary 設定。');
+  }
+}
+function requireCloudinarySettings(){
+  if(hasCloudinarySettings()) return true;
+  alert('請先設定 Cloudinary，才可以新增照片。設定會同步到 Firebase，其他裝置之後不用再重設。');
+  openCloudinarySettings();
+  return hasCloudinarySettings();
+}
+window.addEventListener('firebaseReady', initCloudinarySettingsSync);
+if(window._fb) initCloudinarySettingsSync();
+async function uploadBlobToCloudinary(blob, fileName='photo.jpg', subFolder='album'){
+  const cfg=getCloudinarySettings();
+  if(!cfg) throw new Error('Cloudinary 尚未設定');
+  const form=new FormData();
+  form.append('file', blob, fileName);
+  form.append('upload_preset', cfg.uploadPreset);
+  const folderParts=[cfg.folder, subFolder].map(cloudinarySafeSegment).filter(Boolean);
+  if(folderParts.length) form.append('folder', folderParts.join('/'));
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(cfg.cloudName)}/image/upload`,{
+    method:'POST',
+    body:form
+  });
+  let data=null;
+  try{ data=await res.json(); }catch{}
+  if(!res.ok){
+    const msg=data?.error?.message || `HTTP ${res.status}`;
+    throw new Error(`Cloudinary 上傳失敗：${msg}`);
+  }
+  if(!data?.secure_url && !data?.url) throw new Error('Cloudinary 沒有回傳圖片網址');
+  return data.secure_url || data.url;
+}
+async function uploadImageFileToCloudinary(file, fileName, subFolder){
+  const blob=await compressToBlob(file, 1280, 0.82);
+  const safeName=String(fileName || file?.name || 'photo.jpg').replace(/[^\w.-]+/g,'-').slice(-90) || 'photo.jpg';
+  return uploadBlobToCloudinary(blob, safeName, subFolder);
+}
+function isDataUrlPhoto(src){
+  return typeof src==='string' && /^data:image\//i.test(src);
+}
+function dataUrlToBlob(dataUrl){
+  const [head, body] = String(dataUrl).split(',');
+  if(!head || !body) throw new Error('照片資料格式不正確');
+  const mime = (head.match(/data:([^;]+)/) || [,'image/jpeg'])[1];
+  const bin = atob(body);
+  const arr = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+  return new Blob([arr], {type:mime});
+}
+function getAlbumPendingWrites(){
+  try{
+    const rows=JSON.parse(localStorage.getItem(ALBUM_PENDING_WRITES_KEY) || '[]');
+    return Array.isArray(rows) ? rows : [];
+  }catch{
+    return [];
+  }
+}
+function setAlbumPendingWrites(rows){
+  localStorage.setItem(ALBUM_PENDING_WRITES_KEY, JSON.stringify(rows || []));
+  updateCloudinaryUiStatus();
+}
+function queueFirebaseWrite(path, value){
+  if(!path) return;
+  const rows=getAlbumPendingWrites().filter(item=>item.path!==path);
+  rows.push({path, value, createdAt:Date.now()});
+  setAlbumPendingWrites(rows);
+}
+async function flushAlbumPendingWrites(){
+  if(!window._fb) return;
+  const rows=getAlbumPendingWrites();
+  if(!rows.length){ updateCloudinaryUiStatus(); return; }
+  const {db,ref,set}=window._fb;
+  const remain=[];
+  albumSetBadge(`📦 補同步 ${rows.length} 筆...`);
+  for(const item of rows){
+    try{
+      await set(ref(db,item.path), item.value ?? null);
+    }catch(err){
+      console.warn('pending write failed', item.path, err);
+      remain.push(item);
+    }
+  }
+  setAlbumPendingWrites(remain);
+  albumSetBadge(remain.length ? `📦 待同步 ${remain.length} 筆` : '☁️ 已同步');
+}
+window.addEventListener('online', ()=>flushAlbumPendingWrites());
+
 async function uploadSurprisePhotoToStorage(){
   if(!surprisePhotoFile) return '';
-  const {storage,storageRef,uploadBytes,getDownloadURL}=window._fb;
-  if(!storage || !storageRef || !uploadBytes || !getDownloadURL) throw new Error('Firebase Storage 尚未連線');
-  const blob = await compressToBlob(surprisePhotoFile, 1280, 0.82);
-  const safeName = String(surprisePhotoFile.name || 'surprise.jpg').replace(/[^\w.-]+/g,'-').slice(-80);
-  const photoRef = storageRef(storage, `surprises/${Date.now()}-${safeName || 'surprise.jpg'}`);
-  await uploadBytes(photoRef, blob, {contentType:'image/jpeg'});
-  return await getDownloadURL(photoRef);
+  if(!requireCloudinarySettings()) throw new Error('Cloudinary 尚未設定');
+  const safeName = String(surprisePhotoFile.name || 'surprise.jpg').replace(/[^\w.-]+/g,'-').slice(-80) || 'surprise.jpg';
+  return await uploadImageFileToCloudinary(surprisePhotoFile, `${Date.now()}-${safeName}`, 'surprises');
 }
 
 async function saveSurprise(){
@@ -4277,22 +4504,33 @@ async function saveSurprise(){
     alert('請輸入文字和時間');
     return;
   }
+  if(surprisePhotoFile && !requireCloudinarySettings()) return;
 
-  if(!window._fb){
-    alert('Firebase 尚未連線');
-    return;
-  }
-
-  const {db,ref,push}=window._fb;
   try{
     const photoUrl = await uploadSurprisePhotoToStorage();
-    await push(ref(db,'loveSurprises'),{
+    const payload={
       text,
       time,
-      photo:photoUrl || surprisePhotoBase64 || '',
+      photo:photoUrl || '',
       createdAt:Date.now(),
       sent:false
-    });
+    };
+
+    if(window._fb){
+      const {db,ref,push,set}=window._fb;
+      const newRef=push(ref(db,'loveSurprises'));
+      try{
+        await set(newRef,payload);
+      }catch(err){
+        console.warn('Firebase 寫入驚喜失敗，已排入待同步', err);
+        queueFirebaseWrite(`loveSurprises/${newRef.key}`, payload);
+        alert('驚喜已暫存在本機待同步。Firebase 恢復後會補上。');
+      }
+    }else{
+      queueFirebaseWrite(`loveSurprises/local_${Date.now()}`, payload);
+      alert('Firebase 尚未連線，驚喜已暫存在本機待同步。');
+    }
+
     document.getElementById('surprise-text').value='';
     document.getElementById('surprise-time').value='';
     updateSurpriseTimeLabel();
@@ -4303,10 +4541,11 @@ async function saveSurprise(){
     preview.style.display='none';
     surprisePhotoFile=null;
     surprisePhotoBase64='';
-    alert('驚喜已發送，時間到首頁會出現 💕');
+    alert('驚喜已儲存，時間到首頁會出現 💕');
+    flushAlbumPendingWrites();
   }catch(err){
     console.error('發送驚喜失敗', err);
-    alert('發送失敗，請確認 Firebase Storage 規則允許上傳照片');
+    alert(err.message || '發送失敗，請確認 Cloudinary 設定是否正確');
   }
 }
 
@@ -4673,17 +4912,46 @@ function albumLoadMonth(y=albumYear,m=albumMonth){
 function albumInitFirebase(){
   albumInitStats();
   albumLoadMonth(albumYear, albumMonth);
+  flushAlbumPendingWrites();
 }
 
-function albumSaveDay(key,dayData){
-  if(!window._fb) return;
+function albumSaveStatsLocal(key, dayData){
+  const stat=albumBuildDayStats(dayData);
+  if(stat) albumStatsData[key]=stat;
+  else delete albumStatsData[key];
+  renderMemoriesCharts();
+  renderMemoriesTotalStats();
+  return stat;
+}
+async function albumSaveDay(key,dayData){
+  if(!key) return false;
+  const cleanData=JSON.parse(JSON.stringify(dayData || {photos:[],schedule:[],note:''}));
+  albumFirebaseData[key]=cleanData;
+  const stat=albumSaveStatsLocal(key, cleanData);
+  albumRenderCal();
+  renderMemories();
+
+  if(!window._fb){
+    queueFirebaseWrite(`albumData/${key}`, cleanData);
+    queueFirebaseWrite(`albumStats/${key}`, stat);
+    albumSetBadge(`📦 待同步 ${getAlbumPendingWrites().length} 筆`);
+    return false;
+  }
   const {db,ref,set}=window._fb;
   albumSetBadge('💾 儲存中...');
-  set(ref(db,`albumData/${key}`),dayData).then(()=>{
+  try{
+    await set(ref(db,`albumData/${key}`), cleanData);
+    await set(ref(db,`albumStats/${key}`), stat);
     albumSetBadge('☁️ 已同步');
-  }).catch(()=>{
-    albumSetBadge('❌ 同步失敗');
-  });
+    flushAlbumPendingWrites();
+    return true;
+  }catch(err){
+    console.warn('Firebase 寫入失敗，已排入待同步', err);
+    queueFirebaseWrite(`albumData/${key}`, cleanData);
+    queueFirebaseWrite(`albumStats/${key}`, stat);
+    albumSetBadge(`📦 待同步 ${getAlbumPendingWrites().length} 筆`);
+    return false;
+  }
 }
 
 function albumRenderCal(){
@@ -4759,6 +5027,7 @@ function applyModalMode(dayData){
     viewContent.classList.add('hidden');editContent.classList.remove('hidden');
     renderModalPhotosEdit(dayData.photos||[]);
     document.getElementById('modal-note').value=dayData.note||'';
+    updateCloudinaryUiStatus();
   } else {
     editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
     viewContent.classList.remove('hidden');editContent.classList.add('hidden');
@@ -4849,59 +5118,92 @@ function compressToBlob(file, maxSize=1280, quality=0.82) {
   });
 }
 async function albumUploadPhotoToStorage(file, index){
-  const {storage,storageRef,uploadBytes,getDownloadURL}=window._fb;
-  if(!storage || !storageRef || !uploadBytes || !getDownloadURL) throw new Error('Firebase Storage 尚未連線');
-  const blob = await compressToBlob(file, 1280, 0.82);
-  const safeName = String(file.name || `photo-${index}.jpg`).replace(/[^\w.-]+/g,'-').slice(-80);
-  const path = `album/${currentDayKey}/${Date.now()}-${index}-${safeName || 'photo.jpg'}`;
-  const photoRef = storageRef(storage, path);
-  await uploadBytes(photoRef, blob, {contentType:'image/jpeg'});
-  return await getDownloadURL(photoRef);
+  if(!requireCloudinarySettings()) throw new Error('Cloudinary 尚未設定');
+  const safeName = String(file.name || `photo-${index}.jpg`).replace(/[^\w.-]+/g,'-').slice(-80) || 'photo.jpg';
+  return await uploadImageFileToCloudinary(file, `${currentDayKey}-${Date.now()}-${index}-${safeName}`, `album/${currentDayKey || albumMonthId(albumYear, albumMonth)}`);
 }
 async function modalUploadPhotos(e) {
-  const files = Array.from(e.target.files);
+  const files = Array.from(e.target.files || []);
   if (!files.length) return;
-  if (!window._fb) { alert('Firebase 尚未連線'); return; }
+  if (!requireCloudinarySettings()) { e.target.value=''; return; }
 
-  const { db, ref, set, get } = window._fb;
-
-  const snap = await get(ref(db, `albumData/${currentDayKey}`));
-  const dayData = snap.val() || { photos: [], schedule: [], note: '' };
+  const dayData = JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey] || { photos: [], schedule: [], note: '' }));
   if (!Array.isArray(dayData.photos)) dayData.photos = [];
 
   const uploadArea = document.querySelector('.photo-upload-options');
+  document.getElementById('upload-loading')?.remove();
   const loadingDiv = document.createElement('div');
   loadingDiv.id = 'upload-loading';
   loadingDiv.style.cssText = 'text-align:center;padding:10px;font-size:13px;color:var(--rose);background:var(--pink-light);border-radius:10px;margin-bottom:8px;';
-  loadingDiv.textContent = `⏳ 上傳照片中 (0/${files.length})...`;
+  loadingDiv.textContent = `⏳ 上傳到 Cloudinary 中 (0/${files.length})...`;
   uploadArea.insertAdjacentElement('beforebegin', loadingDiv);
 
   let uploaded = 0;
+  let failed = 0;
   for (const file of files) {
+    if(!file.type || !file.type.startsWith('image/')){ failed++; continue; }
     try {
       const url = await albumUploadPhotoToStorage(file, uploaded);
       dayData.photos.push(url);
       uploaded++;
-      loadingDiv.textContent = `⏳ 上傳照片中 (${uploaded}/${files.length})...`;
+      loadingDiv.textContent = `⏳ 上傳到 Cloudinary 中 (${uploaded}/${files.length})...`;
+      renderModalPhotosEdit(dayData.photos);
     } catch (err) {
-      console.error('Storage 上傳失敗', err);
-      alert('有一張照片上傳失敗，請確認 Firebase Storage 規則已允許寫入');
+      failed++;
+      console.error('Cloudinary 上傳失敗', err);
+      loadingDiv.textContent = `⚠️ 有照片上傳失敗：${err.message || '請檢查 Cloudinary 設定'}`;
+      break;
     }
   }
 
-  try {
-    await set(ref(db, `albumData/${currentDayKey}`), dayData);
-    loadingDiv.textContent = '✅ 上傳完成！';
-    setTimeout(() => loadingDiv.remove(), 1500);
-    renderModalPhotosEdit(dayData.photos);
-    albumFirebaseData[currentDayKey] = dayData;
-    albumRenderCal();
-  } catch (err) {
-    loadingDiv.textContent = '❌ 儲存失敗，照片太多請減少數量或一張一張上傳';
-    console.error('Firebase 寫入失敗:', err);
+  if(uploaded){
+    await albumSaveDay(currentDayKey, dayData);
+    loadingDiv.textContent = failed ? `⚠️ 已上傳 ${uploaded} 張，${failed} 張失敗` : '✅ 上傳完成，Firebase 只存照片網址！';
+    setTimeout(() => loadingDiv.remove(), 1800);
+  }else if(!failed){
+    loadingDiv.remove();
   }
 
   e.target.value = '';
+}
+async function migrateAlbumCurrentMonthToCloudinary(){
+  if(!requireCloudinarySettings()) return;
+  const monthId=albumMonthId(albumYear,albumMonth);
+  const keys=Object.keys(albumFirebaseData).filter(key=>key.startsWith(monthId)).sort();
+  const targets=[];
+  keys.forEach(key=>{
+    const dayData=albumFirebaseData[key];
+    const photos=Array.isArray(dayData?.photos) ? dayData.photos : [];
+    photos.forEach((src,idx)=>{ if(isDataUrlPhoto(src)) targets.push({key,idx,src}); });
+  });
+  if(!targets.length){
+    alert('本月沒有需要搬移的 base64 舊照片。已經是網址的照片會保留原狀。');
+    updateCloudinaryUiStatus();
+    return;
+  }
+  if(!confirm(`本月找到 ${targets.length} 張舊照片。要搬到 Cloudinary，並把 Firebase 裡的照片資料改成網址嗎？`)) return;
+
+  let done=0;
+  const status=document.getElementById('cloudinary-status');
+  try{
+    for(const item of targets){
+      const dayData=JSON.parse(JSON.stringify(albumFirebaseData[item.key] || {photos:[],schedule:[],note:''}));
+      const blob=dataUrlToBlob(item.src);
+      const url=await uploadBlobToCloudinary(blob, `${item.key}-${Date.now()}-${item.idx}.jpg`, `album/${item.key}`);
+      dayData.photos[item.idx]=url;
+      await albumSaveDay(item.key, dayData);
+      done++;
+      if(status) status.textContent=`🔁 搬移中 ${done}/${targets.length}...`;
+      if(currentDayKey===item.key) renderModalPhotosEdit(dayData.photos);
+    }
+    if(status) status.textContent=`✅ 已搬移 ${done} 張舊照片到 Cloudinary`;
+    alert(`搬移完成：${done} 張照片已改成 Cloudinary 網址。`);
+  }catch(err){
+    console.error('Cloudinary 搬移失敗', err);
+    if(status) status.textContent=`⚠️ 搬移中斷：已完成 ${done}/${targets.length}。${err.message || ''}`;
+    alert(`搬移中斷：已完成 ${done}/${targets.length}。請確認 Cloudinary 設定後再試。`);
+  }
+  updateCloudinaryUiStatus();
 }
 
 function compressToBase64(file, maxSize, quality) {
@@ -6262,11 +6564,29 @@ function cpblGameStart(game){
   const dt = new Date(`${game.date}T${game.time}:00+08:00`);
   return isNaN(dt) ? null : dt;
 }
+function cpblTodayStartFromTime(time){
+  if(!time) return null;
+  const dt = new Date(`${cpblTodayYMD()}T${time}:00+08:00`);
+  return isNaN(dt) ? null : dt;
+}
+function cpblIsPlayableCarryoverGame(game){
+  if(!game) return false;
+  const status = String(game.status || '').trim();
+  if(!/保留/.test(status)) return false;
+  if(/取消|已結束|比賽結束|結束|進行中|比賽中/.test(status)) return false;
+  // 官方今天賽程有時會把「別天保留、今天續賽」仍標成保留，甚至保留原日期。
+  // 所以保留賽改用「今天 + 開賽時間」判斷；只要今天還沒到開賽時間，就允許預測。
+  const todayStart = cpblTodayStartFromTime(game.time);
+  return todayStart ? Date.now() < todayStart.getTime() : true;
+}
 function cpblIsLocked(game){
   if(!game) return true;
   if(typeof cpblIsFinalGame==='function' && cpblIsFinalGame(game)) return true;
-  if(/已結束|進行中|比賽中|取消|延賽|保留/.test(game.status||'')) return true;
-  const start = cpblGameStart(game);
+  const status = String(game.status || '').trim();
+  if(/取消|已結束|比賽結束|結束|進行中|比賽中/.test(status)) return true;
+  if(/延賽/.test(status)) return true;
+  if(/保留/.test(status) && !cpblIsPlayableCarryoverGame(game)) return true;
+  const start = cpblIsPlayableCarryoverGame(game) ? cpblTodayStartFromTime(game.time) : cpblGameStart(game);
   return !!(start && Date.now() >= start.getTime());
 }
 function cpblWinner(game){
@@ -7416,6 +7736,7 @@ function cpblStatusText(game){
   const status = String(game?.status || '').trim();
   if(cpblIsFinalGame(game)) return '比賽結束';
   if(/進行中|比賽中/.test(status)) return '比賽進行中';
+  if(cpblIsPlayableCarryoverGame(game)) return game?.time ? `保留補賽 ${game.time}` : '保留補賽';
   if(/延賽/.test(status)) return '延賽';
   if(/取消/.test(status)) return '取消';
   if(/保留/.test(status)) return '保留';
@@ -7425,6 +7746,7 @@ function cpblStatusText(game){
 function cpblGameMetaLine(game){
   const status = String(game?.status || '').trim();
   if(cpblIsFinalGame(game)) return '比賽結束';
+  if(cpblIsPlayableCarryoverGame(game)) return cpblStatusText(game);
   if(/進行中|比賽中|已結束|比賽結束|結束|取消|延賽|保留/.test(status)) return cpblStatusText(game);
   return game?.time || '時間待公佈';
 }
@@ -11814,6 +12136,7 @@ function cpblProcessPostponedGames(games){
   (games||[]).forEach(game=>{
     const status=String(game?.status||'');
     const hasScore = game?.awayScore!=null && game?.homeScore!=null;
+    if(cpblIsPlayableCarryoverGame(game)) return;
     if(hasScore && !/保留|取消/.test(status)) return;
     if(!/延賽|保留|取消/.test(status)) return;
     const key=cpblPostponedGameKey(game);
@@ -11846,7 +12169,7 @@ function cpblProcessPostponedGames(games){
   });
   (games||[]).forEach(game=>{
     const hasScore = game?.awayScore!=null && game?.homeScore!=null;
-    if(/延賽|保留|取消/.test(String(game?.status||'')) && !hasScore) return;
+    if(/延賽|保留|取消/.test(String(game?.status||'')) && !hasScore && !cpblIsPlayableCarryoverGame(game)) return;
     const key=cpblPostponedGameKey(game);
     const carry=cpblgData.postponed[key];
     if(!carry || carry.sourceGameId===game.id) return;
@@ -11894,7 +12217,9 @@ function cpblRenderGames(){
     });
     if(!noteBits.length && !cpblgPlayer) noteBits.push('先選擇你是誰，才會記錄預測。');
     if(locked && !winner && !isPostponedLike) noteBits.push('這場已經進行中或結束，暫時不能再猜。');
-    if(/延賽|保留/.test(String(game.status||''))){
+    if(cpblIsPlayableCarryoverGame(game)){
+      noteBits.push('這場是保留補賽／續賽，今天開賽前可以預測。');
+    }else if(/延賽|保留/.test(String(game.status||''))){
       noteBits.push(cpblWasStartedBeforePostpone(game)?'比賽中斷後延賽，預測會保留到補賽日。':'尚未開打就延賽，本場預測不列入。');
     }
     if(pick?.stake && pick?.odds){

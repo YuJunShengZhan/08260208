@@ -3903,7 +3903,8 @@ onclick="hideSpecialForToday()">
     </div>
     <div id="pd-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center"></div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--text-muted)">
-      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pink);margin-right:4px"></span>生理期</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pink);margin-right:4px"></span>已確認</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ffe8ee;border:1px dashed var(--pink);margin-right:4px;box-sizing:border-box"></span>預估</span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff9800;margin-right:4px"></span>排卵日</span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fce8ec;border:1px solid var(--pink-soft);margin-right:4px"></span>易孕期</span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e3f2fd;border:1px solid #90caf9;margin-right:4px"></span>安全期</span>
@@ -9841,11 +9842,12 @@ function pdGetSeedCycles(){
     const hasSavedEnd = !!(savedEnd && !Number.isNaN(savedEnd.getTime()));
     const isOpen = item.completed!==true && !hasSavedEnd;
     const todayDate = today();
-    const pEnd = hasSavedEnd ? savedEnd : (isOpen && todayDate.getTime()>=pStart.getTime() ? todayDate : new Date(pStart.getTime() + (dur - 1) * 864e5));
+    const estimatedEnd = new Date(pStart.getTime() + (dur - 1) * 864e5);
+    const pEnd = hasSavedEnd ? savedEnd : (isOpen && todayDate.getTime()>=pStart.getTime() ? todayDate : estimatedEnd);
     const ovulate = new Date(pStart.getTime() + Math.max(0, cycle - 14) * 864e5);
     const fertileStart = new Date(ovulate.getTime() - 5 * 864e5);
     const fertileEnd = new Date(ovulate.getTime() + 864e5);
-    return {pStart,pEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:item.start,completed:item.completed===true,isOpen};
+    return {pStart,pEnd,estimatedEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:item.start,completed:item.completed===true,isOpen};
   }).filter(Boolean);
   if(cycles.length) return cycles;
   if(!pdSettings.start) return [];
@@ -9857,8 +9859,9 @@ function pdGetSeedCycles(){
   const hasSavedEnd = savedEnd && !Number.isNaN(savedEnd.getTime());
   const isOpen = pdSettings.completed!==true && !hasSavedEnd;
   const now = today();
-  const pEnd = hasSavedEnd ? savedEnd : (isOpen && now.getTime()>=base.getTime() ? now : new Date(base.getTime()+(dur-1)*864e5));
-  return [{pStart:base,pEnd,ovulate:new Date(base.getTime()+Math.max(0,cycle-14)*864e5),fertileStart:new Date(base.getTime()+Math.max(0,cycle-14)*864e5-5*864e5),fertileEnd:new Date(base.getTime()+Math.max(0,cycle-14)*864e5+864e5),cycle,dur,sourceStart:pdSettings.start,completed:pdSettings.completed===true,isOpen}];
+  const estimatedEnd = new Date(base.getTime()+(dur-1)*864e5);
+  const pEnd = hasSavedEnd ? savedEnd : (isOpen && now.getTime()>=base.getTime() ? now : estimatedEnd);
+  return [{pStart:base,pEnd,estimatedEnd,ovulate:new Date(base.getTime()+Math.max(0,cycle-14)*864e5),fertileStart:new Date(base.getTime()+Math.max(0,cycle-14)*864e5-5*864e5),fertileEnd:new Date(base.getTime()+Math.max(0,cycle-14)*864e5+864e5),cycle,dur,sourceStart:pdSettings.start,completed:pdSettings.completed===true,isOpen}];
 }
 function pdExpandForecast(count=14){
   const seeds = pdGetSeedCycles();
@@ -9885,6 +9888,7 @@ function pdDayType(dateObj,cycles){
   const t=dateObj.getTime();
   for(const c of cycles){
     if(t>=c.pStart.getTime()&&t<=c.pEnd.getTime()) return 'period';
+    if(c.isOpen && c.estimatedEnd && t>c.pEnd.getTime() && t<=c.estimatedEnd.getTime()) return 'period-estimated';
     if(t===c.ovulate.getTime()) return 'ovulate';
     if(t>=c.fertileStart.getTime()&&t<=c.fertileEnd.getTime()) return 'fertile';
   }
@@ -9905,7 +9909,7 @@ function pdRefresh(){
   let bannerEmoji='🌿',bannerTitle='安全期',bannerSub='';
   for(const c of cycles){
     const pStartMs=c.pStart.getTime(),pEndMs=c.pEnd.getTime(),tMs=t.getTime();
-    if(tMs>=pStartMs&&tMs<=pEndMs){const day=Math.floor((tMs-pStartMs)/864e5)+1;bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，結束時請按「設定月經結束日」`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;break;}
+    if(tMs>=pStartMs&&tMs<=pEndMs){const day=Math.floor((tMs-pStartMs)/864e5)+1;bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，月曆淡紅色是預估，結束時請按「設定月經結束日」確認`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;break;}
     if(tMs===c.ovulate.getTime()){bannerEmoji='🥚';bannerTitle='排卵日';bannerSub='今天是排卵日，易孕期！';break;}
     if(tMs>=c.fertileStart.getTime()&&tMs<=c.fertileEnd.getTime()){bannerEmoji='🌺';bannerTitle='易孕期';bannerSub=`距離排卵日還有 ${Math.ceil((c.ovulate.getTime()-tMs)/864e5)} 天`;break;}
     if(tMs<c.pStart.getTime()){const daysTo=Math.ceil((c.pStart.getTime()-tMs)/864e5);if(daysTo<=7){bannerEmoji='😮';bannerTitle='快來了';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}else{bannerEmoji='🌿';bannerTitle='安全期';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}break;}
@@ -9925,7 +9929,7 @@ function pdRefresh(){
     const isNow=t.getTime()>=c.pStart.getTime()&&t.getTime()<=c.pEnd.getTime();
     upHTML+=`<div style="border-left:3px solid var(--pink);padding:10px 12px;margin-bottom:10px;border-radius:0 10px 10px 0;background:var(--pink-light)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:13px;font-weight:500;color:var(--rose)">🩸 ${fmt(c.pStart)} ～ ${c.isOpen?'進行中':fmt(c.pEnd)}</span>
+        <span style="font-size:13px;font-weight:500;color:var(--rose)">🩸 ${fmt(c.pStart)} ～ ${c.isOpen?`預估 ${fmt(c.estimatedEnd||c.pEnd)}`:fmt(c.pEnd)}</span>
         <span style="font-size:11px;background:${isNow?'var(--pink)':'var(--white)'};color:${isNow?'white':'var(--text-muted)'};padding:2px 8px;border-radius:20px;border:1px solid var(--card-border)">${isNow?'進行中':daysTo<=0?'今天':'還有 '+daysTo+' 天'}</span>
       </div>
       <div style="font-size:12px;color:var(--text-muted)">🥚 排卵日 ${fmt(c.ovulate)} &nbsp;·&nbsp; 🌺 易孕期 ${fmt(c.fertileStart)}～${fmt(c.fertileEnd)}</div>
@@ -9947,7 +9951,7 @@ function pdRenderCal(){
     const date=new Date(y,m,d);
     const type=pdDayType(date,cycles);
     const isToday=date.getTime()===t.getTime();
-    const colors={period:'background:var(--pink);color:white;',ovulate:'background:#ff9800;color:white;',fertile:'background:#fce8ec;color:var(--rose);border:1px solid var(--pink-soft);',safe:'background:#e3f2fd;color:#1565c0;'};
+    const colors={period:'background:var(--pink);color:white;', 'period-estimated':'background:#ffe8ee;color:var(--rose);border:1px dashed var(--pink);', ovulate:'background:#ff9800;color:white;',fertile:'background:#fce8ec;color:var(--rose);border:1px solid var(--pink-soft);',safe:'background:#e3f2fd;color:#1565c0;'};
     html+=`<div style="padding:5px 2px;border-radius:8px;font-size:13px;${colors[type]||''}${isToday?'outline:2px solid var(--pink);outline-offset:1px;font-weight:700;':''}">${d}</div>`;
   }
   document.getElementById('pd-cal-grid').innerHTML=html;

@@ -6659,221 +6659,6 @@ function cpblStatusText(game){
   if(game.status) return game.status;
   return cpblIsLocked(game) ? '已鎖定' : '未開始';
 }
-function cpblSetStatus(msg){const el=document.getElementById('cpblg-status'); if(el) el.innerHTML=msg;}
-function cpblRenderGames(){
-  const wrap=document.getElementById('cpblg-games');
-  if(!wrap) return;
-  const badge=document.getElementById('cpblg-date-badge');
-  if(badge){
-    const p=cpblDateParts();
-    badge.textContent = `${p.y}/${cpblPad(p.m)}/${cpblPad(p.d)} 今日賽程`;
-  }
-  if(!cpblgGames.length){
-    wrap.innerHTML = `<div class="cpblg-empty">今日無比賽</div>`;
-    return;
-  }
-  wrap.innerHTML = cpblgGames.map(game=>{
-    const locked=cpblIsLocked(game);
-    const pick=cpblgData.picks?.[game.id]?.[cpblgPlayer];
-    const winner=cpblWinner(game);
-    const resultNote = winner && winner!=='和局' && pick?.checked ? (pick.correct?`<span class="cpblg-ok">猜對了！</span>`:`<span class="cpblg-bad">猜錯了，勝隊是 ${cpblEscape(winner)}</span>`) : (winner==='和局' ? '和局不列入勝率' : '');
-    const score = game.awayScore!=null && game.homeScore!=null ? `<div class="cpblg-score">${game.awayScore} : ${game.homeScore}</div>` : `<div class="cpblg-vs">VS</div>`;
-    const noteBits=[];
-    const picksForGame = cpblgData.picks?.[game.id] || {};
-    ['聖展','予君'].forEach(name=>{
-      const playerPick = picksForGame[name];
-      if(playerPick?.team) noteBits.push(`${name} 已選 ${cpblEscape(playerPick.team)}`);
-    });
-    if(!noteBits.length && !cpblgPlayer) noteBits.push('先選「我是聖展」或「我是予君」再猜。');
-    if(locked) noteBits.push('這場已開賽或已有結果，不能再修改。');
-    if(resultNote) noteBits.push(resultNote);
-    const btn=(team)=>{
-      const chosen=pick?.team===team;
-      let cls='cpblg-btn cpblg-pick'+(chosen?' chosen':'');
-      if(pick?.checked && chosen) cls += pick.correct ? ' correct' : ' wrong';
-      return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">猜 ${cpblEscape(team)}</button>`;
-    };
-    return `<div class="cpblg-game">
-      <div class="cpblg-top"><div class="cpblg-no">GAME ${cpblEscape(game.no)}</div><div class="cpblg-meta">${cpblEscape(cpblStatusText(game))}<br>${cpblEscape(game.field||'')} ${cpblEscape(game.time||'')}</div></div>
-      <div class="cpblg-match"><div class="cpblg-team"><span class="cpblg-side">客隊</span>${cpblEscape(game.away)}</div>${score}<div class="cpblg-team"><span class="cpblg-side">主隊</span>${cpblEscape(game.home)}</div></div>
-      <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
-      <div class="cpblg-note">${noteBits.join('<br>') || '開賽前可以修改預測。'}</div>
-    </div>`;
-  }).join('');
-}
-
-function cpblPick(gameId, team){
-  if(!cpblgPlayer){alert('先選你是聖展還是予君');return;}
-  const game=cpblgGames.find(g=>g.id===gameId);
-  if(!game){alert('找不到這場比賽，請重新抓賽程');return;}
-  if(cpblIsLocked(game)){alert('這場已經開始或結束，不能再預測');return;}
-  cpblgData.picks[gameId] = cpblgData.picks[gameId] || {};
-  const old = cpblgData.picks[gameId][cpblgPlayer];
-  if(old?.checked){alert('這場已經結算，不能修改');return;}
-  cpblgData.picks[gameId][cpblgPlayer] = {team, checked:false, correct:null, pickedAt:Date.now()};
-  cpblSaveData(true);
-}
-
-function cpblResolveFinishedGames(push=true){
-  if(!cpblgGames.length) return;
-  let changed=false;
-  cpblgGames.forEach(game=>{
-    const winner=cpblWinner(game);
-    if(!winner || winner==='和局') return;
-    const gp=cpblgData.picks?.[game.id] || {};
-    ['聖展','予君'].forEach(name=>{
-      const p=gp[name];
-      if(!p || p.checked) return;
-      p.checked=true;
-      p.correct=p.team===winner;
-      cpblgData.players[name]=cpblgData.players[name]||{correct:0,total:0};
-      cpblgData.players[name].total += 1;
-      if(p.correct) cpblgData.players[name].correct += 1;
-      changed=true;
-    });
-  });
-  if(changed) cpblSaveData(push);
-}
-
-async function cpblRefreshGames(showAlert=false){
-  cpblgLoadedOnce = true;
-  cpblToggleManual(false);
-  cpblSetStatus('正在抓今日賽程...');
-  // 中職官網／en.cpbl.com.tw 的賽程頁是前端渲染（Vue）的頁面，
-  // 直接抓回來的原始 HTML 只有 {{ item.Text }} 這種樣板字串，沒有真正的比賽資料，
-  // 所以拿掉這兩個來源，只留下有伺服器端渲染、真的能抓到文字的「中職進階數據」。
-  const sources = [
-    {name:'中職進階數據賽程', url:'https://stats.cpbl.com.tw/schedule'}
-  ];
-  // 瀏覽器直連一定會被 CORS 擋掉（中職網站沒開放跨網域），所以接力試幾個免費代理。
-  // 這些代理本來就不保證穩定（會被限流、被官網的防爬蟲擋、或要求白名單網域），
-  // 所以多放幾條線路，並把每一條真正失敗的原因都記下來，方便排查。
-  const proxies = [
-    {name:'直連', build:u=>u},
-    {name:'allorigins', build:u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`},
-    {name:'codetabs', build:u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`},
-    {name:'corsproxy.io', build:u=>`https://corsproxy.io/?url=${encodeURIComponent(u)}`},
-    {name:'r.jina.ai', build:u=>`https://r.jina.ai/${u}`}
-  ];
-  const attempts = [];
-  for(const source of sources){
-    for(const proxy of proxies){
-      const url = proxy.build(source.url);
-      try{
-        const raw = await cpblFetchText(url, 9000);
-        const games = cpblParseSchedule(raw, source.name);
-        if(games.length){
-          cpblgGames = games;
-          cpblResolveFinishedGames(true);
-          cpblRenderStats();
-          cpblRenderGames();
-          const now = cpblTaipeiNow();
-          cpblSetStatus(`已載入 ${games.length} 場賽程。<div class="cpblg-source-row"><span class="cpblg-pill">來源：${cpblEscape(source.name)}</span><span class="cpblg-pill">線路：${cpblEscape(proxy.name)}</span><span class="cpblg-pill">更新：${cpblPad(now.getHours())}:${cpblPad(now.getMinutes())}</span></div>`);
-          return;
-        }
-        attempts.push(`${proxy.name}：有抓到頁面，但沒解析到今天的一軍賽程`);
-      }catch(e){
-        attempts.push(`${proxy.name}：${e?.message || String(e)}`);
-      }
-    }
-  }
-  cpblgGames=[];
-  cpblRenderGames();
-  const detailRows = attempts.map(a=>`<div class="cpblg-small">・${cpblEscape(a)}</div>`).join('');
-  cpblSetStatus(cpblStatusNoGames ? cpblStatusNoGames() : '今日無比賽');
-  if(showAlert) console.warn('CPBL schedule fetch failed:', attempts);
-}
-
-function cpblFetchText(url, timeoutMs=9000){
-  return new Promise((resolve,reject)=>{
-    const ctrl = new AbortController();
-    const timer=setTimeout(()=>{ctrl.abort(); reject(new Error('讀取逾時'));}, timeoutMs);
-    fetch(url,{cache:'no-store',signal:ctrl.signal}).then(r=>{
-      if(!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.text();
-    }).then(t=>{clearTimeout(timer); resolve(t);}).catch(e=>{clearTimeout(timer); reject(e);});
-  });
-}
-
-function cpblHtmlToText(raw){
-  let text=String(raw||'');
-  try{
-    const doc=new DOMParser().parseFromString(text,'text/html');
-    doc.querySelectorAll('script,style,svg,noscript,template').forEach(el=>el.remove());
-    text=(doc.body?.innerText || doc.body?.textContent || text);
-  }catch(e){}
-  return text.replace(/&nbsp;/g,' ').replace(/\u00a0/g,' ').replace(/\r/g,'\n').replace(/[ \t]+/g,' ').replace(/\n{2,}/g,'\n').trim();
-}
-function cpblParseSchedule(raw, sourceName=''){
-  const ymd=cpblTodayYMD();
-  const {m,d}=cpblDateParts(ymd);
-  const text=cpblHtmlToText(raw);
-  let lines=text.split(/\n+/).map(l=>l.trim()).filter(Boolean)
-    .filter(l=>!l.startsWith('.css-') && !l.includes('{') && !/^@/.test(l));
-  const dateReg = new RegExp(`^${m}月${d}日(?:,?星期|$)`);
-  let start=lines.findIndex(l=>dateReg.test(l));
-  if(start<0){
-    const compact=text.replace(/\s+/g,' ');
-    const blockMatch=compact.match(new RegExp(`${m}月${d}日,?星期[一二三四五六日].{0,30}?共\\s*\\d+\\s*場([\\s\\S]*?)(?=\\d+月\\d+日,?星期|## 第|社群連結|快速連結)`));
-    if(blockMatch) lines=blockMatch[0].split(/\s+/).filter(Boolean), start=0;
-  }
-  if(start<0) return [];
-  let end=lines.length;
-  for(let i=start+1;i<lines.length;i++){
-    if(/^\d{1,2}月\d{1,2}日(?:,?星期|$)/.test(lines[i]) || /^第\s*\d+\s*週/.test(lines[i])){end=i;break;}
-  }
-  const block=lines.slice(start,end);
-  const games=[];
-  for(let i=0;i<block.length;i++){
-    const gm=block[i].match(/^GAME\s*(\d+)\s*(.*)$/i);
-    if(!gm) continue;
-    let j=i+1;
-    while(j<block.length && !/^GAME\s*\d+/i.test(block[j]) && !/^\d{1,2}月\d{1,2}日/.test(block[j])) j++;
-    const seg=block.slice(i,j);
-    const no=gm[1];
-    const statusRaw=(gm[2]||seg.join(' '));
-    let status='未開始';
-    if(/取消/.test(statusRaw)) status='取消';
-    else if(/延賽/.test(statusRaw)) status='延賽';
-    else if(/保留/.test(statusRaw)) status='保留';
-    else if(/已結束|比賽結束|結束/.test(statusRaw)) status='已結束';
-    else if(/進行中|比賽中|暫停/.test(statusRaw)) status='進行中';
-    else if(/先發|未開始|vs/i.test(statusRaw)) status='未開始';
-
-    const teamList=[];
-    seg.forEach(l=>{
-      const t=cpblNormalizeTeam(l);
-      if(t && !teamList.includes(t)) teamList.push(t);
-    });
-    if(teamList.length<2) continue;
-    const away=teamList[0], home=teamList[1];
-    const scoreLine=seg.find(l=>/^\d+\s*[:：]\s*\d+$/.test(l));
-    let awayScore=null, homeScore=null;
-    if(scoreLine){
-      const sm=scoreLine.match(/(\d+)\s*[:：]\s*(\d+)/);
-      awayScore=Number(sm[1]); homeScore=Number(sm[2]);
-    }
-    const rawTime=seg.find(l=>/^\d{1,2}:\d{2}$/.test(l));
-    const time=cpblNormalizeTime(rawTime);
-    const field=seg.find(l=>CPBLG_FIELDS.includes(l)) || '';
-    games.push({
-      id:`${ymd}-A-${no}`,
-      date:ymd,
-      no,
-      away,
-      home,
-      field,
-      time,
-      status,
-      awayScore,
-      homeScore,
-      source:sourceName
-    });
-    i=j-1;
-  }
-  return games.filter((g,idx,arr)=>arr.findIndex(x=>x.id===g.id)===idx).sort((a,b)=>Number(a.no)-Number(b.no));
-}
-
 function cpblToggleManual(open){
   const box=document.getElementById('cpblg-manual');
   if(box) box.classList.toggle('open', !!open);
@@ -12141,8 +11926,9 @@ function cpblStatusLoaded(gamesCount){
 function cpblStatusNoGames(){
   return `<div class="cpblg-status-line"><div class="cpblg-status-main">今日無比賽</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
 }
-function cpblStatusError(){
-  return cpblStatusNoGames();
+function cpblStatusError(message){
+  const msg = message || '今日無比賽';
+  return `<div class="cpblg-status-line"><div class="cpblg-status-main">${cpblEscape(msg)}</div><div class="cpblg-status-action"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshGames(true)">重新載入</button></div></div>`;
 }
 function cpblPostponedGameKey(game){
   return `${String(game?.no||'')}|${cpblNormalizeTeam(game?.away)}|${cpblNormalizeTeam(game?.home)}`;
@@ -12301,7 +12087,7 @@ async function cpblRefreshGames(showAlert=false){
     cpblgGames = [];
     cpblRenderGames();
     cpblRenderHistory();
-    cpblSetStatus(cpblStatusNoGames());
+    cpblSetStatus(cpblStatusError(`今天賽程暫時抓不到：${err?.message || String(err)}`));
     if(showAlert) console.warn('CPBL schedule unavailable:', err);
   }
 }

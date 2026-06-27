@@ -6539,6 +6539,18 @@ window.addEventListener('firebaseReady', cpblInitFirebase);
 function cpblPad(n){return String(n).padStart(2,'0');}
 function cpblTaipeiNow(){return new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Taipei'}));}
 function cpblTodayYMD(){const d=cpblTaipeiNow();return `${d.getFullYear()}-${cpblPad(d.getMonth()+1)}-${cpblPad(d.getDate())}`;}
+function cpblNormalizeTodayGames(games){
+  const today = cpblTodayYMD();
+  return (Array.isArray(games) ? games : []).map((game, idx)=>{
+    const clean = Object.assign({}, game || {});
+    clean.listedDate = today;
+    if(!clean.date || cpblIsCarryoverLikeGame(clean)) clean.date = today;
+    if(!clean.id){
+      clean.id = `${today}-G-${clean.no || idx + 1}`;
+    }
+    return clean;
+  });
+}
 function cpblDateParts(ymd=cpblTodayYMD()){const [y,m,d]=ymd.split('-').map(Number);return {y,m,d};}
 function cpblEscape(s){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
 function cpblNormalizeTeam(s){
@@ -6569,25 +6581,41 @@ function cpblTodayStartFromTime(time){
   const dt = new Date(`${cpblTodayYMD()}T${time}:00+08:00`);
   return isNaN(dt) ? null : dt;
 }
+function cpblIsCarryoverLikeGame(game){
+  const status = String(game?.status || '').trim();
+  const note = String(game?.note || game?.remark || game?.memo || '').trim();
+  const text = `${status} ${note}`;
+  return /保留|續賽|補賽|補行/.test(text) || game?.carryover===true || game?.isCarryover===true;
+}
 function cpblIsPlayableCarryoverGame(game){
   if(!game) return false;
   const status = String(game.status || '').trim();
-  if(!/保留/.test(status)) return false;
+  const hasScore = game.awayScore!=null && game.homeScore!=null;
+  if(!cpblIsCarryoverLikeGame(game)) return false;
   if(/取消|已結束|比賽結束|結束|進行中|比賽中/.test(status)) return false;
-  // 官方今天賽程有時會把「別天保留、今天續賽」仍標成保留，甚至保留原日期。
-  // 所以保留賽改用「今天 + 開賽時間」判斷；只要今天還沒到開賽時間，就允許預測。
-  const todayStart = cpblTodayStartFromTime(game.time);
-  return todayStart ? Date.now() < todayStart.getTime() : true;
+  if(hasScore && typeof cpblIsFinalGame==='function' && cpblIsFinalGame(game)) return false;
+  // 今日賽程若是「別天保留過來的續賽／補賽」，官方狀態常會一直顯示保留，
+  // 甚至保留原本日期。這種情況只要尚未進行中、尚未結束、沒有取消，就允許開放預測。
+  return true;
 }
 function cpblIsLocked(game){
   if(!game) return true;
   if(typeof cpblIsFinalGame==='function' && cpblIsFinalGame(game)) return true;
   const status = String(game.status || '').trim();
   if(/取消|已結束|比賽結束|結束|進行中|比賽中/.test(status)) return true;
+
+  // 保留補賽／續賽：不要因為「原始日期已過」或「狀態文字含保留」就鎖死。
+  if(cpblIsPlayableCarryoverGame(game)) return false;
+
+  // 純延賽、取消不開放；但補賽/續賽文字會被上面放行。
   if(/延賽/.test(status)) return true;
-  if(/保留/.test(status) && !cpblIsPlayableCarryoverGame(game)) return true;
-  const start = cpblIsPlayableCarryoverGame(game) ? cpblTodayStartFromTime(game.time) : cpblGameStart(game);
-  return !!(start && Date.now() >= start.getTime());
+
+  const today = cpblTodayYMD();
+  const listedToday = game.listedDate === today || game.scheduleDate === today || game.date === today || !game.date;
+  const dateForLock = listedToday ? today : game.date;
+  if(!dateForLock || !game.time) return false;
+  const start = new Date(`${dateForLock}T${game.time}:00+08:00`);
+  return !!(!isNaN(start) && Date.now() >= start.getTime());
 }
 function cpblWinner(game){
   if(!game || game.awayScore==null || game.homeScore==null) return '';
@@ -7654,7 +7682,7 @@ async function cpblRefreshGames(showAlert=false){
   cpblSetStatus('正在抓今日賽程...');
   try{
     const data = await cpblFetchLocalSchedule();
-    const games = Array.isArray(data.games) ? data.games : [];
+    const games = cpblNormalizeTodayGames(Array.isArray(data.games) ? data.games : []);
     if(!games.length) throw new Error('本機助手沒有回傳今天賽程');
     cpblgGames = games;
     cpblResolveFinishedGames(true);
@@ -7699,7 +7727,7 @@ async function cpblRefreshGames(showAlert=false){
   cpblSetStatus('正在抓今日賽程...');
   try{
     const result = await cpblFetchUnifiedSchedule();
-    const games = Array.isArray(result.data.games) ? result.data.games : [];
+    const games = cpblNormalizeTodayGames(Array.isArray(result.data.games) ? result.data.games : []);
     if(!games.length) throw new Error('今天沒有抓到賽程');
     cpblgGames = games;
     cpblResolveFinishedGames(true);
@@ -12218,7 +12246,7 @@ function cpblRenderGames(){
     if(!noteBits.length && !cpblgPlayer) noteBits.push('先選擇你是誰，才會記錄預測。');
     if(locked && !winner && !isPostponedLike) noteBits.push('這場已經進行中或結束，暫時不能再猜。');
     if(cpblIsPlayableCarryoverGame(game)){
-      noteBits.push('這場是保留補賽／續賽，今天開賽前可以預測。');
+      noteBits.push('這場是保留補賽／續賽；只要尚未顯示進行中、結束或取消，就可以預測。');
     }else if(/延賽|保留/.test(String(game.status||''))){
       noteBits.push(cpblWasStartedBeforePostpone(game)?'比賽中斷後延賽，預測會保留到補賽日。':'尚未開打就延賽，本場預測不列入。');
     }
@@ -12255,7 +12283,7 @@ async function cpblRefreshGames(showAlert=false){
   cpblSetStatus('正在抓今日賽程...');
   try{
     const result = await cpblFetchUnifiedSchedule();
-    const games = Array.isArray(result?.data?.games) ? result.data.games : [];
+    const games = cpblNormalizeTodayGames(Array.isArray(result?.data?.games) ? result.data.games : []);
     cpblProcessPostponedGames(games);
     cpblgGames = games;
     if(games.length){

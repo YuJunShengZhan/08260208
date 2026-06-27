@@ -6973,6 +6973,7 @@ function cpblPick(gameId, team){
   eco.coins -= diff;
   cpblgData.picks[gameId][cpblgPlayer] = {team, stake, odds:pickOdds, oddsMarket:stake?'不讓分':'', oddsLockedAt:stake?Date.now():0, checked:false, correct:null, pickedAt:Date.now()};
   cpblSaveData(true);
+  cpblSyncPredictionNow(gameId, cpblgPlayer);
   cpblRenderEconomy();
 }
 
@@ -11477,6 +11478,16 @@ function cpblAwardCoins(player, amount){
   if(!player || !amount) return;
   const eco=cpblEnsureEconomy(player);
   eco.coins += amount;
+}
+function cpblSyncPredictionNow(gameId, player){
+  if(!window._fb || !gameId || !player) return;
+  const {db,ref,update}=window._fb;
+  const pick = cpblgData.picks?.[gameId]?.[player] || null;
+  const eco = cpblgData.economy?.[player] || null;
+  const changes = {updatedAt:Date.now()};
+  changes[`picks/${gameId}/${player}`] = pick;
+  if(eco) changes[`economy/${player}`] = eco;
+  update(ref(db,'cpblGuess'),changes).catch(()=>{});
 }
 function cpblEquippedLabel(player){
   const eco=cpblEnsureEconomy(player||cpblgPlayer||'\u8056\u5c55');

@@ -123,8 +123,11 @@ function parseSchedule(raw, ymd) {
     }
 
     const field = seg.find((line) => FIELDS.includes(line)) || '';
-    const status = seg.find((line) => STATUS_WORDS.includes(line)) || '未開始';
+    let status = seg.find((line) => STATUS_WORDS.includes(line)) || '未開始';
     const timeLine = seg.find((line) => /^\d{1,2}:\d{2}$/.test(line)) || '';
+    if (awayScore !== null && homeScore !== null && !['保留', '取消'].includes(status)) {
+      status = '已結束';
+    }
 
     if (teams.length >= 2 && no) {
       games.push({

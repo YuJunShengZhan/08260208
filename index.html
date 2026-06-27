@@ -6263,6 +6263,7 @@ function cpblGameStart(game){
 }
 function cpblIsLocked(game){
   if(!game) return true;
+  if(typeof cpblIsFinalGame==='function' && cpblIsFinalGame(game)) return true;
   if(/已結束|進行中|比賽中|取消|延賽|保留/.test(game.status||'')) return true;
   const start = cpblGameStart(game);
   return !!(start && Date.now() >= start.getTime());
@@ -7396,7 +7397,9 @@ async function cpblRefreshGames(showAlert=false){
 
 function cpblIsFinalGame(game){
   const status = String(game?.status || '').trim();
-  return /已結束|比賽結束|結束/.test(status) && !/取消|延賽|保留/.test(status);
+  if(/取消|延賽|保留|進行中|比賽中/.test(status)) return false;
+  if(/已結束|比賽結束|結束/.test(status)) return true;
+  return game?.awayScore!=null && game?.homeScore!=null && Number.isFinite(Number(game.awayScore)) && Number.isFinite(Number(game.homeScore));
 }
 
 function cpblWinner(game){
@@ -7410,8 +7413,8 @@ function cpblWinner(game){
 
 function cpblStatusText(game){
   const status = String(game?.status || '').trim();
+  if(cpblIsFinalGame(game)) return '比賽結束';
   if(/進行中|比賽中/.test(status)) return '比賽進行中';
-  if(/已結束|比賽結束|結束/.test(status)) return '比賽結束';
   if(/延賽/.test(status)) return '延賽';
   if(/取消/.test(status)) return '取消';
   if(/保留/.test(status)) return '保留';
@@ -7420,6 +7423,7 @@ function cpblStatusText(game){
 
 function cpblGameMetaLine(game){
   const status = String(game?.status || '').trim();
+  if(cpblIsFinalGame(game)) return '比賽結束';
   if(/進行中|比賽中|已結束|比賽結束|結束|取消|延賽|保留/.test(status)) return cpblStatusText(game);
   return game?.time || '時間待公佈';
 }
@@ -9774,7 +9778,7 @@ function pdRenderHistory(val){
   pdCycleHistory = pdHistoryToArray(val);
   if(!pdCycleHistory.length){
     if(pdSettings.start){
-      pdCycleHistory = [pdNormalizeHistoryItem({start:pdSettings.start,end:pdSettings.end,cycle:pdSettings.cycle,dur:pdSettings.dur,createdAt:Date.now()},'current')].filter(Boolean);
+      pdCycleHistory = [pdNormalizeHistoryItem({start:pdSettings.start,end:pdSettings.end,cycle:pdSettings.cycle,dur:pdSettings.dur,completed:pdSettings.completed===true,createdAt:Date.now()},'current')].filter(Boolean);
     }else{
       el.innerHTML='<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:12px 0">還沒有記錄</div>';
       return;
@@ -9834,11 +9838,14 @@ function pdGetSeedCycles(){
     const cycle = Number(item.cycle) || Number(pdSettings.cycle) || 28;
     const dur = Number(item.dur) || Number(pdSettings.dur) || 5;
     const savedEnd = item.end ? new Date(item.end+'T00:00:00') : null;
-    const pEnd = savedEnd && !Number.isNaN(savedEnd.getTime()) ? savedEnd : new Date(pStart.getTime() + (dur - 1) * 864e5);
+    const hasSavedEnd = !!(savedEnd && !Number.isNaN(savedEnd.getTime()));
+    const isOpen = item.completed!==true && !hasSavedEnd;
+    const todayDate = today();
+    const pEnd = hasSavedEnd ? savedEnd : (isOpen && todayDate.getTime()>=pStart.getTime() ? todayDate : new Date(pStart.getTime() + (dur - 1) * 864e5));
     const ovulate = new Date(pStart.getTime() + Math.max(0, cycle - 14) * 864e5);
     const fertileStart = new Date(ovulate.getTime() - 5 * 864e5);
     const fertileEnd = new Date(ovulate.getTime() + 864e5);
-    return {pStart,pEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:item.start};
+    return {pStart,pEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:item.start,completed:item.completed===true,isOpen};
   }).filter(Boolean);
   if(cycles.length) return cycles;
   if(!pdSettings.start) return [];
@@ -9846,7 +9853,12 @@ function pdGetSeedCycles(){
   if(Number.isNaN(base.getTime())) return [];
   const cycle = Number(pdSettings.cycle) || 28;
   const dur = Number(pdSettings.dur) || 5;
-  return [{pStart:base,pEnd:new Date(base.getTime()+(dur-1)*864e5),ovulate:new Date(base.getTime()+Math.max(0,cycle-14)*864e5),fertileStart:new Date(base.getTime()+Math.max(0,cycle-14)*864e5-5*864e5),fertileEnd:new Date(base.getTime()+Math.max(0,cycle-14)*864e5+864e5),cycle,dur,sourceStart:pdSettings.start}];
+  const savedEnd = pdSettings.end ? new Date(pdSettings.end+'T00:00:00') : null;
+  const hasSavedEnd = savedEnd && !Number.isNaN(savedEnd.getTime());
+  const isOpen = pdSettings.completed!==true && !hasSavedEnd;
+  const now = today();
+  const pEnd = hasSavedEnd ? savedEnd : (isOpen && now.getTime()>=base.getTime() ? now : new Date(base.getTime()+(dur-1)*864e5));
+  return [{pStart:base,pEnd,ovulate:new Date(base.getTime()+Math.max(0,cycle-14)*864e5),fertileStart:new Date(base.getTime()+Math.max(0,cycle-14)*864e5-5*864e5),fertileEnd:new Date(base.getTime()+Math.max(0,cycle-14)*864e5+864e5),cycle,dur,sourceStart:pdSettings.start,completed:pdSettings.completed===true,isOpen}];
 }
 function pdExpandForecast(count=14){
   const seeds = pdGetSeedCycles();
@@ -9893,7 +9905,7 @@ function pdRefresh(){
   let bannerEmoji='🌿',bannerTitle='安全期',bannerSub='';
   for(const c of cycles){
     const pStartMs=c.pStart.getTime(),pEndMs=c.pEnd.getTime(),tMs=t.getTime();
-    if(tMs>=pStartMs&&tMs<=pEndMs){const day=Math.floor((tMs-pStartMs)/864e5)+1;bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;break;}
+    if(tMs>=pStartMs&&tMs<=pEndMs){const day=Math.floor((tMs-pStartMs)/864e5)+1;bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，結束時請按「設定月經結束日」`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;break;}
     if(tMs===c.ovulate.getTime()){bannerEmoji='🥚';bannerTitle='排卵日';bannerSub='今天是排卵日，易孕期！';break;}
     if(tMs>=c.fertileStart.getTime()&&tMs<=c.fertileEnd.getTime()){bannerEmoji='🌺';bannerTitle='易孕期';bannerSub=`距離排卵日還有 ${Math.ceil((c.ovulate.getTime()-tMs)/864e5)} 天`;break;}
     if(tMs<c.pStart.getTime()){const daysTo=Math.ceil((c.pStart.getTime()-tMs)/864e5);if(daysTo<=7){bannerEmoji='😮';bannerTitle='快來了';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}else{bannerEmoji='🌿';bannerTitle='安全期';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}break;}
@@ -9913,7 +9925,7 @@ function pdRefresh(){
     const isNow=t.getTime()>=c.pStart.getTime()&&t.getTime()<=c.pEnd.getTime();
     upHTML+=`<div style="border-left:3px solid var(--pink);padding:10px 12px;margin-bottom:10px;border-radius:0 10px 10px 0;background:var(--pink-light)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:13px;font-weight:500;color:var(--rose)">🩸 ${fmt(c.pStart)} ～ ${fmt(c.pEnd)}</span>
+        <span style="font-size:13px;font-weight:500;color:var(--rose)">🩸 ${fmt(c.pStart)} ～ ${c.isOpen?'進行中':fmt(c.pEnd)}</span>
         <span style="font-size:11px;background:${isNow?'var(--pink)':'var(--white)'};color:${isNow?'white':'var(--text-muted)'};padding:2px 8px;border-radius:20px;border:1px solid var(--card-border)">${isNow?'進行中':daysTo<=0?'今天':'還有 '+daysTo+' 天'}</span>
       </div>
       <div style="font-size:12px;color:var(--text-muted)">🥚 排卵日 ${fmt(c.ovulate)} &nbsp;·&nbsp; 🌺 易孕期 ${fmt(c.fertileStart)}～${fmt(c.fertileEnd)}</div>
@@ -10007,11 +10019,11 @@ function pdDateString(date=new Date()){
 function pdIsCurrentPeriodActive(){
   if(!pdSettings.start || pdSettings.completed===true) return false;
   const start = new Date(pdSettings.start+'T00:00:00');
-  const estimatedEnd = pdSettings.end
-    ? new Date(pdSettings.end+'T00:00:00')
-    : new Date(start.getTime()+((Number(pdSettings.dur)||5)-1)*864e5);
   const now = today();
-  return !Number.isNaN(start.getTime()) && now.getTime()>=start.getTime() && now.getTime()<=estimatedEnd.getTime();
+  if(Number.isNaN(start.getTime()) || now.getTime()<start.getTime()) return false;
+  if(!pdSettings.end) return true;
+  const end = new Date(pdSettings.end+'T00:00:00');
+  return !Number.isNaN(end.getTime()) && now.getTime()<=end.getTime();
 }
 
 function pdUpdateRecordAction(){
@@ -10053,14 +10065,9 @@ function pdConfirmStart(){
   const dateInput = document.getElementById('pd-record-date');
   if(!dateInput||!dateInput.value){ alert('請選擇日期'); return; }
   const startDate = dateInput.value;
-  
-  const dur = pdSettings.dur || 5;
-  const endDate = new Date(new Date(startDate+'T00:00:00').getTime() + (dur-1)*864e5);
-  const endStr = `${endDate.getFullYear()}-${String(endDate.getMonth()+1).padStart(2,'0')}-${String(endDate.getDate()).padStart(2,'0')}`;
-  
   const newSettings = {
     start: startDate,
-    end: endStr,
+    end: '',
     cycle: pdSettings.cycle || 28,
     dur: pdSettings.dur || 5,
     completed: false
@@ -11516,7 +11523,7 @@ function cpblRenderEconomy(){
     const canCheckin = eco.checkin.lastDate !== today;
     if(playerEl) playerEl.textContent=`${cpblgPlayer} \u7684\u91d1\u5e63`;
     coinEl.textContent=eco.coins;
-    if(equipEl) equipEl.textContent='金幣、簽到和商城會同步到 Firebase。';
+    if(equipEl) equipEl.textContent='';
     if(checkinBtn){
       checkinBtn.disabled = !canCheckin;
       checkinBtn.textContent = canCheckin ? '每日簽到' : '今日已簽到';
@@ -11787,6 +11794,8 @@ function cpblProcessPostponedGames(games){
   const firebaseChanges={};
   (games||[]).forEach(game=>{
     const status=String(game?.status||'');
+    const hasScore = game?.awayScore!=null && game?.homeScore!=null;
+    if(hasScore && !/保留|取消/.test(status)) return;
     if(!/延賽|保留|取消/.test(status)) return;
     const key=cpblPostponedGameKey(game);
     const existingPicks=cpblgData.picks[game.id] || {};
@@ -11815,7 +11824,8 @@ function cpblProcessPostponedGames(games){
     }
   });
   (games||[]).forEach(game=>{
-    if(/延賽|保留|取消/.test(String(game?.status||''))) return;
+    const hasScore = game?.awayScore!=null && game?.homeScore!=null;
+    if(/延賽|保留|取消/.test(String(game?.status||'')) && !hasScore) return;
     const key=cpblPostponedGameKey(game);
     const carry=cpblgData.postponed[key];
     if(!carry || carry.sourceGameId===game.id) return;
@@ -11871,6 +11881,7 @@ function cpblRenderGames(){
       noteBits.push(`<span class="cpblg-pick-odds">下注 ${Number(pick.stake).toLocaleString('zh-TW')} 金幣，已鎖定不讓分賠率 ${Number(pick.odds).toFixed(2)}（${lockedAt}）</span>`);
     }
     if(resultNote) noteBits.push(resultNote);
+    const defaultNote = locked ? (winner ? '比賽已結束。' : (isPostponedLike ? '' : '這場已鎖定，不能再預測。')) : '開賽前可以修改預測。';
     const btn=(team)=>{
       const normalizedTeam = cpblNormalizeTeam(team);
       const chosenByCurrent = cpblNormalizeTeam(pick?.team)===normalizedTeam;
@@ -11886,7 +11897,7 @@ function cpblRenderGames(){
       ${cpblOddsHtml(game)}
       ${cpblStakeHtml(game, pick, locked)}
       <div class="cpblg-pickrow">${btn(game.away)}${btn(game.home)}</div>
-      <div class="cpblg-note">${noteBits.join('<br>') || '開賽前可以修改預測。'}</div>
+      <div class="cpblg-note">${noteBits.join('<br>') || defaultNote}</div>
     </div>`;
   }).join('');
   if(!cpblgOddsData.updatedAt && !cpblgOddsLoading){

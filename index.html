@@ -3264,20 +3264,20 @@ onclick="hideSpecialForToday()">
 <!-- MESSAGES -->
 <div id="page-message" class="page">
   <div class="card">
-    <div class="card-title">💬 留言給對方</div>
+    <div class="card-title">💌 寫一封時光信</div>
     <div class="msg-input-area">
       <div class="sender-toggle">
         <button class="sender-btn active" id="me-btn" onclick="setSender('me')">林聖展</button>
         <button class="sender-btn" id="other-btn" onclick="setSender('other')">蘇予君</button>
       </div>
-      <textarea id="msg-input" rows="3" placeholder="想對對方說什麼..."></textarea>
-      <button class="send-btn" onclick="sendMessage()">送出 ❤️</button>
+      <textarea id="msg-input" rows="3" placeholder="寫下這一刻想留給以後的我們的話..."></textarea>
+      <button class="send-btn" onclick="sendMessage()">收藏成回憶 ❤️</button>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">💌 愛心留言牆</div>
+    <div class="card-title">📜 我們的紀念信箱</div>
     <div class="msg-list" id="msg-list">
-      <div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有留言，先說一句話吧 💕</div>
+      <div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有時光信，先替今天留下第一句話吧 💕</div>
     </div>
   </div>
 </div>
@@ -5106,7 +5106,7 @@ function setSender(s){
 }
 function renderMessages(msgs){
   const list=document.getElementById('msg-list');
-  if(!msgs||!msgs.length){list.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有留言，先說一句話吧 💕</div>';return;}
+  if(!msgs||!msgs.length){list.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有時光信，先替今天留下第一句話吧 💕</div>';return;}
   list.innerHTML=msgs.map((m)=>`
     <div class="msg-bubble ${m.sender==='me'?'from-me':'from-other'}">
       <strong style="font-size:12px;opacity:.7">${m.sender==='me'?'林聖展':'蘇予君'}</strong><br>
@@ -5123,7 +5123,7 @@ function sendMessage(){
   const now=new Date();
   push(ref(db,'messages'),{
     sender,text:txt,
-    time:now.toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
+    time:now.toLocaleString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
   });
   document.getElementById('msg-input').value='';
 }
@@ -5250,7 +5250,7 @@ function renderMemories(){
       display:flex;align-items:center;justify-content:center;gap:8px;
       box-shadow:0 4px 16px rgba(232,99,122,0.35);
       letter-spacing:0.5px;">
-      🖼️ 生成本月回憶拼貼圖
+      📖 生成本月回憶錄
     </button>
     <div id="collage-result" style="margin-top:14px"></div>
     <div id="collage-select-area" style="margin-top:14px"></div>`;
@@ -5645,6 +5645,178 @@ function confirmCollagePicker(){
   });
 }
 
+const COLLAGE_MEMORY_THEMES = [
+  {
+    name: '晨光粉金',
+    bg: ['#fff8f1','#ffe8ee','#f8c9d5'],
+    ink: '#8f3449',
+    accent: '#d85f75',
+    soft: 'rgba(255,255,255,.66)',
+    line: '那些一起走過的日子，正在慢慢變成只屬於我們的光。',
+    motif: 'spark'
+  },
+  {
+    name: '海邊晴信',
+    bg: ['#eefbff','#dff2f4','#ffd9cf'],
+    ink: '#245b65',
+    accent: '#e07866',
+    soft: 'rgba(255,255,255,.62)',
+    line: '把笑聲、風景和靠近的心，都收進這一頁月光裡。',
+    motif: 'wave'
+  },
+  {
+    name: '薰衣草晚安',
+    bg: ['#f6f0ff','#eadffd','#ffdfe8'],
+    ink: '#5f3a78',
+    accent: '#b06fb0',
+    soft: 'rgba(255,255,255,.64)',
+    line: '每張照片都像一封小小的信，替我們記住今天有多值得。',
+    motif: 'star'
+  },
+  {
+    name: '薄荷手札',
+    bg: ['#f3fff7','#d9f4e7','#fff1d8'],
+    ink: '#32624e',
+    accent: '#dc8b5d',
+    soft: 'rgba(255,255,255,.68)',
+    line: '謝謝這個月的我們，把普通時刻過成了以後會想念的故事。',
+    motif: 'leaf'
+  },
+  {
+    name: '莓果相簿',
+    bg: ['#fff3f7','#f7d8e3','#e9ecff'],
+    ink: '#7e3556',
+    accent: '#c14f78',
+    soft: 'rgba(255,255,255,.63)',
+    line: '願這些瞬間多年後再看，仍然能聽見當時心動的聲音。',
+    motif: 'dot'
+  },
+  {
+    name: '暖橘日記',
+    bg: ['#fff7e8','#ffe2c4','#f5d6dc'],
+    ink: '#85492d',
+    accent: '#d47a48',
+    soft: 'rgba(255,255,255,.65)',
+    line: '這一頁不是結束，是把這個月好好珍藏起來的證明。',
+    motif: 'ribbon'
+  },
+  {
+    name: '青空花信',
+    bg: ['#edf7ff','#dcecff','#ffe5f1'],
+    ink: '#2f5278',
+    accent: '#d86f93',
+    soft: 'rgba(255,255,255,.64)',
+    line: '一起拍下的每個畫面，都是我們把日子認真愛過的痕跡。',
+    motif: 'flower'
+  },
+  {
+    name: '奶茶書頁',
+    bg: ['#fff9ef','#f1dfc8','#f7dce2'],
+    ink: '#6f4a34',
+    accent: '#bd6c6f',
+    soft: 'rgba(255,255,255,.67)',
+    line: '把這些照片翻成回憶錄，讓以後的我們也能回到這個月。',
+    motif: 'stamp'
+  }
+];
+
+function collageHashString(str){
+  let h = 2166136261;
+  for(let i=0;i<str.length;i++){
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function collageRand(seed){
+  let t = seed >>> 0;
+  return function(){
+    t += 0x6D2B79F5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function createCollageMemoryTheme(monthKey, photos, perPage){
+  const seed = collageHashString(`${monthKey}|${photos.length}|${perPage}|${Date.now()}|${Math.random()}`);
+  const rand = collageRand(seed);
+  const base = COLLAGE_MEMORY_THEMES[Math.floor(rand() * COLLAGE_MEMORY_THEMES.length)];
+  const decorations = Array.from({length: 22}, () => ({
+    x: rand(),
+    y: rand(),
+    s: 8 + rand() * 24,
+    a: .1 + rand() * .18,
+    r: rand() * Math.PI * 2
+  }));
+  return { ...base, seed, decorations };
+}
+
+function drawCollageMemoryBackground(ctx, W, H, theme){
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  theme.bg.forEach((color, i) => bg.addColorStop(i / Math.max(1, theme.bg.length - 1), color));
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.save();
+  ctx.globalAlpha = .38;
+  ctx.fillStyle = theme.soft;
+  roundRect(ctx, 18, 18, W - 36, H - 36, 28);
+  ctx.fill();
+  ctx.restore();
+
+  theme.decorations.forEach((d, i) => {
+    const x = d.x * W;
+    const y = d.y * H;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(d.r);
+    ctx.globalAlpha = d.a;
+    ctx.fillStyle = i % 2 ? theme.accent : theme.ink;
+    ctx.strokeStyle = i % 2 ? theme.ink : theme.accent;
+    ctx.lineWidth = 2;
+
+    if(theme.motif === 'wave'){
+      ctx.beginPath();
+      ctx.moveTo(-d.s, 0);
+      ctx.bezierCurveTo(-d.s/2, -d.s/2, d.s/2, d.s/2, d.s, 0);
+      ctx.stroke();
+    } else if(theme.motif === 'star' || theme.motif === 'spark'){
+      ctx.beginPath();
+      ctx.moveTo(0, -d.s);
+      ctx.lineTo(d.s * .22, -d.s * .22);
+      ctx.lineTo(d.s, 0);
+      ctx.lineTo(d.s * .22, d.s * .22);
+      ctx.lineTo(0, d.s);
+      ctx.lineTo(-d.s * .22, d.s * .22);
+      ctx.lineTo(-d.s, 0);
+      ctx.lineTo(-d.s * .22, -d.s * .22);
+      ctx.closePath();
+      ctx.fill();
+    } else if(theme.motif === 'ribbon' || theme.motif === 'stamp'){
+      roundRect(ctx, -d.s, -d.s * .36, d.s * 2, d.s * .72, d.s * .18);
+      ctx.fill();
+    } else if(theme.motif === 'leaf' || theme.motif === 'flower'){
+      ctx.beginPath();
+      ctx.ellipse(0, 0, d.s * .45, d.s, 0, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.beginPath();
+      ctx.arc(0, 0, d.s * .45, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  });
+}
+
+function getCollageDateRange(page){
+  const dates = [...new Set(page.map(p => p.date).filter(Boolean))].sort();
+  if(!dates.length) return '';
+  const format = date => date.slice(5).replace('-', '/');
+  return dates.length === 1 ? format(dates[0]) : `${format(dates[0])} - ${format(dates[dates.length - 1])}`;
+}
+
 async function generateCollage(selectedPhotos=null) {
   const mk = `${memoriesYear}-${String(memoriesMonth + 1).padStart(2, '0')}`;
   const photos = [];
@@ -5672,7 +5844,7 @@ async function generateCollage(selectedPhotos=null) {
   const resultEl = document.getElementById('collage-result');
   resultEl.innerHTML = `
     <div style="text-align:center;padding:20px;background:var(--pink-light);border-radius:12px;color:var(--text-muted)">
-      ✨ 正在製作 ${pages.length} 張回憶拼貼...
+      ✨ 正在製作 ${pages.length} 頁本月回憶錄...
     </div>`;
 
   const images = await Promise.all(photos.map(p=>new Promise(r=>{
@@ -5682,8 +5854,10 @@ async function generateCollage(selectedPhotos=null) {
     img.src=p.src;
   })));
 
+  const batchTheme = createCollageMemoryTheme(mk, photos, perPage);
+
   const makePage = (page, pageIndex)=>{
-    const CELL=260, GAP=10, PAD=24, HEADER=100, FOOTER=60;
+    const CELL=260, GAP=10, PAD=24, HEADER=128, FOOTER=104;
     const isSix = perPage===6;
 
     const cols = isSix ? 2 : 3;
@@ -5696,21 +5870,28 @@ async function generateCollage(selectedPhotos=null) {
     canvas.width=W; canvas.height=H;
     const ctx=canvas.getContext('2d');
 
-    const bg=ctx.createLinearGradient(0,0,W,H);
-    bg.addColorStop(0,'#fff0f3');
-    bg.addColorStop(.5,'#fce8ec');
-    bg.addColorStop(1,'#f7d0d8');
-    ctx.fillStyle=bg;
-    ctx.fillRect(0,0,W,H);
+    drawCollageMemoryBackground(ctx, W, H, batchTheme);
+
+    ctx.save();
+    ctx.fillStyle='rgba(255,255,255,.5)';
+    roundRect(ctx, PAD, PAD, W - PAD * 2, HEADER - 24, 22);
+    ctx.fill();
+    ctx.restore();
 
     ctx.textAlign='center';
-    ctx.font='bold 32px "Noto Serif TC",serif';
-    ctx.fillStyle='#c94b64';
-    ctx.fillText(`${memoriesYear} 年 ${memoriesMonth+1} 月`,W/2,PAD+42);
+    ctx.font='bold 34px "Noto Serif TC",serif';
+    ctx.fillStyle=batchTheme.ink;
+    ctx.fillText(`${memoriesYear} 年 ${memoriesMonth+1} 月回憶錄`,W/2,PAD+42);
 
     ctx.font='18px "Noto Sans TC",sans-serif';
-    ctx.fillStyle='#e8637a';
+    ctx.fillStyle=batchTheme.accent;
     ctx.fillText('林聖展 ♡ 蘇予君',W/2,PAD+72);
+
+    ctx.font='13px "Noto Sans TC",sans-serif';
+    ctx.fillStyle=batchTheme.ink;
+    ctx.globalAlpha=.72;
+    ctx.fillText(`${batchTheme.name} · 第 ${pageIndex + 1} / ${pages.length} 頁`,W/2,PAD+96);
+    ctx.globalAlpha=1;
 
     page.forEach((p,i)=>{
       const img=images[photos.indexOf(p)];
@@ -5720,6 +5901,15 @@ async function generateCollage(selectedPhotos=null) {
       const row=Math.floor(i/cols);
       const x=PAD+col*(CELL+GAP);
       const y=PAD+HEADER+row*(CELL+GAP);
+
+      ctx.save();
+      ctx.shadowColor='rgba(90,45,65,.2)';
+      ctx.shadowBlur=12;
+      ctx.shadowOffsetY=5;
+      ctx.fillStyle='rgba(255,255,255,.72)';
+      roundRect(ctx,x-4,y-4,CELL+8,CELL+8,18);
+      ctx.fill();
+      ctx.restore();
 
       ctx.save();
       roundRect(ctx,x,y,CELL,CELL,14);
@@ -5740,10 +5930,25 @@ async function generateCollage(selectedPhotos=null) {
       ctx.fillText(p.date.slice(5).replace('-','/'),x+CELL-10,y+CELL-10);
     });
 
+    const dateRange = getCollageDateRange(page);
+    const noteX = PAD;
+    const noteY = H - FOOTER + 18;
+    const noteW = W - PAD * 2;
+    const noteH = FOOTER - 36;
+    ctx.save();
+    ctx.fillStyle='rgba(255,255,255,.58)';
+    roundRect(ctx,noteX,noteY,noteW,noteH,20);
+    ctx.fill();
+    ctx.restore();
+
     ctx.textAlign='center';
-    ctx.font='15px "Noto Serif TC",serif';
-    ctx.fillStyle='#c94b64';
-    ctx.fillText(`${page.length} 個珍貴的瞬間 ♡`,W/2,H-35);
+    ctx.font='bold 16px "Noto Serif TC",serif';
+    ctx.fillStyle=batchTheme.ink;
+    ctx.fillText(`${page.length} 個珍貴瞬間${dateRange ? ` · ${dateRange}` : ''}`,W/2,noteY+27);
+
+    ctx.font='14px "Noto Sans TC",sans-serif';
+    ctx.fillStyle=batchTheme.accent;
+    ctx.fillText(batchTheme.line,W/2,noteY+53);
 
     return canvas.toDataURL('image/jpeg',.92);
   };

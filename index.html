@@ -429,34 +429,17 @@ margin-left:auto;background:none;border:none;
 color:var(--text-muted);cursor:pointer;font-size:14px;
 }
 
-.love-draw{display:flex;flex-direction:column;gap:14px;}
-.love-draw-machine{
-position:relative;overflow:hidden;border-radius:22px;padding:16px;
-background:linear-gradient(135deg,#fff7fa,#f0fbff 52%,#fff3dc);
-border:1px solid rgba(232,99,122,.18);box-shadow:0 14px 34px rgba(232,99,122,.10);
-}
-.love-draw-machine::before{content:'';position:absolute;inset:auto -30px -46px auto;width:130px;height:130px;border-radius:50%;background:rgba(232,99,122,.12);}
-.love-draw-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;position:relative;}
-.love-draw-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:800;color:var(--rose);line-height:1.25;}
-.love-draw-sub{font-size:12px;color:var(--text-muted);line-height:1.7;margin-top:4px;}
-.love-draw-display{min-height:230px;border-radius:20px;background:rgba(255,255,255,.74);border:1px solid rgba(232,99,122,.15);padding:16px;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;}
-.love-card{width:100%;min-height:190px;border-radius:18px;padding:18px 16px;background:linear-gradient(180deg,#fff,#fff1f5);border:1px solid rgba(232,99,122,.18);box-shadow:0 12px 28px rgba(120,45,62,.13);display:flex;flex-direction:column;justify-content:center;gap:9px;animation:loveCardIn .34s ease-out;}
-.love-card-id{font-size:12px;color:var(--text-muted);font-weight:800;letter-spacing:.5px;}
-.love-card-title{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:900;color:var(--rose);line-height:1.25;}
-.love-card-text{font-size:15px;line-height:1.8;color:var(--text);}
-.love-card-bonus{display:inline-flex;align-self:center;margin-top:4px;border-radius:999px;background:var(--pink-light);color:var(--rose);padding:7px 11px;font-size:12px;font-weight:800;}
-.love-draw-placeholder{font-size:14px;color:var(--text-muted);line-height:1.8;}
-.love-draw-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px;position:relative;}
-.love-deck-btn,.love-draw-btn{
-border:none;border-radius:14px;padding:11px 8px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;
-font-size:12px;font-weight:800;line-height:1.25;transition:transform .18s,box-shadow .18s,background .18s;
-}
-.love-deck-btn{background:rgba(255,255,255,.8);color:var(--text);border:1px solid rgba(232,99,122,.14);}
-.love-deck-btn.active{background:var(--pink);color:#fff;box-shadow:0 8px 18px rgba(232,99,122,.22);}
-.love-draw-btn{width:100%;margin-top:10px;background:linear-gradient(135deg,#e8637a,#c94b64);color:#fff;position:relative;box-shadow:0 8px 20px rgba(232,99,122,.25);}
-.love-draw-btn:active,.love-deck-btn:active{transform:translateY(1px);}
-@keyframes loveCardIn{0%{opacity:0;transform:translateY(10px) rotate(-1.5deg) scale(.96)}100%{opacity:1;transform:none}}
-@media(max-width:520px){.love-draw-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.love-draw-display{min-height:220px}.love-card-title{font-size:21px}}
+.pb-shell{display:flex;flex-direction:column;gap:14px}
+.pb-panel{background:linear-gradient(135deg,#fff7fb,#eefbff 54%,#fff4dc);border:1px solid rgba(232,99,122,.16);border-radius:22px;padding:15px;box-shadow:0 14px 34px rgba(232,99,122,.09)}
+.pb-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}.pb-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;color:var(--rose);line-height:1.25}.pb-sub{font-size:12px;color:var(--text-muted);line-height:1.7;margin-top:4px}
+.pb-format{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px}.pb-format-btn{border:1px solid rgba(232,99,122,.18);background:rgba(255,255,255,.78);color:var(--text);border-radius:14px;padding:12px 8px;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer}.pb-format-btn.active{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 8px 18px rgba(232,99,122,.22)}
+.pb-upload{display:flex;align-items:center;justify-content:center;min-height:48px;border:1.5px dashed rgba(232,99,122,.28);border-radius:16px;background:rgba(255,255,255,.68);color:var(--rose);font-weight:900;cursor:pointer;text-align:center;padding:10px}.pb-upload input{display:none}
+.pb-files{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.pb-file{position:relative;aspect-ratio:1;border-radius:13px;overflow:hidden;background:var(--pink-light);border:1px solid rgba(232,99,122,.14)}.pb-file img{width:100%;height:100%;object-fit:cover;display:block}.pb-file span{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.5);color:#fff;border-radius:999px;padding:3px 7px;font-size:11px;font-weight:800}
+.pb-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}.pb-primary{border:none;border-radius:15px;background:linear-gradient(135deg,#e8637a,#c94b64);color:#fff;font-family:'Noto Sans TC',sans-serif;font-weight:900;padding:13px;cursor:pointer;box-shadow:0 8px 20px rgba(232,99,122,.25)}.pb-primary:disabled{opacity:.48;cursor:not-allowed;box-shadow:none}.pb-status{font-size:12px;color:var(--text-muted);line-height:1.7;text-align:center;min-height:20px}
+.pb-style-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:360px;overflow:auto;-webkit-overflow-scrolling:touch;padding-right:2px}.pb-style-btn{border:1px solid rgba(232,99,122,.16);border-radius:14px;background:rgba(255,255,255,.78);color:var(--text);padding:9px 8px;font-family:'Noto Sans TC',sans-serif;display:flex;align-items:center;gap:8px;text-align:left;cursor:pointer}.pb-style-btn.active{background:var(--pink);border-color:var(--pink);color:white}.pb-style-emoji{font-size:18px}.pb-style-name{font-size:12px;font-weight:900;line-height:1.3}
+.pb-preview-wrap{background:rgba(255,255,255,.72);border:1px solid rgba(232,99,122,.15);border-radius:20px;padding:12px;text-align:center}.pb-canvas{width:100%;max-width:420px;border-radius:18px;box-shadow:0 14px 35px rgba(120,45,62,.18);background:#fff}.pb-download{display:inline-block;margin-top:10px;background:var(--pink-light);color:var(--rose);border-radius:999px;padding:9px 14px;text-decoration:none;font-size:13px;font-weight:900}.pb-empty{font-size:13px;color:var(--text-muted);line-height:1.8;padding:24px 10px}
+[data-theme="dark"] .pb-panel,[data-theme="dark"] .pb-preview-wrap{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .pb-format-btn,[data-theme="dark"] .pb-upload,[data-theme="dark"] .pb-style-btn{background:#3a1f28;color:var(--text);border-color:rgba(232,99,122,.2)}
+@media(max-width:520px){.pb-files{grid-template-columns:repeat(2,minmax(0,1fr))}.pb-style-grid{grid-template-columns:1fr;max-height:300px}.pb-title{font-size:20px}}
 
 
 .game-tabs-scroll{position:relative;margin-bottom:16px;}
@@ -3252,25 +3235,35 @@ onclick="hideSpecialForToday()">
 <!-- MESSAGES -->
 <div id="page-message" class="page">
   <div class="card">
-    <div class="card-title">🎰 戀愛抽抽樂</div>
-    <div class="love-draw">
-      <div class="love-draw-machine">
-        <div class="love-draw-head">
+    <div class="card-title">📸 拍貼機</div>
+    <div class="pb-shell">
+      <div class="pb-panel">
+        <div class="pb-head">
           <div>
-            <div class="love-draw-title">今天抽一張</div>
-            <div class="love-draw-sub">不用保存紀錄，抽到就直接完成。每次都會換一張新的玩法卡。</div>
+            <div class="pb-title">選照片，做成拍貼</div>
+            <div class="pb-sub">先選 2 張或 4 張格式，上傳後按確認，會自動去背留下人物。</div>
           </div>
         </div>
-        <div class="love-draw-display" id="love-draw-display">
-          <div class="love-draw-placeholder">選一個主題，按下抽卡。</div>
+        <div class="pb-format">
+          <button type="button" class="pb-format-btn active" id="pb-format-2" onclick="pbSetFormat(2)">2 張拍貼</button>
+          <button type="button" class="pb-format-btn" id="pb-format-4" onclick="pbSetFormat(4)">4 張拍貼</button>
         </div>
-        <div class="love-draw-controls">
-          <button type="button" class="love-deck-btn active" id="love-deck-date" onclick="setLoveDrawDeck('date')">約會卡</button>
-          <button type="button" class="love-deck-btn" id="love-deck-dare" onclick="setLoveDrawDeck('dare')">挑戰卡</button>
-          <button type="button" class="love-deck-btn" id="love-deck-memory" onclick="setLoveDrawDeck('memory')">回憶卡</button>
-          <button type="button" class="love-deck-btn" id="love-deck-chaos" onclick="setLoveDrawDeck('chaos')">亂數卡</button>
+        <label class="pb-upload">
+          <input type="file" id="pb-upload-input" accept="image/*" multiple onchange="pbHandleUpload(event)">
+          <span id="pb-upload-label">上傳 2 張照片</span>
+        </label>
+        <div class="pb-files" id="pb-file-list"></div>
+        <div class="pb-actions">
+          <button type="button" class="pb-primary" id="pb-confirm-btn" onclick="pbConfirmPhotos()" disabled>確認並去背</button>
+          <div class="pb-status" id="pb-status">請先上傳剛好 2 張照片。</div>
         </div>
-        <button type="button" class="love-draw-btn" onclick="drawLoveCard()">抽一張新的 ❤️</button>
+      </div>
+      <div class="pb-panel">
+        <div class="pb-head"><div><div class="pb-title">選擇拍貼風格</div><div class="pb-sub">已準備 50 種樣式，點一下就會重新合成。</div></div></div>
+        <div class="pb-style-grid" id="pb-style-grid"></div>
+      </div>
+      <div class="pb-preview-wrap" id="pb-preview-wrap">
+        <div class="pb-empty">上傳並確認後，這裡會出現你的拍貼預覽。</div>
       </div>
     </div>
   </div>
@@ -3804,7 +3797,7 @@ onclick="hideSpecialForToday()">
   <button class="nav-btn active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>首頁</button>
   <button class="nav-btn" onclick="showPage('album',this)"><span class="nav-icon">📸</span>相簿</button>
   <button class="nav-btn" onclick="showPage('memories',this)"><span class="nav-icon">🎞️</span>回憶</button>
-  <button class="nav-btn" onclick="showPage('message',this)"><span class="nav-icon">🎰</span>抽卡</button>
+  <button class="nav-btn" onclick="showPage('message',this)"><span class="nav-icon">📸</span>拍貼</button>
   <button class="nav-btn" onclick="showPage('period',this)"><span class="nav-icon">🌸</span>生理期</button>
   <button class="nav-btn" onclick="showPage('game',this)"><span class="nav-icon">🎮</span>遊戲</button>
 </nav>
@@ -5092,84 +5085,202 @@ function closeDayModalDirect(){
 }
 albumRenderCal();
 
-// ── 戀愛抽抽樂：不保存紀錄，只做即時抽卡 ──
-let loveDrawDeck = 'date';
-const LOVE_DRAW_CLEAR_TOKEN = 'loveDrawMessagesCleared_20260629_v1';
-const LOVE_DRAW_DECKS = {
-  date: {
-    label: '約會卡',
-    cards: [
-      {title:'盲選晚餐', text:'兩個人各說一個數字，用加總後的尾數決定今晚吃哪一類：0-2 飯、3-5 麵、6-7 火鍋、8-9 甜點先。', bonus:'完成後拍一張今日餐桌照'},
-      {title:'散步任務', text:'找一條沒走過的小路，散步 20 分鐘。路上看到最可愛的東西，要拍下來給對方看。', bonus:'輸的人負責買飲料'},
-      {title:'小旅行開箱', text:'打開地圖，選一個 30 分鐘內能到的地方，今天只做一件事：去那裡晃一下。', bonus:'回來後各選一張代表照片'},
-      {title:'交換菜單', text:'今天由對方替你點餐，你只能說三個禁忌，其餘交給對方決定。', bonus:'不能嫌棄，最多只能撒嬌'}
-    ]
-  },
-  dare: {
-    label: '挑戰卡',
-    cards: [
-      {title:'十秒誇誇', text:'看著對方，連續 10 秒講優點，不能停頓太久，也不能重複。', bonus:'笑場也算成功'},
-      {title:'默契二選一', text:'同時回答：夜景或海邊、火鍋或燒肉、在家或出門。答對兩題以上就過關。', bonus:'輸的人接受一個小懲罰'},
-      {title:'手機相簿獵人', text:'各自在相簿找一張最想給對方看的照片，不能解釋太多，先讓對方猜原因。', bonus:'猜中就得到抱抱一次'},
-      {title:'三句限定', text:'用三句話安排今晚：第一句說地點，第二句說吃什麼，第三句說要一起做什麼。', bonus:'對方只能回答好或更好'}
-    ]
-  },
-  memory: {
-    label: '回憶卡',
-    cards: [
-      {title:'第一次回放', text:'一起講一件「第一次」的細節：當時在哪、你記得什麼、現在想起來覺得哪裡好笑。', bonus:'講完給對方一個評分'},
-      {title:'本月最佳鏡頭', text:'從最近照片裡選一張本月最喜歡的，說出它為什麼值得留下。', bonus:'可以直接設成今天的代表照'},
-      {title:'如果重來一次', text:'選一個一起去過的地方，回答：如果再去一次，最想補做哪件事？', bonus:'把答案變成下次約會備案'},
-      {title:'偷偷感動', text:'說一件對方做過、你其實有記住的小事。越具體越好。', bonus:'不能用「你很好」這種籠統答案'}
-    ]
-  },
-  chaos: {
-    label: '亂數卡',
-    cards: [
-      {title:'命運剪刀石頭布', text:'先猜拳，贏的人決定接下來 30 分鐘做什麼，輸的人不能反駁。', bonus:'但可以討一個親親折抵'},
-      {title:'一句話劇場', text:'用「如果我們現在在電影裡」開頭，各講一句台詞。比較浮誇的人獲勝。', bonus:'輸的人負責鼓掌'},
-      {title:'神秘代號', text:'替今天取一個只有你們懂的代號，不能超過 6 個字。', bonus:'今天都用這個代號稱呼這天'},
-      {title:'幸運數字', text:'各選 1 到 9 的數字，相加後：偶數拍照，奇數買點心，9 以上加碼抱抱。', bonus:'命運說了算'}
-    ]
+// ── 拍貼機：上傳照片、人物去背、50 種風格合成 ──
+let pbFormat = 2;
+let pbFiles = [];
+let pbCutouts = [];
+let pbActiveStyle = 0;
+let pbRemoveBgPromise = null;
+let pbInited = false;
+const PB_CLEAR_TOKEN = 'photoBoothMessagesCleared_20260629_v1';
+const PB_STYLES = [
+  ['🧺','洗衣機','laundry','#f7fbff','#f9d6e4'],['🚇','捷運車廂','metro','#e8f4ff','#d8ffe9'],['✈️','飛機窗邊','plane','#e7f5ff','#ffe8c9'],['☕','咖啡廳','cafe','#fff1dc','#f5d2be'],['🎬','電影院','cinema','#24142d','#f7b4d0'],
+  ['🏖️','海灘','beach','#c9f4ff','#ffe9a8'],['🏮','夜市','market','#23152f','#ffcc70'],['🏪','便利商店','store','#eaf8ff','#ffd7df'],['🏫','教室','school','#fff6d8','#d8f0ff'],['🐠','水族館','aquarium','#d7f7ff','#b7e8ff'],
+  ['🎡','摩天輪','park','#f4e9ff','#ffdbe9'],['🎤','KTV','karaoke','#2a1438','#ff93d1'],['📚','書店','bookstore','#fff4df','#d9c4a7'],['🌃','城市天台','city','#16233f','#ffcc8f'],['🌷','花園','garden','#eeffe9','#ffd6e7'],
+  ['❄️','雪景','snow','#f2fbff','#d8e7ff'],['🕹️','遊樂場','arcade','#25194a','#6ef4ff'],['🚆','火車旅行','train','#e5f0ff','#ffe3c8'],['🫧','復古洗衣店','laundry','#f2fff9','#fbd1e1'],['🧺','野餐草地','picnic','#e9ffd7','#fff0b7'],
+  ['☔','雨天街角','rain','#dce8ff','#b9ccff'],['🍲','火鍋店','restaurant','#fff0dc','#ffd0b5'],['🍣','壽司吧','restaurant','#fff7eb','#ffd7e0'],['🖼️','美術館','museum','#f7f2ea','#d7e4ff'],['🧳','機場大廳','airport','#edf7ff','#f7e3c7'],
+  ['🏨','飯店大廳','lobby','#fff1e8','#ead8ff'],['🏕️','露營','camping','#e7f8d7','#ffd8af'],['🌌','星空','space','#172042','#b78cff'],['🌸','櫻花道','cherry','#fff0f7','#ffd7e8'],['🧊','冰櫃走道','store','#eaffff','#cbe9ff'],
+  ['🥐','麵包店','bakery','#fff0d4','#f5c88f'],['🏀','籃球場','court','#ffe3c8','#f0f7ff'],['⚾','棒球場','stadium','#dcf8df','#d8ecff'],['🌉','橋上夜景','bridge','#192440','#ffb37a'],['🏮','廟口','market','#2a1830','#ffd17a'],
+  ['🛗','電梯自拍','elevator','#eef1f6','#d6dbe7'],['🍳','廚房','kitchen','#fff6dc','#d8f2ff'],['🛁','泡泡浴','bath','#e6fbff','#ffe0ef'],['📖','圖書館','bookstore','#f7ead4','#d0c0a5'],['💐','花店','garden','#f2fff1','#ffd5eb'],
+  ['🚀','太空艙','space','#111b3d','#86d8ff'],['☁️','天空雲朵','sky','#dff6ff','#fff4c7'],['🛍️','百貨櫥窗','mall','#fff0f5','#e7ddff'],['🍰','甜點店','cafe','#fff2f7','#ffe2bf'],['🚉','月台','metro','#e8f0ff','#d7e1ff'],
+  ['✨','霓虹街頭','city','#201138','#ff89c7'],['📺','復古電視','retro','#f5ddbd','#b8e0d8'],['🫧','海底泡泡','aquarium','#d9fbff','#a7e1ff'],['🅿️','停車場','parking','#e8e8ec','#ffd2dc'],['💖','拍貼棚','studio','#fff0f6','#f4d8ff']
+].map((row,i)=>({id:i,emoji:row[0],name:row[1],type:row[2],c1:row[3],c2:row[4]}));
+function pbSetStatus(text){ const el=document.getElementById('pb-status'); if(el) el.textContent=text||''; }
+function pbSetFormat(count){
+  pbFormat = count===4 ? 4 : 2;
+  pbFiles = [];
+  pbCutouts = [];
+  document.getElementById('pb-format-2')?.classList.toggle('active', pbFormat===2);
+  document.getElementById('pb-format-4')?.classList.toggle('active', pbFormat===4);
+  const input=document.getElementById('pb-upload-input');
+  if(input) input.value='';
+  const label=document.getElementById('pb-upload-label');
+  if(label) label.textContent=`上傳 ${pbFormat} 張照片`;
+  document.getElementById('pb-file-list').innerHTML='';
+  document.getElementById('pb-confirm-btn').disabled=true;
+  document.getElementById('pb-preview-wrap').innerHTML='<div class="pb-empty">上傳並確認後，這裡會出現你的拍貼預覽。</div>';
+  pbSetStatus(`請先上傳剛好 ${pbFormat} 張照片。`);
+}
+function pbHandleUpload(event){
+  pbFiles = Array.from(event.target.files||[]).filter(file=>file.type.startsWith('image/'));
+  pbCutouts = [];
+  const list=document.getElementById('pb-file-list');
+  list.innerHTML = pbFiles.map((file,i)=>`<div class="pb-file"><img src="${URL.createObjectURL(file)}" alt="拍貼照片 ${i+1}"><span>${i+1}</span></div>`).join('');
+  const ok = pbFiles.length === pbFormat;
+  document.getElementById('pb-confirm-btn').disabled = !ok;
+  pbSetStatus(ok ? `已選 ${pbFiles.length} 張，按確認開始去背。` : `目前 ${pbFiles.length} 張，請上傳剛好 ${pbFormat} 張。`);
+}
+async function pbGetRemoveBg(){
+  if(!pbRemoveBgPromise){
+    pbRemoveBgPromise = import('https://cdn.jsdelivr.net/npm/@imgly/background-removal/+esm')
+      .then(mod=>mod.default || mod.removeBackground);
   }
-};
-function setLoveDrawDeck(deck){
-  loveDrawDeck = LOVE_DRAW_DECKS[deck] ? deck : 'date';
-  Object.keys(LOVE_DRAW_DECKS).forEach(key=>{
-    document.getElementById(`love-deck-${key}`)?.classList.toggle('active', key===loveDrawDeck);
+  return pbRemoveBgPromise;
+}
+function pbLoadImage(src){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=reject;
+    img.crossOrigin='anonymous';
+    img.src=src;
   });
 }
-function drawLoveCard(){
-  const deck = LOVE_DRAW_DECKS[loveDrawDeck] || LOVE_DRAW_DECKS.date;
-  const source = loveDrawDeck === 'chaos'
-    ? Object.values(LOVE_DRAW_DECKS).flatMap(group=>group.cards)
-    : deck.cards;
-  const card = source[Math.floor(Math.random() * source.length)];
-  const display = document.getElementById('love-draw-display');
-  if(!display || !card) return;
-  const serial = `${deck.label} #${String(Math.floor(Math.random()*90)+10)}`;
-  display.innerHTML = `
-    <div class="love-card">
-      <div class="love-card-id">${escapeHtml(serial)}</div>
-      <div class="love-card-title">${escapeHtml(card.title)}</div>
-      <div class="love-card-text">${escapeHtml(card.text)}</div>
-      <div class="love-card-bonus">${escapeHtml(card.bonus)}</div>
-    </div>`;
+async function pbFallbackCutout(file){
+  const src=URL.createObjectURL(file);
+  const img=await pbLoadImage(src);
+  const canvas=document.createElement('canvas');
+  canvas.width=720; canvas.height=900;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(360,460,310,405,0,0,Math.PI*2);
+  ctx.clip();
+  const scale=Math.max(canvas.width/img.width,canvas.height/img.height);
+  const sw=canvas.width/scale, sh=canvas.height/scale;
+  ctx.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,canvas.width,canvas.height);
+  ctx.restore();
+  return canvas.toDataURL('image/png');
 }
-function initLoveDraw(){
-  setLoveDrawDeck(loveDrawDeck);
-  if(!window._fb || localStorage.getItem(LOVE_DRAW_CLEAR_TOKEN)==='1') return;
-  const {db,ref,remove,get}=window._fb;
-  const messagesRef = ref(db,'messages');
-  const markDone = () => localStorage.setItem(LOVE_DRAW_CLEAR_TOKEN,'1');
-  if(get){
-    get(messagesRef).then(snap=>{
-      if(snap.exists()) return remove(messagesRef);
-    }).then(markDone).catch(markDone);
-  }else{
-    remove(messagesRef).then(markDone).catch(markDone);
+async function pbRemoveBackgroundFile(file, index){
+  pbSetStatus(`正在去背第 ${index+1} / ${pbFiles.length} 張...`);
+  try{
+    const removeBackground=await pbGetRemoveBg();
+    const blob=await removeBackground(file);
+    return URL.createObjectURL(blob);
+  }catch(err){
+    console.warn('Background removal failed, using soft fallback:', err);
+    pbSetStatus('去背套件暫時載入失敗，先用柔邊人物裁切備用模式。');
+    return pbFallbackCutout(file);
   }
 }
+async function pbConfirmPhotos(){
+  if(pbFiles.length!==pbFormat){ alert(`請上傳剛好 ${pbFormat} 張照片`); return; }
+  const btn=document.getElementById('pb-confirm-btn');
+  btn.disabled=true;
+  pbCutouts=[];
+  for(let i=0;i<pbFiles.length;i++){
+    const src=await pbRemoveBackgroundFile(pbFiles[i], i);
+    const img=await pbLoadImage(src);
+    pbCutouts.push({src,img});
+  }
+  pbSetStatus('去背完成，可以選擇不同拍貼風格。');
+  btn.disabled=false;
+  pbRenderBooth();
+}
+function pbRenderStyles(){
+  const grid=document.getElementById('pb-style-grid');
+  if(!grid) return;
+  grid.innerHTML = PB_STYLES.map(scene=>`<button type="button" class="pb-style-btn${scene.id===pbActiveStyle?' active':''}" onclick="pbSetStyle(${scene.id})"><span class="pb-style-emoji">${scene.emoji}</span><span class="pb-style-name">${scene.name}</span></button>`).join('');
+}
+function pbSetStyle(id){
+  pbActiveStyle = Number(id)||0;
+  pbRenderStyles();
+  if(pbCutouts.length) pbRenderBooth();
+}
+function pbRoundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();}
+function pbDrawGradient(ctx,W,H,scene){
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,scene.c1); bg.addColorStop(1,scene.c2);
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+}
+function pbDrawScene(ctx,W,H,scene){
+  pbDrawGradient(ctx,W,H,scene);
+  ctx.fillStyle='rgba(255,255,255,.42)'; pbRoundRect(ctx,36,36,W-72,H-72,44); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.72)'; ctx.fillRect(0,H*.67,W,H*.33);
+  ctx.fillStyle='rgba(201,75,100,.18)'; ctx.fillRect(0,H*.67,W,8);
+  const type=scene.type;
+  ctx.save();
+  if(type==='laundry'){ for(let i=0;i<3;i++){ctx.fillStyle='rgba(255,255,255,.8)';pbRoundRect(ctx,95+i*235,170,165,190,22);ctx.fill();ctx.strokeStyle='rgba(70,120,160,.35)';ctx.lineWidth=7;ctx.beginPath();ctx.arc(178+i*235,274,58,0,Math.PI*2);ctx.stroke();}}
+  else if(type==='metro'||type==='train'){ctx.fillStyle='rgba(255,255,255,.82)';pbRoundRect(ctx,75,150,W-150,250,28);ctx.fill();for(let i=0;i<4;i++){ctx.fillStyle='rgba(118,185,220,.45)';pbRoundRect(ctx,120+i*165,190,118,92,14);ctx.fill();}ctx.fillStyle='rgba(80,80,95,.25)';ctx.fillRect(70,420,W-140,10);}
+  else if(type==='plane'){for(let i=0;i<4;i++){ctx.fillStyle='rgba(255,255,255,.78)';ctx.beginPath();ctx.ellipse(135+i*175,220,58,78,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(128,205,255,.36)';ctx.beginPath();ctx.ellipse(135+i*175,220,42,60,0,0,Math.PI*2);ctx.fill();}}
+  else if(type==='cafe'||type==='bakery'||type==='restaurant'){ctx.fillStyle='rgba(90,55,35,.18)';ctx.fillRect(0,H*.64,W,H*.05);for(let i=0;i<5;i++){ctx.fillStyle='rgba(255,255,255,.55)';pbRoundRect(ctx,78+i*155,155,100,120,16);ctx.fill();}ctx.fillStyle='rgba(165,92,58,.28)';pbRoundRect(ctx,90,H*.66,W-180,80,22);ctx.fill();}
+  else if(type==='cinema'||type==='karaoke'||type==='arcade'||type==='city'){for(let i=0;i<12;i++){ctx.fillStyle=i%2?'rgba(255,255,255,.22)':'rgba(255,130,205,.25)';ctx.fillRect(i*76,110,42,180+((i%3)*35));}ctx.fillStyle='rgba(0,0,0,.22)';ctx.fillRect(0,H*.66,W,H*.34);}
+  else if(type==='beach'||type==='sky'){ctx.fillStyle='rgba(255,255,255,.72)';for(let i=0;i<5;i++){ctx.beginPath();ctx.ellipse(110+i*170,170+i%2*45,68,24,0,0,Math.PI*2);ctx.fill();}ctx.fillStyle='rgba(255,220,140,.62)';ctx.fillRect(0,H*.67,W,H*.33);}
+  else if(type==='market'||type==='cherry'||type==='garden'){for(let i=0;i<9;i++){ctx.fillStyle=i%2?'rgba(255,120,150,.38)':'rgba(255,220,120,.38)';ctx.beginPath();ctx.arc(70+i*95,140+(i%2)*28,28,0,Math.PI*2);ctx.fill();}for(let i=0;i<7;i++){ctx.fillStyle='rgba(255,255,255,.42)';ctx.fillText(scene.emoji,82+i*110,310+(i%2)*40);}}
+  else if(type==='aquarium'||type==='bath'){for(let i=0;i<18;i++){ctx.strokeStyle='rgba(255,255,255,.46)';ctx.beginPath();ctx.arc(50+(i*83)%W,130+(i*59)%430,10+(i%4)*5,0,Math.PI*2);ctx.stroke();}ctx.fillStyle='rgba(255,255,255,.3)';ctx.fillRect(0,H*.62,W,H*.38);}
+  else if(type==='space'){for(let i=0;i<60;i++){ctx.fillStyle='rgba(255,255,255,.65)';ctx.fillRect((i*67)%W,(i*97)%600,3,3);}ctx.fillStyle='rgba(255,255,255,.14)';pbRoundRect(ctx,110,150,W-220,220,36);ctx.fill();}
+  else if(type==='bookstore'||type==='school'||type==='museum'){for(let i=0;i<5;i++){ctx.fillStyle='rgba(120,80,45,.18)';pbRoundRect(ctx,70+i*155,135,115,250,16);ctx.fill();ctx.fillStyle='rgba(255,255,255,.42)';ctx.fillRect(83+i*155,175,88,18);ctx.fillRect(83+i*155,225,88,18);ctx.fillRect(83+i*155,275,88,18);}}
+  else {for(let i=0;i<8;i++){ctx.fillStyle='rgba(255,255,255,.38)';pbRoundRect(ctx,55+i*105,145+(i%3)*44,72,92,18);ctx.fill();}}
+  ctx.restore();
+  ctx.textAlign='center';
+  ctx.font='900 52px "Noto Serif TC",serif';
+  ctx.fillStyle='rgba(120,40,70,.72)';
+  ctx.fillText(`${scene.emoji} ${scene.name}`,W/2,92);
+  ctx.font='700 24px "Noto Sans TC",sans-serif';
+  ctx.fillStyle='rgba(120,40,70,.42)';
+  ctx.fillText('PHOTO BOOTH',W/2,H-52);
+}
+function pbDrawCutout(ctx, item, box){
+  if(!item?.img) return;
+  const img=item.img;
+  ctx.save();
+  ctx.translate(box.x+box.w/2, box.y+box.h/2);
+  ctx.rotate(box.r||0);
+  ctx.shadowColor='rgba(60,30,45,.28)';
+  ctx.shadowBlur=20;
+  ctx.shadowOffsetY=10;
+  const scale=Math.min(box.w/img.width, box.h/img.height);
+  const dw=img.width*scale, dh=img.height*scale;
+  ctx.drawImage(img,-dw/2,box.h/2-dh,dw,dh);
+  ctx.restore();
+}
+function pbRenderBooth(){
+  if(!pbCutouts.length) return;
+  const W=900,H=1280;
+  const canvas=document.createElement('canvas');
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  const scene=PB_STYLES[pbActiveStyle] || PB_STYLES[0];
+  pbDrawScene(ctx,W,H,scene);
+  const boxes = pbFormat===2
+    ? [{x:118,y:420,w:300,h:510,r:-.035},{x:482,y:420,w:300,h:510,r:.035}]
+    : [{x:92,y:320,w:255,h:390,r:-.03},{x:552,y:320,w:255,h:390,r:.03},{x:92,y:700,w:255,h:390,r:.025},{x:552,y:700,w:255,h:390,r:-.025}];
+  pbCutouts.slice(0,pbFormat).forEach((item,i)=>pbDrawCutout(ctx,item,boxes[i]));
+  ctx.strokeStyle='rgba(255,255,255,.85)';
+  ctx.lineWidth=18;
+  pbRoundRect(ctx,34,34,W-68,H-68,46);
+  ctx.stroke();
+  const url=canvas.toDataURL('image/png');
+  document.getElementById('pb-preview-wrap').innerHTML=`<canvas class="pb-canvas" id="pb-result-canvas" width="${W}" height="${H}"></canvas><br><a class="pb-download" href="${url}" download="拍貼機_${scene.name}_${pbFormat}張.png">下載這張拍貼</a>`;
+  document.getElementById('pb-result-canvas').getContext('2d').drawImage(canvas,0,0);
+}
+function initPhotoBooth(){
+  if(pbInited) return;
+  pbInited = true;
+  pbRenderStyles();
+  pbSetFormat(pbFormat);
+}
+function pbClearOldMessages(){
+  if(!window._fb || localStorage.getItem(PB_CLEAR_TOKEN)==='1') return;
+  const {db,ref,remove,get}=window._fb;
+  const messagesRef=ref(db,'messages');
+  const done=()=>localStorage.setItem(PB_CLEAR_TOKEN,'1');
+  if(get){ get(messagesRef).then(snap=>{ if(snap.exists()) return remove(messagesRef); }).then(done).catch(done); }
+  else { remove(messagesRef).then(done).catch(done); }
+}
+setTimeout(initPhotoBooth,0);
 
 // ── 回憶（依月份顯示相簿照片）──
 // 回憶頁的月份狀態
@@ -11591,7 +11702,8 @@ function cpblRenderHistory(){
 // ── Firebase 初始化完成後啟動 ──
 window.addEventListener('firebaseReady',()=>{
   albumInitFirebase();
-  initLoveDraw();
+  initPhotoBooth();
+  pbClearOldMessages();
   initMine();
   pdLoad();
   ftInit();

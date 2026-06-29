@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -681,23 +681,6 @@ font-size:14px;flex-shrink:0;
 }
 .music-btns{display:flex;gap:2px;flex-shrink:0;}
 .music-btn{background:none;border:none;cursor:pointer;font-size:16px;padding:1px;color:var(--pink);}
-
-.mc-opt-btn{
-padding:12px;
-border:1.5px solid var(--card-border);
-border-radius:12px;
-background:var(--white);
-cursor:pointer;
-font-size:14px;
-text-align:center;
-font-family:'Noto Sans TC',sans-serif;
-color:var(--text);
-transition:all .2s;
-width:100%;
-}
-.mc-opt-btn:hover:not(:disabled){border-color:var(--pink);background:var(--pink-light);}
-.mc-opt-btn.chosen{background:var(--pink);color:white;border-color:var(--pink);}
-.mc-opt-btn:disabled{opacity:.75;cursor:default;}
 
 /* 相簿同步載入指示器 */
 .album-sync-badge{
@@ -3029,61 +3012,6 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 
 
 
-/* Guess song game */
-.gsg-shell{display:flex;flex-direction:column;gap:12px;max-width:760px;margin:0 auto}
-.gsg-hero,.gsg-panel,.gsg-result{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
-.gsg-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--pink);margin-bottom:4px;line-height:1.5}
-.gsg-sub,.gsg-current,.gsg-feedback,.gsg-progress-text,.gsg-result-msg{font-size:13px;line-height:1.7;color:var(--text-muted)}
-.gsg-row{display:grid;gap:8px}
-.gsg-stats{grid-template-columns:repeat(5,minmax(0,1fr))}
-.gsg-stat{background:var(--pink-light);border-radius:14px;padding:10px 8px;text-align:center}
-.gsg-small{font-size:11px;color:var(--text-muted);margin-bottom:4px}
-.gsg-big{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--rose)}
-.gsg-panel{display:flex;flex-direction:column;gap:12px}
-.gsg-progress-wrap{display:flex;flex-direction:column;gap:8px}
-.gsg-progress-bar{height:8px;border-radius:999px;background:rgba(232,99,122,.12);overflow:hidden}
-.gsg-progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--pink),#ff9db0);transition:width .28s ease}
-.gsg-cover{width:92px;height:92px;border-radius:26px;margin:0 auto;background:linear-gradient(180deg,#fff,#fce4ea);border:1px solid rgba(232,99,122,.14);display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 12px 30px rgba(232,99,122,.12)}
-.gsg-current{text-align:center;color:var(--text);font-weight:600}
-.gsg-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.gsg-btn{min-height:42px;border-radius:12px;border:1px solid rgba(232,99,122,.16);background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:10px 12px;cursor:pointer;transition:.2s ease}
-.gsg-btn:hover,.gsg-btn:focus-visible{transform:translateY(-1px);border-color:var(--pink);box-shadow:0 8px 18px rgba(232,99,122,.12)}
-.gsg-btn.primary{background:var(--pink);color:#fff;border-color:var(--pink)}
-.gsg-btn.secondary{background:var(--pink-light)}
-.gsg-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
-.gsg-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.gsg-option{min-height:54px;border-radius:14px;border:1.5px solid rgba(232,99,122,.18);background:var(--white);color:var(--text);font-size:13px;line-height:1.5;padding:10px 12px;cursor:pointer;transition:.18s ease;text-align:left}
-.gsg-option:hover,.gsg-option:focus-visible{border-color:var(--pink);background:var(--pink-light)}
-.gsg-option.correct{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
-.gsg-option.wrong{background:#fff0f3;border-color:var(--pink);color:var(--rose)}
-.gsg-feedback{min-height:24px;text-align:center;font-weight:600;color:var(--rose)}
-.gsg-result{display:none;text-align:center}
-.gsg-result.show{display:block}
-.gsg-result-emoji{font-size:54px;margin-bottom:6px}
-.gsg-result-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:6px}
-.gsg-result-score{font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:var(--rose);margin-bottom:6px}
-.gsg-player-select{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
-.gsg-player{min-height:42px;border-radius:13px;border:1.5px solid rgba(232,99,122,.18);background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-weight:700;cursor:pointer;transition:.18s ease}
-.gsg-player.active{background:var(--pink);border-color:var(--pink);color:#fff;box-shadow:0 8px 18px rgba(232,99,122,.18)}
-.gsg-leaderboard{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
-.gsg-leaderboard-title{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:var(--pink);margin-bottom:8px}
-.gsg-rank-list{display:flex;flex-direction:column;gap:7px}
-.gsg-rank-row{display:grid;grid-template-columns:38px 1fr auto auto;gap:8px;align-items:center;background:var(--pink-light);border-radius:12px;padding:9px 10px;font-size:12px}
-.gsg-rank-no{font-weight:800;color:var(--rose)}
-.gsg-rank-name{font-weight:700;color:var(--text)}
-.gsg-rank-score{color:var(--rose);font-weight:700}
-.gsg-rank-time{font-variant-numeric:tabular-nums;color:var(--text)}
-.gsg-rank-empty{text-align:center;color:var(--text-muted);font-size:12px;padding:10px}
-[data-theme="dark"] .gsg-hero,[data-theme="dark"] .gsg-panel,[data-theme="dark"] .gsg-result{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-stat{background:#3a1f28}
-[data-theme="dark"] .gsg-btn{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-btn.secondary{background:#3a1f28;color:#ffd9e2}
-[data-theme="dark"] .gsg-option{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-player,[data-theme="dark"] .gsg-leaderboard{background:rgba(58,33,42,.9);color:var(--text);border-color:rgba(232,99,122,.18)}
-[data-theme="dark"] .gsg-player.active{background:var(--pink);color:#fff}
-[data-theme="dark"] .gsg-rank-row{background:#3a1f28}
-@media(max-width:520px){.gsg-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.gsg-controls,.gsg-options{grid-template-columns:1fr}}
-
 /* 節奏遊戲：加長舞台、放大音符與命中特效 */
 #gs-4 .rg-stage{width:min(100%,460px);height:clamp(500px,68dvh,650px)}
 #gs-4 .rg-note{height:clamp(46px,11vw,60px);min-width:0;border-radius:999px;box-shadow:0 14px 25px rgba(10,10,10,.34),inset 0 2px 0 rgba(255,255,255,.36),inset 0 -5px 0 rgba(0,0,0,.28)}
@@ -3406,13 +3334,11 @@ onclick="hideSpecialForToday()">
   <div id="game-hub" class="game-hub">
     <div class="game-menu-grid">
         <button type="button" class="game-menu-btn" onclick="openGame(0,this)">💣 踩地雷</button>
-        <button type="button" class="game-menu-btn" onclick="openGame(1,this)">🤝 默契挑戰</button>
-        <button type="button" class="game-menu-btn" onclick="openGame(2,this)">🟦 方塊遊戲</button>
-        <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🧩 回憶拼圖</button>
-        <button type="button" class="game-menu-btn" onclick="openGame(4,this)">🎵 節奏點擊</button>
-        <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(5,this)">⚾ 中職猜勝負</button>
-        <button type="button" class="game-menu-btn" id="game-menu-gsg" onclick="openGame(6,this)">🎤 猜歌遊戲</button>
-        <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(7,this)">🐥 天天過馬路</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(1,this)">🟦 方塊遊戲</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(2,this)">🧩 回憶拼圖</button>
+        <button type="button" class="game-menu-btn" onclick="openGame(3,this)">🎵 節奏點擊</button>
+        <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(4,this)">⚾ 中職猜勝負</button>
+        <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(5,this)">🐥 天天過馬路</button>
     </div>
   </div>
 
@@ -3521,57 +3447,6 @@ onclick="hideSpecialForToday()">
     </div>
   </div>
 </div>
-<!-- 默契挑戰 -->
-<div class="game-section" id="gs-1">
-  <div class="card">
-    <div class="card-title">🤝 默契挑戰</div>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">10 道題目，看看你們有多有默契！答案一樣才能得分 💕</p>
-
-    <!-- 加入區 -->
-    <div id="mc-join-area">
-      <div style="display:flex;gap:10px;margin-bottom:10px">
-        <button class="open-btn" style="flex:1" onclick="mcJoin('聖展')">我是聖展</button>
-        <button class="open-btn" style="flex:1" onclick="mcJoin('予君')">我是予君</button>
-      </div>
-      <div class="rps-status" id="mc-join-status">請選擇你是誰</div>
-    </div>
-
-    <!-- 等待另一人 -->
-    <div id="mc-wait-join" style="display:none;text-align:center;padding:14px;font-size:14px;color:var(--text-muted);background:var(--pink-light);border-radius:12px;margin-bottom:12px"></div>
-
-    <!-- 答題區 -->
-    <div id="mc-question-area" style="display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span id="mc-progress" style="font-size:12px;color:var(--text-muted)"></span>
-        <span id="mc-score-display" style="font-size:12px;color:var(--pink);font-weight:600"></span>
-      </div>
-      <div style="background:var(--pink-light);border-radius:10px;height:6px;overflow:hidden;margin-bottom:16px">
-        <div id="mc-progress-bar" style="height:100%;background:var(--pink);width:0%;transition:width .3s"></div>
-      </div>
-      <div id="mc-question-text" style="font-size:16px;font-family:'Noto Serif TC',serif;color:var(--text);margin-bottom:16px;line-height:1.7"></div>
-      <div id="mc-options-grid" style="display:flex;flex-direction:column;gap:8px"></div>
-
-      <div id="mc-wait-msg" style="display:none;text-align:center;font-size:13px;color:var(--text-muted);padding:10px;background:var(--pink-light);border-radius:12px;margin-top:14px"></div>
-
-      <div id="mc-reveal-area" style="display:none;margin-top:14px">
-        <div id="mc-reveal-msg" style="text-align:center;font-size:15px;color:var(--pink);font-weight:600;margin-bottom:12px"></div>
-        <div id="mc-reveal-answers" style="display:flex;align-items:center;justify-content:space-around;gap:8px"></div>
-      </div>
-
-      <button id="mc-next-btn" class="open-btn" style="display:none;margin-top:14px" onclick="mcNext()">下一題 ➡️</button>
-    </div>
-
-    <!-- 結果區 -->
-    <div id="mc-result-area" style="display:none;text-align:center;padding:16px 0">
-      <div style="font-size:56px;margin-bottom:8px">🎊</div>
-      <div style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--pink);font-weight:700;margin-bottom:8px">默契測驗結果</div>
-      <div class="quiz-score-num" id="mc-final-score">0</div>
-      <div style="font-size:13px;color:var(--text-muted);margin:10px 0 20px;line-height:1.8" id="mc-final-msg"></div>
-      <button class="open-btn" onclick="mcReset()">再玩一次 🔄</button>
-    </div>
-  </div>
-</div>
-
  <!-- 方塊遊戲 -->
 <div class="game-section" id="gs-2">
   <div class="card bb-shell-card">
@@ -3745,69 +3620,6 @@ onclick="hideSpecialForToday()">
       <div class="cpblg-backpack" id="cpblg-backpack"><div class="cpblg-backpack-list" id="cpblg-backpack-list"></div></div>
       <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div class="cpblg-toolbar-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshOdds(true)">更新賠率</button><button type="button" class="cpblg-btn secondary" onclick="cpblOpenHistoryPage()">歷史猜測紀錄</button></div></div>
       <div class="cpblg-status" id="cpblg-status">進入頁面後會自動載入。</div><div class="cpblg-games" id="cpblg-games"></div>
-    </div>
-  </div>
-</div>
-
-<!-- 猜歌遊戲 -->
-<div class="game-section" id="gs-6">
-  <div class="card">
-    <div class="card-title">🎤 猜歌遊戲</div>
-    <div class="gsg-shell">
-      <div class="gsg-hero">
-        <div class="gsg-title">聽前奏，猜出歌曲名字</div>
-        <div class="gsg-sub">先比答對題數，答對一樣再比完成時間。開始前請先選擇你是誰。</div>
-        <div class="gsg-player-select">
-          <button type="button" class="gsg-player" id="gsg-player-sheng" onclick="gsgSelectPlayer('聖展')">我是聖展</button>
-          <button type="button" class="gsg-player" id="gsg-player-yujun" onclick="gsgSelectPlayer('予君')">我是予君</button>
-        </div>
-      </div>
-
-      <div class="gsg-row gsg-stats">
-        <div class="gsg-stat"><div class="gsg-small">題數</div><div class="gsg-big" id="gsg-round">0 / 0</div></div>
-        <div class="gsg-stat"><div class="gsg-small">分數</div><div class="gsg-big" id="gsg-score">0</div></div>
-        <div class="gsg-stat"><div class="gsg-small">連對</div><div class="gsg-big" id="gsg-streak">0</div></div>
-        <div class="gsg-stat"><div class="gsg-small">用時</div><div class="gsg-big" id="gsg-time">00:00</div></div>
-        <div class="gsg-stat"><div class="gsg-small">個人最佳</div><div class="gsg-big" id="gsg-best">—</div></div>
-      </div>
-
-      <div class="gsg-panel">
-        <div class="gsg-progress-wrap">
-          <div class="gsg-progress-bar"><div class="gsg-progress-fill" id="gsg-progress-fill"></div></div>
-          <div class="gsg-progress-text" id="gsg-progress-text">準備開始</div>
-        </div>
-
-        <div class="gsg-cover" id="gsg-cover">🎵</div>
-
-        <div class="gsg-current" id="gsg-current">點「播放片段」開始猜歌</div>
-
-        <div class="gsg-controls">
-          <button type="button" class="gsg-btn primary" id="gsg-play-btn" onclick="gsgPlayPreview()">▶️ 播放片段</button>
-          <button type="button" class="gsg-btn secondary" onclick="gsgReplayRound()">🔁 再聽一次</button>
-          <button type="button" class="gsg-btn secondary" onclick="gsgNextRound()">➡️ 下一題</button>
-          <button type="button" class="gsg-btn secondary" onclick="gsgRestart()">重新開始</button>
-        </div>
-
-        <div class="gsg-options" id="gsg-options"></div>
-
-        <div class="gsg-feedback" id="gsg-feedback">先播放片段，再從下面選答案。</div>
-      </div>
-
-      <div id="gsg-result" class="gsg-result">
-        <div class="gsg-result-emoji">🎉</div>
-        <div class="gsg-result-title">猜歌完成</div>
-        <div class="gsg-result-score" id="gsg-final-score">0 / 0</div>
-        <div class="gsg-result-msg" id="gsg-final-msg"></div>
-        <button type="button" class="gsg-btn primary" onclick="gsgRestart()">再玩一次</button>
-      </div>
-
-      <div class="gsg-leaderboard">
-        <div class="gsg-leaderboard-title">🏆 本機猜歌排行榜</div>
-        <div class="gsg-sub" style="margin-bottom:8px">只保存在這台裝置；答對題數較多優先，題數相同時完成時間較少者排名較前。</div>
-        <div class="gsg-rank-list" id="gsg-rank-list"><div class="gsg-rank-empty">還沒有本機紀錄</div></div>
-      </div>
-
-      <audio id="gsg-audio" preload="auto"></audio>
     </div>
   </div>
 </div>
@@ -5971,7 +5783,7 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ── Game tabs ──
-const GAME_SECTION_IDS = ['gs-0','gs-1','gs-2','gs-3','gs-4','gs-5','gs-6','gs-7','gs-5-history'];
+const GAME_SECTION_IDS = ['gs-0','gs-2','gs-3','gs-4','gs-5','gs-7','gs-5-history'];
 
 function showGameHub(){
   document.getElementById('game-hub')?.classList.remove('hidden');
@@ -5981,7 +5793,6 @@ function showGameHub(){
   document.body.classList.add('game-mode');
   document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
-  if(typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -6005,19 +5816,17 @@ function openGame(i,btn){
   if(btn) btn.classList.add('active');
 
   document.body.classList.add('game-mode');
-  document.body.classList.toggle('pz-mode', i===3);
-  document.body.classList.toggle('rg-mode', i===4);
-  document.body.classList.toggle('xrg-mode', i===7);
+  document.body.classList.toggle('pz-mode', i===2);
+  document.body.classList.toggle('rg-mode', i===3);
+  document.body.classList.toggle('xrg-mode', i===5);
 
-  if(i===4 || i===6) pauseBackgroundMusicForInteractiveGame();
-  if(i!==4 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
-  if(i!==6 && typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
-  if(i!==7 && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
-  if(i===3 && typeof pzEnterScreen==='function') pzEnterScreen();
-  if(i===4 && typeof rgEnterScreen==='function') rgEnterScreen();
-  if(i===5 && typeof cpblEnterScreen==='function') cpblEnterScreen();
-  if(i===6 && typeof gsgEnterScreen==='function') gsgEnterScreen();
-  if(i===7 && typeof xrgEnterScreen==='function') xrgEnterScreen();
+  if(i===3) pauseBackgroundMusicForInteractiveGame();
+  if(i!==3 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
+  if(i!==5 && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
+  if(i===2 && typeof pzEnterScreen==='function') pzEnterScreen();
+  if(i===3 && typeof rgEnterScreen==='function') rgEnterScreen();
+  if(i===4 && typeof cpblEnterScreen==='function') cpblEnterScreen();
+  if(i===5 && typeof xrgEnterScreen==='function') xrgEnterScreen();
 
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
@@ -6034,7 +5843,6 @@ function showGameSectionById(id, options={}){
   document.body.classList.add('game-mode');
   document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
-  if(typeof gsgPauseIfHidden==='function') gsgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
@@ -6047,410 +5855,6 @@ function cpblOpenHistoryPage(){
 function cpblCloseHistoryPage(){
   showGameSectionById('gs-5', { showBackRow:true });
 }
-let gsgAudio = null;
-let gsgDeck = [];
-let gsgRoundIndex = 0;
-let gsgScore = 0;
-let gsgStreak = 0;
-let gsgCurrent = null;
-let gsgOptions = [];
-let gsgAnswered = false;
-let gsgPreviewTimer = null;
-let gsgPreviewStart = 8;
-let gsgReady = false;
-let gsgPlayer = localStorage.getItem('gsgPlayer') || '';
-let gsgStartedAt = 0;
-let gsgElapsedMs = 0;
-let gsgTimerTick = null;
-let gsgFinished = false;
-let gsgLeaderboard = [];
-let gsgLeaderboardListening = false;
-const GSG_PENDING_KEY = 'gsg_pending_results_v1';
-const GSG_LOCAL_LEADERBOARD_KEY = 'gsg_local_leaderboard_v1';
-
-function gsgShuffle(list){
-  const arr = list.slice();
-  for(let i=arr.length-1;i>0;i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function gsgEscape(text){
-  return String(text ?? '').replace(/[&<>"']/g, char => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  })[char]);
-}
-
-function gsgSongPool(){
-  return Array.isArray(RG_SONGS) ? RG_SONGS.filter(song => song && /^game\d+\.mp3$/i.test(song.file || '') && song.name) : [];
-}
-
-function gsgFormatTime(ms){
-  const value = Math.max(0, Number(ms) || 0);
-  const minutes = Math.floor(value / 60000);
-  const seconds = Math.floor((value % 60000) / 1000);
-  const tenths = Math.floor((value % 1000) / 100);
-  return `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}.${tenths}`;
-}
-
-function gsgElapsed(){
-  return gsgElapsedMs + (gsgStartedAt ? Date.now() - gsgStartedAt : 0);
-}
-
-function gsgStartTimer(){
-  if(gsgFinished || gsgStartedAt) return;
-  gsgStartedAt = Date.now();
-  clearInterval(gsgTimerTick);
-  gsgTimerTick = setInterval(gsgUpdateTime, 100);
-  gsgUpdateTime();
-}
-
-function gsgStopTimer(){
-  if(gsgStartedAt){
-    gsgElapsedMs += Date.now() - gsgStartedAt;
-    gsgStartedAt = 0;
-  }
-  clearInterval(gsgTimerTick);
-  gsgTimerTick = null;
-  gsgUpdateTime();
-}
-
-function gsgUpdateTime(){
-  const el = document.getElementById('gsg-time');
-  if(el) el.textContent = gsgFormatTime(gsgElapsed());
-}
-
-function gsgCompareRecords(a,b){
-  return (Number(b.score)||0) - (Number(a.score)||0)
-    || (Number(a.timeMs)||0) - (Number(b.timeMs)||0)
-    || (Number(a.completedAt)||0) - (Number(b.completedAt)||0);
-}
-
-function gsgPlayerBest(){
-  return gsgLeaderboard.filter(item=>item.player===gsgPlayer).sort(gsgCompareRecords)[0] || null;
-}
-
-function gsgRenderBest(){
-  const el = document.getElementById('gsg-best');
-  if(!el) return;
-  const best = gsgPlayerBest();
-  el.textContent = best ? `${best.score}題 ${gsgFormatTime(best.timeMs)}` : '—';
-}
-
-function gsgSelectPlayer(name){
-  if((gsgStartedAt || gsgElapsedMs) && !gsgFinished){
-    alert('這一輪已經開始，請重新開始後再切換身分。');
-    return;
-  }
-  gsgPlayer = name;
-  localStorage.setItem('gsgPlayer', name);
-  document.querySelectorAll('.gsg-player').forEach(button=>button.classList.remove('active'));
-  document.getElementById(name==='聖展'?'gsg-player-sheng':'gsg-player-yujun')?.classList.add('active');
-  gsgRenderBest();
-}
-
-function gsgEnsureReady(){
-  if(!gsgPlayer){
-    alert('請先選擇你是聖展還是予君。');
-    return false;
-  }
-  return true;
-}
-
-function gsgRenderLeaderboard(){
-  const wrap = document.getElementById('gsg-rank-list');
-  if(!wrap) return;
-  const rows = gsgLeaderboard.slice().sort(gsgCompareRecords).slice(0,5);
-  if(!rows.length){
-    wrap.innerHTML = '<div class="gsg-rank-empty">還沒有完成紀錄，等你拿下第一名！</div>';
-    gsgRenderBest();
-    return;
-  }
-  wrap.innerHTML = rows.map((item,index)=>`<div class="gsg-rank-row"><div class="gsg-rank-no">#${index+1}</div><div class="gsg-rank-name">${gsgEscape(item.player)}</div><div class="gsg-rank-score">${Number(item.score)||0} / ${Number(item.total)||10} 題</div><div class="gsg-rank-time">${gsgFormatTime(item.timeMs)}</div></div>`).join('');
-  gsgRenderBest();
-}
-
-function gsgPendingResults(){
-  try{return JSON.parse(localStorage.getItem(GSG_PENDING_KEY)||'{}') || {};}catch(_err){return {};}
-}
-
-function gsgStorePending(id,record){
-  const pending = gsgPendingResults();
-  pending[id] = record;
-  localStorage.setItem(GSG_PENDING_KEY, JSON.stringify(pending));
-}
-
-function gsgFlushPending(){
-  localStorage.removeItem(GSG_PENDING_KEY);
-}
-
-function gsgLoadLocalLeaderboard(){
-  try{
-    const rows = JSON.parse(localStorage.getItem(GSG_LOCAL_LEADERBOARD_KEY)||'[]');
-    return Array.isArray(rows) ? rows.filter(item=>item.player && Number(item.timeMs)>0) : [];
-  }catch(_err){
-    return [];
-  }
-}
-
-function gsgSaveLocalLeaderboard(){
-  const rows = gsgLeaderboard.slice().sort(gsgCompareRecords).slice(0,50);
-  localStorage.setItem(GSG_LOCAL_LEADERBOARD_KEY, JSON.stringify(rows));
-}
-
-function gsgSaveResult(){
-  if(!gsgPlayer || !gsgElapsedMs) return;
-  const completedAt = Date.now();
-  const id = `${gsgPlayer}_${completedAt}_${Math.random().toString(36).slice(2,8)}`;
-  const record = {player:gsgPlayer,score:gsgScore,total:gsgDeck.length,timeMs:Math.round(gsgElapsedMs),completedAt};
-  gsgLeaderboard.push({id,...record});
-  gsgSaveLocalLeaderboard();
-  gsgRenderLeaderboard();
-}
-
-function gsgInitLeaderboard(){
-  if(gsgLeaderboardListening) return;
-  gsgLeaderboardListening = true;
-  gsgLeaderboard = gsgLoadLocalLeaderboard();
-  gsgRenderLeaderboard();
-  gsgFlushPending();
-}
-
-function gsgUpdateStats(){
-  const total = gsgDeck.length || 0;
-  const roundEl = document.getElementById('gsg-round');
-  const scoreEl = document.getElementById('gsg-score');
-  const streakEl = document.getElementById('gsg-streak');
-  const progressFill = document.getElementById('gsg-progress-fill');
-  const progressText = document.getElementById('gsg-progress-text');
-  if(roundEl) roundEl.textContent = `${Math.min(gsgRoundIndex + 1, total || 1)} / ${total}`;
-  if(scoreEl) scoreEl.textContent = String(gsgScore);
-  if(streakEl) streakEl.textContent = String(gsgStreak);
-  gsgUpdateTime();
-  if(progressFill) progressFill.style.width = total ? `${Math.round((Math.min(gsgRoundIndex, total) / total) * 100)}%` : '0%';
-  if(progressText) progressText.textContent = total ? `第 ${Math.min(gsgRoundIndex + 1, total)} 題 / 共 ${total} 題` : '尚未開始';
-}
-
-function gsgBuildDeck(){
-  const pool = gsgShuffle(gsgSongPool());
-  const roundCount = Math.min(10, pool.length);
-  return pool.slice(0, roundCount);
-}
-
-function gsgBuildOptions(current){
-  const pool = gsgSongPool().filter(song => song.file !== current.file);
-  const others = gsgShuffle(pool).slice(0, 3);
-  return gsgShuffle([current, ...others].filter(Boolean));
-}
-
-function gsgSetFeedback(text, tone='neutral'){
-  const el = document.getElementById('gsg-feedback');
-  if(!el) return;
-  el.textContent = text;
-  el.style.color = tone === 'good' ? '#2e7d32' : tone === 'bad' ? 'var(--rose)' : 'var(--text-muted)';
-}
-
-function gsgRenderOptions(){
-  const grid = document.getElementById('gsg-options');
-  if(!grid) return;
-  grid.innerHTML = gsgOptions.map((song, idx) =>
-    `<button type="button" class="gsg-option" data-index="${idx}" onclick="gsgAnswer(${idx})">${gsgEscape(song.name)}</button>`
-  ).join('');
-}
-
-function gsgSetCurrentSong(showName=false){
-  const el = document.getElementById('gsg-current');
-  if(!el || !gsgCurrent) return;
-  el.textContent = showName ? `正確答案：${gsgCurrent.name}` : `第 ${gsgRoundIndex + 1} 題，聽前奏猜歌名`;
-}
-
-function gsgStopPreview(){
-  clearTimeout(gsgPreviewTimer);
-  gsgPreviewTimer = null;
-  if(gsgAudio){
-    try{ gsgAudio.pause(); }catch(_err){}
-  }
-}
-
-function gsgPlayPreview(){
-  if(!gsgCurrent || !gsgAudio) return;
-  if(!gsgEnsureReady()) return;
-  pauseBackgroundMusicForInteractiveGame();
-  gsgStartTimer();
-  const start = Math.max(0, gsgPreviewStart || 0);
-  gsgAudio.src = gsgCurrent.file;
-  const playAt = () => {
-    const safeStart = gsgAudio.duration ? Math.max(0, Math.min(start, Math.max(0, gsgAudio.duration - 7))) : start;
-    try{ gsgAudio.currentTime = safeStart; }catch(_err){}
-    const playPromise = gsgAudio.play();
-    if(playPromise && typeof playPromise.catch === 'function') playPromise.catch(()=>{});
-    clearTimeout(gsgPreviewTimer);
-    gsgPreviewTimer = setTimeout(() => gsgStopPreview(), 8000);
-    gsgSetFeedback('已播放片段，快選答案！', 'neutral');
-  };
-  if(gsgAudio.readyState < 1){
-    gsgAudio.addEventListener('loadedmetadata', playAt, { once:true });
-    gsgAudio.load();
-  }else{
-    playAt();
-  }
-}
-
-function gsgReplayRound(){
-  if(!gsgCurrent) return;
-  gsgPlayPreview();
-}
-
-function gsgLoadRound(index){
-  gsgRoundIndex = index;
-  gsgAnswered = false;
-  gsgCurrent = gsgDeck[gsgRoundIndex] || null;
-  gsgOptions = gsgCurrent ? gsgBuildOptions(gsgCurrent) : [];
-  gsgPreviewStart = 6 + Math.floor(Math.random() * 18);
-  gsgSetCurrentSong(false);
-  gsgUpdateStats();
-  gsgRenderOptions();
-  gsgSetFeedback('先播放片段，再從下方選答案。', 'neutral');
-  const btn = document.getElementById('gsg-play-btn');
-  if(btn) btn.disabled = !gsgCurrent;
-  if(!gsgCurrent){
-    gsgFinish();
-    return;
-  }
-  if(gsgAudio){
-    gsgAudio.pause();
-    gsgAudio.src = gsgCurrent.file;
-    gsgAudio.load();
-  }
-  const cover = document.getElementById('gsg-cover');
-  if(cover) cover.textContent = '🎵';
-  const result = document.getElementById('gsg-result');
-  result?.classList.remove('show');
-}
-
-function gsgAnswer(index){
-  if(gsgAnswered || !gsgCurrent) return;
-  if(!gsgEnsureReady()) return;
-  gsgStartTimer();
-  gsgAnswered = true;
-  gsgStopPreview();
-  const picked = gsgOptions[index];
-  const buttons = document.querySelectorAll('#gsg-options .gsg-option');
-  buttons.forEach((button, idx) => {
-    button.disabled = true;
-    if(gsgOptions[idx]?.file === gsgCurrent.file){
-      button.classList.add('correct');
-    }else if(idx === index){
-      button.classList.add('wrong');
-    }
-  });
-  const correct = picked?.file === gsgCurrent.file;
-  if(correct){
-    gsgScore += 1;
-    gsgStreak += 1;
-    gsgSetFeedback(`答對了！這首是《${gsgCurrent.name}》`, 'good');
-  }else{
-    gsgStreak = 0;
-    gsgSetFeedback(`答錯了，正解是《${gsgCurrent.name}》`, 'bad');
-  }
-  gsgSetCurrentSong(true);
-  gsgUpdateStats();
-  if(gsgRoundIndex + 1 >= gsgDeck.length){
-    gsgStopTimer();
-    setTimeout(()=>gsgFinish(), 650);
-  }
-}
-
-function gsgNextRound(){
-  if(!gsgCurrent) return;
-  if(!gsgEnsureReady()) return;
-  gsgStartTimer();
-  if(!gsgAnswered){
-    gsgStopPreview();
-    gsgSetFeedback('已跳過這題，直接看下一首。', 'neutral');
-  }
-  if(gsgRoundIndex + 1 >= gsgDeck.length){
-    gsgFinish();
-    return;
-  }
-  gsgLoadRound(gsgRoundIndex + 1);
-}
-
-function gsgFinish(){
-  if(gsgFinished) return;
-  gsgFinished = true;
-  gsgStopPreview();
-  gsgStopTimer();
-  const result = document.getElementById('gsg-result');
-  const finalScore = document.getElementById('gsg-final-score');
-  const finalMsg = document.getElementById('gsg-final-msg');
-  const total = gsgDeck.length || 0;
-  const rate = total ? Math.round(gsgScore / total * 100) : 0;
-  if(finalScore) finalScore.textContent = `${gsgScore} / ${total}`;
-  if(finalMsg) finalMsg.textContent = `${gsgPlayer}｜正確率 ${rate}%｜完成時間 ${gsgFormatTime(gsgElapsedMs)}｜成績已送上排行榜`;
-  gsgSaveResult();
-  result?.classList.add('show');
-  const playBtn = document.getElementById('gsg-play-btn');
-  if(playBtn) playBtn.disabled = true;
-  gsgSetFeedback('這一輪已經完成了，按重新開始可以再挑戰一次。', 'neutral');
-}
-
-function gsgRestart(){
-  gsgInit();
-  gsgStopTimer();
-  gsgDeck = gsgBuildDeck();
-  gsgRoundIndex = 0;
-  gsgScore = 0;
-  gsgStreak = 0;
-  gsgAnswered = false;
-  gsgElapsedMs = 0;
-  gsgStartedAt = 0;
-  gsgFinished = false;
-  gsgSetFeedback('先播放片段，再從下方選答案。', 'neutral');
-  const result = document.getElementById('gsg-result');
-  result?.classList.remove('show');
-  gsgUpdateTime();
-  gsgRenderBest();
-  gsgLoadRound(0);
-}
-
-function gsgEnterScreen(){
-  gsgInit();
-  if(!gsgCurrent) gsgRestart();
-  const target = document.getElementById('gs-6');
-  if(target && window.matchMedia && window.matchMedia('(max-width: 520px)').matches){
-    target.scrollIntoView({ block:'start', behavior:'smooth' });
-  }
-}
-
-function gsgPauseIfHidden(){
-  gsgStopPreview();
-}
-
-function gsgInit(){
-  if(gsgReady) return;
-  gsgReady = true;
-  gsgAudio = document.getElementById('gsg-audio');
-  if(gsgAudio){
-    gsgAudio.preload = 'auto';
-    gsgAudio.addEventListener('ended', () => gsgStopPreview());
-  }
-  if(gsgPlayer) gsgSelectPlayer(gsgPlayer);
-  gsgRenderLeaderboard();
-  gsgInitLeaderboard();
-  if(!gsgDeck.length) gsgDeck = gsgBuildDeck();
-}
-
-gsgInitLeaderboard();
-
-
-
 function switchGame(i,btn){
   openGame(i,btn);
 }
@@ -6715,6 +6119,7 @@ const CPBLG_TEAM_META = {
   '台鋼雄鷹':{abbr:'H',label:'Hawks',color:'#1767a6',accent:'#ffffff'}
 };
 const CPBLG_HISTORY_PLAYERS = ['聖展','予君'];
+const CPBLG_DEFAULT_ODDS = 2;
 
 function cpblMakeLogoData(team){
   const meta = CPBLG_TEAM_META[team] || {abbr:'CP',label:team,color:'#c94b64',accent:'#ffffff'};
@@ -6751,6 +6156,9 @@ function cpblNormalizeHistoryItem(item){
     winner:String(item?.winner||''),
     pickTeam:String(item?.pickTeam||''),
     correct:item?.correct===null?null:!!item?.correct,
+    stake:Math.max(0, Math.floor(Number(item?.stake)||0)),
+    odds:Math.max(0, Number(item?.odds)||0),
+    coinAward:Math.max(0, Math.floor(Number(item?.coinAward)||0)),
     field:String(item?.field||''),
     source:String(item?.source||''),
     resolvedAt:Number(item?.resolvedAt)||0
@@ -6767,6 +6175,12 @@ function cpblLoadLocalData(){
 function cpblSafeCoinValue(value, fallback=1000){
   const coins = Number(value);
   return Number.isFinite(coins) ? Math.max(0, Math.floor(coins)) : fallback;
+}
+function cpblSafeDomId(prefix, value){
+  return `${prefix}-${encodeURIComponent(String(value||'')).replace(/%/g,'_')}`;
+}
+function cpblJsArg(value){
+  return cpblEscape(JSON.stringify(String(value ?? '')));
 }
 function cpblMergeData(base, incoming){
   const data = base || cpblBaseData();
@@ -7098,10 +6512,15 @@ function cpblPick(gameId, team){
   const game=cpblgGames.find(g=>g.id===gameId);
   if(!game){alert('找不到這場比賽，請重新抓賽程');return;}
   if(cpblIsLocked(game)){alert('這場已經開始或結束，不能再預測');return;}
+  const normalizedTeam = cpblNormalizeTeam(team);
+  if(!normalizedTeam || ![game.away, game.home].some(row=>cpblNormalizeTeam(row)===normalizedTeam)){
+    alert('只能選擇這場比賽的客隊或主隊');
+    return;
+  }
   cpblgData.picks[gameId] = cpblgData.picks[gameId] || {};
   const old = cpblgData.picks[gameId][cpblgPlayer];
   if(old?.checked){alert('這場已經結算，不能修改');return;}
-  const stakeEl=document.getElementById(`cpblg-stake-${gameId}`);
+  const stakeEl=document.getElementById(cpblSafeDomId('cpblg-stake', gameId));
   const oldStake=Number(old?.stake)||0;
   const eco=cpblEnsureEconomy(cpblgPlayer);
   const maxStake = Math.max(0, Number(eco.coins)||0) + oldStake;
@@ -7111,18 +6530,15 @@ function cpblPick(gameId, team){
     if(stakeEl) stakeEl.value=String(stake);
     alert(`最多只能下注你目前可用的 ${maxStake} 金幣`);
   }
-  const pickOdds = stake ? cpblMoneylineOddForTeam(game, team) : 0;
-  if(stake && (!Number.isFinite(pickOdds) || pickOdds<=0)){
-    alert('目前沒有抓到這隊的台灣運彩不讓分賠率，可以先把下注金額改成 0，只做預測。');
-    return;
-  }
+  const officialOdds = stake ? cpblMoneylineOddForTeam(game, team) : 0;
+  const pickOdds = stake ? cpblResolvePickOdds(game, team) : 0;
   const diff=stake-oldStake;
   if(diff>0 && eco.coins<diff){
     alert(`金幣不夠，還差 ${diff-eco.coins} 金幣`);
     return;
   }
   eco.coins -= diff;
-  cpblgData.picks[gameId][cpblgPlayer] = {team, stake, odds:pickOdds, oddsMarket:stake?'不讓分':'', oddsLockedAt:stake?Date.now():0, checked:false, correct:null, pickedAt:Date.now()};
+  cpblgData.picks[gameId][cpblgPlayer] = {team, stake, odds:pickOdds, oddsFallback:!!(stake && !officialOdds), oddsMarket:stake?'不讓分':'', oddsLockedAt:stake?Date.now():0, checked:false, correct:null, pickedAt:Date.now()};
   cpblSaveData(true);
   cpblSyncPredictionNow(gameId, cpblgPlayer);
   cpblRenderEconomy();
@@ -7140,7 +6556,7 @@ function cpblStatusError(message){
 function cpblHistoryId(gameId, player){return `${gameId}__${player}`;}
 function cpblUpsertHistoryRecord(game, player, pick){
   if(!pick) return false;
-  const item = cpblNormalizeHistoryItem({id:cpblHistoryId(game.id, player),gameId:game.id,gameNo:game.no,date:game.date,player,away:game.away,home:game.home,awayScore:game.awayScore,homeScore:game.homeScore,winner:cpblWinner(game),pickTeam:pick.team,correct:pick.correct,field:game.field,source:game.source,resolvedAt:Date.now()});
+  const item = cpblNormalizeHistoryItem({id:cpblHistoryId(game.id, player),gameId:game.id,gameNo:game.no,date:game.date,player,away:game.away,home:game.home,awayScore:game.awayScore,homeScore:game.homeScore,winner:cpblWinner(game),pickTeam:pick.team,correct:pick.correct,stake:pick.stake,odds:pick.settleOdds||pick.odds,coinAward:pick.coinAward,field:game.field,source:game.source,resolvedAt:Date.now()});
   const history = Array.isArray(cpblgData.history) ? cpblgData.history : [];
   const idx = history.findIndex(row=>row.id===item.id);
   if(idx<0){
@@ -7617,8 +7033,9 @@ function cpblHistoryPredictions(items, selectedDate){
       const pick = game.picks.find(item=>item.player===player);
       const isCorrect = !!pick?.pickTeam && cpblNormalizeTeam(pick.pickTeam)===cpblNormalizeTeam(pick.winner);
       const result = !pick ? '未預測' : `${pick.pickTeam || '未預測'}${pick.winner==='和局'?'（和局）':isCorrect?'（猜對）':'（猜錯）'}`;
+      const stakeText = pick?.stake ? `｜下注 ${Number(pick.stake).toLocaleString('zh-TW')}，派彩 ${Number(pick.coinAward||0).toLocaleString('zh-TW')}` : '';
       const resultClass = !pick ? '' : pick.winner==='和局' ? ' draw' : isCorrect ? ' correct' : ' wrong';
-      return `<span class="cpblg-history-prediction-player${resultClass}"><strong>${cpblEscape(player)}</strong>　${cpblEscape(result)}</span>`;
+      return `<span class="cpblg-history-prediction-player${resultClass}"><strong>${cpblEscape(player)}</strong>　${cpblEscape(result)}${cpblEscape(stakeText)}</span>`;
     }).join('');
     return `<div class="cpblg-history-prediction-row"><span class="cpblg-history-prediction-game">GAME ${cpblEscape(game.gameNo||'')}</span>${picks}</div>`;
   }).join('');
@@ -7692,7 +7109,7 @@ function cpblRenderGames(){
       const chosen = !!cpblgPlayer && chosenByCurrent;
       let cls='cpblg-btn cpblg-pick'+(chosen?' chosen':'');
       if(winner && chosen) cls += normalizedTeam===cpblNormalizeTeam(winner) ? ' correct' : ' wrong';
-      return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">${cpblTeamInline(team)}</button>`;
+      return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick(${cpblJsArg(game.id)},${cpblJsArg(team)})">${cpblTeamInline(team)}</button>`;
     };
     const metaLine = cpblGameMetaLine(game);
     return `<div class="cpblg-game">
@@ -7789,7 +7206,7 @@ function cpblResolveFinishedGames(push=true){
       }
       if(!p.coinSettled){
         const stake = Math.max(0, Number(p.stake)||0);
-        const odds = Math.max(0, Number(p.odds)||Number(cpblMoneylineOddForTeam(game, p.team))||0);
+        const odds = Math.max(0, Number(p.odds)||Number(cpblMoneylineOddForTeam(game, p.team))||CPBLG_DEFAULT_ODDS);
         const award = stake
           ? (correct === true ? Math.floor(stake * (odds || 1)) : (correct === null ? stake : 0))
           : 0;
@@ -8408,308 +7825,6 @@ function initMine(){
       return;
     }
     mineRenderState(state);
-  });
-}
-
-// ════════════════════════════════════════════════
-// ── 默契挑戰 ──
-// ════════════════════════════════════════════════
-const MC_QUESTION_BANK=[
-  {q:'你們第一次約會最喜歡哪個環節？',opts:['吃飯','看電影','聊天','散步']},
-  {q:'如果今天只能做一件事，你選？',opts:['睡覺','出去玩','窩在家看劇','吃大餐']},
-  {q:'你覺得對方最可愛的地方是？',opts:['笑容','撒嬌','體貼','幽默']},
-  {q:'你們最想去的旅行地點是？',opts:['日本','歐洲','東南亞','台灣各地']},
-  {q:'約會最理想的天氣是？',opts:['晴天','微涼有風','下小雨','無所謂']},
-  {q:'你覺得兩人關係中最重要的是？',opts:['信任','溝通','陪伴','浪漫']},
-  {q:'最喜歡哪種約會方式？',opts:['吃大餐','看夜景','逛街','窩在家']},
-  {q:'如果對方有壞心情，你會？',opts:['陪他說話','帶他出去玩','買食物哄','給他空間']},
-  {q:'你們的感情用什麼食物形容最貼切？',opts:['甜甜圈','珍珠奶茶','火鍋','提拉米蘇']},
-  {q:'對你來說「愛」最像什麼？',opts:['溫暖的陽光','深夜的擁抱','一首歌','家的感覺']},
-  {q:'如果有一天假期，你最想做什麼？',opts:['睡到自然醒','出門探險','待在家耍廢','來個小旅行']},
-  {q:'你覺得對方最讓你心動的是？',opts:['眼神','聲音','笑容','溫柔的動作']},
-  {q:'兩人吵架後你通常會？',opts:['主動道歉','等對方先說','冷靜後再談','用行動表達']},
-  {q:'你覺得最浪漫的事是？',opts:['一起看夕陽','深夜聊天聊到睡著','突然收到驚喜','牽手散步']},
-  {q:'如果可以給對方一個超能力，你選？',opts:['心靈感應','永遠健康','無限財富','時光旅行']},
-  {q:'你們在一起最像哪種組合？',opts:['歡喜冤家','青梅竹馬','一見鍾情','慢熱相知']},
-  {q:'最想和對方一起做的事是？',opts:['環遊世界','一起養寵物','共同學一樣技能','蓋一個家']},
-  {q:'你覺得對方最像哪種天氣？',opts:['晴天暖陽','涼爽微風','神秘陰天','溫柔細雨']},
-  {q:'約會時你最在意的是？',opts:['氣氛好不好','食物好不好吃','對方開不開心','玩得盡不盡興']},
-  {q:'你覺得兩人在一起最重要的習慣是？',opts:['每天說晚安','定期約會','分享日常小事','一起吃飯']},
-  {q:'如果今晚可以一起看電影，你選哪類？',opts:['愛情片','恐怖片','動作片','搞笑喜劇']},
-  {q:'你覺得對方最厲害的地方是？',opts:['超會照顧人','很有幽默感','做事很可靠','總是很體貼']},
-  {q:'你最喜歡對方說哪句話？',opts:['我愛你','你今天怎麼這麼好看','你餓了嗎','我想你']},
-  {q:'你覺得兩人之間最需要的是？',opts:['多一點擁抱','多一點說出口','多一點驚喜','多一點陪伴']},
-  {q:'如果養寵物，你們最想養？',opts:['狗狗','貓咪','兔子','鸚鵡']},
-  {q:'你覺得對方的愛情語言是？',opts:['肢體接觸','服務行動','送禮物','說甜言蜜語']},
-  {q:'最想在哪裡跟對方拍一張照？',opts:['海邊夕陽','山頂夜景','咖啡廳角落','家裡的沙發上']},
-  {q:'如果要送對方一份禮物，你會選？',opts:['手寫的信','一起的旅行','喜歡的食物','親手做的東西']},
-  {q:'你覺得你們最甜蜜的時刻是？',opts:['睡前說晚安','一起吃飯','突然被抱住','對方記得你說過的小事']},
-  {q:'你希望老了之後兩人一起做什麼？',opts:['環遊世界','種花種菜','每天散步','窩在家回憶年輕']},
-];
-
-// 本局使用的題目（從 Firebase 同步）
-let MC_QUESTIONS=[];
-
-let mcPlayer=null;
-let mcMyAnswer=null;
-let mcRenderedQ=-1;
-
-function mcInitialState(){
-  return {p1:null,p2:null,q:0,a1:null,a2:null,score:0,done:false,scored:false,qs:null};
-}
-
-function mcShowJoinArea(){
-  const joinArea = document.getElementById('mc-join-area');
-  if(!joinArea) return;
-  joinArea.style.display = '';
-  joinArea.innerHTML = `
-      <div style="display:flex;gap:10px;margin-bottom:10px">
-        <button class="open-btn" style="flex:1" onclick="mcJoin('聖展')">我是聖展</button>
-        <button class="open-btn" style="flex:1" onclick="mcJoin('予君')">我是予君</button>
-      </div>
-      <div class="rps-status" id="mc-join-status">請選擇你是誰</div>`;
-}
-
-function mcResetLocalUI(){
-  mcPlayer = null;
-  mcMyAnswer = null;
-  mcRenderedQ = -1;
-  MC_QUESTIONS = [];
-
-  mcShowJoinArea();
-  ['mc-wait-join','mc-question-area','mc-result-area','mc-reveal-area','mc-next-btn'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.style.display = 'none';
-  });
-
-  const waitMsg = document.getElementById('mc-wait-msg');
-  if(waitMsg){ waitMsg.style.display = 'none'; waitMsg.textContent = ''; }
-  const grid = document.getElementById('mc-options-grid');
-  if(grid) grid.innerHTML = '';
-  const question = document.getElementById('mc-question-text');
-  if(question) question.textContent = '';
-  const progress = document.getElementById('mc-progress');
-  if(progress) progress.textContent = '';
-  const score = document.getElementById('mc-score-display');
-  if(score) score.textContent = '';
-  const bar = document.getElementById('mc-progress-bar');
-  if(bar) bar.style.width = '0%';
-}
-
-function mcJoin(name){
-  if(!window._fb){alert('Firebase 還沒準備好');return;}
-  const {db,ref,runTransaction}=window._fb;
-  runTransaction(ref(db,'mc'), state => {
-    if(!state) state = mcInitialState();
-    if(state.done) state = mcInitialState();
-
-    if(name === '聖展'){
-      if(state.p1 && state.p1 !== '聖展') return state;
-      state.p1 = '聖展';
-      mcPlayer = 'p1';
-    } else {
-      if(state.p2 && state.p2 !== '予君') return state;
-      state.p2 = '予君';
-      mcPlayer = 'p2';
-    }
-
-    if(!state.qs){
-      const shuffled = [...MC_QUESTION_BANK].sort(() => Math.random() - 0.5);
-      state.qs = shuffled.slice(0,10);
-    }
-    MC_QUESTIONS = state.qs;
-    return state;
-  }).then(result => {
-    const state = result?.snapshot?.val();
-    const joined = (name === '聖展' && state?.p1 === '聖展') || (name === '予君' && state?.p2 === '予君');
-    if(!joined){
-      mcPlayer = null;
-      alert('這個身分已經有人選了');
-      return;
-    }
-    mcMyAnswer = null;
-    mcRenderedQ = -1;
-    document.getElementById('mc-join-area').style.display = 'none';
-  });
-}
-
-function mcChoose(optIdx){
-  if(mcMyAnswer !== null || !mcPlayer || !window._fb) return;
-  const {db,ref,runTransaction}=window._fb;
-  const answerKey = mcPlayer === 'p1' ? 'a1' : 'a2';
-
-  runTransaction(ref(db,'mc'), state => {
-    if(!state || state.done || state.q >= 10) return state;
-    if(!state.p1 || !state.p2) return state;
-    if(state[answerKey] !== null && state[answerKey] !== undefined) return state;
-
-    state[answerKey] = optIdx;
-
-    const bothAnswered = state.a1 !== null && state.a1 !== undefined && state.a2 !== null && state.a2 !== undefined;
-    if(bothAnswered && !state.scored){
-      if(state.a1 === state.a2) state.score = (state.score || 0) + 1;
-      state.scored = true;
-    }
-    return state;
-  }).then(result => {
-    const state = result?.snapshot?.val();
-    if(state && state[answerKey] === optIdx){
-      mcMyAnswer = optIdx;
-      document.querySelectorAll('#mc-options-grid button').forEach((b,i)=>{
-        b.disabled = true;
-        b.classList.toggle('chosen', i === optIdx);
-      });
-    }
-  });
-}
-
-function mcNext(){
-  if(!window._fb || !mcPlayer) return;
-  const {db,ref,runTransaction}=window._fb;
-
-  runTransaction(ref(db,'mc'), state => {
-    if(!state || !state.scored || state.done) return state;
-    state.q = (state.q || 0) + 1;
-    state.a1 = null;
-    state.a2 = null;
-    state.scored = false;
-    if(state.q >= 10) state.done = true;
-    return state;
-  });
-}
-
-function mcReset(){
-  if(!window._fb) return;
-  mcResetLocalUI();
-  const {db,ref,set}=window._fb;
-  set(ref(db,'mc'), mcInitialState());
-}
-
-function mcRenderState(state){
-  if(!state || !state.p1){
-    mcResetLocalUI();
-    return;
-  }
-
-  if(!mcPlayer){
-    const joinArea = document.getElementById('mc-join-area');
-    joinArea.style.display='';
-    let btnsHTML = '<div style="display:flex;gap:10px;margin-bottom:10px">';
-    if(!state.p1) btnsHTML += `<button class="open-btn" style="flex:1" onclick="mcJoin('聖展')">我是聖展</button>`;
-    else btnsHTML += `<div style="flex:1;padding:12px;background:var(--pink-light);border-radius:12px;font-size:13px;color:var(--text-muted);text-align:center">聖展已加入</div>`;
-    if(!state.p2) btnsHTML += `<button class="open-btn" style="flex:1" onclick="mcJoin('予君')">我是予君</button>`;
-    else btnsHTML += `<div style="flex:1;padding:12px;background:var(--pink-light);border-radius:12px;font-size:13px;color:var(--text-muted);text-align:center">予君已加入</div>`;
-    btnsHTML += '</div><div class="rps-status" id="mc-join-status">請選擇你是誰</div>';
-    joinArea.innerHTML = btnsHTML;
-  }
-
-  if(state.qs && state.qs.length > 0){
-    MC_QUESTIONS = state.qs;
-  }
-
-  if(!state.p2){
-    document.getElementById('mc-join-area').style.display = mcPlayer ? 'none' : '';
-    document.getElementById('mc-wait-join').style.display='block';
-    document.getElementById('mc-wait-join').textContent=`${state.p1} 已加入，等待另一位加入...`;
-    document.getElementById('mc-question-area').style.display='none';
-    document.getElementById('mc-result-area').style.display='none';
-    return;
-  }
-
-  document.getElementById('mc-join-area').style.display='none';
-  document.getElementById('mc-wait-join').style.display='none';
-
-  if(state.done || state.q >= 10){
-    document.getElementById('mc-question-area').style.display='none';
-    document.getElementById('mc-result-area').style.display='block';
-    document.getElementById('mc-final-score').textContent=state.score||0;
-    const msgs=['還需要多了解彼此哦，繼續加油','有一點默契，下次一定更好','默契不錯！你們很有感應','超有默契，心靈相通','完美默契！你們真的天生一對'];
-    document.getElementById('mc-final-msg').textContent=msgs[Math.min(Math.floor((state.score||0)/2),4)];
-    return;
-  }
-
-  if(!MC_QUESTIONS.length) return;
-
-  document.getElementById('mc-question-area').style.display='block';
-  document.getElementById('mc-result-area').style.display='none';
-
-  const qIdx=state.q||0;
-  const question = MC_QUESTIONS[qIdx];
-  if(!question) return;
-  const opts=question.opts;
-
-  document.getElementById('mc-progress').textContent=`第 ${qIdx+1} / 10 題`;
-  document.getElementById('mc-score-display').textContent=`得分：${state.score||0}`;
-  document.getElementById('mc-progress-bar').style.width=`${(qIdx/10)*100}%`;
-
-  if(qIdx!==mcRenderedQ){
-    mcRenderedQ=qIdx;
-    mcMyAnswer=null;
-    document.getElementById('mc-question-text').textContent=question.q;
-    document.getElementById('mc-options-grid').innerHTML=opts.map((o,i)=>
-      `<button class="mc-opt-btn" onclick="mcChoose(${i})">${o}</button>`
-    ).join('');
-    document.getElementById('mc-wait-msg').style.display='none';
-    document.getElementById('mc-reveal-area').style.display='none';
-    document.getElementById('mc-next-btn').style.display='none';
-  }
-
-  const myServerAns=mcPlayer==='p1'?state.a1:state.a2;
-  if(myServerAns!==null&&myServerAns!==undefined&&mcMyAnswer===null){
-    mcMyAnswer=myServerAns;
-    document.querySelectorAll('#mc-options-grid button').forEach((b,i)=>{
-      b.disabled=true;
-      b.classList.toggle('chosen', i===myServerAns);
-    });
-  }
-
-  const p1Done=(state.a1!==null&&state.a1!==undefined);
-  const p2Done=(state.a2!==null&&state.a2!==undefined);
-  const bothAnswered=p1Done&&p2Done;
-
-  const waitMsg=document.getElementById('mc-wait-msg');
-  const revealArea=document.getElementById('mc-reveal-area');
-  const nextBtn=document.getElementById('mc-next-btn');
-
-  if(!bothAnswered){
-    revealArea.style.display='none';
-    nextBtn.style.display='none';
-    waitMsg.style.display='block';
-    const iAnswered=mcPlayer==='p1'?p1Done:p2Done;
-    waitMsg.textContent = iAnswered ? '等待對方作答...' : '請選擇你的答案';
-  } else {
-    waitMsg.style.display='none';
-    revealArea.style.display='block';
-    const p1Ans=state.a1, p2Ans=state.a2;
-    const match=(p1Ans===p2Ans);
-    document.getElementById('mc-reveal-msg').innerHTML=match
-      ?'💕 答案一樣，得 1 分！'
-      :'答案不一樣，下題再加油';
-    document.getElementById('mc-reveal-answers').innerHTML=`
-      <div style="text-align:center;min-width:0;flex:1">
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:5px">${state.p1}</div>
-        <div style="background:var(--white);border:1.5px solid ${match?'var(--pink)':'var(--card-border)'};padding:8px 10px;border-radius:10px;font-size:14px;word-break:break-word">${opts[p1Ans]}</div>
-      </div>
-      <div style="font-size:24px;align-self:center">${match?'💕':'↔'}</div>
-      <div style="text-align:center;min-width:0;flex:1">
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:5px">${state.p2}</div>
-        <div style="background:var(--white);border:1.5px solid ${match?'var(--pink)':'var(--card-border)'};padding:8px 10px;border-radius:10px;font-size:14px;word-break:break-word">${opts[p2Ans]}</div>
-      </div>`;
-    nextBtn.style.display='block';
-    nextBtn.textContent=qIdx+1>=10?'查看結果':'下一題 ➡️';
-  }
-}
-
-function initMc(){
-  const {db,ref,onValue,get,set}=window._fb;
-
-  get(ref(db,'mc')).then(snap=>{
-    if(!snap.exists()) set(ref(db,'mc'), mcInitialState());
-  });
-
-  onValue(ref(db,'mc'),snap=>{
-    const state=snap.val();
-    mcRenderState(state);
   });
 }
 
@@ -11809,7 +10924,7 @@ function cpblStakeHtml(game, pick, locked){
   const disabled = !cpblgPlayer || locked || pick?.checked;
   const eco = cpblgPlayer ? cpblEnsureEconomy(cpblgPlayer) : {coins:0};
   const maxStake = Math.max(0, Number(eco.coins)||0) + value;
-  return `<div class="cpblg-stake"><span>下注金額</span><input type="number" id="cpblg-stake-${cpblEscape(game.id)}" min="0" max="${maxStake}" step="1" inputmode="numeric" value="${value}" placeholder="0 = 不賭只預測" ${disabled?'disabled':''}><small>最多 ${maxStake.toLocaleString('zh-TW')} 金幣，0 代表不賭</small></div>`;
+  return `<div class="cpblg-stake"><span>下注金額</span><input type="number" id="${cpblSafeDomId('cpblg-stake', game.id)}" min="0" max="${maxStake}" step="1" inputmode="numeric" value="${value}" placeholder="0 = 不賭只預測" ${disabled?'disabled':''}><small>最多 ${maxStake.toLocaleString('zh-TW')} 金幣，0 代表不賭</small></div>`;
 }
 function cpblToggleShop(force){
   const el=document.getElementById('cpblg-shop');
@@ -11907,6 +11022,10 @@ function cpblMoneylineOddForTeam(game, team){
   if(normalizedTeam===cpblNormalizeTeam(game.home)) return Number(odds.home)||0;
   return 0;
 }
+function cpblResolvePickOdds(game, team){
+  const official = Number(cpblMoneylineOddForTeam(game, team)) || 0;
+  return official > 0 ? official : CPBLG_DEFAULT_ODDS;
+}
 function cpblOddsHtml(game){
   const odds=cpblMoneylineOdds(game);
   const updated = cpblgOddsData?.updatedAt ? new Date(cpblgOddsData.updatedAt).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}) : '';
@@ -11916,7 +11035,8 @@ function cpblOddsHtml(game){
     return `<div class="cpblg-odds"><div class="cpblg-odds-head"><div class="cpblg-odds-title">\u53f0\u7063\u904b\u5f69\u4e0d\u8b93\u5206\u8ce0\u7387</div><div class="cpblg-odds-source">${updated ? `\u66f4\u65b0 ${updated}` : '\u5b98\u7db2'}</div></div><div class="cpblg-odds-row"><div class="cpblg-odd-pill"><span>${cpblEscape(game.away)}</span><span class="cpblg-odd-value">${cpblEscape(awayOdd)}</span></div><div class="cpblg-odd-pill"><span>${cpblEscape(game.home)}</span><span class="cpblg-odd-value">${cpblEscape(homeOdd)}</span></div></div></div>`;
   }
   const msg = cpblgOddsLoading ? '\u6b63\u5728\u6293\u53f0\u7063\u904b\u5f69\u5b98\u7db2\u8ce0\u7387...' : (cpblgOddsData?.error || '\u53f0\u7063\u904b\u5f69\u5b98\u7db2\u76ee\u524d\u6c92\u6709\u6293\u5230\u9019\u5834\u8ce0\u7387\uff0c\u53ef\u80fd\u5c1a\u672a\u958b\u76e4\u6216\u5b98\u7db2\u963b\u64cb\u81ea\u52d5\u8b80\u53d6\u3002');
-  return `<div class="cpblg-odds"><div class="cpblg-odds-head"><div class="cpblg-odds-title">\u53f0\u7063\u904b\u5f69\u8ce0\u7387</div><button type="button" class="cpblg-btn secondary tiny" onclick="cpblRefreshOdds(true)">\u91cd\u6293</button></div><div class="cpblg-odds-empty">${cpblEscape(msg)}</div></div>`;
+  const fallback = `未抓到官網賠率時仍可下注，會使用固定賠率 ${CPBLG_DEFAULT_ODDS.toFixed(2)}。`;
+  return `<div class="cpblg-odds"><div class="cpblg-odds-head"><div class="cpblg-odds-title">\u53f0\u7063\u904b\u5f69\u8ce0\u7387</div><button type="button" class="cpblg-btn secondary tiny" onclick="cpblRefreshOdds(true)">\u91cd\u6293</button></div><div class="cpblg-odds-empty">${cpblEscape(msg)}<br>${cpblEscape(fallback)}</div></div>`;
 }
 async function cpblRefreshOdds(showAlert=false){
   if(cpblgOddsLoading) return;
@@ -12064,7 +11184,7 @@ function cpblRenderGames(){
       const chosen = !!cpblgPlayer && chosenByCurrent;
       let cls='cpblg-btn cpblg-pick'+(chosen?' chosen':'');
       if(winner && chosen) cls += normalizedTeam===cpblNormalizeTeam(winner) ? ' correct' : ' wrong';
-      return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick('${cpblEscape(game.id)}','${cpblEscape(team)}')">${cpblTeamInline(team)}</button>`;
+      return `<button type="button" class="${cls}" ${locked?'disabled':''} onclick="cpblPick(${cpblJsArg(game.id)},${cpblJsArg(team)})">${cpblTeamInline(team)}</button>`;
     };
     const metaLine = cpblGameMetaLine(game);
     return `<div class="cpblg-game">
@@ -12157,7 +11277,6 @@ window.addEventListener('firebaseReady',()=>{
   albumInitFirebase();
   initMessages();
   initMine();
-  initMc();
   pdLoad();
   ftInit();
   bbInitFirebase();

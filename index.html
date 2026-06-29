@@ -5702,13 +5702,6 @@ function drawCollageMemoryBackground(ctx, W, H, theme){
   });
 }
 
-function getCollageDateRange(page){
-  const dates = [...new Set(page.map(p => p.date).filter(Boolean))].sort();
-  if(!dates.length) return '';
-  const format = date => date.slice(5).replace('-', '/');
-  return dates.length === 1 ? format(dates[0]) : `${format(dates[0])} - ${format(dates[dates.length - 1])}`;
-}
-
 async function generateCollage(selectedPhotos=null) {
   const mk = `${memoriesYear}-${String(memoriesMonth + 1).padStart(2, '0')}`;
   const photos = [];
@@ -5779,12 +5772,6 @@ async function generateCollage(selectedPhotos=null) {
     ctx.fillStyle=batchTheme.accent;
     ctx.fillText('林聖展 ♡ 蘇予君',W/2,PAD+72);
 
-    ctx.font='13px "Noto Sans TC",sans-serif';
-    ctx.fillStyle=batchTheme.ink;
-    ctx.globalAlpha=.72;
-    ctx.fillText(`${batchTheme.name} · 第 ${pageIndex + 1} / ${pages.length} 頁`,W/2,PAD+96);
-    ctx.globalAlpha=1;
-
     page.forEach((p,i)=>{
       const img=images[photos.indexOf(p)];
       if(!img)return;
@@ -5822,7 +5809,6 @@ async function generateCollage(selectedPhotos=null) {
       ctx.fillText(p.date.slice(5).replace('-','/'),x+CELL-10,y+CELL-10);
     });
 
-    const dateRange = getCollageDateRange(page);
     const noteX = PAD;
     const noteY = H - FOOTER + 18;
     const noteW = W - PAD * 2;
@@ -5836,7 +5822,7 @@ async function generateCollage(selectedPhotos=null) {
     ctx.textAlign='center';
     ctx.font='bold 16px "Noto Serif TC",serif';
     ctx.fillStyle=batchTheme.ink;
-    ctx.fillText(`${page.length} 個珍貴瞬間${dateRange ? ` · ${dateRange}` : ''}`,W/2,noteY+27);
+    ctx.fillText(`${page.length} 個珍貴瞬間`,W/2,noteY+27);
 
     ctx.font='14px "Noto Sans TC",sans-serif';
     ctx.fillStyle=batchTheme.accent;

@@ -4491,9 +4491,15 @@ window.addEventListener('online', ()=>flushAlbumPendingWrites());
 
 async function uploadSurprisePhotoToStorage(){
   if(!surprisePhotoFile) return '';
-  if(!requireCloudinarySettings()) throw new Error('Cloudinary 尚未設定');
-  const safeName = String(surprisePhotoFile.name || 'surprise.jpg').replace(/[^\w.-]+/g,'-').slice(-80) || 'surprise.jpg';
-  return await uploadImageFileToCloudinary(surprisePhotoFile, `${Date.now()}-${safeName}`, 'surprises');
+  if(hasCloudinarySettings()){
+    try{
+      const safeName = String(surprisePhotoFile.name || 'surprise.jpg').replace(/[^\w.-]+/g,'-').slice(-80) || 'surprise.jpg';
+      return await uploadImageFileToCloudinary(surprisePhotoFile, `${Date.now()}-${safeName}`, 'surprises');
+    }catch(err){
+      console.warn('Cloudinary 驚喜照片上傳失敗，改用壓縮照片資料', err);
+    }
+  }
+  return await compressToBase64(surprisePhotoFile, 1280, 0.82);
 }
 
 async function saveSurprise(){
@@ -4504,8 +4510,6 @@ async function saveSurprise(){
     alert('請輸入文字和時間');
     return;
   }
-  if(surprisePhotoFile && !requireCloudinarySettings()) return;
-
   try{
     const photoUrl = await uploadSurprisePhotoToStorage();
     const payload={
@@ -5118,14 +5122,20 @@ function compressToBlob(file, maxSize=1280, quality=0.82) {
   });
 }
 async function albumUploadPhotoToStorage(file, index){
-  if(!requireCloudinarySettings()) throw new Error('Cloudinary 尚未設定');
-  const safeName = String(file.name || `photo-${index}.jpg`).replace(/[^\w.-]+/g,'-').slice(-80) || 'photo.jpg';
-  return await uploadImageFileToCloudinary(file, `${currentDayKey}-${Date.now()}-${index}-${safeName}`, `album/${currentDayKey || albumMonthId(albumYear, albumMonth)}`);
+  if(hasCloudinarySettings()){
+    try{
+      const safeName = String(file.name || `photo-${index}.jpg`).replace(/[^\w.-]+/g,'-').slice(-80) || 'photo.jpg';
+      return await uploadImageFileToCloudinary(file, `${currentDayKey}-${Date.now()}-${index}-${safeName}`, `album/${currentDayKey || albumMonthId(albumYear, albumMonth)}`);
+    }catch(err){
+      console.warn('Cloudinary 相簿照片上傳失敗，改用壓縮照片資料', err);
+    }
+  }
+  return await compressToBase64(file, 1280, 0.82);
 }
 async function modalUploadPhotos(e) {
   const files = Array.from(e.target.files || []);
   if (!files.length) return;
-  if (!requireCloudinarySettings()) { e.target.value=''; return; }
+  const useCloudinary = hasCloudinarySettings();
 
   const dayData = JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey] || { photos: [], schedule: [], note: '' }));
   if (!Array.isArray(dayData.photos)) dayData.photos = [];
@@ -5135,7 +5145,9 @@ async function modalUploadPhotos(e) {
   const loadingDiv = document.createElement('div');
   loadingDiv.id = 'upload-loading';
   loadingDiv.style.cssText = 'text-align:center;padding:10px;font-size:13px;color:var(--rose);background:var(--pink-light);border-radius:10px;margin-bottom:8px;';
-  loadingDiv.textContent = `⏳ 上傳到 Cloudinary 中 (0/${files.length})...`;
+  loadingDiv.textContent = useCloudinary
+    ? `⏳ 上傳到 Cloudinary 中 (0/${files.length})...`
+    : `⏳ 正在讀取照片 (0/${files.length})...`;
   uploadArea.insertAdjacentElement('beforebegin', loadingDiv);
 
   let uploaded = 0;
@@ -5146,19 +5158,23 @@ async function modalUploadPhotos(e) {
       const url = await albumUploadPhotoToStorage(file, uploaded);
       dayData.photos.push(url);
       uploaded++;
-      loadingDiv.textContent = `⏳ 上傳到 Cloudinary 中 (${uploaded}/${files.length})...`;
+      loadingDiv.textContent = useCloudinary
+        ? `⏳ 上傳到 Cloudinary 中 (${uploaded}/${files.length})...`
+        : `⏳ 正在讀取照片 (${uploaded}/${files.length})...`;
       renderModalPhotosEdit(dayData.photos);
     } catch (err) {
       failed++;
-      console.error('Cloudinary 上傳失敗', err);
-      loadingDiv.textContent = `⚠️ 有照片上傳失敗：${err.message || '請檢查 Cloudinary 設定'}`;
+      console.error(useCloudinary ? 'Cloudinary 上傳失敗' : '照片讀取失敗', err);
+      loadingDiv.textContent = `⚠️ 有照片處理失敗：${err.message || '請換一張照片試試'}`;
       break;
     }
   }
 
   if(uploaded){
     await albumSaveDay(currentDayKey, dayData);
-    loadingDiv.textContent = failed ? `⚠️ 已上傳 ${uploaded} 張，${failed} 張失敗` : '✅ 上傳完成，Firebase 只存照片網址！';
+    loadingDiv.textContent = failed
+      ? `⚠️ 已新增 ${uploaded} 張，${failed} 張失敗`
+      : '✅ 照片已新增！';
     setTimeout(() => loadingDiv.remove(), 1800);
   }else if(!failed){
     loadingDiv.remove();

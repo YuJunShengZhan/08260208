@@ -429,34 +429,39 @@ margin-left:auto;background:none;border:none;
 color:var(--text-muted);cursor:pointer;font-size:14px;
 }
 
-.msg-list{margin-top:14px;display:flex;flex-direction:column;gap:10px;}
-.msg-bubble{
-padding:12px 15px;border-radius:16px;
-font-size:14px;line-height:1.7;position:relative;
+.msg-list{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+.capsule-compose{display:flex;flex-direction:column;gap:10px;}
+.capsule-type-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.capsule-type{
+border:1px solid var(--card-border);border-radius:14px;background:var(--white);
+color:var(--text);padding:10px 8px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;
+font-size:13px;font-weight:700;transition:all .2s;
 }
-.msg-bubble.from-me{
-background:var(--pink);color:white;
-border-bottom-right-radius:4px;
-align-self:flex-end;max-width:85%;
-}
-.msg-bubble.from-other{
-background:var(--white);
-border:1px solid var(--card-border);
-border-bottom-left-radius:4px;
-align-self:flex-start;max-width:85%;
-}
-.msg-meta{font-size:11px;opacity:.6;margin-top:5px;}
-.del-msg{
-position:absolute;top:5px;right:8px;
-background:none;border:none;font-size:13px;cursor:pointer;
-color:rgba(255,255,255,0.7);
-}
+.capsule-type.active{background:var(--pink);border-color:var(--pink);color:white;box-shadow:0 6px 16px rgba(232,99,122,.22);}
 .msg-input-area{display:flex;flex-direction:column;gap:10px;}
+.msg-input-area input,
 .msg-input-area textarea{
 width:100%;padding:12px;
 border:1px solid var(--card-border);border-radius:12px;
 font-size:14px;font-family:'Noto Sans TC',sans-serif;
 resize:none;background:var(--pink-light);color:var(--text);
+}
+.capsule-card{
+position:relative;background:linear-gradient(180deg,var(--white),var(--pink-light));
+border:1px solid rgba(232,99,122,.16);border-radius:18px;padding:14px;
+box-shadow:0 10px 24px rgba(232,99,122,.08);overflow:hidden;
+}
+.capsule-card::before{content:'';position:absolute;right:-26px;top:-26px;width:72px;height:72px;border-radius:50%;background:rgba(232,99,122,.12);}
+.capsule-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;position:relative;}
+.capsule-kind{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.72);color:var(--rose);font-size:12px;font-weight:800;}
+.capsule-owner{font-size:11px;color:var(--text-muted);}
+.capsule-title{font-family:'Noto Serif TC',serif;color:var(--rose);font-size:17px;font-weight:800;margin-bottom:6px;line-height:1.35;position:relative;}
+.capsule-text{font-size:14px;line-height:1.75;color:var(--text);white-space:pre-wrap;position:relative;}
+.msg-meta{font-size:11px;color:var(--text-muted);margin-top:10px;position:relative;}
+.del-msg{
+position:absolute;right:9px;bottom:9px;background:rgba(255,255,255,.7);
+border:1px solid rgba(232,99,122,.12);border-radius:999px;font-size:12px;cursor:pointer;
+color:var(--rose);width:26px;height:26px;
 }
 .sender-toggle{display:flex;gap:8px;}
 .sender-btn{
@@ -3006,7 +3011,8 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 .cpblg-shop-grid{scroll-padding:0}.cpblg-shop-item{box-sizing:border-box;flex:0 0 min(100%,360px);max-width:100%;min-width:0}@media(max-width:520px){.cpblg-shop{padding:9px}.cpblg-shop-grid{gap:10px;padding:1px 0 8px}.cpblg-shop-item{flex-basis:100%;grid-template-columns:40% minmax(0,1fr);gap:6px 8px;padding:9px;border-radius:17px}.cpblg-shop-item .cpblg-coupon-img{height:102px;border-radius:13px}.cpblg-shop-item .cpblg-shop-name{font-size:14px;margin-bottom:0}.cpblg-shop-item .cpblg-shop-desc{font-size:10px;line-height:1.35;-webkit-line-clamp:2}.cpblg-shop-item .cpblg-shop-buy-row{margin-top:0}.cpblg-shop-item .cpblg-shop-count{font-size:10px;margin-top:0}.cpblg-shop-item .cpblg-btn.tiny{padding:6px 9px;font-size:10px}}@media(max-width:380px){.cpblg-shop-item{grid-template-columns:37% minmax(0,1fr);gap:5px 7px;padding:8px}.cpblg-shop-item .cpblg-coupon-img{height:88px}.cpblg-shop-item .cpblg-shop-desc{-webkit-line-clamp:1}.cpblg-shop-buy-row{flex-direction:row;align-items:center}.cpblg-shop-item .cpblg-shop-price{font-size:11px}}
 .cpblg-stake{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 4px;padding:8px 10px;border-radius:13px;background:rgba(255,240,244,.72);font-size:12px;color:var(--text-muted)}.cpblg-stake select{border:1px solid rgba(232,99,122,.2);border-radius:999px;background:var(--white);color:var(--rose);font-weight:800;padding:6px 10px;font-family:'Noto Sans TC',sans-serif}.cpblg-checkin-overlay{position:fixed;inset:0;background:rgba(60,25,35,.42);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.cpblg-checkin-card{width:min(420px,100%);background:linear-gradient(180deg,#fff,#fff0f4);border:1px solid rgba(232,99,122,.22);border-radius:26px;padding:18px;box-shadow:0 22px 70px rgba(120,45,62,.28);text-align:center}.cpblg-checkin-title{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--pink);font-weight:800}.cpblg-checkin-sub{font-size:12px;color:var(--text-muted);line-height:1.7;margin:4px 0 12px}.cpblg-checkin-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:12px 0}.cpblg-checkin-day{border-radius:15px;padding:10px 4px;background:var(--pink-light);border:1px solid rgba(232,99,122,.14);font-size:11px;color:var(--text-muted)}.cpblg-checkin-day.done{background:#e8f5e9;border-color:#78c98a;color:#2e7d32}.cpblg-checkin-day.today{background:#fff;border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.12)}.cpblg-checkin-reward{font-weight:900;color:var(--rose);font-size:13px;margin-top:4px}.cpblg-checkin-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
 .cpblg-stake input{width:96px;border:1px solid rgba(232,99,122,.22);border-radius:999px;background:var(--white);color:var(--rose);font-weight:900;padding:7px 10px;font-family:'Noto Sans TC',sans-serif;text-align:center}.cpblg-stake small{font-size:10px;color:var(--text-muted);margin-left:auto}@media(max-width:520px){.cpblg-stake{display:grid;grid-template-columns:auto 1fr;align-items:center}.cpblg-stake input{width:100%;box-sizing:border-box}.cpblg-stake small{grid-column:1 / -1;margin-left:0}}
-[data-theme="dark"] .cpblg-economy,[data-theme="dark"] .cpblg-shop-item,[data-theme="dark"] .cpblg-bag-item,[data-theme="dark"] .cpblg-odds{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.2)}[data-theme="dark"] .cpblg-shop,[data-theme="dark"] .cpblg-backpack{background:#3a1f28}[data-theme="dark"] .cpblg-odd-pill{background:#3a1f28;border-color:rgba(232,99,122,.2)}
+.cpblg-betlog{margin:10px 0;background:rgba(255,255,255,.82);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-betlog-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.cpblg-betlog-title{font-size:13px;font-weight:900;color:var(--rose)}.cpblg-betlog-sync{font-size:11px;color:var(--text-muted)}.cpblg-betlog-list{display:flex;flex-direction:column;gap:7px;max-height:210px;overflow:auto;-webkit-overflow-scrolling:touch}.cpblg-betlog-row{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--text)}.cpblg-betlog-player{font-weight:900;color:var(--rose)}.cpblg-betlog-meta{color:var(--text-muted);font-size:11px;line-height:1.45}.cpblg-betlog-stake{font-weight:900;color:var(--rose);white-space:nowrap}.cpblg-betlog-empty{text-align:center;color:var(--text-muted);font-size:12px;padding:10px 0}
+[data-theme="dark"] .cpblg-economy,[data-theme="dark"] .cpblg-shop-item,[data-theme="dark"] .cpblg-bag-item,[data-theme="dark"] .cpblg-odds,[data-theme="dark"] .cpblg-betlog{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.2)}[data-theme="dark"] .cpblg-shop,[data-theme="dark"] .cpblg-backpack,[data-theme="dark"] .cpblg-betlog-row{background:#3a1f28}[data-theme="dark"] .cpblg-odd-pill{background:#3a1f28;border-color:rgba(232,99,122,.2)}
 .cpblg-history-prediction-player{padding:5px 8px;border-radius:9px}.cpblg-history-prediction-player.correct{color:#2e7d32;background:#e8f5e9;border:1px solid #78c98a}.cpblg-history-prediction-player.wrong{color:#a9193a;background:#ffd1dc;border:1px solid #ef8ca1}.cpblg-history-prediction-player.draw{color:#a66300;background:#fff3d6}.cpblg-history-prediction-player.correct strong,.cpblg-history-prediction-player.wrong strong,.cpblg-history-prediction-player.draw strong{color:inherit}[data-theme="dark"] .cpblg-history-prediction-player.correct{color:#9ee6a5;background:#1f3b25;border-color:#4f9c61}[data-theme="dark"] .cpblg-history-prediction-player.wrong{color:#ffb0c0;background:#5b1f30;border-color:#a94b62}[data-theme="dark"] .cpblg-history-prediction-player.draw{color:#ffd080;background:#463617}
 
 
@@ -3264,20 +3270,27 @@ onclick="hideSpecialForToday()">
 <!-- MESSAGES -->
 <div id="page-message" class="page">
   <div class="card">
-    <div class="card-title">💌 寫一封時光信</div>
-    <div class="msg-input-area">
+    <div class="card-title">🎁 封存紀念膠囊</div>
+    <div class="msg-input-area capsule-compose">
       <div class="sender-toggle">
         <button class="sender-btn active" id="me-btn" onclick="setSender('me')">林聖展</button>
         <button class="sender-btn" id="other-btn" onclick="setSender('other')">蘇予君</button>
       </div>
-      <textarea id="msg-input" rows="3" placeholder="寫下這一刻想留給以後的我們的話..."></textarea>
-      <button class="send-btn" onclick="sendMessage()">收藏成回憶 ❤️</button>
+      <div class="capsule-type-grid">
+        <button type="button" class="capsule-type active" id="capsule-type-moment" onclick="setCapsuleType('moment')">✨ 今天小事</button>
+        <button type="button" class="capsule-type" id="capsule-type-thanks" onclick="setCapsuleType('thanks')">🌷 想謝謝你</button>
+        <button type="button" class="capsule-type" id="capsule-type-promise" onclick="setCapsuleType('promise')">🤝 我們約好</button>
+        <button type="button" class="capsule-type" id="capsule-type-wish" onclick="setCapsuleType('wish')">🌙 未來願望</button>
+      </div>
+      <input id="msg-title" maxlength="28" placeholder="替這顆膠囊取一個名字">
+      <textarea id="msg-input" rows="4" placeholder="把今天想收藏的瞬間、約定或願望放進來..."></textarea>
+      <button class="send-btn" onclick="sendMessage()">封存這顆膠囊 ❤️</button>
     </div>
   </div>
   <div class="card">
-    <div class="card-title">📜 我們的紀念信箱</div>
+    <div class="card-title">🗂️ 我們的膠囊收藏</div>
     <div class="msg-list" id="msg-list">
-      <div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有時光信，先替今天留下第一句話吧 💕</div>
+      <div style="grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有膠囊，先封存一個今天吧 💕</div>
     </div>
   </div>
 </div>
@@ -3618,6 +3631,7 @@ onclick="hideSpecialForToday()">
       <div class="cpblg-economy"><div><div class="cpblg-coins">💰 <span id="cpblg-coin-player">先選擇玩家</span><span class="cpblg-coin-num" id="cpblg-coin-count">0</span></div><div class="cpblg-badge-equip" id="cpblg-equipped-badge">選擇你是誰後，金幣會自動顯示並同步。</div><div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary tiny" id="cpblg-checkin-btn" onclick="cpblOpenCheckinPopup()" disabled>每日簽到</button><button type="button" class="cpblg-btn secondary tiny" id="cpblg-chest-btn" onclick="cpblOpenCheckinChest()" disabled>開寶箱</button></div><div class="cpblg-badge-equip" id="cpblg-checkin-info">連續簽到 5 天可以開寶箱。</div></div><div class="cpblg-economy-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleShop()">🛍️ 商城</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleBackpack()">🎒 背包</button></div></div>
       <div class="cpblg-shop" id="cpblg-shop"><div class="cpblg-shop-grid" id="cpblg-shop-grid"></div></div>
       <div class="cpblg-backpack" id="cpblg-backpack"><div class="cpblg-backpack-list" id="cpblg-backpack-list"></div></div>
+      <div class="cpblg-betlog"><div class="cpblg-betlog-head"><div class="cpblg-betlog-title">下注流水紀錄</div><div class="cpblg-betlog-sync">即時同步</div></div><div class="cpblg-betlog-list" id="cpblg-betlog-list"><div class="cpblg-betlog-empty">還沒有下注紀錄。</div></div></div>
       <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div class="cpblg-toolbar-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblRefreshOdds(true)">更新賠率</button><button type="button" class="cpblg-btn secondary" onclick="cpblOpenHistoryPage()">歷史猜測紀錄</button></div></div>
       <div class="cpblg-status" id="cpblg-status">進入頁面後會自動載入。</div><div class="cpblg-games" id="cpblg-games"></div>
     </div>
@@ -5099,36 +5113,59 @@ albumRenderCal();
 
 // ── Messages (Firebase) ──
 let sender='me';
+let capsuleType='moment';
+const CAPSULE_TYPES = {
+  moment:{icon:'✨',label:'今天小事'},
+  thanks:{icon:'🌷',label:'想謝謝你'},
+  promise:{icon:'🤝',label:'我們約好'},
+  wish:{icon:'🌙',label:'未來願望'}
+};
 function setSender(s){
   sender=s;
   document.getElementById('me-btn').classList.toggle('active',s==='me');
   document.getElementById('other-btn').classList.toggle('active',s==='other');
 }
+function setCapsuleType(type){
+  capsuleType = CAPSULE_TYPES[type] ? type : 'moment';
+  Object.keys(CAPSULE_TYPES).forEach(key=>{
+    document.getElementById(`capsule-type-${key}`)?.classList.toggle('active', key===capsuleType);
+  });
+}
 function renderMessages(msgs){
   const list=document.getElementById('msg-list');
-  if(!msgs||!msgs.length){list.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有時光信，先替今天留下第一句話吧 💕</div>';return;}
+  if(!msgs||!msgs.length){list.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:14px;padding:20px 0">還沒有膠囊，先封存一個今天吧 💕</div>';return;}
   list.innerHTML=msgs.map((m)=>`
-    <div class="msg-bubble ${m.sender==='me'?'from-me':'from-other'}">
-      <strong style="font-size:12px;opacity:.7">${m.sender==='me'?'林聖展':'蘇予君'}</strong><br>
-      ${m.text}
+    <div class="capsule-card">
+      <div class="capsule-head">
+        <span class="capsule-kind">${(CAPSULE_TYPES[m.type]||CAPSULE_TYPES.moment).icon} ${(CAPSULE_TYPES[m.type]||CAPSULE_TYPES.moment).label}</span>
+        <span class="capsule-owner">${m.sender==='me'?'林聖展':'蘇予君'}</span>
+      </div>
+      <div class="capsule-title">${escapeHtml(m.title || '沒有命名的紀念')}</div>
+      <div class="capsule-text">${escapeHtml(m.text || '')}</div>
       <div class="msg-meta">${m.time}</div>
-      <button class="del-msg" onclick="deleteMsg('${m._key}')" ${m.sender!=='me'?'style="color:rgba(0,0,0,0.4)"':''}>✕</button>
+      <button class="del-msg" onclick="deleteMsg('${m._key}')" title="刪除">✕</button>
     </div>`).join('');
 }
 function sendMessage(){
   const txt=document.getElementById('msg-input').value.trim();
+  const title=document.getElementById('msg-title')?.value.trim() || '';
   if(!txt) return;
   if(!window._fb){alert('Firebase 尚未連線，請稍後再試');return;}
   const {db,ref,push}=window._fb;
   const now=new Date();
   push(ref(db,'messages'),{
-    sender,text:txt,
+    sender,
+    type:capsuleType,
+    title:title || (CAPSULE_TYPES[capsuleType]?.label || '紀念膠囊'),
+    text:txt,
     time:now.toLocaleString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
   });
+  const titleEl=document.getElementById('msg-title');
+  if(titleEl) titleEl.value='';
   document.getElementById('msg-input').value='';
 }
 function deleteMsg(key){
-  if(!confirm('刪除這則留言？')) return;
+  if(!confirm('刪除這顆紀念膠囊？')) return;
   const {db,ref,remove}=window._fb;
   remove(ref(db,`messages/${key}`));
 }
@@ -6337,6 +6374,7 @@ function cpblBaseData(){
   return {
     players:{'聖展':{correct:0,total:0},'予君':{correct:0,total:0}},
     picks:{},
+    betLogs:[],
     history:[],
     postponed:{},
     economy:{
@@ -6367,6 +6405,25 @@ function cpblNormalizeHistoryItem(item){
     field:String(item?.field||''),
     source:String(item?.source||''),
     resolvedAt:Number(item?.resolvedAt)||0
+  };
+}
+function cpblNormalizeBetLog(item){
+  return {
+    id:String(item?.id||''),
+    gameId:String(item?.gameId||''),
+    gameNo:String(item?.gameNo||''),
+    date:String(item?.date||''),
+    player:String(item?.player||''),
+    team:String(item?.team||''),
+    away:String(item?.away||''),
+    home:String(item?.home||''),
+    action:String(item?.action||'下注'),
+    stake:Math.max(0, Math.floor(Number(item?.stake)||0)),
+    stakeDiff:Math.floor(Number(item?.stakeDiff)||0),
+    odds:Math.max(0, Number(item?.odds)||0),
+    coinBefore:Math.max(0, Math.floor(Number(item?.coinBefore)||0)),
+    coinAfter:Math.max(0, Math.floor(Number(item?.coinAfter)||0)),
+    createdAt:Number(item?.createdAt)||0
   };
 }
 function cpblLoadLocalData(){
@@ -6408,6 +6465,16 @@ function cpblMergeData(base, incoming){
       }
     });
   });
+  const betLogsById = new Map();
+  [...(Array.isArray(data.betLogs)?data.betLogs:[]), ...(Array.isArray(incoming.betLogs)?incoming.betLogs:[])].forEach(item=>{
+    const row = cpblNormalizeBetLog(item);
+    if(!row.id) return;
+    const current = betLogsById.get(row.id);
+    if(!current || row.createdAt>=current.createdAt) betLogsById.set(row.id,row);
+  });
+  data.betLogs = Array.from(betLogsById.values())
+    .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
+    .slice(0,120);
   const historyById = new Map();
   [...(Array.isArray(data.history)?data.history:[]), ...(Array.isArray(incoming.history)?incoming.history:[])].forEach(item=>{
     const row = cpblNormalizeHistoryItem(item);
@@ -6474,6 +6541,7 @@ function cpblSaveData(pushFirebase=true){
   cpblRenderStats();
   cpblRenderGames();
   cpblRenderHistory();
+  if(typeof cpblRenderBetLogs==='function') cpblRenderBetLogs();
   if(pushFirebase && window._fb){
     const {db,ref,runTransaction,set}=window._fb;
     const dataRef = ref(db,'cpblGuess');
@@ -6504,6 +6572,7 @@ function cpblInitFirebase(){
       cpblRenderStats();
       cpblRenderGames();
       cpblRenderHistory();
+      if(typeof cpblRenderBetLogs==='function') cpblRenderBetLogs();
     }else{
       set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
     }
@@ -6647,6 +6716,7 @@ function cpblEnterScreen(){
   cpblRenderEconomy();
   cpblRenderGames();
   cpblRenderHistory();
+  if(typeof cpblRenderBetLogs==='function') cpblRenderBetLogs();
   if(!cpblgLoadedOnce) cpblRefreshGames(false);
   if(!cpblgOddsData.updatedAt) cpblRefreshOdds(false);
 }
@@ -6658,6 +6728,7 @@ function cpblSelectPlayer(name){
   cpblRenderEconomy();
   cpblRenderGames();
   cpblRenderHistory();
+  if(typeof cpblRenderBetLogs==='function') cpblRenderBetLogs();
 }
 function cpblRenderStats(){
   CPBLG_HISTORY_PLAYERS.forEach(name=>{
@@ -6742,11 +6813,15 @@ function cpblPick(gameId, team){
     alert(`金幣不夠，還差 ${diff-eco.coins} 金幣`);
     return;
   }
+  const coinBefore = Number(eco.coins)||0;
   eco.coins -= diff;
-  cpblgData.picks[gameId][cpblgPlayer] = {team, stake, odds:pickOdds, oddsFallback:!!(stake && !officialOdds), oddsMarket:stake?'不讓分':'', oddsLockedAt:stake?Date.now():0, checked:false, correct:null, pickedAt:Date.now()};
+  const nextPick = {team, stake, odds:pickOdds, oddsFallback:!!(stake && !officialOdds), oddsMarket:stake?'不讓分':'', oddsLockedAt:stake?Date.now():0, checked:false, correct:null, pickedAt:Date.now()};
+  cpblgData.picks[gameId][cpblgPlayer] = nextPick;
+  cpblAddBetLog(game, cpblgPlayer, nextPick, old, coinBefore, Number(eco.coins)||0, diff);
   cpblSaveData(true);
   cpblSyncPredictionNow(gameId, cpblgPlayer);
   cpblRenderEconomy();
+  cpblRenderBetLogs();
 }
 
 
@@ -10984,7 +11059,52 @@ function cpblSyncPredictionNow(gameId, player){
   const changes = {updatedAt:Date.now()};
   changes[`picks/${gameId}/${player}`] = pick;
   if(eco) changes[`economy/${player}`] = eco;
+  if(Array.isArray(cpblgData.betLogs)) changes.betLogs = cpblgData.betLogs.slice(0,120);
   update(ref(db,'cpblGuess'),changes).catch(()=>{});
+}
+function cpblAddBetLog(game, player, pick, oldPick, coinBefore, coinAfter, stakeDiff){
+  cpblgData.betLogs = Array.isArray(cpblgData.betLogs) ? cpblgData.betLogs : [];
+  const createdAt = Date.now();
+  const stake = Math.max(0, Number(pick?.stake)||0);
+  const action = oldPick ? (stake ? '修改下注' : '改為只預測') : (stake ? '建立下注' : '建立預測');
+  cpblgData.betLogs.unshift(cpblNormalizeBetLog({
+    id:`${game.id}__${player}__${createdAt}`,
+    gameId:game.id,
+    gameNo:game.no,
+    date:game.date || cpblTodayYMD(),
+    player,
+    team:pick?.team || '',
+    away:game.away,
+    home:game.home,
+    action,
+    stake,
+    stakeDiff,
+    odds:pick?.odds || 0,
+    coinBefore,
+    coinAfter,
+    createdAt
+  }));
+  cpblgData.betLogs = cpblgData.betLogs.slice(0,120);
+}
+function cpblRenderBetLogs(){
+  const list=document.getElementById('cpblg-betlog-list');
+  if(!list) return;
+  const rows = (Array.isArray(cpblgData.betLogs) ? cpblgData.betLogs : [])
+    .slice()
+    .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
+    .slice(0,20);
+  if(!rows.length){
+    list.innerHTML='<div class="cpblg-betlog-empty">還沒有下注紀錄。</div>';
+    return;
+  }
+  list.innerHTML = rows.map(row=>{
+    const time = row.createdAt ? new Date(row.createdAt).toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
+    const stake = Number(row.stake)||0;
+    const diff = Number(row.stakeDiff)||0;
+    const diffText = diff>0 ? `扣 ${diff.toLocaleString('zh-TW')}` : (diff<0 ? `退 ${Math.abs(diff).toLocaleString('zh-TW')}` : '未變動');
+    const oddsText = stake ? `｜賠率 ${Number(row.odds||0).toFixed(2)}` : '';
+    return `<div class="cpblg-betlog-row"><div class="cpblg-betlog-player">${cpblEscape(row.player)}</div><div><div>${cpblEscape(row.action)}：${cpblEscape(row.team)}${oddsText}</div><div class="cpblg-betlog-meta">GAME ${cpblEscape(row.gameNo||'')}｜${cpblEscape(row.away)} vs ${cpblEscape(row.home)}｜${cpblEscape(time)}｜金幣${diffText}</div></div><div class="cpblg-betlog-stake">${stake ? `${stake.toLocaleString('zh-TW')} 💰` : '不下注'}</div></div>`;
+  }).join('');
 }
 function cpblEquippedLabel(player){
   const eco=cpblEnsureEconomy(player||cpblgPlayer||'\u8056\u5c55');

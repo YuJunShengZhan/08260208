@@ -6121,7 +6121,7 @@ function cpblIsLocked(game){
   return !!(!isNaN(start) && Date.now() >= start.getTime());
 }
 function cpblWinner(game){
-  if(!game || game.awayScore==null || game.homeScore==null) return '';
+  if(!game || (typeof cpblIsFinalGame==='function' && !cpblIsFinalGame(game)) || game.awayScore==null || game.homeScore==null) return '';
   if(Number(game.awayScore)===Number(game.homeScore)) return '和局';
   return Number(game.awayScore)>Number(game.homeScore) ? game.away : game.home;
 }
@@ -6408,7 +6408,12 @@ function cpblInitFirebase(){
       cpblgData = cpblMergeData(cpblMergeData(cpblBaseData(), cpblgData), remote);
       localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
       cpblResolveFinishedGames(false);
-      if(needsCoinRulePush) set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
+      const correctionChanged = cpblApplyKnownResultCorrections();
+      if(correctionChanged){
+        cpblRecountPlayerStats();
+        localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
+      }
+      if(needsCoinRulePush || correctionChanged) set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
       if(typeof cpblRenderEconomy==='function') cpblRenderEconomy();
       cpblRenderStats();
       cpblRenderGames();
@@ -6677,9 +6682,10 @@ function cpblStatusError(message){
 function cpblHistoryId(gameId, player){return `${gameId}__${player}`;}
 function cpblUpsertHistoryRecord(game, player, pick){
   if(!pick) return false;
-  const item = cpblNormalizeHistoryItem({id:cpblHistoryId(game.id, player),gameId:game.id,gameNo:game.no,date:game.date,player,away:game.away,home:game.home,awayScore:game.awayScore,homeScore:game.homeScore,winner:cpblWinner(game),pickTeam:pick.team,correct:pick.correct,stake:pick.stake,odds:pick.settleOdds||pick.odds,coinAward:pick.coinAward,field:game.field,source:game.source,resolvedAt:Date.now()});
   const history = Array.isArray(cpblgData.history) ? cpblgData.history : [];
-  const idx = history.findIndex(row=>row.id===item.id);
+  const id = cpblHistoryId(game.id, player);
+  const idx = history.findIndex(row=>row.id===id);
+  const item = cpblNormalizeHistoryItem({id,gameId:game.id,gameNo:game.no,date:game.date,player,away:game.away,home:game.home,awayScore:game.awayScore,homeScore:game.homeScore,winner:cpblWinner(game),pickTeam:pick.team,correct:pick.correct,stake:pick.stake,odds:pick.settleOdds||pick.odds,coinAward:pick.coinAward,field:game.field,source:game.source,resolvedAt:idx>=0?(history[idx].resolvedAt||Date.now()):Date.now()});
   if(idx<0){
     history.unshift(item);
     cpblgData.history = history;
@@ -7085,8 +7091,9 @@ async function cpblRefreshGames(showAlert=false){
 function cpblIsFinalGame(game){
   const status = String(game?.status || '').trim();
   if(/取消|延賽|保留|進行中|比賽中/.test(status)) return false;
-  if(/已結束|比賽結束|結束/.test(status)) return true;
-  return game?.awayScore!=null && game?.homeScore!=null && Number.isFinite(Number(game.awayScore)) && Number.isFinite(Number(game.homeScore));
+  if(game?.final === true || game?.isFinal === true) return true;
+  if(/已結束|比賽結束|結束|FINAL/i.test(status)) return true;
+  return false;
 }
 
 function cpblWinner(game){
@@ -7308,39 +7315,107 @@ function cpblRenderHistory(){
   wrap.innerHTML = `<div class="cpblg-calendar-head"><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(-1)">‹</button><div class="cpblg-cal-title">${cpblHistoryMonthTitle(cpblgHistoryMonth)}</div><button type="button" class="cpblg-cal-nav" onclick="cpblHistoryShiftMonth(1)">›</button></div><div class="cpblg-cal-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="cpblg-cal-grid">${cpblHistoryBuildCalendar(cpblgHistoryMonth, grouped)}</div>${cpblRenderHistoryDetail(cpblgHistorySelectedDate, grouped)}`;
 }
 
+const CPBLG_RESULT_CORRECTIONS = [
+  {no:'158', date:'2026-06-30', away:'統一7-ELEVEn獅', home:'富邦悍將', awayScore:5, homeScore:6, status:'已結束', final:true, field:'新莊', source:'官方明細校正'}
+];
+
+function cpblCorrectedGameFromId(gameId, correction){
+  return {
+    id: gameId || `${correction.date}-A-${correction.no}`,
+    date: correction.date,
+    no: correction.no,
+    away: correction.away,
+    home: correction.home,
+    awayScore: correction.awayScore,
+    homeScore: correction.homeScore,
+    status: correction.status,
+    final: true,
+    field: correction.field || '',
+    source: correction.source || '官方明細校正'
+  };
+}
+
+function cpblRemoveHistoryRecord(gameId, player){
+  if(!Array.isArray(cpblgData.history)) return false;
+  const id = cpblHistoryId(gameId, player);
+  const before = cpblgData.history.length;
+  cpblgData.history = cpblgData.history.filter(row=>row.id!==id);
+  return cpblgData.history.length !== before;
+}
+
+function cpblUndoPrematureSettlement(game){
+  const gp = cpblgData.picks?.[game.id] || {};
+  let changed=false;
+  CPBLG_HISTORY_PLAYERS.forEach(name=>{
+    const p=gp[name];
+    if(!p || (!p.checked && !p.coinSettled)) return;
+    const prevAward = p.coinSettled ? Math.floor(Number(p.coinAward)||0) : 0;
+    if(prevAward) cpblAwardCoins(name, -prevAward);
+    p.checked=false;
+    p.correct=null;
+    p.coinSettled=false;
+    p.coinAward=0;
+    p.settleOdds=0;
+    if(cpblRemoveHistoryRecord(game.id, name)) changed=true;
+    changed=true;
+  });
+  return changed;
+}
+
+function cpblSettleGamePicks(game){
+  const winner=cpblWinner(game);
+  if(!winner) return false;
+  const gp=cpblgData.picks?.[game.id] || {};
+  let changed=false;
+  CPBLG_HISTORY_PLAYERS.forEach(name=>{
+    const p=gp[name];
+    if(!p || p.postponedCanceled) return;
+    const correct = winner==='和局' ? null : cpblNormalizeTeam(p.team)===cpblNormalizeTeam(winner);
+    const stake = Math.max(0, Number(p.stake)||0);
+    const odds = Math.max(0, Number(p.odds)||Number(cpblMoneylineOddForTeam(game, p.team))||CPBLG_DEFAULT_ODDS);
+    const award = stake
+      ? (correct === true ? Math.floor(stake * (odds || 1)) : (correct === null ? stake : 0))
+      : 0;
+    const prevAward = p.coinSettled ? Math.floor(Number(p.coinAward)||0) : 0;
+    const delta = award - prevAward;
+    if(delta) cpblAwardCoins(name, delta);
+    if(!p.checked || p.correct!==correct || !p.coinSettled || prevAward!==award || Number(p.settleOdds||0)!==(stake?odds:0)){
+      changed=true;
+    }
+    p.checked=true;
+    p.correct=correct;
+    p.coinSettled=true;
+    p.coinAward=award;
+    p.settleOdds=stake ? odds : 0;
+    p.oddsMarket = stake ? '不讓分' : '';
+    if(cpblUpsertHistoryRecord(game, name, p)) changed=true;
+  });
+  return changed;
+}
+
+function cpblApplyKnownResultCorrections(){
+  let changed=false;
+  CPBLG_RESULT_CORRECTIONS.forEach(correction=>{
+    Object.keys(cpblgData.picks||{}).forEach(gameId=>{
+      if(!new RegExp(`-A-${correction.no}$`).test(gameId)) return;
+      if(cpblSettleGamePicks(cpblCorrectedGameFromId(gameId, correction))) changed=true;
+    });
+  });
+  if(changed) cpblRecountPlayerStats();
+  return changed;
+}
+
 function cpblResolveFinishedGames(push=true){
   if(!cpblgGames.length) return;
   let changed=false;
   cpblgGames.forEach(game=>{
-    const winner=cpblWinner(game);
-    if(!winner) return;
-    const gp=cpblgData.picks?.[game.id] || {};
-    CPBLG_HISTORY_PLAYERS.forEach(name=>{
-      const p=gp[name];
-      if(!p) return;
-      if(p.postponedCanceled) return;
-      const correct = winner==='和局' ? null : cpblNormalizeTeam(p.team)===cpblNormalizeTeam(winner);
-      if(!p.checked || p.correct!==correct){
-        p.checked=true;
-        p.correct=correct;
-        changed=true;
-      }
-      if(!p.coinSettled){
-        const stake = Math.max(0, Number(p.stake)||0);
-        const odds = Math.max(0, Number(p.odds)||Number(cpblMoneylineOddForTeam(game, p.team))||CPBLG_DEFAULT_ODDS);
-        const award = stake
-          ? (correct === true ? Math.floor(stake * (odds || 1)) : (correct === null ? stake : 0))
-          : 0;
-        cpblAwardCoins(name, award);
-        p.coinSettled = true;
-        p.coinAward = award;
-        p.settleOdds = stake ? odds : 0;
-        p.oddsMarket = stake ? '不讓分' : '';
-        changed = true;
-      }
-      if(cpblUpsertHistoryRecord(game, name, p)) changed=true;
-    });
+    if(!cpblIsFinalGame(game)){
+      if(cpblUndoPrematureSettlement(game)) changed=true;
+      return;
+    }
+    if(cpblSettleGamePicks(game)) changed=true;
   });
+  if(cpblApplyKnownResultCorrections()) changed=true;
   if(changed){
     cpblRecountPlayerStats();
     cpblSaveData(push);
@@ -10875,8 +10950,10 @@ function cpblEnsureEconomy(player){
 }
 function cpblAwardCoins(player, amount){
   if(!player || !amount) return;
+  const delta = Math.floor(Number(amount)||0);
+  if(!delta) return;
   const eco=cpblEnsureEconomy(player);
-  eco.coins += amount;
+  eco.coins = Math.max(0, Math.floor(Number(eco.coins)||0) + delta);
 }
 function cpblRefundStake(player, pick, reason='賽事不列入'){
   if(!player || !pick || pick.stakeRefunded) return 0;

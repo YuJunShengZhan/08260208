@@ -1,4 +1,5 @@
 const https = require('https');
+const CPBL_HTTPS_AGENT = new https.Agent({ rejectUnauthorized: false });
 
 const TEAM_ALIASES = {
   '中信兄弟': '中信兄弟',
@@ -187,24 +188,22 @@ function parseSchedule(raw, ymd) {
 }
 
 async function fetchText(url) {
-  if (typeof fetch !== 'function') {
-    return new Promise((resolve, reject) => {
-      https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept-Encoding': 'identity' } }, (response) => {
-        if (response.statusCode < 200 || response.statusCode >= 300) {
-          response.resume();
-          reject(new Error(`upstream HTTP ${response.statusCode}`));
-          return;
-        }
-        let body = '';
-        response.setEncoding('utf8');
-        response.on('data', (chunk) => { body += chunk; });
-        response.on('end', () => resolve(body));
-      }).on('error', reject);
-    });
-  }
-  const response = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept-Encoding': 'identity' } });
-  if (!response.ok) throw new Error(`upstream HTTP ${response.status}`);
-  return response.text();
+  return new Promise((resolve, reject) => {
+    https.get(url, {
+      agent: CPBL_HTTPS_AGENT,
+      headers: { 'User-Agent': 'Mozilla/5.0', 'Accept-Encoding': 'identity' }
+    }, (response) => {
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        response.resume();
+        reject(new Error(`upstream HTTP ${response.statusCode}`));
+        return;
+      }
+      let body = '';
+      response.setEncoding('utf8');
+      response.on('data', (chunk) => { body += chunk; });
+      response.on('end', () => resolve(body));
+    }).on('error', reject);
+  });
 }
 
 async function refineFromDetail(game) {

@@ -2945,7 +2945,7 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 .cpblg-shell{max-width:760px;margin:0 auto;background:linear-gradient(180deg,#fffbfc,#fff0f4);border:1px solid rgba(232,99,122,.14);border-radius:24px;padding:16px;box-shadow:0 14px 32px rgba(232,99,122,.08)}
 .cpblg-hero,.cpblg-stat,.cpblg-game{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
 .cpblg-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--pink);margin-bottom:4px}.cpblg-sub,.cpblg-status,.cpblg-small{font-size:12px;color:var(--text-muted);line-height:1.7}
-.cpblg-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.cpblg-btn{border:none;border-radius:14px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-weight:700;padding:11px 12px;cursor:pointer}.cpblg-btn.secondary{background:var(--pink-light);color:var(--rose);border:1px solid rgba(232,99,122,.16)}
+.cpblg-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.cpblg-btn{border:none;border-radius:14px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-weight:700;padding:11px 12px;cursor:pointer;transition:background .16s ease,color .16s ease,transform .12s ease,box-shadow .16s ease}.cpblg-btn:active,.cpblg-btn.active{background:var(--rose);color:#fff;transform:translateY(1px);box-shadow:inset 0 2px 8px rgba(120,40,58,.22)}.cpblg-btn.secondary{background:var(--pink-light);color:var(--rose);border:1px solid rgba(232,99,122,.16)}.cpblg-btn.secondary:active,.cpblg-btn.secondary.active{background:var(--pink);color:#fff;border-color:var(--pink)}
 .cpblg-player.active,.cpblg-pick.chosen{background:var(--pink)!important;color:#fff!important;box-shadow:0 0 0 3px rgba(232,99,122,.18)}.cpblg-player{background:var(--white);color:var(--text);border:1.5px solid rgba(232,99,122,.16)}
 .cpblg-player-select{margin-top:12px;padding:10px 12px;background:rgba(255,255,255,.72);border:1px solid rgba(232,99,122,.12);border-radius:16px}.cpblg-player-select .cpblg-row{margin:8px 0 0}.cpblg-player-hint{text-align:center;font-size:12px;color:var(--text-muted)}
 .cpblg-rate{font-family:'Noto Serif TC',serif;font-size:27px;font-weight:700;color:var(--rose)}.cpblg-toolbar{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}.cpblg-badge{font-size:12px;color:var(--rose);background:var(--pink-light);border-radius:999px;padding:7px 11px}.cpblg-toolbar-actions{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}.cpblg-status-line{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.cpblg-status-main{min-width:0}.cpblg-status-action{margin-left:auto;flex:0 0 auto}
@@ -2955,7 +2955,7 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 [data-theme="dark"] .cpblg-player-select{background:rgba(58,33,42,.72);border-color:rgba(232,99,122,.18)}
 @media(max-width:520px){.cpblg-shell{padding:13px}.cpblg-row{gap:8px}.cpblg-match{gap:6px}.cpblg-team{font-size:13px}.cpblg-pickrow{grid-template-columns:1fr}}
 
-.cpblg-source-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.cpblg-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 9px;background:var(--pink-light);color:var(--rose);font-size:11px}.cpblg-pickrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.cpblg-pick{background:var(--white);color:var(--text);border:1.5px solid rgba(232,99,122,.16)}.cpblg-pick.correct{background:#e8f5e9!important;border-color:#4caf50!important;color:#2e7d32!important}.cpblg-pick.wrong{background:#fff0f3!important;border-color:var(--pink)!important;color:var(--rose)!important}.cpblg-manual{display:none;margin-top:12px;background:var(--pink-light);border-radius:16px;padding:12px}.cpblg-manual.open{display:block}.cpblg-manual textarea{width:100%;min-height:88px;border:1px solid var(--card-border);border-radius:12px;background:var(--white);color:var(--text);padding:10px;font-family:'Noto Sans TC',sans-serif;resize:vertical}.cpblg-manual-hint{font-size:11px;color:var(--text-muted);line-height:1.7;margin:6px 0 10px}.cpblg-team-head{display:flex;align-items:center;justify-content:center;gap:8px}.cpblg-logo{width:34px;height:34px;border-radius:12px;overflow:hidden;flex:0 0 34px;box-shadow:0 6px 14px rgba(0,0,0,.12);background:#fff}.cpblg-logo img{width:100%;height:100%;display:block;object-fit:cover}.cpblg-team-name{line-height:1.35}.cpblg-pick .cpblg-team-head{justify-content:center}.cpblg-pick .cpblg-logo{width:28px;height:28px;flex-basis:28px}.cpblg-history{display:none;margin-top:12px;background:rgba(255,255,255,.82);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-history.open{display:block}.cpblg-history-list{display:flex;flex-direction:column;gap:10px}.cpblg-history-card{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:16px;padding:12px}.cpblg-history-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.cpblg-history-date{font-size:12px;color:var(--text-muted)}.cpblg-history-result{font-size:13px;color:var(--rose);font-weight:700}.cpblg-history-match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.cpblg-history-score{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700}.cpblg-history-picks{display:flex;flex-direction:column;gap:6px}.cpblg-history-pick{display:flex;justify-content:space-between;gap:8px;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;line-height:1.5}.cpblg-history-player{font-weight:700;color:var(--text)}.cpblg-history-empty{text-align:center;padding:16px 8px;color:var(--text-muted);font-size:13px}[data-theme="dark"] .cpblg-pick{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-manual textarea{background:#24151c;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history,[data-theme="dark"] .cpblg-history-card{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history-pick{background:#3a1f28}
+.cpblg-source-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}.cpblg-source-row .cpblg-coinlog-open{margin-left:auto}.cpblg-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:5px 9px;background:var(--pink-light);color:var(--rose);font-size:11px}.cpblg-pickrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.cpblg-pick{background:var(--white);color:var(--text);border:1.5px solid rgba(232,99,122,.16)}.cpblg-pick.correct{background:#e8f5e9!important;border-color:#4caf50!important;color:#2e7d32!important}.cpblg-pick.wrong{background:#fff0f3!important;border-color:var(--pink)!important;color:var(--rose)!important}.cpblg-manual{display:none;margin-top:12px;background:var(--pink-light);border-radius:16px;padding:12px}.cpblg-manual.open{display:block}.cpblg-manual textarea{width:100%;min-height:88px;border:1px solid var(--card-border);border-radius:12px;background:var(--white);color:var(--text);padding:10px;font-family:'Noto Sans TC',sans-serif;resize:vertical}.cpblg-manual-hint{font-size:11px;color:var(--text-muted);line-height:1.7;margin:6px 0 10px}.cpblg-team-head{display:flex;align-items:center;justify-content:center;gap:8px}.cpblg-logo{width:34px;height:34px;border-radius:12px;overflow:hidden;flex:0 0 34px;box-shadow:0 6px 14px rgba(0,0,0,.12);background:#fff}.cpblg-logo img{width:100%;height:100%;display:block;object-fit:cover}.cpblg-team-name{line-height:1.35}.cpblg-pick .cpblg-team-head{justify-content:center}.cpblg-pick .cpblg-logo{width:28px;height:28px;flex-basis:28px}.cpblg-history{display:none;margin-top:12px;background:rgba(255,255,255,.82);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-history.open{display:block}.cpblg-history-list{display:flex;flex-direction:column;gap:10px}.cpblg-history-card{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:16px;padding:12px}.cpblg-history-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:8px}.cpblg-history-date{font-size:12px;color:var(--text-muted)}.cpblg-history-result{font-size:13px;color:var(--rose);font-weight:700}.cpblg-history-match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}.cpblg-history-score{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700}.cpblg-history-picks{display:flex;flex-direction:column;gap:6px}.cpblg-history-pick{display:flex;justify-content:space-between;gap:8px;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;line-height:1.5}.cpblg-history-player{font-weight:700;color:var(--text)}.cpblg-history-empty{text-align:center;padding:16px 8px;color:var(--text-muted);font-size:13px}[data-theme="dark"] .cpblg-pick{background:#382029;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-manual textarea{background:#24151c;color:var(--text);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history,[data-theme="dark"] .cpblg-history-card{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-history-pick{background:#3a1f28}
 .cpblg-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.cpblg-cal-nav{min-width:42px;padding:8px 0;border:none;border-radius:12px;background:var(--pink-light);color:var(--rose);font-weight:700;cursor:pointer}.cpblg-cal-title{font-family:'Noto Serif TC',serif;font-size:17px;color:var(--rose);font-weight:700}.cpblg-cal-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:6px}.cpblg-cal-week span{font-size:11px;color:var(--text-muted);text-align:center}.cpblg-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cpblg-cal-day{min-height:72px;border:1px solid rgba(232,99,122,.14);border-radius:14px;background:var(--white);padding:8px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;touch-action:manipulation}.cpblg-cal-day.muted{opacity:.34;cursor:default}.cpblg-cal-day.active{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.15)}.cpblg-cal-num{font-size:13px;font-weight:700;color:var(--text)}.cpblg-cal-count{font-size:11px;font-weight:700;color:var(--rose);line-height:1}.cpblg-history-detail{margin-top:12px;border-top:1px dashed rgba(232,99,122,.18);padding-top:12px}.cpblg-history-datebar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}.cpblg-history-datebar strong{color:var(--rose)}.cpblg-history-day-overview{display:flex;align-items:center;gap:8px;margin:0 0 10px}.cpblg-history-day-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:6px 10px;background:var(--pink-light);font-size:11px;color:var(--text-muted)}.cpblg-history-day-pill strong{color:var(--rose)}.cpblg-history-predictions-btn{margin-left:auto;border:1px solid rgba(232,99,122,.18);border-radius:999px;padding:6px 11px;background:var(--white);color:var(--rose);font-size:11px;font-weight:700;cursor:pointer;touch-action:manipulation}.cpblg-history-predictions{display:flex;flex-direction:column;gap:7px;margin:0 0 10px;padding:10px;background:var(--pink-light);border-radius:14px}.cpblg-history-prediction-row{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;font-size:12px}.cpblg-history-prediction-game{grid-row:span 2;color:var(--rose);font-weight:700}.cpblg-history-prediction-player{color:var(--text)}.cpblg-history-prediction-player strong{color:var(--rose)}.cpblg-history-daylist{display:flex;flex-direction:column;gap:8px}.cpblg-history-simple{background:var(--white);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px}.cpblg-history-simple-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:6px}.cpblg-history-line{font-size:13px;line-height:1.6;color:var(--text)}.cpblg-history-matchup{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:8px}.cpblg-history-side{display:flex;justify-content:center}.cpblg-history-team{background:var(--pink-light);border:1px solid rgba(232,99,122,.12);border-radius:14px;padding:10px 8px;display:flex;justify-content:center}.cpblg-history-scoreline{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700;text-align:center}[data-theme="dark"] .cpblg-cal-day,[data-theme="dark"] .cpblg-history-simple,[data-theme="dark"] .cpblg-history-predictions-btn{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.18)}[data-theme="dark"] .cpblg-cal-nav{background:#3a1f28;color:#ffd9e2}[data-theme="dark"] .cpblg-history-team,[data-theme="dark"] .cpblg-history-predictions{background:#3a1f28;border-color:rgba(232,99,122,.18)}
 
 .cpblg-economy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:rgba(255,255,255,.86);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px;margin:10px 0}.cpblg-economy-actions{display:flex;flex-direction:column;gap:8px}.cpblg-coins{display:flex;align-items:center;gap:8px;color:var(--rose);font-weight:800}.cpblg-coin-num{font-family:'Noto Serif TC',serif;font-size:24px}.cpblg-badge-equip{font-size:12px;color:var(--text-muted);line-height:1.6}.cpblg-shop,.cpblg-backpack{display:none;margin:10px 0;background:var(--pink-light);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-shop.open,.cpblg-backpack.open{display:block}.cpblg-shop-grid,.cpblg-backpack-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.cpblg-shop-item,.cpblg-bag-item{background:var(--white);border:1px solid rgba(232,99,122,.16);border-radius:14px;padding:10px;text-align:left}.cpblg-shop-name,.cpblg-bag-name{font-weight:800;color:var(--rose);margin-bottom:4px}.cpblg-shop-desc,.cpblg-bag-desc{font-size:11px;color:var(--text-muted);line-height:1.5}.cpblg-shop-price,.cpblg-bag-meta{font-size:12px;color:var(--text);font-weight:700;margin:7px 0}.cpblg-odds{margin:8px 0 10px;background:rgba(255,255,255,.76);border:1px dashed rgba(232,99,122,.22);border-radius:14px;padding:9px 10px}.cpblg-odds-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}.cpblg-odds-title{font-size:12px;font-weight:800;color:var(--rose)}.cpblg-odds-source{font-size:10px;color:var(--text-muted)}.cpblg-odds-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cpblg-odd-pill{background:var(--pink-light);border:1px solid rgba(232,99,122,.14);border-radius:12px;padding:7px 8px;font-size:12px;color:var(--text);display:flex;justify-content:space-between;gap:6px}.cpblg-odd-value{font-weight:900;color:var(--rose)}.cpblg-odds-empty{font-size:11px;color:var(--text-muted);line-height:1.6}.cpblg-btn.tiny{padding:7px 10px;font-size:11px;border-radius:999px}@media(max-width:520px){.cpblg-economy{grid-template-columns:1fr}.cpblg-economy-actions{flex-direction:row}.cpblg-shop-grid,.cpblg-backpack-list{grid-template-columns:1fr}.cpblg-odds-row{grid-template-columns:1fr}}
@@ -2964,8 +2964,8 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 .cpblg-shop-grid{scroll-padding:0}.cpblg-shop-item{box-sizing:border-box;flex:0 0 min(100%,360px);max-width:100%;min-width:0}@media(max-width:520px){.cpblg-shop{padding:9px}.cpblg-shop-grid{gap:10px;padding:1px 0 8px}.cpblg-shop-item{flex-basis:100%;grid-template-columns:40% minmax(0,1fr);gap:6px 8px;padding:9px;border-radius:17px}.cpblg-shop-item .cpblg-coupon-img{height:102px;border-radius:13px}.cpblg-shop-item .cpblg-shop-name{font-size:14px;margin-bottom:0}.cpblg-shop-item .cpblg-shop-desc{font-size:10px;line-height:1.35;-webkit-line-clamp:2}.cpblg-shop-item .cpblg-shop-buy-row{margin-top:0}.cpblg-shop-item .cpblg-shop-count{font-size:10px;margin-top:0}.cpblg-shop-item .cpblg-btn.tiny{padding:6px 9px;font-size:10px}}@media(max-width:380px){.cpblg-shop-item{grid-template-columns:37% minmax(0,1fr);gap:5px 7px;padding:8px}.cpblg-shop-item .cpblg-coupon-img{height:88px}.cpblg-shop-item .cpblg-shop-desc{-webkit-line-clamp:1}.cpblg-shop-buy-row{flex-direction:row;align-items:center}.cpblg-shop-item .cpblg-shop-price{font-size:11px}}
 .cpblg-stake{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 4px;padding:8px 10px;border-radius:13px;background:rgba(255,240,244,.72);font-size:12px;color:var(--text-muted)}.cpblg-stake select{border:1px solid rgba(232,99,122,.2);border-radius:999px;background:var(--white);color:var(--rose);font-weight:800;padding:6px 10px;font-family:'Noto Sans TC',sans-serif}.cpblg-checkin-overlay{position:fixed;inset:0;background:rgba(60,25,35,.42);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.cpblg-checkin-card{width:min(420px,100%);background:linear-gradient(180deg,#fff,#fff0f4);border:1px solid rgba(232,99,122,.22);border-radius:26px;padding:18px;box-shadow:0 22px 70px rgba(120,45,62,.28);text-align:center}.cpblg-checkin-title{font-family:'Noto Serif TC',serif;font-size:22px;color:var(--pink);font-weight:800}.cpblg-checkin-sub{font-size:12px;color:var(--text-muted);line-height:1.7;margin:4px 0 12px}.cpblg-checkin-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:12px 0}.cpblg-checkin-day{border-radius:15px;padding:10px 4px;background:var(--pink-light);border:1px solid rgba(232,99,122,.14);font-size:11px;color:var(--text-muted)}.cpblg-checkin-day.done{background:#e8f5e9;border-color:#78c98a;color:#2e7d32}.cpblg-checkin-day.today{background:#fff;border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.12)}.cpblg-checkin-reward{font-weight:900;color:var(--rose);font-size:13px;margin-top:4px}.cpblg-checkin-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
 .cpblg-stake input{width:96px;border:1px solid rgba(232,99,122,.22);border-radius:999px;background:var(--white);color:var(--rose);font-weight:900;padding:7px 10px;font-family:'Noto Sans TC',sans-serif;text-align:center}.cpblg-stake small{font-size:10px;color:var(--text-muted);margin-left:auto}@media(max-width:520px){.cpblg-stake{display:grid;grid-template-columns:auto 1fr;align-items:center}.cpblg-stake input{width:100%;box-sizing:border-box}.cpblg-stake small{grid-column:1 / -1;margin-left:0}}
-.cpblg-coinlog{margin:10px 0;background:rgba(255,255,255,.82);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:12px}.cpblg-coinlog[hidden]{display:none}.cpblg-coinlog-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.cpblg-coinlog-title{font-size:13px;font-weight:900;color:var(--rose)}.cpblg-coinlog-sync{font-size:11px;color:var(--text-muted)}.cpblg-coinlog-list{display:flex;flex-direction:column;gap:7px;max-height:230px;overflow:auto;-webkit-overflow-scrolling:touch}.cpblg-coinlog-row{display:grid;grid-template-columns:minmax(72px,auto) 1fr;gap:8px;align-items:center;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--text)}.cpblg-coinlog-amount{font-weight:900;color:var(--rose);white-space:nowrap}.cpblg-coinlog-amount.positive{color:#198754}.cpblg-coinlog-amount.negative{color:#c94b64}.cpblg-coinlog-meta{color:var(--text-muted);font-size:11px;line-height:1.45}.cpblg-coinlog-empty{text-align:center;color:var(--text-muted);font-size:12px;padding:10px 0}
-[data-theme="dark"] .cpblg-economy,[data-theme="dark"] .cpblg-shop-item,[data-theme="dark"] .cpblg-bag-item,[data-theme="dark"] .cpblg-odds,[data-theme="dark"] .cpblg-coinlog{background:rgba(58,33,42,.9);border-color:rgba(232,99,122,.2)}[data-theme="dark"] .cpblg-shop,[data-theme="dark"] .cpblg-backpack,[data-theme="dark"] .cpblg-coinlog-row{background:#3a1f28}[data-theme="dark"] .cpblg-odd-pill{background:#3a1f28;border-color:rgba(232,99,122,.2)}
+.cpblg-coinlog-overlay{position:fixed;inset:0;z-index:9999;background:rgba(60,25,35,.42);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.cpblg-coinlog-modal{width:min(620px,100%);max-height:calc(100vh - 34px);max-height:calc(100dvh - 34px);background:linear-gradient(180deg,#fff,#fff3f6);border:1px solid rgba(232,99,122,.22);border-radius:26px;padding:16px;box-shadow:0 22px 70px rgba(120,45,62,.28);overflow:hidden;display:flex;flex-direction:column}.cpblg-coinlog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}.cpblg-coinlog-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:900;color:var(--rose)}.cpblg-coinlog-sync{font-size:11px;color:var(--text-muted);line-height:1.6}.cpblg-coinlog-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;overflow:auto;-webkit-overflow-scrolling:touch;padding-right:2px}.cpblg-coinlog-section{background:rgba(255,255,255,.78);border:1px solid rgba(232,99,122,.14);border-radius:18px;padding:10px;min-width:0}.cpblg-coinlog-player{display:flex;justify-content:space-between;gap:8px;align-items:center;color:var(--rose);font-weight:900;margin-bottom:8px}.cpblg-coinlog-list{display:flex;flex-direction:column;gap:7px}.cpblg-coinlog-row{display:grid;grid-template-columns:minmax(72px,auto) 1fr;gap:8px;align-items:center;background:var(--pink-light);border-radius:12px;padding:8px 10px;font-size:12px;color:var(--text)}.cpblg-coinlog-amount{font-weight:900;color:var(--rose);white-space:nowrap}.cpblg-coinlog-amount.positive{color:#198754}.cpblg-coinlog-amount.negative{color:#c94b64}.cpblg-coinlog-meta{color:var(--text-muted);font-size:11px;line-height:1.45}.cpblg-coinlog-empty{text-align:center;color:var(--text-muted);font-size:12px;padding:10px 0}@media(max-width:620px){.cpblg-coinlog-body{grid-template-columns:1fr}}
+[data-theme="dark"] .cpblg-economy,[data-theme="dark"] .cpblg-shop-item,[data-theme="dark"] .cpblg-bag-item,[data-theme="dark"] .cpblg-odds,[data-theme="dark"] .cpblg-coinlog-modal,[data-theme="dark"] .cpblg-coinlog-section{background:rgba(58,33,42,.96);border-color:rgba(232,99,122,.2)}[data-theme="dark"] .cpblg-shop,[data-theme="dark"] .cpblg-backpack,[data-theme="dark"] .cpblg-coinlog-row{background:#3a1f28}[data-theme="dark"] .cpblg-odd-pill{background:#3a1f28;border-color:rgba(232,99,122,.2)}
 .cpblg-history-prediction-player{padding:5px 8px;border-radius:9px}.cpblg-history-prediction-player.correct{color:#2e7d32;background:#e8f5e9;border:1px solid #78c98a}.cpblg-history-prediction-player.wrong{color:#a9193a;background:#ffd1dc;border:1px solid #ef8ca1}.cpblg-history-prediction-player.draw{color:#a66300;background:#fff3d6}.cpblg-history-prediction-player.correct strong,.cpblg-history-prediction-player.wrong strong,.cpblg-history-prediction-player.draw strong{color:inherit}[data-theme="dark"] .cpblg-history-prediction-player.correct{color:#9ee6a5;background:#1f3b25;border-color:#4f9c61}[data-theme="dark"] .cpblg-history-prediction-player.wrong{color:#ffb0c0;background:#5b1f30;border-color:#a94b62}[data-theme="dark"] .cpblg-history-prediction-player.draw{color:#ffd080;background:#463617}
 
 
@@ -3550,14 +3550,12 @@ onclick="hideSpecialForToday()">
         <div class="cpblg-row">
           <button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-sheng" onclick="cpblSelectPlayer('聖展')">我是聖展</button>
           <button type="button" class="cpblg-btn cpblg-player" id="cpblg-player-yujun" onclick="cpblSelectPlayer('予君')">我是予君</button>
-          <button type="button" class="cpblg-btn secondary" id="cpblg-coinlog-btn" onclick="cpblToggleCoinLog()" disabled>金幣紀錄</button>
         </div>
       </div>
       <div class="cpblg-row"><div class="cpblg-stat"><div class="cpblg-small">聖展勝率</div><div class="cpblg-rate" id="cpblg-rate-sheng">0%</div><div class="cpblg-small" id="cpblg-record-sheng">0 / 0</div></div><div class="cpblg-stat"><div class="cpblg-small">予君勝率</div><div class="cpblg-rate" id="cpblg-rate-yujun">0%</div><div class="cpblg-small" id="cpblg-record-yujun">0 / 0</div></div></div>
-      <div class="cpblg-economy"><div><div class="cpblg-coins">💰 <span id="cpblg-coin-player">先選擇玩家</span><span class="cpblg-coin-num" id="cpblg-coin-count">0</span></div><div class="cpblg-badge-equip" id="cpblg-equipped-badge">選擇你是誰後，金幣會自動顯示並同步。</div><div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary tiny" id="cpblg-checkin-btn" onclick="cpblOpenCheckinPopup()" disabled>每日簽到</button><button type="button" class="cpblg-btn secondary tiny" id="cpblg-chest-btn" onclick="cpblOpenCheckinChest()" disabled>開寶箱</button></div><div class="cpblg-badge-equip" id="cpblg-checkin-info">連續簽到 5 天可以開寶箱。</div></div><div class="cpblg-economy-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleShop()">🛍️ 商城</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleBackpack()">🎒 背包</button></div></div>
+      <div class="cpblg-economy"><div><div class="cpblg-coins">💰 <span id="cpblg-coin-player">先選擇玩家</span><span class="cpblg-coin-num" id="cpblg-coin-count"></span></div><div class="cpblg-badge-equip" id="cpblg-equipped-badge">選擇你是誰後，金幣會自動顯示並同步。</div><div class="cpblg-source-row"><button type="button" class="cpblg-btn secondary tiny" id="cpblg-checkin-btn" onclick="cpblOpenCheckinPopup()" disabled>每日簽到</button><button type="button" class="cpblg-btn secondary tiny" id="cpblg-chest-btn" onclick="cpblOpenCheckinChest()" disabled>開寶箱</button><button type="button" class="cpblg-btn secondary tiny cpblg-coinlog-open" id="cpblg-coinlog-btn" onclick="cpblOpenCoinLogModal()">金幣紀錄</button></div><div class="cpblg-badge-equip" id="cpblg-checkin-info">連續簽到 5 天可以開寶箱。</div></div><div class="cpblg-economy-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblToggleShop()">🛍️ 商城</button><button type="button" class="cpblg-btn secondary" onclick="cpblToggleBackpack()">🎒 背包</button></div></div>
       <div class="cpblg-shop" id="cpblg-shop"><div class="cpblg-shop-grid" id="cpblg-shop-grid"></div></div>
       <div class="cpblg-backpack" id="cpblg-backpack"><div class="cpblg-backpack-list" id="cpblg-backpack-list"></div></div>
-      <div class="cpblg-coinlog" id="cpblg-coinlog" hidden><div class="cpblg-coinlog-head"><div><div class="cpblg-coinlog-title">金幣紀錄</div><div class="cpblg-coinlog-sync">依目前選擇的玩家顯示</div></div><button type="button" class="cpblg-btn secondary tiny" onclick="cpblToggleCoinLog(false)">收起</button></div><div class="cpblg-coinlog-list" id="cpblg-coinlog-list"><div class="cpblg-coinlog-empty">先選擇玩家。</div></div></div>
       <div class="cpblg-toolbar"><div class="cpblg-badge" id="cpblg-date-badge">今天賽程</div><div class="cpblg-toolbar-actions"><button type="button" class="cpblg-btn secondary" onclick="cpblOpenHistoryPage()">歷史猜測紀錄</button></div></div>
       <div class="cpblg-status" id="cpblg-status">進入頁面後會自動載入。</div><div class="cpblg-games" id="cpblg-games"></div>
     </div>
@@ -6013,6 +6011,7 @@ function cpblMergeData(base, incoming){
 }
 function cpblSaveData(pushFirebase=true){
   delete cpblgData.betLogs;
+  cpblBackfillCoinLogs(cpblgData);
   cpblgData.updatedAt = Date.now();
   localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
   cpblRenderStats();
@@ -6224,6 +6223,7 @@ function cpblBaseData(){
       '予君':{coins:1000,owned:{},inventory:[],equipped:'',initialized:true,checkin:{lastDate:'',streak:0,chestReady:false,chestOpenedCycle:0}}
     },
     coinRulesVersion:0,
+    coinLogVersion:0,
     updatedAt:0
   };
 }
@@ -6281,6 +6281,116 @@ function cpblCoinLogFromBetLog(item){
     createdAt:item?.createdAt
   });
   return row.id && row.player && row.amount ? row : null;
+}
+function cpblDateFromGameId(gameId){
+  const m = String(gameId||'').match(/^(\d{4}-\d{2}-\d{2})/);
+  return m ? m[1] : '';
+}
+function cpblGameNoFromId(gameId){
+  const parts = String(gameId||'').split('-');
+  return parts[parts.length-1] || '';
+}
+function cpblShiftDateKey(dateKey, offsetDays){
+  const base = cpblDateToNoon(dateKey);
+  if(isNaN(base)) return '';
+  base.setDate(base.getDate() + offsetDays);
+  return `${base.getFullYear()}-${cpblPad(base.getMonth()+1)}-${cpblPad(base.getDate())}`;
+}
+function cpblCoinLogExists(logs, test){
+  return (logs||[]).some(item=>test(cpblNormalizeCoinLog(item)));
+}
+function cpblPushBackfillCoinLog(logs, item){
+  const row = cpblNormalizeCoinLog(item);
+  if(!row.id || !row.player || !row.amount) return false;
+  if(logs.some(existing=>cpblNormalizeCoinLog(existing).id===row.id)) return false;
+  logs.push(row);
+  return true;
+}
+function cpblBackfillCoinLogs(data){
+  if(!data) return false;
+  data.coinLogs = Array.isArray(data.coinLogs) ? data.coinLogs.map(cpblNormalizeCoinLog).filter(row=>row.id && row.player && row.amount) : [];
+  let changed=false;
+  Object.entries(data.picks||{}).forEach(([gameId, players])=>{
+    const gameNo = cpblGameNoFromId(gameId);
+    const date = cpblDateFromGameId(gameId);
+    Object.entries(players||{}).forEach(([player, pick])=>{
+      const stake = Math.max(0, Math.floor(Number(pick?.stake)||0));
+      const pickedAt = Number(pick?.pickedAt)||Date.now();
+      if(stake && !cpblCoinLogExists(data.coinLogs, row=>row.player===player && row.gameId===gameId && row.amount<0 && /下注/.test(row.title))){
+        changed = cpblPushBackfillCoinLog(data.coinLogs, {
+          id:`legacy-stake-${gameId}-${player}`,
+          player,
+          title:'下注扣款',
+          note:`GAME ${gameNo} ${pick?.team||''}`.trim(),
+          amount:-stake,
+          gameId,
+          gameNo,
+          date,
+          createdAt:pickedAt
+        }) || changed;
+      }
+      const award = pick?.coinSettled ? Math.max(0, Math.floor(Number(pick?.coinAward)||0)) : 0;
+      if(award && !cpblCoinLogExists(data.coinLogs, row=>row.player===player && row.gameId===gameId && row.amount>0 && /(派彩|退款)/.test(row.title))){
+        changed = cpblPushBackfillCoinLog(data.coinLogs, {
+          id:`legacy-award-${gameId}-${player}-${award}`,
+          player,
+          title:pick?.correct===true ? '猜對派彩' : '下注退款',
+          note:`GAME ${gameNo} ${pick?.team||''}`.trim(),
+          amount:award,
+          gameId,
+          gameNo,
+          date,
+          createdAt:Number(pick?.settledAt)||Number(pick?.resolvedAt)||pickedAt + 60000
+        }) || changed;
+      }
+    });
+  });
+  (Array.isArray(data.history) ? data.history : []).forEach(item=>{
+    const row = cpblNormalizeHistoryItem(item);
+    const award = Math.max(0, Math.floor(Number(row.coinAward)||0));
+    if(!row.player || !row.gameId || !award) return;
+    if(cpblCoinLogExists(data.coinLogs, log=>log.player===row.player && log.gameId===row.gameId && log.amount>0 && /(派彩|退款)/.test(log.title))) return;
+    changed = cpblPushBackfillCoinLog(data.coinLogs, {
+      id:`legacy-history-award-${row.gameId}-${row.player}-${award}`,
+      player:row.player,
+      title:row.correct===true ? '猜對派彩' : '下注退款',
+      note:`GAME ${row.gameNo} ${row.pickTeam}`.trim(),
+      amount:award,
+      gameId:row.gameId,
+      gameNo:row.gameNo,
+      date:row.date,
+      createdAt:Number(row.resolvedAt)||Date.now()
+    }) || changed;
+  });
+  const rewards = {1:100,2:200,3:300,4:500};
+  CPBLG_HISTORY_PLAYERS.forEach(player=>{
+    const checkin = data.economy?.[player]?.checkin || {};
+    const streak = Math.max(0, Math.min(5, Math.floor(Number(checkin.streak)||0)));
+    const lastDate = String(checkin.lastDate||'');
+    if(!streak || !lastDate) return;
+    for(let day=1; day<=streak; day+=1){
+      const date = cpblShiftDateKey(lastDate, day-streak);
+      const amount = rewards[day] || 0;
+      if(!date || !amount) continue;
+      if(cpblCoinLogExists(data.coinLogs, row=>row.player===player && row.date===date && /簽到/.test(row.title))) continue;
+      changed = cpblPushBackfillCoinLog(data.coinLogs, {
+        id:`legacy-checkin-${player}-${date}`,
+        player,
+        title:'每日簽到',
+        note:`連續 ${day} 天`,
+        amount,
+        date,
+        createdAt:cpblDateToNoon(date).getTime() + 12 * 3600000
+      }) || changed;
+    }
+  });
+  data.coinLogs = data.coinLogs
+    .map(cpblNormalizeCoinLog)
+    .filter(row=>row.id && row.player && row.amount)
+    .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
+    .slice(0,240);
+  data.coinLogVersion = 1;
+  return changed;
 }
 function cpblLoadLocalData(){
   try{
@@ -6348,6 +6458,7 @@ function cpblMergeData(base, incoming){
   data.history = Array.from(historyById.values());
   data.postponed = Object.assign({},data.postponed||{},incoming.postponed||{});
   data.coinRulesVersion = Number(incoming.coinRulesVersion || data.coinRulesVersion || 0);
+  data.coinLogVersion = Number(incoming.coinLogVersion || data.coinLogVersion || 0);
   data.economy = data.economy || {};
   CPBLG_HISTORY_PLAYERS.forEach(name=>{
     const current = data.economy[name] || {};
@@ -6389,6 +6500,7 @@ function cpblMergeData(base, incoming){
     });
     data.coinRulesVersion = 2;
   }
+  cpblBackfillCoinLogs(data);
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
   return data;
 }
@@ -6428,7 +6540,7 @@ function cpblInitFirebase(){
     const remote = snap.val();
     if(remote){
       const needsCoinRulePush = Number(remote.coinRulesVersion||0) < 2;
-      const needsCoinLogPush = Array.isArray(remote.betLogs) || !Array.isArray(remote.coinLogs);
+      const needsCoinLogPush = Array.isArray(remote.betLogs) || !Array.isArray(remote.coinLogs) || Number(remote.coinLogVersion||0) < 1;
       cpblgData = cpblMergeData(cpblMergeData(cpblBaseData(), cpblgData), remote);
       localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
       cpblResolveFinishedGames(false);
@@ -11061,34 +11173,18 @@ function cpblSyncPredictionNow(gameId, player){
   if(Array.isArray(cpblgData.coinLogs)) changes.coinLogs = cpblgData.coinLogs.slice(0,180);
   update(ref(db,'cpblGuess'),changes).catch(()=>{});
 }
-function cpblToggleCoinLog(force){
-  const box=document.getElementById('cpblg-coinlog');
-  if(!box) return;
-  if(!cpblgPlayer){alert('先選擇你是誰');return;}
-  const open = typeof force==='boolean' ? force : box.hidden;
-  box.hidden = !open;
-  if(open) cpblRenderCoinLogs();
-}
-function cpblRenderCoinLogs(){
-  const list=document.getElementById('cpblg-coinlog-list');
-  if(!list) return;
-  const btn=document.getElementById('cpblg-coinlog-btn');
-  if(btn) btn.disabled = !cpblgPlayer;
-  if(!cpblgPlayer){
-    list.innerHTML='<div class="cpblg-coinlog-empty">先選擇玩家。</div>';
-    return;
-  }
-  const rows = (Array.isArray(cpblgData.coinLogs) ? cpblgData.coinLogs : [])
+function cpblCoinLogRows(player, limit=80){
+  return (Array.isArray(cpblgData.coinLogs) ? cpblgData.coinLogs : [])
     .slice()
     .map(cpblNormalizeCoinLog)
-    .filter(row=>row.player===cpblgPlayer && row.amount)
+    .filter(row=>row.player===player && row.amount)
     .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
-    .slice(0,30);
-  if(!rows.length){
-    list.innerHTML='<div class="cpblg-coinlog-empty">還沒有金幣紀錄。</div>';
-    return;
-  }
-  list.innerHTML = rows.map(row=>{
+    .slice(0,limit);
+}
+function cpblCoinLogRowsHtml(player){
+  const rows = cpblCoinLogRows(player);
+  if(!rows.length) return '<div class="cpblg-coinlog-empty">還沒有金幣紀錄。</div>';
+  return rows.map(row=>{
     const time = row.createdAt ? new Date(row.createdAt).toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
     const amount = Number(row.amount)||0;
     const amountClass = amount>0 ? 'positive' : 'negative';
@@ -11100,6 +11196,42 @@ function cpblRenderCoinLogs(){
     if(row.balance!==null && row.balance!==undefined) noteBits.push(`餘額 ${Number(row.balance).toLocaleString('zh-TW')}`);
     return `<div class="cpblg-coinlog-row"><div class="cpblg-coinlog-amount ${amountClass}">${amountText}</div><div><div>${cpblEscape(row.title)}</div><div class="cpblg-coinlog-meta">${cpblEscape(noteBits.join('｜'))}</div></div></div>`;
   }).join('');
+}
+function cpblCoinLogSectionHtml(player){
+  const eco = cpblEnsureEconomy(player);
+  return `<div class="cpblg-coinlog-section"><div class="cpblg-coinlog-player"><span>${cpblEscape(player)}</span><span>${Number(eco.coins||0).toLocaleString('zh-TW')} 金幣</span></div><div class="cpblg-coinlog-list">${cpblCoinLogRowsHtml(player)}</div></div>`;
+}
+function cpblOpenCoinLogModal(){
+  const changed = cpblBackfillCoinLogs(cpblgData);
+  if(changed){
+    localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
+    if(window._fb){
+      const {db,ref,set}=window._fb;
+      set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
+    }
+  }
+  document.querySelector('.cpblg-coinlog-overlay')?.remove();
+  document.getElementById('cpblg-coinlog-btn')?.classList.add('active');
+  const overlay=document.createElement('div');
+  overlay.className='cpblg-coinlog-overlay';
+  overlay.innerHTML=`<div class="cpblg-coinlog-modal" role="dialog" aria-modal="true" aria-label="金幣紀錄"><div class="cpblg-coinlog-head"><div><div class="cpblg-coinlog-title">金幣紀錄</div><div class="cpblg-coinlog-sync">同步顯示聖展和予君的所有金幣來源</div></div><button type="button" class="cpblg-btn secondary tiny" onclick="cpblCloseCoinLogModal()">關閉</button></div><div class="cpblg-coinlog-body">${CPBLG_HISTORY_PLAYERS.map(cpblCoinLogSectionHtml).join('')}</div></div>`;
+  overlay.addEventListener('click', event=>{
+    if(event.target===overlay) cpblCloseCoinLogModal();
+  });
+  document.body.appendChild(overlay);
+}
+function cpblCloseCoinLogModal(){
+  document.querySelector('.cpblg-coinlog-overlay')?.remove();
+  document.getElementById('cpblg-coinlog-btn')?.classList.remove('active');
+}
+function cpblToggleCoinLog(){
+  cpblOpenCoinLogModal();
+}
+function cpblRenderCoinLogs(){
+  const btn=document.getElementById('cpblg-coinlog-btn');
+  if(btn) btn.disabled = false;
+  const modal=document.querySelector('.cpblg-coinlog-body');
+  if(modal) modal.innerHTML = CPBLG_HISTORY_PLAYERS.map(cpblCoinLogSectionHtml).join('');
 }
 function cpblEquippedLabel(player){
   const eco=cpblEnsureEconomy(player||cpblgPlayer||'\u8056\u5c55');
@@ -11118,17 +11250,19 @@ function cpblRenderEconomy(){
   if(!coinEl || !grid) return;
   if(!cpblgPlayer){
     if(playerEl) playerEl.textContent='\u5148\u9078\u64c7\u73a9\u5bb6';
-    coinEl.textContent='0';
+    coinEl.textContent='';
+    coinEl.hidden = true;
     if(equipEl) equipEl.textContent='\u9078\u64c7\u4f60\u662f\u8ab0\u5f8c\uff0c\u5c31\u53ef\u4ee5\u770b\u91d1\u5e63\u3001\u8cb7\u7a31\u865f\u3002';
     if(checkinBtn) checkinBtn.disabled = true;
     if(chestBtn) chestBtn.disabled = true;
-    if(coinlogBtn) coinlogBtn.disabled = true;
+    if(coinlogBtn) coinlogBtn.disabled = false;
     if(checkinInfo) checkinInfo.textContent = '連續簽到 5 天可以開寶箱。';
   }else{
     const eco=cpblEnsureEconomy(cpblgPlayer);
     const today = cpblLocalDateKey();
     const canCheckin = eco.checkin.lastDate !== today;
     if(playerEl) playerEl.textContent=`${cpblgPlayer} \u7684\u91d1\u5e63`;
+    coinEl.hidden = false;
     coinEl.textContent=eco.coins;
     if(equipEl) equipEl.textContent='';
     if(coinlogBtn) coinlogBtn.disabled = false;
@@ -11255,7 +11389,11 @@ function cpblToggleShop(force){
   if(!el) return;
   const open = typeof force==='boolean' ? force : !el.classList.contains('open');
   el.classList.toggle('open', open);
-  if(open) document.getElementById('cpblg-backpack')?.classList.remove('open');
+  document.querySelectorAll('button[onclick^="cpblToggleShop"]').forEach(btn=>btn.classList.toggle('active', open));
+  if(open){
+    document.getElementById('cpblg-backpack')?.classList.remove('open');
+    document.querySelectorAll('button[onclick^="cpblToggleBackpack"]').forEach(btn=>btn.classList.remove('active'));
+  }
   cpblRenderEconomy();
 }
 function cpblToggleBackpack(force){
@@ -11263,7 +11401,11 @@ function cpblToggleBackpack(force){
   if(!el) return;
   const open = typeof force==='boolean' ? force : !el.classList.contains('open');
   el.classList.toggle('open', open);
-  if(open) document.getElementById('cpblg-shop')?.classList.remove('open');
+  document.querySelectorAll('button[onclick^="cpblToggleBackpack"]').forEach(btn=>btn.classList.toggle('active', open));
+  if(open){
+    document.getElementById('cpblg-shop')?.classList.remove('open');
+    document.querySelectorAll('button[onclick^="cpblToggleShop"]').forEach(btn=>btn.classList.remove('active'));
+  }
   cpblRenderBackpack();
 }
 function cpblBuyShopItem(id){

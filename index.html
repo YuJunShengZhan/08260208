@@ -6252,7 +6252,7 @@ function cpblNormalizeHistoryItem(item){
 }
 function cpblNormalizeCoinLog(item){
   const balance = Number(item?.balance);
-  return {
+  const row = {
     id:String(item?.id||''),
     player:String(item?.player||''),
     title:String(item?.title||item?.action||'金幣變動'),
@@ -6262,8 +6262,17 @@ function cpblNormalizeCoinLog(item){
     gameId:String(item?.gameId||''),
     gameNo:String(item?.gameNo||''),
     date:String(item?.date||''),
-    createdAt:Number(item?.createdAt)||0
+    createdAt:Number(item?.createdAt)||0,
+    dateOnly:!!item?.dateOnly
   };
+  if(row.title==='每日簽到' && row.date){
+    const displayDate = row.createdAt ? cpblLocalDateKey(new Date(row.createdAt)) : '';
+    if(/^legacy-checkin-/.test(row.id) || (displayDate && displayDate!==row.date)){
+      row.dateOnly = true;
+      row.createdAt = cpblDateToNoon(row.date).getTime();
+    }
+  }
+  return row;
 }
 function cpblCoinLogFromBetLog(item){
   const stakeDiff = Math.floor(Number(item?.stakeDiff)||0);
@@ -6407,7 +6416,8 @@ function cpblBackfillCoinLogs(data){
         note:`連續 ${Math.max(1, Math.floor(Number(entry?.streak)||1))} 天`,
         amount:reward,
         date,
-        createdAt:Number(entry?.createdAt)||cpblDateToNoon(date).getTime() + 12 * 3600000
+        createdAt:Number(entry?.createdAt)||cpblDateToNoon(date).getTime(),
+        dateOnly:!Number(entry?.createdAt)
       }) || changed;
     });
     const streak = Math.max(0, Math.min(5, Math.floor(Number(checkin.streak)||0)));
@@ -6425,7 +6435,8 @@ function cpblBackfillCoinLogs(data){
         note:`連續 ${day} 天`,
         amount,
         date,
-        createdAt:cpblDateToNoon(date).getTime() + 12 * 3600000
+        createdAt:cpblDateToNoon(date).getTime(),
+        dateOnly:true
       }) || changed;
     }
   });
@@ -6434,7 +6445,7 @@ function cpblBackfillCoinLogs(data){
     .filter(row=>row.id && row.player && (row.amount || row.title))
     .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
     .slice(0,240);
-  data.coinLogVersion = 2;
+  data.coinLogVersion = 3;
   return changed;
 }
 function cpblLoadLocalData(){
@@ -6594,7 +6605,7 @@ function cpblInitFirebase(){
     const remote = snap.val();
     if(remote){
       const needsCoinRulePush = Number(remote.coinRulesVersion||0) < 2;
-      const needsCoinLogPush = Array.isArray(remote.betLogs) || !Array.isArray(remote.coinLogs) || Number(remote.coinLogVersion||0) < 2;
+      const needsCoinLogPush = Array.isArray(remote.betLogs) || !Array.isArray(remote.coinLogs) || Number(remote.coinLogVersion||0) < 3;
       cpblgData = cpblMergeData(cpblMergeData(cpblBaseData(), cpblgData), remote);
       localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
       cpblResolveFinishedGames(false);
@@ -11246,7 +11257,9 @@ function cpblCoinLogRowsHtml(player){
   const rows = cpblCoinLogRows(player);
   if(!rows.length) return '<div class="cpblg-coinlog-empty">還沒有金幣紀錄。</div>';
   return rows.map(row=>{
-    const time = row.createdAt ? new Date(row.createdAt).toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
+    const time = row.dateOnly && row.date
+      ? row.date.slice(5).replace('-', '/')
+      : (row.createdAt ? new Date(row.createdAt).toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) : '');
     const amount = Number(row.amount)||0;
     const amountClass = amount>0 ? 'positive' : (amount<0 ? 'negative' : 'neutral');
     const amountText = `${amount>0?'+':''}${amount.toLocaleString('zh-TW')}`;

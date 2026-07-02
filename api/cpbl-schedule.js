@@ -75,6 +75,17 @@ function normalizeGameTime(value) {
   return `${pad(hour)}:${match[2]}`;
 }
 
+function isLikelyStartTimeScore(leftRaw, rightRaw, segmentText = '') {
+  const left = Number(leftRaw);
+  const right = Number(rightRaw);
+  if (!Number.isFinite(left) || !Number.isFinite(right)) return false;
+  const text = String(segmentText || '');
+  const notStarted = /未開始|時間待公佈|時間未定|vs/i.test(text) && !/進行中|已結束|比賽結束|結束/.test(text);
+  if (notStarted) return true;
+  if (/^0\d$/.test(String(leftRaw)) && /^\d{2}$/.test(String(rightRaw)) && right <= 59) return true;
+  return left >= 0 && left <= 4 && right >= 24 && right <= 59;
+}
+
 function parseStatus(lines, hasScore) {
   const text = lines.join(' ');
   if (/取消/.test(text)) return '取消';
@@ -138,17 +149,22 @@ function parseGameSegment(seg, ymd) {
 
   let awayScore = null;
   let homeScore = null;
+  const segmentText = seg.join(' ');
   for (let i = 0; i < seg.length - 2; i += 1) {
     if (/^\d+$/.test(seg[i]) && seg[i + 1] === ':' && /^\d+$/.test(seg[i + 2])) {
-      awayScore = Number(seg[i]);
-      homeScore = Number(seg[i + 2]);
-      break;
+      if (!isLikelyStartTimeScore(seg[i], seg[i + 2], segmentText)) {
+        awayScore = Number(seg[i]);
+        homeScore = Number(seg[i + 2]);
+        break;
+      }
     }
     const inline = seg[i].match(/^(\d+)\s*[:：]\s*(\d+)$/);
     if (inline) {
-      awayScore = Number(inline[1]);
-      homeScore = Number(inline[2]);
-      break;
+      if (!isLikelyStartTimeScore(inline[1], inline[2], segmentText)) {
+        awayScore = Number(inline[1]);
+        homeScore = Number(inline[2]);
+        break;
+      }
     }
   }
 
@@ -212,16 +228,17 @@ async function refineFromDetail(game) {
     const raw = await fetchText(`https://stats.cpbl.com.tw/schedule/2026-A-${encodeURIComponent(game.no)}`);
     const title = decodeHtml((raw.match(/<title>(.*?)<\/title>/i) || [])[1] || '');
     const description = decodeHtml((raw.match(/<meta name="description" content="(.*?)"/i) || [])[1] || '');
+    const detailText = `${title} ${description} ${raw}`;
+    const detailFinal = /勝投|敗投|MVP|已結束|比賽結束/.test(detailText);
     const match = title.match(/(.+?)\s+(\d+)\s*[:：]\s*(\d+)\s+(.+?)\s*\|/);
     const away = normalizeTeam(match?.[1] || '');
     const home = normalizeTeam(match?.[4] || '');
-    if (match && away && home) {
+    if (detailFinal && match && away && home && !isLikelyStartTimeScore(match[2], match[3], title)) {
       game.away = away;
       game.home = home;
       game.awayScore = Number(match[2]);
       game.homeScore = Number(match[3]);
     }
-    const detailFinal = /勝投|敗投|MVP|已結束|比賽結束/.test(`${title} ${description} ${raw}`);
     if (detailFinal) {
       game.status = '已結束';
       game.final = true;

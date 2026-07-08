@@ -461,46 +461,61 @@ scroll-snap-align:start;
 .game-section{display:none;}
 .game-section.active{display:block;}
 
+body.game-hub-open #page-game.active{
+  min-height:calc(100dvh - 128px - 78px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding-top:22px;
+  padding-bottom:28px;
+}
 
 .game-hub{
-  max-width:1180px;
+  width:100%;
+  max-width:760px;
   margin:0 auto;
+  min-height:calc(100dvh - 128px - 78px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px 0 28px;
 }
 .game-menu-grid{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  width:100%;
 }
 .game-menu-btn{
   position:relative;
-  min-height:58px;
+  min-height:82px;
   border:none;
-  border-radius:14px;
-  padding:14px 16px;
+  border-radius:22px;
+  padding:18px 20px;
   background:var(--pink-light);
   color:var(--rose);
   font-family:'Noto Sans TC',sans-serif;
-  font-size:15px;
+  font-size:18px;
   font-weight:700;
   cursor:pointer;
   transition:transform .16s ease, box-shadow .16s ease, background .16s ease, color .16s ease;
   overflow:hidden;
-  box-shadow:0 10px 22px rgba(232,99,122,.06);
+  box-shadow:0 14px 30px rgba(232,99,122,.08);
 }
 .game-menu-btn::before{
   content:'';
   position:absolute;
   inset:0;
   opacity:0;
-  background:linear-gradient(90deg,rgba(255,255,255,.55),rgba(255,255,255,0));
+  background:linear-gradient(115deg,rgba(255,255,255,.62),rgba(255,255,255,0) 58%);
   transition:opacity .16s ease;
 }
 .game-menu-btn:hover,
 .game-menu-btn:focus-visible{
-  transform:translateY(-1px);
+  transform:translateY(-2px);
   background:var(--pink);
   color:#fff;
-  box-shadow:0 14px 28px rgba(232,99,122,.18);
+  box-shadow:0 18px 34px rgba(232,99,122,.2);
   outline:none;
 }
 .game-menu-btn:hover::before,
@@ -539,11 +554,22 @@ scroll-snap-align:start;
   border-color:rgba(232,99,122,.2);
 }
 @media (max-width:680px){
-  .game-menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-  .game-menu-btn{min-height:54px;font-size:14px;padding:12px 10px;}
+  body.game-hub-open #page-game.active{
+    min-height:calc(100dvh - 126px - 78px);
+    align-items:start;
+    padding-top:24px;
+  }
+  .game-menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .game-menu-btn{min-height:76px;font-size:16px;padding:16px 12px;border-radius:18px;}
+  .game-hub{
+    min-height:calc(100dvh - 126px - 78px);
+    align-items:flex-start;
+    padding-top:24px;
+  }
 }
 @media (max-width:420px){
   .game-menu-grid{grid-template-columns:1fr;}
+  .game-menu-btn{min-height:64px;}
 }
 
 .rps-choices{display:flex;gap:10px;justify-content:center;margin:16px 0;}
@@ -4526,7 +4552,7 @@ function showPage(id,btn){
   if(!isGamePage && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(!isGamePage && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   if(!isGamePage){
-    document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
+    document.body.classList.remove('pz-mode','rg-mode','xrg-mode','game-hub-open');
   }
 
   if(id==='period') pdRefresh();
@@ -5881,6 +5907,7 @@ function showGameHub(){
   document.querySelectorAll('.game-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.game-tab,.game-menu-btn').forEach(b=>b.classList.remove('active'));
   document.body.classList.add('game-mode');
+  document.body.classList.add('game-hub-open');
   document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
@@ -5906,6 +5933,7 @@ function openGame(i,btn){
   if(btn) btn.classList.add('active');
 
   document.body.classList.add('game-mode');
+  document.body.classList.remove('game-hub-open');
   document.body.classList.toggle('pz-mode', i===2);
   document.body.classList.toggle('rg-mode', i===3);
   document.body.classList.toggle('xrg-mode', i===5);
@@ -5931,7 +5959,7 @@ function showGameSectionById(id, options={}){
   document.querySelectorAll('.game-tab,.game-menu-btn').forEach(btn=>btn.classList.remove('active'));
   document.getElementById('game-menu-cpbl')?.classList.add('active');
   document.body.classList.add('game-mode');
-  document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
+  document.body.classList.remove('pz-mode','rg-mode','xrg-mode','game-hub-open');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   const target=document.getElementById('page-game');
@@ -5979,6 +6007,9 @@ const CPBLG_TEAMS = Object.values(CPBLG_TEAM_ALIASES).filter((v,i,a)=>a.indexOf(
 const CPBLG_FIELDS = ['天母','大巨蛋','樂天桃園','桃園','澄清湖','洲際','新莊','亞太主','台南亞太','斗六','嘉義市','花蓮'];
 const CPBLG_STORE = 'cpbl_guess_game_v4';
 const CPBLG_RESET_TOKEN = 'cpbl_guess_cleanup_20260620_v1';
+const CPBLG_KNOWN_FINALS = [
+  {no:'190', dates:['2026-07-07','2026-07-08'], away:'樂天桃猿', home:'富邦悍將', awayScore:5, homeScore:3, status:'已結束', field:'新莊', source:'官方賽果修正'}
+];
 let cpblgPlayer = '';
 let cpblgGames = [];
 let cpblgLoadedOnce = false;
@@ -6015,6 +6046,7 @@ function cpblMergeData(base, incoming){
     data.economy[n].owned = Object.assign({}, data.economy[n].owned||{});
   });
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
+  cpblApplyKnownFinalsToData(data);
   return data;
 }
 function cpblSaveData(pushFirebase=true){
@@ -6093,7 +6125,7 @@ function cpblNormalizeTodayGames(games){
     if(!clean.id){
       clean.id = `${today}-G-${clean.no || idx + 1}`;
     }
-    return clean;
+    return cpblApplyKnownFinalCorrection(clean);
   });
 }
 function cpblDateParts(ymd=cpblTodayYMD()){const [y,m,d]=ymd.split('-').map(Number);return {y,m,d};}
@@ -6163,9 +6195,10 @@ function cpblIsLocked(game){
   return !!(!isNaN(start) && Date.now() >= start.getTime());
 }
 function cpblWinner(game){
-  if(!game || (typeof cpblIsFinalGame==='function' && !cpblIsFinalGame(game)) || game.awayScore==null || game.homeScore==null) return '';
-  if(Number(game.awayScore)===Number(game.homeScore)) return '和局';
-  return Number(game.awayScore)>Number(game.homeScore) ? game.away : game.home;
+  const fixedGame = cpblApplyKnownFinalCorrection(game);
+  if(!fixedGame || (typeof cpblIsFinalGame==='function' && !cpblIsFinalGame(fixedGame)) || fixedGame.awayScore==null || fixedGame.homeScore==null) return '';
+  if(Number(fixedGame.awayScore)===Number(fixedGame.homeScore)) return '和局';
+  return Number(fixedGame.awayScore)>Number(fixedGame.homeScore) ? fixedGame.away : fixedGame.home;
 }
 
 
@@ -6225,7 +6258,7 @@ function cpblApplyManualGames(){
     games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'自訂'});
   });
   if(!games.length){alert('沒有解析到賽事，請用「隊伍A vs 隊伍B 時間 場地」一行一場');return;}
-  cpblgGames=games;
+  cpblgGames=games.map(cpblApplyKnownFinalCorrection);
   cpblToggleManual(false);
   cpblRenderGames();
   cpblSetStatus(`已載入 ${games.length} 場今日賽程。`);
@@ -6289,6 +6322,107 @@ function cpblNormalizeHistoryItem(item){
     source:String(item?.source||''),
     resolvedAt:Number(item?.resolvedAt)||0
   };
+}
+function cpblFindKnownFinal(game){
+  if(!game) return null;
+  const gameNo = String(game.no || game.gameNo || '').trim();
+  const gameId = String(game.id || game.gameId || '');
+  const date = String(game.date || '');
+  const away = cpblNormalizeTeam(game.away);
+  const home = cpblNormalizeTeam(game.home);
+  return CPBLG_KNOWN_FINALS.find(final=>{
+    const noMatches = gameNo === final.no || gameId.endsWith(`-${final.no}`) || gameId.includes(`A-${final.no}`) || gameId.includes(`G-${final.no}`);
+    const dateMatches = !date || final.dates.includes(date) || final.dates.some(d=>gameId.includes(d));
+    const teamsMatch = (!away || away === final.away) && (!home || home === final.home);
+    return noMatches && dateMatches && teamsMatch;
+  }) || null;
+}
+function cpblApplyKnownFinalCorrection(game){
+  const final = cpblFindKnownFinal(game);
+  if(!final) return game;
+  return Object.assign({}, game, {
+    no: String(game?.no || game?.gameNo || final.no),
+    gameNo: String(game?.gameNo || game?.no || final.no),
+    away: final.away,
+    home: final.home,
+    awayScore: final.awayScore,
+    homeScore: final.homeScore,
+    status: final.status,
+    final: true,
+    isFinal: true,
+    field: game?.field || final.field,
+    source: final.source
+  });
+}
+function cpblKnownFinalDate(gameId, final){
+  const m = String(gameId || '').match(/^(\d{4}-\d{2}-\d{2})-/);
+  return m ? m[1] : final.dates[0];
+}
+function cpblApplyKnownFinalsToData(data){
+  if(!data) return false;
+  let changed = false;
+  data.history = Array.isArray(data.history) ? data.history : [];
+  data.history.forEach((row, index)=>{
+    const final = cpblFindKnownFinal(row);
+    if(!final) return;
+    const fixed = cpblNormalizeHistoryItem(Object.assign({}, row, {
+      gameNo: final.no,
+      away: final.away,
+      home: final.home,
+      awayScore: final.awayScore,
+      homeScore: final.homeScore,
+      winner: final.away,
+      field: row.field || final.field,
+      source: final.source,
+      correct: row.pickTeam ? cpblNormalizeTeam(row.pickTeam) === final.away : row.correct
+    }));
+    if(JSON.stringify(row) !== JSON.stringify(fixed)){
+      data.history[index] = fixed;
+      changed = true;
+    }
+  });
+  Object.entries(data.picks || {}).forEach(([gameId, picks])=>{
+    const final = cpblFindKnownFinal({id:gameId, no:gameId.match(/(\d+)$/)?.[1] || '', away:'樂天桃猿', home:'富邦悍將'});
+    if(!final || !picks) return;
+    ['聖展','予君'].forEach(player=>{
+      const pick = picks[player];
+      if(!pick?.team) return;
+      const correct = cpblNormalizeTeam(pick.team) === final.away;
+      if(pick.checked !== true || pick.correct !== correct){
+        pick.checked = true;
+        pick.correct = correct;
+        changed = true;
+      }
+      const item = cpblNormalizeHistoryItem({
+        id: cpblHistoryId(gameId, player),
+        gameId,
+        gameNo: final.no,
+        date: cpblKnownFinalDate(gameId, final),
+        player,
+        away: final.away,
+        home: final.home,
+        awayScore: final.awayScore,
+        homeScore: final.homeScore,
+        winner: final.away,
+        pickTeam: pick.team,
+        correct,
+        stake: pick.stake,
+        odds: pick.odds,
+        field: final.field,
+        source: final.source,
+        resolvedAt: Date.now()
+      });
+      const idx = data.history.findIndex(row=>row.id === item.id);
+      if(idx < 0){
+        data.history.unshift(item);
+        changed = true;
+      }else if(JSON.stringify(data.history[idx]) !== JSON.stringify(item)){
+        data.history[idx] = item;
+        changed = true;
+      }
+    });
+  });
+  return changed;
 }
 function cpblNormalizeCoinLog(item){
   const balance = Number(item?.balance);
@@ -6605,6 +6739,7 @@ function cpblMergeData(base, incoming){
     });
     data.coinRulesVersion = 2;
   }
+  cpblApplyKnownFinalsToData(data);
   cpblBackfillCoinLogs(data);
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
   return data;
@@ -7045,7 +7180,7 @@ function cpblRefreshGames(showAlert=false){
           const raw = await cpblFetchText(url, 9000);
           const games = cpblParseSchedule(raw, source.name);
           if(games.length){
-            cpblgGames = games;
+            cpblgGames = games.map(cpblApplyKnownFinalCorrection);
             cpblResolveFinishedGames(true);
             cpblRenderStats();
             cpblRenderGames();
@@ -7083,7 +7218,7 @@ function cpblApplyManualGames(){
     games.push({id:`${ymd}-M-${idx+1}`,date:ymd,no:`M${idx+1}`,away:teams[0],home:teams[1],field,time,status:'未開始',awayScore:null,homeScore:null,source:'自訂'});
   });
   if(!games.length){alert('沒有辨識到有效格式，請用「隊伍A vs 隊伍B 18:35 球場」的方式輸入');return;}
-  cpblgGames=games;
+  cpblgGames=games.map(cpblApplyKnownFinalCorrection);
   cpblToggleManual(false);
   cpblRenderGames();
   cpblSetStatus(`已載入 ${games.length} 場今日賽程。`);
@@ -7234,7 +7369,7 @@ async function cpblRefreshGames(showAlert=false){
         const raw = await cpblFetchText(url, 9000);
         const games = cpblParseSchedule(raw, source.name);
         if(games.length){
-          cpblgGames = games;
+          cpblgGames = games.map(cpblApplyKnownFinalCorrection);
           cpblResolveFinishedGames(true);
           cpblRenderStats();
           cpblRenderGames();
@@ -7275,7 +7410,7 @@ async function cpblRefreshGames(showAlert=false){
     const data = await cpblFetchLocalSchedule();
     const games = cpblNormalizeTodayGames(Array.isArray(data.games) ? data.games : []);
     if(!games.length) throw new Error('本機助手沒有回傳今天賽程');
-    cpblgGames = games;
+    cpblgGames = games.map(cpblApplyKnownFinalCorrection);
     cpblResolveFinishedGames(true);
     cpblRenderStats();
     cpblRenderGames();
@@ -7320,7 +7455,7 @@ async function cpblRefreshGames(showAlert=false){
     const result = await cpblFetchUnifiedSchedule();
     const games = cpblNormalizeTodayGames(Array.isArray(result.data.games) ? result.data.games : []);
     if(!games.length) throw new Error('今天沒有抓到賽程');
-    cpblgGames = games;
+    cpblgGames = games.map(cpblApplyKnownFinalCorrection);
     cpblResolveFinishedGames(true);
     cpblRenderStats();
     cpblRenderGames();
@@ -7344,12 +7479,13 @@ function cpblIsFinalGame(game){
 }
 
 function cpblWinner(game){
-  if(!game || !cpblIsFinalGame(game)) return '';
-  const awayScore = Number(game.awayScore);
-  const homeScore = Number(game.homeScore);
+  const fixedGame = cpblApplyKnownFinalCorrection(game);
+  if(!fixedGame || !cpblIsFinalGame(fixedGame)) return '';
+  const awayScore = Number(fixedGame.awayScore);
+  const homeScore = Number(fixedGame.homeScore);
   if(!Number.isFinite(awayScore) || !Number.isFinite(homeScore)) return '';
   if(awayScore === homeScore) return '和局';
-  return awayScore > homeScore ? game.away : game.home;
+  return awayScore > homeScore ? fixedGame.away : fixedGame.home;
 }
 
 function cpblStatusText(game){
@@ -12331,7 +12467,7 @@ async function cpblRefreshGames(showAlert=false){
     const result = await cpblFetchUnifiedSchedule();
     const games = cpblNormalizeTodayGames(Array.isArray(result?.data?.games) ? result.data.games : []);
     cpblProcessPostponedGames(games);
-    cpblgGames = games;
+    cpblgGames = games.map(cpblApplyKnownFinalCorrection);
     if(games.length){
       cpblResolveFinishedGames(true);
       cpblRenderStats();

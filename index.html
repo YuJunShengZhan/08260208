@@ -582,6 +582,7 @@ body.game-hub-open #page-game.active{
 .game-menu-btn:nth-child(4){--game-accent:#7660b8;--game-soft:#f4f0ff}
 .game-menu-btn:nth-child(5){--game-accent:#c74862;--game-soft:#fff2e8}
 .game-menu-btn:nth-child(6){--game-accent:#dfa93a;--game-soft:#fff8df}
+.game-menu-btn:nth-child(7){--game-accent:#2f9a68;--game-soft:#effbf4}
 .game-menu-icon{
   width:42px;
   height:42px;
@@ -3090,6 +3091,69 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
   display:none!important;
 }
 
+/* Baseball mini game */
+.bsg-shell{border-radius:24px;padding:14px;background:linear-gradient(180deg,#f6fff8,#fff7fa);border:1px solid rgba(47,154,104,.14);overflow:hidden}
+.bsg-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.bsg-title{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:900;color:#2f9a68;line-height:1.2}
+.bsg-sub{font-size:12px;color:var(--text-muted);line-height:1.6;margin-top:4px}
+.bsg-hero-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.bsg-reset,.bsg-fullscreen,.bsg-primary,.bsg-action{appearance:none;border:none;font-family:'Noto Sans TC',sans-serif;font-weight:900;cursor:pointer;touch-action:manipulation}
+.bsg-reset,.bsg-fullscreen{border-radius:999px;padding:9px 14px;background:#fff;border:1px solid rgba(47,154,104,.18);color:#2f9a68;white-space:nowrap;box-shadow:0 8px 18px rgba(47,154,104,.08)}
+.bsg-fullscreen{background:#2f9a68;color:#fff;border-color:#2f9a68}
+.bsg-scoreboard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.bsg-score-card{border-radius:16px;background:rgba(255,255,255,.86);border:1px solid rgba(47,154,104,.13);padding:10px 8px;text-align:center}
+.bsg-score-card span{display:block;font-size:11px;color:var(--text-muted);margin-bottom:3px}
+.bsg-score-card strong{display:block;font-family:'Noto Serif TC',serif;font-size:23px;color:#2f9a68;line-height:1.1}
+.bsg-stage{position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#bfeec8,#6dbb70 62%,#d7a45f);box-shadow:inset 0 0 0 1px rgba(255,255,255,.42),0 16px 34px rgba(47,154,104,.16)}
+.bsg-canvas{display:block;width:100%;height:auto;aspect-ratio:720 / 460;touch-action:none}
+.bsg-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;background:linear-gradient(180deg,rgba(13,62,42,.12),rgba(13,62,42,.28));backdrop-filter:blur(3px)}
+.bsg-overlay.hidden{display:none}
+.bsg-overlay-card{width:min(320px,100%);border-radius:24px;background:rgba(255,255,255,.92);border:1px solid rgba(47,154,104,.18);padding:20px;text-align:center;box-shadow:0 20px 50px rgba(29,91,63,.2)}
+.bsg-overlay-icon{font-size:46px;margin-bottom:8px}
+.bsg-overlay-title{font-family:'Noto Serif TC',serif;font-size:25px;font-weight:900;color:#2f9a68}
+.bsg-overlay-sub{font-size:13px;color:var(--text-muted);line-height:1.65;margin:8px 0 16px}
+.bsg-primary{border-radius:999px;padding:12px 22px;background:#2f9a68;color:#fff;box-shadow:0 10px 20px rgba(47,154,104,.22)}
+.bsg-status-row{display:grid;grid-template-columns:1.15fr .7fr 1.15fr;gap:8px;margin:10px 0}
+.bsg-status-pill{min-width:0;border-radius:16px;background:rgba(255,255,255,.86);border:1px solid rgba(47,154,104,.12);padding:9px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bsg-status-pill span{font-size:11px;color:var(--text-muted);white-space:nowrap}
+.bsg-status-pill strong{font-size:13px;color:var(--text);line-height:1.35;text-align:right}
+.bsg-control-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.bsg-action{min-height:48px;border-radius:15px;color:#fff;font-size:13px;line-height:1.15;box-shadow:0 9px 18px rgba(60,80,70,.12);transition:transform .16s ease,opacity .16s ease,filter .16s ease}
+.bsg-action:active{transform:translateY(1px) scale(.98)}
+.bsg-action:disabled{opacity:.42;filter:saturate(.55);cursor:not-allowed;box-shadow:none}
+.bsg-action.hit{background:linear-gradient(135deg,#e85d75,#f09a6b)}
+.bsg-action.run{background:linear-gradient(135deg,#2f9a68,#7bc96f)}
+.bsg-action.pitch{background:linear-gradient(135deg,#3f7fc2,#67b7dc)}
+.bsg-action.throw{background:linear-gradient(135deg,#7b5fc6,#ba76d1)}
+.bsg-tip{margin-top:10px;text-align:center;font-size:11px;color:var(--text-muted);line-height:1.55}
+body.bsg-fullscreen-fallback{overflow:hidden}
+body.bsg-fullscreen-fallback .bottom-nav,body.bsg-fullscreen-fallback .game-back-row,body.bsg-fullscreen-fallback .music-player{display:none!important}
+.bsg-shell:fullscreen,.bsg-shell.bsg-fullscreen-active{width:100vw;height:100vh;height:100dvh;max-width:none;margin:0;padding:10px;border-radius:0;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;background:linear-gradient(180deg,#ebfff0,#fff6f8);overflow:hidden}
+.bsg-shell.bsg-fullscreen-active{position:fixed;inset:0;z-index:12000}
+.bsg-shell:fullscreen .bsg-stage,.bsg-shell.bsg-fullscreen-active .bsg-stage{min-height:0;height:100%;display:flex;align-items:center}
+.bsg-shell:fullscreen .bsg-canvas,.bsg-shell.bsg-fullscreen-active .bsg-canvas{height:100%;width:100%;object-fit:contain;background:linear-gradient(180deg,#bfeec8,#6dbb70 62%,#d7a45f)}
+.bsg-shell:fullscreen .bsg-control-grid,.bsg-shell.bsg-fullscreen-active .bsg-control-grid{grid-template-columns:repeat(3,minmax(0,1fr));padding-bottom:max(4px,env(safe-area-inset-bottom))}
+.bsg-shell:fullscreen .bsg-action,.bsg-shell.bsg-fullscreen-active .bsg-action{min-height:54px;font-size:14px}
+[data-theme="dark"] .bsg-shell{background:linear-gradient(180deg,#1d3328,#2a1e25);border-color:rgba(77,186,125,.2)}
+[data-theme="dark"] .bsg-score-card,[data-theme="dark"] .bsg-status-pill,[data-theme="dark"] .bsg-reset,[data-theme="dark"] .bsg-overlay-card{background:rgba(58,33,42,.9);border-color:rgba(77,186,125,.22)}
+@media(max-width:620px){
+  .bsg-shell{padding:10px;border-radius:20px}
+  .bsg-hero{align-items:stretch}
+  .bsg-title{font-size:21px}
+  .bsg-scoreboard{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bsg-score-card{padding:8px 6px}
+  .bsg-score-card strong{font-size:20px}
+  .bsg-status-row{grid-template-columns:1fr;gap:6px}
+  .bsg-control-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .bsg-action{min-height:48px;font-size:12px;border-radius:13px}
+}
+@media(max-width:380px){
+  .bsg-hero{display:block}
+  .bsg-hero-actions{margin-top:8px;justify-content:stretch}
+  .bsg-reset,.bsg-fullscreen{flex:1}
+  .bsg-control-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 /* CPBL guess game */
 .cpblg-shell{max-width:760px;margin:0 auto;background:linear-gradient(180deg,#fffbfc,#fff0f4);border:1px solid rgba(232,99,122,.14);border-radius:24px;padding:16px;box-shadow:0 14px 32px rgba(232,99,122,.08)}
 .cpblg-hero,.cpblg-stat,.cpblg-game{background:rgba(255,255,255,.9);border:1px solid rgba(232,99,122,.12);border-radius:18px;padding:12px}
@@ -3435,7 +3499,7 @@ onclick="hideSpecialForToday()">
           <div class="game-hub-title">今天玩哪一款</div>
           <div class="game-hub-sub">挑一個小遊戲，讓今天多一點可愛的勝負欲。</div>
         </div>
-        <div class="game-hub-count"><strong>6</strong><span>款遊戲</span></div>
+        <div class="game-hub-count"><strong>7</strong><span>款遊戲</span></div>
       </div>
       <div class="game-menu-grid">
         <button type="button" class="game-menu-btn" onclick="openGame(0,this)"><span class="game-menu-icon">💣</span><span class="game-menu-copy"><span class="game-menu-title">踩地雷</span><span class="game-menu-desc">小心翻格子，拚一局漂亮的安全路線。</span></span><span class="game-menu-tag">策略</span></button>
@@ -3444,6 +3508,7 @@ onclick="hideSpecialForToday()">
         <button type="button" class="game-menu-btn" onclick="openGame(3,this)"><span class="game-menu-icon">🎵</span><span class="game-menu-copy"><span class="game-menu-title">節奏點擊</span><span class="game-menu-desc">跟著節拍點擊，看看手感今天有多準。</span></span><span class="game-menu-tag">反應</span></button>
         <button type="button" class="game-menu-btn" id="game-menu-cpbl" onclick="openGame(4,this)"><span class="game-menu-icon">⚾</span><span class="game-menu-copy"><span class="game-menu-title">中職猜勝負</span><span class="game-menu-desc">預測球隊勝負，也可以用金幣下注。</span></span><span class="game-menu-tag">金幣</span></button>
         <button type="button" class="game-menu-btn" id="game-menu-crossy" onclick="openGame(5,this)"><span class="game-menu-icon">🐥</span><span class="game-menu-copy"><span class="game-menu-title">天天過馬路</span><span class="game-menu-desc">抓準空檔向前衝，越過越緊張。</span></span><span class="game-menu-tag">挑戰</span></button>
+        <button type="button" class="game-menu-btn" id="game-menu-baseball" onclick="openGame(6,this)"><span class="game-menu-icon">🏟️</span><span class="game-menu-copy"><span class="game-menu-title">打棒球</span><span class="game-menu-desc">揮棒、跑壘、投球、接球，一局一局自己打。</span></span><span class="game-menu-tag">單機</span></button>
       </div>
     </div>
   </div>
@@ -3767,6 +3832,60 @@ onclick="hideSpecialForToday()">
         </div>
       </div>
       <div class="xrg-tip">點一下往前一格，滑動可控制方向；電腦可使用方向鍵／WASD。</div>
+    </div>
+  </div>
+</div>
+
+<div class="game-section" id="gs-8">
+  <div class="card">
+    <div class="card-title">🏟️ 打棒球</div>
+    <div class="bsg-shell">
+      <div class="bsg-hero">
+        <div>
+          <div class="bsg-title">九宮格球場</div>
+          <div class="bsg-sub">單機三局制，輪流攻守，靠手感把比數打回來。</div>
+        </div>
+        <div class="bsg-hero-actions">
+          <button type="button" class="bsg-fullscreen" id="bsg-fullscreen-btn" onclick="bsgToggleFullscreen()">全螢幕</button>
+          <button type="button" class="bsg-reset" onclick="bsgStart()">重新開局</button>
+        </div>
+      </div>
+
+      <div class="bsg-scoreboard">
+        <div class="bsg-score-card"><span>局數</span><strong id="bsg-inning">1 上</strong></div>
+        <div class="bsg-score-card"><span>玩家</span><strong id="bsg-player-score">0</strong></div>
+        <div class="bsg-score-card"><span>電腦</span><strong id="bsg-cpu-score">0</strong></div>
+        <div class="bsg-score-card"><span>出局</span><strong id="bsg-outs">0</strong></div>
+      </div>
+
+      <div class="bsg-stage" id="bsg-stage">
+        <canvas class="bsg-canvas" id="bsg-canvas" width="720" height="460" aria-label="打棒球小遊戲畫面"></canvas>
+        <div class="bsg-overlay" id="bsg-overlay">
+          <div class="bsg-overlay-card">
+            <div class="bsg-overlay-icon">⚾</div>
+            <div class="bsg-overlay-title" id="bsg-overlay-title">準備上場</div>
+            <div class="bsg-overlay-sub" id="bsg-overlay-sub">先攻打擊，抓準球進本壘時揮棒，打出去後自己決定要跑幾個壘包。</div>
+            <button type="button" class="bsg-primary" id="bsg-start-btn" onclick="bsgStart()">開始比賽</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bsg-status-row">
+        <div class="bsg-status-pill"><span>壘包</span><strong id="bsg-runners">無人在壘</strong></div>
+        <div class="bsg-status-pill"><span>好球</span><strong id="bsg-strikes">0</strong></div>
+        <div class="bsg-status-pill"><span>狀態</span><strong id="bsg-state-label">待機</strong></div>
+      </div>
+
+      <div class="bsg-control-grid">
+        <button type="button" class="bsg-action hit" id="bsg-swing-btn" onclick="bsgSwing()">揮棒</button>
+        <button type="button" class="bsg-action run" id="bsg-run-btn" onclick="bsgRun()">跑壘</button>
+        <button type="button" class="bsg-action pitch" id="bsg-fast-btn" onclick="bsgPitch('fast')">快速球</button>
+        <button type="button" class="bsg-action pitch" id="bsg-curve-btn" onclick="bsgPitch('curve')">曲球</button>
+        <button type="button" class="bsg-action pitch" id="bsg-change-btn" onclick="bsgPitch('change')">變速球</button>
+        <button type="button" class="bsg-action throw" id="bsg-throw-btn" onclick="bsgThrow()">傳球</button>
+      </div>
+
+      <div class="bsg-tip">打擊：空白鍵揮棒、R 跑壘。守備：WASD / 方向鍵移動，1 / 2 / 3 投球，E 傳球。</div>
     </div>
   </div>
 </div>
@@ -4686,7 +4805,8 @@ function showPage(id,btn){
   if(!isGamePage && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(!isGamePage && typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   if(!isGamePage){
-    document.body.classList.remove('pz-mode','rg-mode','xrg-mode','game-hub-open');
+    document.body.classList.remove('pz-mode','rg-mode','xrg-mode','bsg-mode','bsg-fullscreen-fallback','game-hub-open');
+    document.querySelector('.bsg-shell')?.classList.remove('bsg-fullscreen-active');
   }
 
   if(id==='period') pdRefresh();
@@ -6033,16 +6153,19 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ── Game tabs ──
-const GAME_SECTION_IDS = ['gs-0','gs-2','gs-3','gs-4','gs-5','gs-7','gs-5-history'];
+const GAME_SECTION_IDS = ['gs-0','gs-2','gs-3','gs-4','gs-5','gs-7','gs-8','gs-5-history'];
 
 function showGameHub(){
+  document.querySelector('.bsg-shell')?.classList.remove('bsg-fullscreen-active');
+  document.body.classList.remove('bsg-fullscreen-fallback');
+  if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
   document.getElementById('game-hub')?.classList.remove('hidden');
   document.getElementById('game-back-row')?.classList.add('hidden');
   document.querySelectorAll('.game-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.game-tab,.game-menu-btn').forEach(b=>b.classList.remove('active'));
   document.body.classList.add('game-mode');
   document.body.classList.add('game-hub-open');
-  document.body.classList.remove('pz-mode','rg-mode','xrg-mode');
+  document.body.classList.remove('pz-mode','rg-mode','xrg-mode','bsg-mode');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   window.scrollTo({top:0,behavior:'smooth'});
@@ -6057,6 +6180,11 @@ function pauseBackgroundMusicForInteractiveGame(){
 }
 
 function openGame(i,btn){
+  if(i!==6){
+    document.querySelector('.bsg-shell')?.classList.remove('bsg-fullscreen-active');
+    document.body.classList.remove('bsg-fullscreen-fallback');
+    if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+  }
   document.getElementById('game-hub')?.classList.add('hidden');
   document.getElementById('game-back-row')?.classList.remove('hidden');
 
@@ -6071,6 +6199,7 @@ function openGame(i,btn){
   document.body.classList.toggle('pz-mode', i===2);
   document.body.classList.toggle('rg-mode', i===3);
   document.body.classList.toggle('xrg-mode', i===5);
+  document.body.classList.toggle('bsg-mode', i===6);
 
   if(i===3) pauseBackgroundMusicForInteractiveGame();
   if(i!==3 && typeof rgPauseIfHidden==='function') rgPauseIfHidden();
@@ -6079,12 +6208,16 @@ function openGame(i,btn){
   if(i===3 && typeof rgEnterScreen==='function') rgEnterScreen();
   if(i===4 && typeof cpblEnterScreen==='function') cpblEnterScreen();
   if(i===5 && typeof xrgEnterScreen==='function') xrgEnterScreen();
+  if(i===6 && typeof bsgEnterScreen==='function') bsgEnterScreen();
 
   const target=document.getElementById('page-game');
   if(target) target.scrollIntoView({block:'start',behavior:'smooth'});
 }
 function showGameSectionById(id, options={}){
   const { showBackRow=true } = options;
+  document.querySelector('.bsg-shell')?.classList.remove('bsg-fullscreen-active');
+  document.body.classList.remove('bsg-fullscreen-fallback');
+  if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
   document.getElementById('game-hub')?.classList.add('hidden');
   document.getElementById('game-back-row')?.classList.toggle('hidden', !showBackRow);
   document.querySelectorAll('.game-section').forEach(section=>{
@@ -6093,7 +6226,7 @@ function showGameSectionById(id, options={}){
   document.querySelectorAll('.game-tab,.game-menu-btn').forEach(btn=>btn.classList.remove('active'));
   document.getElementById('game-menu-cpbl')?.classList.add('active');
   document.body.classList.add('game-mode');
-  document.body.classList.remove('pz-mode','rg-mode','xrg-mode','game-hub-open');
+  document.body.classList.remove('pz-mode','rg-mode','xrg-mode','bsg-mode','game-hub-open');
   if(typeof rgPauseIfHidden==='function') rgPauseIfHidden();
   if(typeof xrgPauseIfHidden==='function') xrgPauseIfHidden();
   const target=document.getElementById('page-game');
@@ -6109,6 +6242,751 @@ function cpblCloseHistoryPage(){
 }
 function switchGame(i,btn){
   openGame(i,btn);
+}
+
+// ── 打棒球：單機 canvas 小遊戲 ──
+const BSG_MAX_INNING = 3;
+let bsgReady = false;
+let bsgCanvas = null;
+let bsgCtx = null;
+let bsgRaf = 0;
+let bsgLastTs = 0;
+let bsgPointerDown = false;
+let bsgState = null;
+
+function bsgDefaultState(){
+  return {
+    token:0,
+    started:false,
+    inning:1,
+    half:'top',
+    playerScore:0,
+    cpuScore:0,
+    outs:0,
+    strikes:0,
+    bases:[false,false,false],
+    phase:'idle',
+    message:'點開始比賽，先從打擊開始。',
+    pitch:null,
+    hitBall:null,
+    run:null,
+    fielder:{x:360,y:300,targetX:360,targetY:300},
+    fieldPlay:null,
+    keys:{}
+  };
+}
+
+function bsgInit(){
+  if(bsgReady) return;
+  bsgCanvas = document.getElementById('bsg-canvas');
+  if(!bsgCanvas) return;
+  bsgCtx = bsgCanvas.getContext('2d');
+  bsgState = bsgDefaultState();
+  bsgCanvas.addEventListener('pointerdown', bsgPointerDownHandler);
+  bsgCanvas.addEventListener('pointermove', bsgPointerMoveHandler);
+  bsgCanvas.addEventListener('pointerup', ()=>{bsgPointerDown=false;});
+  bsgCanvas.addEventListener('pointercancel', ()=>{bsgPointerDown=false;});
+  window.addEventListener('keydown', bsgKeyDown);
+  window.addEventListener('keyup', bsgKeyUp);
+  document.addEventListener('fullscreenchange', bsgSyncFullscreenLabel);
+  bsgReady = true;
+  bsgUpdateHud();
+  bsgRaf = requestAnimationFrame(bsgLoop);
+}
+
+function bsgEnterScreen(){
+  bsgInit();
+  bsgDraw();
+  bsgUpdateHud();
+}
+
+function bsgIsActive(){
+  return document.getElementById('page-game')?.classList.contains('active') && document.getElementById('gs-8')?.classList.contains('active');
+}
+
+function bsgSetTimeout(fn,ms){
+  const token = bsgState?.token;
+  window.setTimeout(()=>{ if(bsgState && bsgState.token===token) fn(); }, ms);
+}
+
+function bsgStart(){
+  bsgInit();
+  bsgState = bsgDefaultState();
+  bsgState.token = Date.now();
+  bsgState.started = true;
+  bsgHideOverlay();
+  bsgBeginPlayerAtBat('比賽開始，玩家先攻！');
+}
+
+function bsgHideOverlay(){
+  document.getElementById('bsg-overlay')?.classList.add('hidden');
+}
+
+function bsgShowOverlay(title, sub, buttonText='再打一場'){
+  const overlay=document.getElementById('bsg-overlay');
+  if(!overlay) return;
+  overlay.classList.remove('hidden');
+  const titleEl=document.getElementById('bsg-overlay-title');
+  const subEl=document.getElementById('bsg-overlay-sub');
+  const btn=document.getElementById('bsg-start-btn');
+  if(titleEl) titleEl.textContent=title;
+  if(subEl) subEl.textContent=sub;
+  if(btn) btn.textContent=buttonText;
+}
+
+function bsgBeginPlayerAtBat(msg='輪到你打擊。'){
+  Object.assign(bsgState,{phase:'batting',pitch:null,hitBall:null,run:null,message:msg});
+  bsgLaunchPlayerPitch();
+  bsgUpdateHud();
+}
+
+function bsgLaunchPlayerPitch(){
+  bsgState.pitch = {kind:'playerBat',x:360,y:128,t:0,duration:1.1 + Math.random()*0.28,fromY:128,toY:372,spin:0};
+  bsgState.message = bsgState.strikes ? `第 ${bsgState.strikes+1} 顆球來了，抓準本壘前揮棒。` : '球投出來了，接近本壘時揮棒！';
+}
+
+function bsgSwing(){
+  const s=bsgState;
+  if(!s || s.phase!=='batting' || !s.pitch) return;
+  const distance = Math.abs(s.pitch.y - 354);
+  const timing = Math.max(0, 1 - distance / 128);
+  s.pitch = null;
+  if(timing < .52){
+    bsgPlayerStrike(timing < .25 ? '揮空！差一點點。' : '擦棒落空，算一顆好球。');
+    return;
+  }
+  const power = Math.min(1, timing + Math.random()*0.18);
+  bsgStartPlayerRun(power);
+}
+
+function bsgPlayerStrike(msg){
+  const s=bsgState;
+  s.strikes += 1;
+  s.message = msg;
+  if(s.strikes>=3){
+    s.message = '三振出局！';
+    s.strikes = 0;
+    bsgAddOut(1);
+  }else{
+    bsgUpdateHud();
+    bsgSetTimeout(bsgLaunchPlayerPitch, 720);
+  }
+}
+
+function bsgStartPlayerRun(power){
+  const s=bsgState;
+  const max = power>.96 ? 4 : power>.86 ? 3 : power>.71 ? 2 : 1;
+  const label = max>=4 ? '這球很深！可以拚全壘打。' : max===3 ? '長打機會，想衝三壘就連按跑壘。' : max===2 ? '打到外野，可以考慮衝二壘。' : '安打機會，先上壘最穩。';
+  s.phase='running';
+  s.hitBall = {x:360,y:360,t:0,duration:.9,endX:160 + Math.random()*400,endY:95 + Math.random()*115};
+  s.run = {power,max,choice:1,time:0,limit:2.15,label};
+  s.message = `${label} 目前跑向一壘。`;
+  bsgUpdateHud();
+}
+
+function bsgRun(){
+  const r=bsgState?.run;
+  if(!r || bsgState.phase!=='running') return;
+  if(r.choice < r.max){
+    r.choice += 1;
+    const names=['','一壘','二壘','三壘','本壘'];
+    bsgState.message = `決定衝${names[r.choice]}！時間內還可以再按。`;
+    bsgUpdateHud();
+  }
+}
+
+function bsgResolvePlayerRun(){
+  const s=bsgState;
+  const r=s.run;
+  if(!r) return;
+  const risk = Math.max(0, r.choice - 1);
+  const safeChance = Math.max(.42, Math.min(.97, .92 - risk*.18 + (r.power-.68)*.42));
+  const safe = r.choice===1 || Math.random() < safeChance;
+  const advance = safe ? r.choice : Math.max(0, r.choice-1);
+  const runs = advance ? bsgAdvanceBases(advance,'player') : 0;
+  s.run=null;
+  s.hitBall=null;
+  s.strikes=0;
+  if(safe){
+    s.message = runs ? `安全上壘，跑回 ${runs} 分！` : '安全上壘！';
+    bsgUpdateHud();
+    bsgSetTimeout(()=>bsgBeginPlayerAtBat('下一棒上場。'), 900);
+  }else{
+    s.message = advance ? '太貪心被觸殺，不過壘上跑者推進了。' : '一壘前被刺殺出局！';
+    bsgAddOut(1);
+  }
+}
+
+function bsgPitch(type){
+  const s=bsgState;
+  if(!s || s.phase!=='defense') return;
+  const meta = {
+    fast:{name:'快速球',duration:.78,miss:.36,power:.88},
+    curve:{name:'曲球',duration:1.05,miss:.43,power:.68},
+    change:{name:'變速球',duration:1.26,miss:.31,power:.58}
+  }[type] || {name:'直球',duration:.95,miss:.34,power:.72};
+  s.phase='cpuBatting';
+  s.pitch={kind:'cpuBat',type,name:meta.name,x:360,y:128,t:0,duration:meta.duration,fromY:128,toY:366,meta};
+  s.message = `${meta.name}投出，準備守備！`;
+  bsgUpdateHud();
+}
+
+function bsgCpuSwing(){
+  const s=bsgState;
+  const meta=s.pitch?.meta || {miss:.35,power:.7,name:'球'};
+  s.pitch=null;
+  const roll=Math.random();
+  if(roll<meta.miss){
+    s.strikes += 1;
+    if(s.strikes>=3){
+      s.strikes=0;
+      s.message='電腦揮空三振！';
+      bsgAddOut(1);
+    }else{
+      s.phase='defense';
+      s.message=`電腦揮空，${s.strikes} 好球。`;
+      bsgUpdateHud();
+    }
+    return;
+  }
+  const power=Math.max(.35, Math.min(1, meta.power + Math.random()*.28 - .08));
+  bsgStartFielding(power);
+}
+
+function bsgStartFielding(power){
+  const s=bsgState;
+  const bases = power>.9 ? 3 : power>.72 ? 2 : 1;
+  s.phase='fielding';
+  s.strikes=0;
+  s.fielder={x:360,y:306,targetX:360,targetY:306};
+  s.fieldPlay={
+    power,
+    bases,
+    t:0,
+    duration:.92 + Math.random()*.55,
+    deadline:4.2,
+    x:360,
+    y:354,
+    startX:360,
+    startY:354,
+    endX:140 + Math.random()*440,
+    endY:82 + Math.random()*205,
+    landed:false,
+    secured:false
+  };
+  s.message='球被打出去了！拖曳或用方向鍵控制守備員去接球。';
+  bsgUpdateHud();
+}
+
+function bsgThrow(){
+  const s=bsgState;
+  const play=s?.fieldPlay;
+  if(!play || s.phase!=='fielding' || !play.secured) return;
+  const quick = play.t < 3.35;
+  const out = quick || Math.random()<.45;
+  s.fieldPlay=null;
+  if(out){
+    s.message = quick ? '傳一壘來得及，守備出局！' : '驚險傳到，抓到出局！';
+    bsgAddOut(1);
+  }else{
+    const runs=bsgAdvanceBases(1,'cpu');
+    s.phase='defense';
+    s.message = runs ? `傳球慢了一步，電腦跑回 ${runs} 分。` : '傳球慢了一步，電腦上一壘。';
+    bsgUpdateHud();
+  }
+}
+
+function bsgResolveCpuHit(){
+  const s=bsgState;
+  const bases=s.fieldPlay?.bases || 1;
+  const runs=bsgAdvanceBases(bases,'cpu');
+  s.fieldPlay=null;
+  s.phase='defense';
+  s.message = runs ? `球落地形成安打，電腦追回 ${runs} 分。` : `電腦打出 ${bases===1?'一':'長'}壘安打。`;
+  bsgUpdateHud();
+}
+
+function bsgAdvanceBases(advance, side){
+  const s=bsgState;
+  let runs=0;
+  const next=[false,false,false];
+  for(let i=2;i>=0;i--){
+    if(!s.bases[i]) continue;
+    const dest = i + 1 + advance;
+    if(dest>=4) runs += 1;
+    else next[dest-1]=true;
+  }
+  if(advance>=4) runs += 1;
+  else if(advance>0) next[advance-1]=true;
+  s.bases=next;
+  if(side==='player') s.playerScore += runs;
+  else s.cpuScore += runs;
+  return runs;
+}
+
+function bsgAddOut(count=1){
+  const s=bsgState;
+  s.outs += count;
+  s.strikes = 0;
+  s.pitch = null;
+  s.hitBall = null;
+  s.run = null;
+  s.fieldPlay = null;
+  s.phase = 'between';
+  if(s.outs>=3){
+    bsgUpdateHud();
+    bsgSetTimeout(bsgSwitchHalf, 850);
+  }else{
+    bsgUpdateHud();
+    bsgSetTimeout(()=>{
+      if(s.half==='top') bsgBeginPlayerAtBat('還沒三出局，繼續進攻。');
+      else bsgPrepareDefense('守住這一局，選一種球路。');
+    }, 850);
+  }
+}
+
+function bsgSwitchHalf(){
+  const s=bsgState;
+  s.outs=0;
+  s.strikes=0;
+  s.bases=[false,false,false];
+  s.pitch=null;
+  s.hitBall=null;
+  s.run=null;
+  s.fieldPlay=null;
+  if(s.half==='top'){
+    s.half='bottom';
+    bsgPrepareDefense(`${s.inning} 局下，換你投球守備。`);
+    return;
+  }
+  if(s.inning>=BSG_MAX_INNING){
+    bsgGameOver();
+    return;
+  }
+  s.inning += 1;
+  s.half='top';
+  bsgBeginPlayerAtBat(`${s.inning} 局上，換你進攻。`);
+}
+
+function bsgPrepareDefense(msg='選一種球路投給電腦打者。'){
+  Object.assign(bsgState,{phase:'defense',message:msg,pitch:null,hitBall:null,run:null,fieldPlay:null});
+  bsgUpdateHud();
+}
+
+function bsgGameOver(){
+  const s=bsgState;
+  s.phase='gameover';
+  s.started=false;
+  const result = s.playerScore===s.cpuScore ? '平手收場' : s.playerScore>s.cpuScore ? '玩家獲勝' : '電腦獲勝';
+  s.message=`${result}，比分 ${s.playerScore}:${s.cpuScore}`;
+  bsgUpdateHud();
+  bsgShowOverlay(result, `最終比分 玩家 ${s.playerScore}：${s.cpuScore} 電腦。再打一場把手感留下來。`);
+}
+
+function bsgLoop(ts=0){
+  if(!bsgReady) return;
+  const dt = Math.min(.04, (ts-bsgLastTs)/1000 || 0);
+  bsgLastTs = ts;
+  if(bsgState) bsgUpdate(dt);
+  bsgDraw();
+  bsgRaf = requestAnimationFrame(bsgLoop);
+}
+
+function bsgUpdate(dt){
+  const s=bsgState;
+  if(!s || !s.started) return;
+  if(s.pitch){
+    s.pitch.t += dt / s.pitch.duration;
+    const t=Math.min(1,s.pitch.t);
+    s.pitch.y = s.pitch.fromY + (s.pitch.toY-s.pitch.fromY)*t;
+    s.pitch.spin += dt*10;
+    if(t>=1){
+      if(s.phase==='batting') bsgPlayerStrike('看著好球進壘，算一顆好球。');
+      else if(s.phase==='cpuBatting') bsgCpuSwing();
+    }
+  }
+  if(s.phase==='running' && s.run){
+    s.run.time += dt;
+    if(s.hitBall){
+      s.hitBall.t += dt / s.hitBall.duration;
+      const t=Math.min(1,s.hitBall.t);
+      s.hitBall.x = 360 + (s.hitBall.endX-360)*t;
+      s.hitBall.y = 354 + (s.hitBall.endY-354)*t - Math.sin(t*Math.PI)*95;
+    }
+    if(s.run.time>=s.run.limit) bsgResolvePlayerRun();
+  }
+  if(s.phase==='fielding' && s.fieldPlay){
+    bsgUpdateFielder(dt);
+    const p=s.fieldPlay;
+    p.t += dt;
+    const flightT=Math.min(1,p.t/p.duration);
+    p.x = p.startX + (p.endX-p.startX)*flightT;
+    p.y = p.startY + (p.endY-p.startY)*flightT - Math.sin(flightT*Math.PI)*120;
+    if(flightT>=1){
+      p.landed=true;
+      p.x=p.endX;
+      p.y=p.endY;
+    }
+    const d=Math.hypot(s.fielder.x-p.x,s.fielder.y-p.y);
+    if(!p.secured && d<30){
+      p.secured=true;
+      if(!p.landed){
+        s.message='漂亮接殺！';
+        s.fieldPlay=null;
+        bsgAddOut(1);
+      }else{
+        s.message='球撿到了，快按傳球！';
+        bsgUpdateHud();
+      }
+    }else if(!p.secured && p.t>p.deadline){
+      bsgResolveCpuHit();
+    }
+  }
+}
+
+function bsgUpdateFielder(dt){
+  const s=bsgState;
+  const f=s.fielder;
+  const speed=245;
+  let vx=0,vy=0;
+  if(s.keys.ArrowLeft || s.keys.KeyA) vx-=1;
+  if(s.keys.ArrowRight || s.keys.KeyD) vx+=1;
+  if(s.keys.ArrowUp || s.keys.KeyW) vy-=1;
+  if(s.keys.ArrowDown || s.keys.KeyS) vy+=1;
+  if(vx || vy){
+    const len=Math.hypot(vx,vy)||1;
+    f.x += vx/len*speed*dt;
+    f.y += vy/len*speed*dt;
+    f.targetX=f.x; f.targetY=f.y;
+  }else if(Number.isFinite(f.targetX)){
+    const dx=f.targetX-f.x;
+    const dy=f.targetY-f.y;
+    const dist=Math.hypot(dx,dy);
+    if(dist>4){
+      const step=Math.min(dist,speed*dt);
+      f.x += dx/dist*step;
+      f.y += dy/dist*step;
+    }
+  }
+  f.x=Math.max(92,Math.min(628,f.x));
+  f.y=Math.max(74,Math.min(390,f.y));
+}
+
+function bsgUpdateHud(){
+  const s=bsgState || bsgDefaultState();
+  const halfText=s.half==='top'?'上':'下';
+  const inning=document.getElementById('bsg-inning');
+  const player=document.getElementById('bsg-player-score');
+  const cpu=document.getElementById('bsg-cpu-score');
+  const outs=document.getElementById('bsg-outs');
+  const runners=document.getElementById('bsg-runners');
+  const strikes=document.getElementById('bsg-strikes');
+  const stateLabel=document.getElementById('bsg-state-label');
+  if(inning) inning.textContent=`${s.inning} ${halfText}`;
+  if(player) player.textContent=s.playerScore;
+  if(cpu) cpu.textContent=s.cpuScore;
+  if(outs) outs.textContent=s.outs;
+  if(runners) runners.textContent=bsgBasesText(s.bases);
+  if(strikes) strikes.textContent=s.strikes;
+  if(stateLabel) stateLabel.textContent=bsgPhaseText(s.phase);
+  bsgSetButtonState('bsg-swing-btn', s.phase!=='batting');
+  bsgSetButtonState('bsg-run-btn', s.phase!=='running');
+  const pitchDisabled=s.phase!=='defense';
+  bsgSetButtonState('bsg-fast-btn', pitchDisabled);
+  bsgSetButtonState('bsg-curve-btn', pitchDisabled);
+  bsgSetButtonState('bsg-change-btn', pitchDisabled);
+  bsgSetButtonState('bsg-throw-btn', !(s.phase==='fielding' && s.fieldPlay?.secured));
+  bsgSyncFullscreenLabel();
+}
+
+function bsgSetButtonState(id, disabled){
+  const el=document.getElementById(id);
+  if(el) el.disabled=!!disabled;
+}
+
+function bsgBasesText(bases=[]){
+  const names=['一壘','二壘','三壘'];
+  const active=names.filter((_,i)=>bases[i]);
+  return active.length ? active.join('、') : '無人在壘';
+}
+
+function bsgPhaseText(phase){
+  return {idle:'待機',batting:'打擊',running:'跑壘',defense:'投球',cpuBatting:'投球中',fielding:'守備',between:'換人',gameover:'結束'}[phase] || '比賽中';
+}
+
+function bsgDraw(){
+  if(!bsgCtx || !bsgCanvas) return;
+  const ctx=bsgCtx;
+  const W=bsgCanvas.width;
+  const H=bsgCanvas.height;
+  ctx.clearRect(0,0,W,H);
+  bsgDrawField(ctx,W,H);
+  bsgDrawBases(ctx);
+  bsgDrawPlayers(ctx);
+  bsgDrawBall(ctx);
+  bsgDrawMessage(ctx,W);
+}
+
+function bsgDrawField(ctx,W,H){
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#c7f3ce');
+  grad.addColorStop(.58,'#70be70');
+  grad.addColorStop(1,'#d9a463');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,.16)';
+  for(let x=-120;x<W+120;x+=78){
+    ctx.beginPath();
+    ctx.ellipse(x,180,135,28,-.8,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.fillStyle='#bf844b';
+  ctx.beginPath();
+  ctx.moveTo(360,386);
+  ctx.lineTo(504,300);
+  ctx.lineTo(360,214);
+  ctx.lineTo(216,300);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.86)';
+  ctx.lineWidth=4;
+  ctx.beginPath();
+  ctx.moveTo(360,386);
+  ctx.lineTo(504,300);
+  ctx.lineTo(360,214);
+  ctx.lineTo(216,300);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.strokeStyle='rgba(255,255,255,.64)';
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(360,386);
+  ctx.lineTo(120,98);
+  ctx.moveTo(360,386);
+  ctx.lineTo(600,98);
+  ctx.stroke();
+  ctx.fillStyle='#d7a463';
+  ctx.beginPath();
+  ctx.arc(360,300,36,0,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.9)';
+  [[360,386],[504,300],[360,214],[216,300]].forEach(([x,y],i)=>{
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(Math.PI/4);
+    ctx.fillRect(-9,-9,18,18);
+    ctx.restore();
+    if(i===0){
+      ctx.fillStyle='#fff';
+      ctx.beginPath();
+      ctx.moveTo(x-12,y+5);ctx.lineTo(x+12,y+5);ctx.lineTo(x+8,y+18);ctx.lineTo(x-8,y+18);ctx.closePath();
+      ctx.fill();
+    }
+  });
+}
+
+function bsgDrawBases(ctx){
+  const coords=[[504,300],[360,214],[216,300]];
+  const bases=bsgState?.bases || [];
+  coords.forEach(([x,y],i)=>{
+    if(!bases[i]) return;
+    ctx.fillStyle='#e85d75';
+    ctx.beginPath();
+    ctx.arc(x,y-20,12,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.font='900 11px "Noto Sans TC",sans-serif';
+    ctx.textAlign='center';
+    ctx.fillText('跑',x,y-16);
+  });
+}
+
+function bsgDrawPlayers(ctx){
+  const s=bsgState || {};
+  bsgDrawPerson(ctx,360,300,'#3f7fc2','投');
+  bsgDrawPerson(ctx,335,368,s.half==='top'?'#e85d75':'#805ad5',s.half==='top'?'打':'電');
+  if(s.half==='bottom' || s.phase==='fielding'){
+    const f=s.fielder || {x:360,y:306};
+    if(s.phase==='fielding'){
+      ctx.strokeStyle='rgba(255,255,255,.7)';
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      ctx.arc(f.x,f.y,31,0,Math.PI*2);
+      ctx.stroke();
+    }
+    bsgDrawPerson(ctx,f.x,f.y,'#2f9a68','守');
+  }
+  if(s.phase==='running' && s.run){
+    const path=[[360,386],[504,300],[360,214],[216,300],[360,386]];
+    const dest=path[Math.min(4,s.run.choice)] || path[1];
+    const t=Math.min(1,s.run.time/s.run.limit);
+    const x=360+(dest[0]-360)*t;
+    const y=386+(dest[1]-386)*t;
+    bsgDrawPerson(ctx,x,y,'#e85d75','跑');
+  }
+}
+
+function bsgDrawPerson(ctx,x,y,color,label){
+  ctx.save();
+  ctx.fillStyle='rgba(0,0,0,.14)';
+  ctx.beginPath();
+  ctx.ellipse(x,y+19,18,6,0,0,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.arc(x,y,17,0,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle='#fff';
+  ctx.font='900 13px "Noto Sans TC",sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(label,x,y);
+  ctx.restore();
+}
+
+function bsgDrawBall(ctx){
+  const s=bsgState || {};
+  let ball=null;
+  if(s.pitch) ball={x:s.pitch.x,y:s.pitch.y,r:7};
+  else if(s.hitBall) ball={x:s.hitBall.x,y:s.hitBall.y,r:7};
+  else if(s.fieldPlay) ball={x:s.fieldPlay.x,y:s.fieldPlay.y,r:s.fieldPlay.landed?8:7};
+  if(!ball) return;
+  ctx.fillStyle='#fff';
+  ctx.beginPath();
+  ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle='#d64b62';
+  ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.arc(ball.x-2,ball.y,ball.r*.55,-1.2,1.2);
+  ctx.arc(ball.x+2,ball.y,ball.r*.55,1.95,4.35);
+  ctx.stroke();
+}
+
+function bsgDrawMessage(ctx,W){
+  const s=bsgState || {};
+  ctx.save();
+  ctx.fillStyle='rgba(255,255,255,.88)';
+  bsgRoundRect(ctx,22,18,W-44,54,18);
+  ctx.fill();
+  ctx.fillStyle='#266347';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  bsgDrawFitText(ctx, s.message || '準備比賽', W/2, 45, W-78, 17, 12);
+  if(s.phase==='running' && s.run){
+    const remain=Math.max(0,s.run.limit-s.run.time);
+    ctx.fillStyle='#e85d75';
+    ctx.font='900 13px "Noto Sans TC",sans-serif';
+    ctx.fillText(`跑壘時間 ${remain.toFixed(1)} 秒`,W/2,69);
+  }
+  ctx.restore();
+}
+
+function bsgDrawFitText(ctx,text,x,y,maxWidth,maxSize,minSize){
+  let size=maxSize;
+  do{
+    ctx.font=`900 ${size}px "Noto Sans TC",sans-serif`;
+    if(ctx.measureText(text).width<=maxWidth || size<=minSize) break;
+    size -= 1;
+  }while(size>=minSize);
+  ctx.fillText(text,x,y);
+}
+
+function bsgRoundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h);
+  ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r);
+  ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
+
+function bsgPointerPos(event){
+  const rect=bsgCanvas.getBoundingClientRect();
+  return {
+    x:(event.clientX-rect.left) * (bsgCanvas.width/rect.width),
+    y:(event.clientY-rect.top) * (bsgCanvas.height/rect.height)
+  };
+}
+
+function bsgPointerDownHandler(event){
+  if(!bsgState) return;
+  bsgPointerDown=true;
+  const pos=bsgPointerPos(event);
+  if(bsgState.phase==='fielding'){
+    bsgState.fielder.targetX=pos.x;
+    bsgState.fielder.targetY=pos.y;
+  }else if(bsgState.phase==='batting'){
+    bsgSwing();
+  }else if(bsgState.phase==='running'){
+    bsgRun();
+  }
+}
+
+function bsgPointerMoveHandler(event){
+  if(!bsgPointerDown || bsgState?.phase!=='fielding') return;
+  const pos=bsgPointerPos(event);
+  bsgState.fielder.targetX=pos.x;
+  bsgState.fielder.targetY=pos.y;
+}
+
+function bsgKeyDown(event){
+  if(!bsgIsActive() || !bsgState) return;
+  const code=event.code;
+  if(['Space','KeyR','KeyE','Digit1','Digit2','Digit3','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','KeyW','KeyA','KeyS','KeyD'].includes(code)){
+    event.preventDefault();
+  }
+  bsgState.keys[code]=true;
+  if(code==='Space') bsgSwing();
+  if(code==='KeyR') bsgRun();
+  if(code==='KeyE') bsgThrow();
+  if(code==='Digit1') bsgPitch('fast');
+  if(code==='Digit2') bsgPitch('curve');
+  if(code==='Digit3') bsgPitch('change');
+}
+
+function bsgKeyUp(event){
+  if(bsgState) bsgState.keys[event.code]=false;
+}
+
+async function bsgToggleFullscreen(){
+  const shell=document.querySelector('#gs-8 .bsg-shell');
+  if(!shell) return;
+  const active=document.fullscreenElement===shell || shell.classList.contains('bsg-fullscreen-active');
+  if(active){
+    if(document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen().catch(()=>{});
+    shell.classList.remove('bsg-fullscreen-active');
+    document.body.classList.remove('bsg-fullscreen-fallback');
+    bsgSyncFullscreenLabel();
+    return;
+  }
+  bsgHideOverlay();
+  if(shell.requestFullscreen){
+    try{
+      await shell.requestFullscreen({navigationUI:'hide'});
+    }catch(_err){
+      shell.classList.add('bsg-fullscreen-active');
+      document.body.classList.add('bsg-fullscreen-fallback');
+    }
+  }else{
+    shell.classList.add('bsg-fullscreen-active');
+    document.body.classList.add('bsg-fullscreen-fallback');
+  }
+  bsgSyncFullscreenLabel();
+  setTimeout(bsgDraw,120);
+}
+
+function bsgSyncFullscreenLabel(){
+  const btn=document.getElementById('bsg-fullscreen-btn');
+  const shell=document.querySelector('#gs-8 .bsg-shell');
+  if(!btn || !shell) return;
+  const active=document.fullscreenElement===shell || shell.classList.contains('bsg-fullscreen-active');
+  btn.textContent = active ? '退出全螢幕' : '全螢幕';
 }
 
 

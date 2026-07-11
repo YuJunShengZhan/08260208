@@ -246,8 +246,8 @@ transition:background .2s;
 .fight-btn.green{background:#2f9a68}
 .fight-next-actions[hidden],.fight-next-result[hidden]{display:none}
 .fight-next-result{margin-top:10px}
-.fight-soup-photo{position:relative;overflow:hidden;border-radius:18px;width:min(420px,100%);height:240px;background:linear-gradient(135deg,#ffe9ef,#f4fff4);border:1px solid rgba(232,99,122,.14);margin:10px auto 0}
-.fight-soup-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.fight-soup-photo{position:relative;overflow:hidden;border-radius:18px;width:100%;min-height:360px;background:linear-gradient(135deg,#ffe9ef,#f4fff4);border:1px solid rgba(232,99,122,.14);margin:10px auto 0;display:flex;align-items:center;justify-content:center}
+.fight-soup-photo img{width:100%;height:auto;max-height:70vh;object-fit:contain;display:block}
 .fight-soup-photo.empty{display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;padding:20px;text-align:center}
 .fight-soup-text{margin-top:10px;font-size:14px;line-height:1.9}
 .fight-history-list{display:flex;flex-direction:column;gap:8px}
@@ -3971,7 +3971,6 @@ onclick="hideSpecialForToday()">
         <button type="button" class="fight-soup-open" onclick="fightCloseSoupPage()">回到上一頁</button>
         <div class="fight-kicker">FOR YOU TWO</div>
         <div class="fight-title">給你們的話</div>
-        <div class="fight-sub">隨機放一張你們相簿裡的回憶，再配一段好話。先讓心軟一點，再回去好好說。</div>
       </div>
       <div class="card">
         <div class="fight-soup-photo empty" id="fight-soup-photo">相簿照片同步後，這裡會隨機放上一張你們的回憶。</div>

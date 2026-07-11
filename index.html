@@ -227,8 +227,8 @@ transition:background .2s;
 .fight-label{font-size:12px;color:var(--text-muted);margin-bottom:6px}
 .fight-label strong{color:var(--rose)}
 .fight-input,.fight-textarea{width:100%;border:1px solid var(--card-border);border-radius:14px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:10px 11px;outline:none}
-.fight-textarea{resize:vertical;min-height:84px;line-height:1.7}
-.fight-read{background:var(--pink-light);border-radius:14px;padding:11px;color:var(--text);font-size:13px;line-height:1.75;min-height:44px;white-space:pre-wrap}
+.fight-textarea{resize:vertical;min-height:72px;line-height:1.65}
+.fight-read{background:var(--pink-light);border-radius:14px;padding:10px 11px;color:var(--text);font-size:13px;line-height:1.65;min-height:38px;white-space:pre-wrap}
 .fight-read.compact{min-height:36px}
 .fight-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .fight-topic-card{border-radius:18px;background:var(--white);border:1px solid var(--card-border);padding:13px}
@@ -3916,23 +3916,17 @@ onclick="hideSpecialForToday()">
       <div class="fight-card" id="fight-card-sheng">
         <div class="fight-card-head"><div class="fight-name">聖展</div><div class="fight-time" id="fight-time-sheng">尚未更新</div></div>
         <div class="fight-mood-row" id="fight-mood-sheng"></div>
-        <div class="fight-field"><div class="fight-label">我看到的事實</div><div class="fight-read" id="fight-fact-sheng">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我心裡的解讀</div><div class="fight-read" id="fight-story-sheng">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">真正受傷的點</div><div class="fight-read" id="fight-impact-sheng">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我需要的具體改變</div><div class="fight-read" id="fight-request-sheng">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我願意負責的部分</div><div class="fight-read" id="fight-repair-sheng">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我聽見你可能在意</div><div class="fight-read" id="fight-reflect-sheng">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">重點</div><div class="fight-read" id="fight-summary-sheng">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我希望</div><div class="fight-read" id="fight-request-sheng">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我願意</div><div class="fight-read" id="fight-repair-sheng">還沒有寫。</div></div>
       </div>
 
       <div class="fight-card" id="fight-card-yujun">
         <div class="fight-card-head"><div class="fight-name">予君</div><div class="fight-time" id="fight-time-yujun">尚未更新</div></div>
         <div class="fight-mood-row" id="fight-mood-yujun"></div>
-        <div class="fight-field"><div class="fight-label">我看到的事實</div><div class="fight-read" id="fight-fact-yujun">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我心裡的解讀</div><div class="fight-read" id="fight-story-yujun">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">真正受傷的點</div><div class="fight-read" id="fight-impact-yujun">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我需要的具體改變</div><div class="fight-read" id="fight-request-yujun">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我願意負責的部分</div><div class="fight-read" id="fight-repair-yujun">還沒有寫。</div></div>
-        <div class="fight-field"><div class="fight-label">我聽見你可能在意</div><div class="fight-read" id="fight-reflect-yujun">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">重點</div><div class="fight-read" id="fight-summary-yujun">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我希望</div><div class="fight-read" id="fight-request-yujun">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我願意</div><div class="fight-read" id="fight-repair-yujun">還沒有寫。</div></div>
       </div>
     </div>
 
@@ -3944,28 +3938,20 @@ onclick="hideSpecialForToday()">
       </div>
       <div class="fight-split">
         <div class="fight-field">
-          <div class="fight-label"><strong>事實</strong>：我看到／聽到的是</div>
-          <textarea class="fight-textarea" id="fight-input-fact" placeholder="只寫可以被錄影機拍到的事，不加推論。"></textarea>
+          <div class="fight-label"><strong>發生的事</strong></div>
+          <textarea class="fight-textarea" id="fight-input-fact" placeholder="簡短寫這次發生什麼，不用翻舊帳。"></textarea>
         </div>
         <div class="fight-field">
-          <div class="fight-label"><strong>解讀</strong>：我腦中冒出的故事是</div>
-          <textarea class="fight-textarea" id="fight-input-story" placeholder="例如：我以為你不在乎我、我覺得自己被丟下。"></textarea>
+          <div class="fight-label"><strong>我在意的點</strong></div>
+          <textarea class="fight-textarea" id="fight-input-impact" placeholder="例如：我不是要贏，我是怕自己不重要。"></textarea>
         </div>
         <div class="fight-field">
-          <div class="fight-label"><strong>受傷點</strong>：它踩到我的哪個在意</div>
-          <textarea class="fight-textarea" id="fight-input-impact" placeholder="例如：我很怕自己不重要、怕你不想跟我同一邊。"></textarea>
+          <div class="fight-label"><strong>我希望</strong></div>
+          <textarea class="fight-textarea" id="fight-input-request" placeholder="下次希望對方可以怎麼做，越具體越好。"></textarea>
         </div>
         <div class="fight-field">
-          <div class="fight-label"><strong>具體請求</strong>：下一次我希望你可以</div>
-          <textarea class="fight-textarea" id="fight-input-request" placeholder="例如：如果會晚回，先跟我說一聲，而不是消失。"></textarea>
-        </div>
-        <div class="fight-field">
-          <div class="fight-label"><strong>我負責</strong>：我願意調整的是</div>
-          <textarea class="fight-textarea" id="fight-input-repair" placeholder="例如：我會先說我受傷了，不用冷暴力或反話。"></textarea>
-        </div>
-        <div class="fight-field">
-          <div class="fight-label"><strong>我聽見你</strong>：我理解你可能在意的是</div>
-          <textarea class="fight-textarea" id="fight-input-reflect" placeholder="先試著替對方說一次，不一定完美，但要真心。"></textarea>
+          <div class="fight-label"><strong>我願意</strong></div>
+          <textarea class="fight-textarea" id="fight-input-repair" placeholder="我願意先調整的一件事，讓關係回到同一邊。"></textarea>
         </div>
       </div>
       <div class="fight-actions">
@@ -4993,6 +4979,14 @@ function fightReadCompat(entry, key){
   if(key==='repair') return entry.repair || entry.offer || '';
   return entry[key] || '';
 }
+function fightSummaryText(entry){
+  const fact=fightReadCompat(entry,'fact');
+  const impact=fightReadCompat(entry,'impact') || fightReadCompat(entry,'story');
+  const lines=[];
+  if(fact) lines.push(`發生：${fact}`);
+  if(impact) lines.push(`在意：${impact}`);
+  return lines.join('\n');
+}
 function fightFormatPauseText(value){
   if(!value) return '';
   const time=new Date(value).getTime();
@@ -5017,17 +5011,15 @@ function fightRenderTopic(){
 function fightFillEditor(force=false){
   if(!fightPerson) return;
   const active = document.activeElement;
-  const editIds = ['fight-input-fact','fight-input-story','fight-input-impact','fight-input-request','fight-input-repair','fight-input-reflect'];
+  const editIds = ['fight-input-fact','fight-input-impact','fight-input-request','fight-input-repair'];
   const isEditing = active && editIds.includes(active.id);
   if(isEditing && !force) return;
   const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
   fightDraftMood = fightDraftMood || entry.mood || '';
   fightSetFieldValue('fight-input-fact', fightReadCompat(entry,'fact'));
-  fightSetFieldValue('fight-input-story', fightReadCompat(entry,'story'));
   fightSetFieldValue('fight-input-impact', fightReadCompat(entry,'impact'));
   fightSetFieldValue('fight-input-request', fightReadCompat(entry,'request'));
   fightSetFieldValue('fight-input-repair', fightReadCompat(entry,'repair'));
-  fightSetFieldValue('fight-input-reflect', fightReadCompat(entry,'reflect'));
 }
 function fightRender(forceEditor=false){
   fightRenderTopic();
@@ -5037,10 +5029,12 @@ function fightRender(forceEditor=false){
     document.getElementById(`fight-card-${suffix}`)?.classList.toggle('mine', fightPerson===name);
     const time=document.getElementById(`fight-time-${suffix}`);
     if(time) time.textContent=fightFormatTime(entry.updatedAt);
-    ['fact','story','impact','request','repair','reflect'].forEach(key=>{
-      const field=document.getElementById(`fight-${key}-${suffix}`);
-      if(field) field.innerHTML=fightText(fightReadCompat(entry,key));
-    });
+    const summary=document.getElementById(`fight-summary-${suffix}`);
+    const request=document.getElementById(`fight-request-${suffix}`);
+    const repair=document.getElementById(`fight-repair-${suffix}`);
+    if(summary) summary.innerHTML=fightText(fightSummaryText(entry));
+    if(request) request.innerHTML=fightText(fightReadCompat(entry,'request'));
+    if(repair) repair.innerHTML=fightText(fightReadCompat(entry,'repair'));
     fightRenderMoodBadges(name);
   });
   document.getElementById('fight-person-sheng')?.classList.toggle('active', fightPerson==='聖展');
@@ -5108,12 +5102,13 @@ async function fightUsePauseTemplate(){
 async function fightSaveMyHeart(){
   if(!fightPerson){alert('先選擇你是誰');return;}
   if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  const currentEntry=fightData.current.people[fightPerson] || fightEmptyPerson();
   const fact=fightFieldValue('fight-input-fact');
-  const story=fightFieldValue('fight-input-story');
+  const story=currentEntry.story || '';
   const impact=fightFieldValue('fight-input-impact');
   const request=fightFieldValue('fight-input-request');
   const repair=fightFieldValue('fight-input-repair');
-  const reflect=fightFieldValue('fight-input-reflect');
+  const reflect=currentEntry.reflect || '';
   const now=Date.now();
   const {db,ref,update}=window._fb;
   await update(ref(db,'fightRoom/current'), {
@@ -5141,9 +5136,7 @@ function fightSendQuickPeace(){
   if(!fightPerson){alert('先選擇你是誰');return;}
   fightDraftMood = '願意談';
   const repair=document.getElementById('fight-input-repair');
-  const reflect=document.getElementById('fight-input-reflect');
   if(repair && !repair.value.trim()) repair.value='我願意先把語氣放低，等你說完再回應。';
-  if(reflect && !reflect.value.trim()) reflect.value='我知道你不是我的敵人，我想先確認我有沒有聽懂你。';
   fightSaveMyHeart();
 }
 async function fightToggleStep(id, checked){

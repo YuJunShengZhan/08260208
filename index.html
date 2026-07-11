@@ -3891,7 +3891,7 @@ onclick="hideSpecialForToday()">
 
     <div class="fight-flow" id="fight-flow" hidden>
       <div class="fight-hero">
-        <button type="button" class="fight-soup-open" onclick="fightOpenSoupPage()">給你們的</button>
+        <button type="button" class="fight-soup-open" onclick="fightOpenSoupPage()">給你們的話</button>
         <div class="fight-kicker">REPAIR ROOM</div>
         <div class="fight-title">吵架專區</div>
         <div class="fight-sub">這裡不是判誰贏，是把「發生了什麼、我怎麼解讀、哪裡受傷、我需要什麼、下一步怎麼做」拆開。講清楚，比講漂亮更重要。</div>
@@ -3968,7 +3968,7 @@ onclick="hideSpecialForToday()">
       <div class="fight-hero">
         <button type="button" class="fight-soup-open" onclick="fightCloseSoupPage()">回到上一頁</button>
         <div class="fight-kicker">FOR YOU TWO</div>
-        <div class="fight-title">給你們的</div>
+        <div class="fight-title">給你們的話</div>
         <div class="fight-sub">隨機放一張你們相簿裡的回憶，再配一段好話。先讓心軟一點，再回去好好說。</div>
       </div>
       <div class="card">
@@ -4866,7 +4866,7 @@ function showPage(id,btn){
 
 // ── 吵架專區：同步心聲與和解清單 ──
 const FIGHT_PLAYERS = ['聖展','予君'];
-const FIGHT_MOODS = ['委屈','生氣','難過','被忽略','不安全','需要冷靜','願意談'];
+const FIGHT_MOODS = ['委屈','生氣','難過','被忽略','不安全','需要冷靜','願意談','想要抱抱','想要做愛','想被哄','想撒嬌','想親親','想牽手','想被安慰','想聽道歉','想被在乎','想講清楚','想先睡覺','想要陪陪','想要空間'];
 const FIGHT_SOUP_TEXTS = [
   '你們會吵架，不代表你們不適合；很多時候只是兩個都很在乎的人，剛好用太急、太痛、太害怕失去的方式在說話。真正珍貴的感情不是永遠不吵，而是吵完以後還願意回頭看見對方，願意把刺收起來，再用比較柔軟的方式靠近。',
   '如果今天的話說得重了一點，先別急著把它當成不愛了。有些情緒其實是很笨拙的求救：我想被在乎、我想被理解、我想知道你還站在我這邊。願你們把誤會放慢，把愛放大，慢慢找回一開始牽手時的那份心安。',
@@ -4922,6 +4922,7 @@ const FIGHT_SOUP_TEXTS = [
 ];
 let fightPerson = localStorage.getItem('fightRoomPerson') || '';
 let fightDraftMood = '';
+let fightDraftMoods = [];
 let fightData = fightNormalizeData(null);
 let fightFirebaseReady = false;
 let fightFlowOpen = false;
@@ -4932,7 +4933,7 @@ let fightSoupAlbumFetchStarted = false;
 let fightMessageInputCleared = false;
 
 function fightEmptyPerson(){
-  return {mood:'',message:'',feeling:'',need:'',offer:'',fact:'',story:'',impact:'',request:'',repair:'',reflect:'',updatedAt:0};
+  return {mood:'',moods:[],message:'',feeling:'',need:'',offer:'',fact:'',story:'',impact:'',request:'',repair:'',reflect:'',updatedAt:0};
 }
 function fightDefaultCurrent(){
   return {
@@ -4977,6 +4978,17 @@ function fightFormatTime(ts){
 function fightText(value, fallback='還沒有寫。'){
   const text=String(value||'').trim();
   return text ? escapeHtml(text) : fallback;
+}
+function fightEntryMoods(entry){
+  if(Array.isArray(entry?.moods) && entry.moods.length){
+    return entry.moods.map(m=>String(m||'').trim()).filter(Boolean);
+  }
+  const raw=String(entry?.mood || '').trim();
+  return raw ? raw.split(/[、,，|]/).map(m=>m.trim()).filter(Boolean) : [];
+}
+function fightSetDraftMoods(moods){
+  fightDraftMoods = [...new Set((moods||[]).map(m=>String(m||'').trim()).filter(Boolean))];
+  fightDraftMood = fightDraftMoods.join('、');
 }
 function fightEnterScreen(){
   fightFlowOpen = false;
@@ -5030,26 +5042,29 @@ function fightSelectPerson(name){
   fightPerson = FIGHT_PLAYERS.includes(name) ? name : '';
   localStorage.setItem('fightRoomPerson', fightPerson);
   const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
-  fightDraftMood = entry.mood || '';
+  fightSetDraftMoods(fightEntryMoods(entry));
   fightMessageInputCleared = false;
   fightRender(true);
 }
 function fightChooseMood(mood){
-  fightDraftMood = mood;
+  const idx=fightDraftMoods.indexOf(mood);
+  if(idx>=0) fightDraftMoods.splice(idx,1);
+  else fightDraftMoods.push(mood);
+  fightSetDraftMoods(fightDraftMoods);
   fightRenderMoodEditor();
 }
 function fightRenderMoodBadges(name){
-  const mood = fightData.current.people[name]?.mood || '';
+  const moods = fightEntryMoods(fightData.current.people[name] || fightEmptyPerson());
   const el=document.getElementById(`fight-mood-${fightPersonSuffix(name)}`);
   if(!el) return;
-  el.innerHTML = mood
-    ? `<span class="fight-mood active">${escapeHtml(mood)}</span>`
+  el.innerHTML = moods.length
+    ? moods.map(mood=>`<span class="fight-mood active">${escapeHtml(mood)}</span>`).join('')
     : `<span class="fight-mood">還沒選情緒</span>`;
 }
 function fightRenderMoodEditor(){
   const el=document.getElementById('fight-edit-moods');
   if(!el) return;
-  el.innerHTML = FIGHT_MOODS.map(mood=>`<button type="button" class="fight-mood${fightDraftMood===mood?' active':''}" onclick="fightChooseMood('${escapeHtml(mood)}')">${escapeHtml(mood)}</button>`).join('');
+  el.innerHTML = FIGHT_MOODS.map(mood=>`<button type="button" class="fight-mood${fightDraftMoods.includes(mood)?' active':''}" onclick="fightChooseMood('${escapeHtml(mood)}')">${escapeHtml(mood)}</button>`).join('');
 }
 function fightFieldValue(id){
   return document.getElementById(id)?.value.trim() || '';
@@ -5081,7 +5096,7 @@ function fightFillEditor(force=false){
   const isEditing = active && editIds.includes(active.id);
   if(isEditing && !force) return;
   const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
-  fightDraftMood = fightDraftMood || entry.mood || '';
+  if(force || !fightDraftMoods.length) fightSetDraftMoods(fightEntryMoods(entry));
   if(fightMessageInputCleared && !force){
     fightSetFieldValue('fight-input-message', '');
     return;
@@ -5204,12 +5219,15 @@ async function fightSaveMyHeart(){
   if(!fightPerson){alert('先選擇你是誰');return;}
   if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
   const message=fightFieldValue('fight-input-message');
+  const moods=[...fightDraftMoods];
+  const mood=moods.join('、');
   const now=Date.now();
   const {db,ref,update}=window._fb;
   try{
     await update(ref(db,'fightRoom/current'), {
       [`people/${fightPerson}`]: {
-        mood:fightDraftMood,
+        mood,
+        moods,
         message,
         feeling:message,
         need:'',
@@ -5235,7 +5253,9 @@ async function fightSaveMyHeart(){
 }
 function fightSendQuickPeace(){
   if(!fightPerson){alert('先選擇你是誰');return;}
-  fightDraftMood = '願意談';
+  if(!fightDraftMoods.includes('願意談')) fightDraftMoods.push('願意談');
+  fightSetDraftMoods(fightDraftMoods);
+  fightRenderMoodEditor();
   const message=document.getElementById('fight-input-message');
   if(message && !message.value.trim()) message.value='我想和好，也想好好聽你說。';
   fightSaveMyHeart();

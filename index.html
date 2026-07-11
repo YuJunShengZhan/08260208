@@ -215,6 +215,7 @@ transition:background .2s;
 .fight-start[hidden],.fight-flow[hidden],.fight-soup-page[hidden]{display:none}
 .fight-flow{display:flex;flex-direction:column;gap:14px}
 .fight-soup-page{display:flex;flex-direction:column;gap:14px}
+.fight-soup-card{position:relative;border-radius:24px;padding:18px;background:linear-gradient(135deg,#fff5f7,#f8fff6);border:1px solid rgba(232,99,122,.14);box-shadow:0 12px 28px rgba(201,75,100,.08)}
 .fight-start-btn{width:min(320px,86%);border:none;border-radius:28px;background:linear-gradient(135deg,#e85f78,#ff9aa8);color:#fff;font-family:'Noto Serif TC',serif;font-size:28px;font-weight:800;letter-spacing:.5px;padding:28px 22px;box-shadow:0 18px 38px rgba(232,99,122,.28);cursor:pointer}
 .fight-start-btn:active{transform:scale(.98)}
 .fight-soup-open{position:absolute;top:14px;right:14px;border:1px solid rgba(232,99,122,.18);border-radius:999px;background:rgba(255,255,255,.82);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-weight:800;font-size:12px;padding:8px 11px;cursor:pointer}
@@ -256,6 +257,7 @@ transition:background .2s;
 .fight-history-del{position:absolute;top:9px;right:9px;border:1px solid rgba(232,99,122,.16);border-radius:999px;background:rgba(255,255,255,.76);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;padding:5px 9px;cursor:pointer}
 .fight-empty{text-align:center;color:var(--text-muted);font-size:13px;line-height:1.8;padding:14px;background:var(--pink-light);border-radius:16px}
 [data-theme="dark"] .fight-hero{background:linear-gradient(135deg,#321821,#18281e)}
+[data-theme="dark"] .fight-soup-card{background:linear-gradient(135deg,#321821,#18281e)}
 [data-theme="dark"] .fight-card,[data-theme="dark"] .fight-tab{background:#2a1820}
 [data-theme="dark"] .fight-soup-open{background:rgba(42,24,32,.86);border-color:rgba(255,170,190,.18)}
 [data-theme="dark"] .fight-soup-photo{background:linear-gradient(135deg,#2f1b25,#1b2d24);border-color:rgba(255,170,190,.18)}
@@ -3967,17 +3969,14 @@ onclick="hideSpecialForToday()">
     </div>
 
     <div class="fight-soup-page" id="fight-soup-page" hidden>
-      <div class="fight-hero">
+      <div class="fight-soup-card">
         <button type="button" class="fight-soup-open" onclick="fightCloseSoupPage()">回到上一頁</button>
         <div class="fight-kicker">FOR YOU TWO</div>
         <div class="fight-title">給你們的話</div>
-      </div>
-      <div class="card">
         <div class="fight-soup-photo empty" id="fight-soup-photo">相簿照片同步後，這裡會隨機放上一張你們的回憶。</div>
         <div class="fight-read fight-soup-text" id="fight-soup-text"></div>
-        <div class="fight-actions">
+        <div class="fight-actions single">
           <button type="button" class="fight-btn secondary" onclick="fightRefreshSoupCard()">換一張好話</button>
-          <button type="button" class="fight-btn" onclick="fightCloseSoupPage()">回到上一頁</button>
         </div>
       </div>
     </div>

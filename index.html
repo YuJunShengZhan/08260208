@@ -236,9 +236,9 @@ transition:background .2s;
 .fight-field{margin-top:10px}
 .fight-label{font-size:12px;color:var(--text-muted);margin-bottom:6px}
 .fight-label strong{color:var(--rose)}
-.fight-input,.fight-textarea{width:100%;border:1px solid var(--card-border);border-radius:14px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:10px 11px;outline:none}
-.fight-textarea{resize:vertical;min-height:118px;line-height:1.65}
-.fight-read{background:var(--pink-light);border-radius:14px;padding:10px 11px;color:var(--text);font-size:13px;line-height:1.65;min-height:38px;white-space:pre-wrap}
+.fight-input,.fight-textarea{width:100%;max-width:100%;box-sizing:border-box;border:1px solid var(--card-border);border-radius:14px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:10px 11px;outline:none}
+.fight-textarea{resize:vertical;min-height:118px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-all;overflow-x:hidden}
+.fight-read{background:var(--pink-light);border-radius:14px;padding:10px 11px;color:var(--text);font-size:13px;line-height:1.65;min-height:38px;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;max-width:100%;box-sizing:border-box}
 .fight-read.compact{min-height:36px}
 .fight-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .fight-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
@@ -3958,7 +3958,7 @@ onclick="hideSpecialForToday()">
       </div>
       <div class="fight-field">
         <div class="fight-label">我想說的話</div>
-        <textarea class="fight-textarea" id="fight-input-message" placeholder="把你現在真正想讓對方知道的話寫下來。" oninput="fightMarkEditorActive()"></textarea>
+        <textarea class="fight-textarea" id="fight-input-message" wrap="soft" placeholder="把你現在真正想讓對方知道的話寫下來。" oninput="fightMarkEditorActive()"></textarea>
       </div>
       <div class="fight-actions">
         <button type="button" class="fight-btn" onclick="fightSaveMyHeart()">確定</button>

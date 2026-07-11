@@ -251,13 +251,15 @@ transition:background .2s;
 .fight-soup-photo.empty{display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;padding:20px;text-align:center}
 .fight-soup-text{margin-top:10px;font-size:14px;line-height:1.9}
 .fight-history-list{display:flex;flex-direction:column;gap:8px}
-.fight-history-item{border-radius:15px;background:var(--pink-light);padding:11px;font-size:12px;color:var(--text-muted);line-height:1.65}
+.fight-history-item{position:relative;border-radius:15px;background:var(--pink-light);padding:11px 76px 11px 11px;font-size:12px;color:var(--text-muted);line-height:1.65}
 .fight-history-item strong{display:block;color:var(--rose);font-size:13px;margin-bottom:2px}
+.fight-history-del{position:absolute;top:9px;right:9px;border:1px solid rgba(232,99,122,.16);border-radius:999px;background:rgba(255,255,255,.76);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;padding:5px 9px;cursor:pointer}
 .fight-empty{text-align:center;color:var(--text-muted);font-size:13px;line-height:1.8;padding:14px;background:var(--pink-light);border-radius:16px}
 [data-theme="dark"] .fight-hero{background:linear-gradient(135deg,#321821,#18281e)}
 [data-theme="dark"] .fight-card,[data-theme="dark"] .fight-tab{background:#2a1820}
 [data-theme="dark"] .fight-soup-open{background:rgba(42,24,32,.86);border-color:rgba(255,170,190,.18)}
 [data-theme="dark"] .fight-soup-photo{background:linear-gradient(135deg,#2f1b25,#1b2d24);border-color:rgba(255,170,190,.18)}
+[data-theme="dark"] .fight-history-del{background:rgba(42,24,32,.86);border-color:rgba(255,170,190,.18)}
 @media(max-width:640px){
   .fight-grid{grid-template-columns:1fr}
   .fight-protocol,.fight-split{grid-template-columns:1fr}
@@ -5212,8 +5214,18 @@ function fightRenderHistory(){
     const sh=item.people?.['聖展'] || {};
     const yu=item.people?.['予君'] || {};
     const topic=String(item.topic || '').trim() || '這次對話';
-    return `<div class="fight-history-item"><strong>${fightFormatTime(item.resolvedAt)} 和解完成</strong>${escapeHtml(topic)}<br>聖展：${escapeHtml(sh.mood||'未填')}｜予君：${escapeHtml(yu.mood||'未填')}</div>`;
+    return `<div class="fight-history-item"><button type="button" class="fight-history-del" onclick="fightDeleteHistory('${escapeHtml(item._key || '')}')">刪除</button><strong>${fightFormatTime(item.resolvedAt)} 和解完成</strong>${escapeHtml(topic)}<br>聖展：${escapeHtml(sh.mood||'未填')}｜予君：${escapeHtml(yu.mood||'未填')}</div>`;
   }).join('');
+}
+async function fightDeleteHistory(key){
+  if(!key){alert('找不到這筆紀錄');return;}
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  if(!confirm('確定要刪除這筆和解紀錄嗎？')) return;
+  const {db,ref,remove}=window._fb;
+  await remove(ref(db,`fightRoom/history/${key}`)).catch(err=>{
+    console.error('fight history delete failed', err);
+    alert('刪除失敗，請確認網路後再試一次');
+  });
 }
 async function fightSaveMyHeart(){
   if(!fightPerson){alert('先選擇你是誰');return;}

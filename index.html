@@ -211,13 +211,15 @@ transition:background .2s;
 .fight-protocol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
 .fight-rule{border-radius:15px;background:rgba(255,255,255,.72);border:1px solid rgba(232,99,122,.12);padding:10px;font-size:12px;color:var(--text-muted);line-height:1.55}
 .fight-rule strong{display:block;color:var(--rose);font-size:13px;margin-bottom:2px}
-.fight-start{min-height:52vh;display:flex;align-items:center;justify-content:center;padding:28px 12px}
+.fight-start{min-height:52vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px 12px}
 .fight-start[hidden],.fight-flow[hidden],.fight-soup-page[hidden]{display:none}
 .fight-flow{display:flex;flex-direction:column;gap:14px}
 .fight-soup-page{display:flex;flex-direction:column;gap:14px}
 .fight-soup-card{position:relative;border-radius:24px;padding:18px;background:linear-gradient(135deg,#fff5f7,#f8fff6);border:1px solid rgba(232,99,122,.14);box-shadow:0 12px 28px rgba(201,75,100,.08)}
 .fight-start-btn{width:min(320px,86%);border:none;border-radius:28px;background:linear-gradient(135deg,#e85f78,#ff9aa8);color:#fff;font-family:'Noto Serif TC',serif;font-size:28px;font-weight:800;letter-spacing:.5px;padding:28px 22px;box-shadow:0 18px 38px rgba(232,99,122,.28);cursor:pointer}
 .fight-start-btn:active{transform:scale(.98)}
+.fight-start-soup{width:min(320px,86%);border:1px solid rgba(232,99,122,.2);border-radius:18px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:800;padding:14px 18px;cursor:pointer;box-shadow:0 8px 20px rgba(201,75,100,.08)}
+.fight-start-soup:active{transform:scale(.98)}
 .fight-soup-open{position:absolute;top:14px;right:14px;border:1px solid rgba(232,99,122,.18);border-radius:999px;background:rgba(255,255,255,.82);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-weight:800;font-size:12px;padding:8px 11px;cursor:pointer}
 .fight-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .fight-tab{border:1.5px solid rgba(232,99,122,.16);background:var(--white);color:var(--rose);border-radius:16px;padding:11px 8px;font-family:'Noto Sans TC',sans-serif;font-weight:800;cursor:pointer}
@@ -3292,16 +3294,16 @@ onclick="hideSpecialForToday()">
         <div class="countdown-desc" id="annivLabel">下個週年紀念日</div>
       </div>
       <div class="countdown-item">
+        <div class="countdown-num" id="vdDays">—</div>
+        <div class="countdown-desc" id="vdLabel">下個情人節</div>
+      </div>
+      <div class="countdown-item">
         <div class="countdown-num" id="bd1Days">—</div>
         <div class="countdown-desc">聖展生日 (2/8)</div>
       </div>
       <div class="countdown-item">
         <div class="countdown-num" id="bd2Days">—</div>
         <div class="countdown-desc">予君生日 (8/26)</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-num" id="vdDays">—</div>
-        <div class="countdown-desc" id="vdLabel">下個情人節</div>
       </div>
     </div>
   </div>
@@ -3891,11 +3893,12 @@ onclick="hideSpecialForToday()">
   <div class="fight-shell">
     <div class="fight-start" id="fight-start">
       <button type="button" class="fight-start-btn" onclick="fightStartFlow()">我們吵架了</button>
+      <button type="button" class="fight-start-soup" onclick="fightOpenSoupPage()">感情雞湯</button>
     </div>
 
     <div class="fight-flow" id="fight-flow" hidden>
       <div class="fight-hero">
-        <button type="button" class="fight-soup-open" onclick="fightOpenSoupPage()">給你們的話</button>
+        <button type="button" class="fight-soup-open" onclick="fightOpenSoupPage()">感情雞湯</button>
         <div class="fight-kicker">REPAIR ROOM</div>
         <div class="fight-title">吵架專區</div>
         <div class="fight-sub">這裡不是判誰贏，是把「發生了什麼、我怎麼解讀、哪裡受傷、我需要什麼、下一步怎麼做」拆開。講清楚，比講漂亮更重要。</div>
@@ -3974,7 +3977,7 @@ onclick="hideSpecialForToday()">
       <div class="fight-soup-card">
         <button type="button" class="fight-soup-open" onclick="fightCloseSoupPage()">回到上一頁</button>
         <div class="fight-kicker">FOR YOU TWO</div>
-        <div class="fight-title">給你們的話</div>
+        <div class="fight-title">感情雞湯</div>
         <div class="fight-soup-photo empty" id="fight-soup-photo">相簿照片同步後，這裡會隨機放上一張你們的回憶。</div>
         <div class="fight-read fight-soup-text" id="fight-soup-text"></div>
         <div class="fight-actions single">
@@ -4868,7 +4871,7 @@ function showPage(id,btn){
 
 // ── 吵架專區：同步心聲與和解清單 ──
 const FIGHT_PLAYERS = ['聖展','予君'];
-const FIGHT_MOODS = ['委屈','生氣','難過','被忽略','不安全','需要冷靜','願意談','想要抱抱','想要做愛','想被哄','想撒嬌','想親親','想牽手','想被安慰','想聽道歉','想被在乎','想講清楚','想先睡覺','想要陪陪','想要空間'];
+const FIGHT_MOODS = ['委屈','生氣','難過','被忽略','需要冷靜','願意談','想要抱抱','想要做愛','想被哄','想撒嬌','想親親','想牽手','想被安慰','想聽道歉','想被在乎','想講清楚','想先睡覺','想要陪陪','想要空間','想要和好'];
 const FIGHT_REPAIR_RITUALS = [
   {title:'20 秒抱抱休戰',lines:['先不要講道理，抱 20 秒。','抱完後各自只說一句：「我剛剛真正難過的是...」', '如果現在還抱不下去，就改成牽手 10 秒。']},
   {title:'我聽到你了',lines:['兩個人輪流把對方剛剛寫的話念一次。','念完只能問：「我有沒有理解錯？」先不要反駁。','確認聽懂後，再各自說一句自己願意調整的小事。']},
@@ -4932,7 +4935,57 @@ const FIGHT_SOUP_TEXTS = [
   '願你們在彼此生氣的時候，也不要忘記彼此可愛的樣子。那個會笑、會撒嬌、會陪你的人還在，只是現在被情緒蓋住了。等霧散一點，再好好抱抱吧。',
   '真正的親密，是可以把不好看的情緒拿出來，但不把對方弄碎。願你們都慢慢練習：我可以生氣，但我不羞辱你；我可以委屈，但我不消失。',
   '如果愛有方向，那一定不是往誰贏誰輸走，而是往我們怎麼更懂彼此走。願你們今天都放下一點武器，拿起一點耐心，讓這段關係重新被好好照顧。',
-  '你們能遇見彼此、留下這些回憶，本來就不是容易的事。不要讓一場情緒把那麼多珍貴都蓋掉。願你們用今天的修復，替未來的自己留下一句：還好我們當時沒有放棄好好說話。'
+  '你們能遇見彼此、留下這些回憶，本來就不是容易的事。不要讓一場情緒把那麼多珍貴都蓋掉。願你們用今天的修復，替未來的自己留下一句：還好我們當時沒有放棄好好說話。',
+  '有時候你們不是不愛了，只是同時累了，也同時希望被照顧。先不要急著追究誰少做了一點，試著問一句：「你今天是不是也很辛苦？」一句理解，常常比十句辯解更能讓兩顆心重新靠近。',
+  '當兩個人都帶著情緒說話，每一句都可能被聽成攻擊。先把音量放低，把速度放慢，再提醒彼此：我們現在要處理的是一件事，不是要否定整段感情。你們是來解決問題的，不是來失去對方的。',
+  '真正的和好，不是把難過假裝沒發生，而是讓對方知道：你的感受我願意記住，下次我會試著做得更好。願你們的道歉不只是結束爭吵，也能成為下一次更懂彼此的開始。',
+  '如果現在不知道該說什麼，就先說一句最簡單的：「我還在，我也還在乎。」感情最怕的不是暫時無解，而是一個人以為另一個人已經不想努力。讓在乎被聽見，答案才有機會慢慢出現。',
+  '你們不需要每次都立刻想通所有事情。有些傷要先被抱住，有些委屈要先被聽完，等心裡不再那麼緊，才有空間理解對方。慢一點沒關係，只要你們沒有放開彼此。',
+  '愛一個人不是永遠猜得到他的心，而是在猜錯之後願意重新問清楚。別用想像替對方定罪，給他一次把真正意思說完的機會，也給你們的感情一次重新被理解的機會。',
+  '有些爭吵表面上是小事，底下藏著的卻是「我怕自己不重要」。願你們別只回應事情，也回應那份害怕。告訴對方，他在你心裡的位置沒有因為這次不愉快而消失。',
+  '先低頭的人並沒有比較不值得被愛，他只是願意先替這段關係開一扇門。另一個人也別把這份柔軟當成理所當然，請好好接住，因為和好從來需要兩個人的手。',
+  '你們可以不同意彼此的看法，卻仍然尊重彼此的感受。理解不是宣布對方永遠正確，而是承認他確實因此難過。當感受被承認，很多防備就會自己放下來。',
+  '今天如果話說得太重，請記得補上一句真心的修復。人會記得受傷的語氣，也會記得後來你怎麼溫柔地把他接回來。願你們都不吝嗇說抱歉，也不吝嗇說我愛你。',
+  '不要把對方最脆弱時說出的話，變成下一次爭吵的武器。願你們替彼此保管那些不安，而不是利用它們。安全感就是知道，即使我卸下防備，你也不會趁機傷害我。',
+  '有時候一個擁抱不能解決問題，卻能讓你們記得為什麼願意一起解決。若你們都願意，就先抱一下，讓身體先知道彼此不是敵人，再把心裡真正的話慢慢說完。',
+  '關係裡沒有誰天生就會完美地愛人，都是在一次次靠近、誤解與修復裡學會的。願你們把犯錯看成需要調整的地方，而不是證明彼此不適合的判決。',
+  '當你想反駁時，先替對方把話說完整：「你的意思是不是……」確認聽懂之後再回答。很多爭吵不是立場太遠，而是兩個人從頭到尾都沒有真的聽見同一件事。',
+  '別讓一句「隨便」藏住真正的期待，也別讓冷淡代替想被哄的心。願你們勇敢一點，把需要說清楚。能被理解的前提，是讓愛你的人知道該怎麼靠近。',
+  '如果一時還不能原諒，也可以誠實地說：「我需要一點時間，但我沒有要離開。」給彼此空間，也給彼此確定。暫停不是消失，而是為了用更好的狀態回來。',
+  '你們今天也許都沒有做到最好，但願意回來看這段話，就表示心裡還保留著想和好的位置。請珍惜這一點點柔軟，它往往就是修復一段關係最重要的起點。',
+  '愛不是要求對方永遠情緒穩定，而是在他混亂時仍願意分辨：這是他在受傷，不是他不愛我。當然，受傷也不能成為傷人的理由；願你們一起學會溫柔又清楚地設下界線。',
+  '今天先別急著把未來想得很壞。一次爭吵只是一個片段，不是你們全部的故事。回頭看看那些一起笑過、等過、陪伴過的時刻，你們擁有的遠比眼前這一刻更多。',
+  '最好的道歉裡有三件事：我知道哪裡讓你受傷、我不替自己找藉口、我願意怎麼改。願你們不只說沒事了，而是真的讓下一次變得不一樣。',
+  '當對方說難過時，不必立刻提出解決方案。有時候他需要的只是你坐在旁邊，說：「我聽到了，你可以繼續說。」被完整地聽一次，本身就是很深的安慰。',
+  '你們可以約定，生氣時不說分手，不故意消失，也不拿最痛的地方互相攻擊。不是因為不能有情緒，而是因為再大的情緒，都不該毀掉彼此最基本的安全感。',
+  '感情會變得牢固，不是因為從未裂開，而是每次裂開都有人願意修。願你們把今天修好的地方記住，下一次風雨來時，就會更知道怎麼站回彼此身邊。',
+  '有些人用說話表達愛，有些人用行動，有些人需要陪伴，有些人需要被肯定。別因為對方愛的方式和你不同，就以為那裡沒有愛；一起找出彼此真正收得到的方式。',
+  '如果你在等對方先溫柔，對方也可能正在等你。總要有一個人先把拳頭鬆開。你可以先說：「我不想再跟你對著站，我想跟你站在一起。」這不是示弱，是選擇愛。',
+  '你們之間真正重要的，不是每件事都分出輸贏，而是爭論結束後，兩個人還能感覺自己被尊重。願你們用想被對待的方式對待彼此，讓愛比面子多走一步。',
+  '情緒上來的時候，先照顧好自己的呼吸，再照顧彼此的語氣。慢慢吸氣、慢慢吐氣，等身體不再準備戰鬥，心才聽得進愛。你們值得一次不互相傷害的談話。',
+  '如果對方這次做錯了，請談這次的行為，不要把他整個人都說成不好。人被否定時只會防衛，行為被說清楚時才有機會改變。願你們對事誠實，對人溫柔。',
+  '願你們在最生氣的時候，也還記得對方曾經怎麼照顧你、逗你笑、陪你熬過不好過的日子。這些不會抹去現在的問題，卻能提醒你們值得把問題好好處理。',
+  '有時候和好只差一句更準確的話。把「你根本不在乎我」換成「剛才那一刻，我很需要你回應我」；把指責換成需要，對方才知道該怎麼把你接住。',
+  '你不必吞下所有委屈來維持和平，真正的和平是能安心說出不舒服，也相信對方願意聽。願你們的關係容得下真話，也容得下說真話時仍然彼此善待。',
+  '請不要用沉默測試對方有沒有懂你，也不要用猜測決定對方在想什麼。把問題問出來，把答案聽完。清楚可能不浪漫，卻是讓感情長久最踏實的溫柔。',
+  '兩個人相愛，不代表每天都有同樣的力氣。有時你只能走三步，對方就多走兩步；下一次再換你接住他。願你們不計較每一天是否公平，而是記得長久以來彼此都在努力。',
+  '當你們終於願意和好，別急著假裝一切恢復正常。可以一起說說，這次各自學到了什麼，下一次希望怎麼提醒彼此。每一次修復，都能替你們多準備一盞燈。',
+  '如果今天真的很累，就先約定好好睡一覺，明天幾點再談。重要的是把時間說清楚，別讓等待變成另一種受傷。愛可以休息，但不要無聲無息地失聯。',
+  '願你們都能分辨，對方是在拒絕這件事，還是在拒絕你這個人。多數時候，他只是有不同的需要和界線，並不是不要你。把兩件事分開，心就不必那麼害怕。',
+  '你們的感情不需要像別人，也不必用別人的標準判斷幸福。只要兩個人都能在這段關係裡被尊重、被聽見、被珍惜，你們就正在寫最適合自己的答案。',
+  '別小看一句真誠的謝謝。謝謝你願意留下來談、謝謝你剛才有忍住傷人的話、謝謝你仍然想抱抱我。被感謝的努力，更容易在下一次繼續出現。',
+  '當過去的傷又被碰到，現在的情緒可能會比事情本身更大。願你們不嘲笑這份敏感，而是一起看見它從哪裡來。被理解的舊傷，才有機會慢慢不再控制今天。',
+  '如果你想被哄，就放心說想被哄；如果你想要抱抱，也可以直接伸出手。成熟不是什麼都不需要，而是能對自己的需要負責，並給對方一個愛你的明確方向。',
+  '願你們不要只在快失去時才說珍惜。平常的一句早安、一個回覆、一個主動的擁抱，都在替關係存下安全感。今天和好之後，也記得把溫柔帶回普通的日子裡。',
+  '你們可能都說了自己的版本，卻還沒說最深的那一句。試著問問自己：我真正怕的是什麼？被忽略、被放棄，還是不再重要？把恐懼說出來，會比把怒氣丟出去更靠近彼此。',
+  '感情裡最難得的不是找到一個永遠不讓你失望的人，而是兩個人失望之後仍願意誠實調整。願你們不把期待藏成考題，而是一起討論怎麼讓愛更容易被收到。',
+  '請記得，你們現在看到的彼此，也許都是被情緒放大的樣子。等心情平靜，再重新看一次那個你熟悉的人。不要在最糟的一刻，替整段關係下最後的結論。',
+  '一段好的關係不會讓誰永遠忍耐，也不會要求誰永遠先道歉。願你們輪流成為那個柔軟的人，也輪流成為被接住的人，讓愛在兩個方向都能自由流動。',
+  '和好之後，做一件小小的日常吧：一起喝水、散步、吃點東西，或坐著聽一首歌。讓身體重新記住相處也可以是安全的，關係常常就是這樣一點一點暖回來。',
+  '如果這次的問題沒有立刻消失，也別因此否定今天的努力。能從互相攻擊走到願意理解，本身就是進步。大的改變，往往是很多次小小的修復累積而成。',
+  '願你們在說「你為什麼」之前，先說「我感覺」。願你們在說「你每次都」之前，先說清楚這一次。越具體的話越容易被理解，越溫柔的話越有機會被聽進去。',
+  '你們不必成為彼此唯一的答案，卻可以成為彼此很安心的地方。尊重對方的空間，也在需要時靠近；好的愛不是綁得很緊，而是知道鬆開手也還會回來。',
+  '今天願意再選擇彼此一次，就已經很勇敢。願你們把這份選擇變成一句可做到的承諾：下一次我會先聽完、先說清楚、先提醒你我仍然愛你。小小做到，比漂亮保證更有力量。'
 ];
 let fightPerson = localStorage.getItem('fightRoomPerson') || '';
 let fightDraftMood = '';
@@ -4941,6 +4994,7 @@ let fightData = fightNormalizeData(null);
 let fightFirebaseReady = false;
 let fightFlowOpen = false;
 let fightSoupPageOpen = false;
+let fightSoupReturnFlow = false;
 let fightSoupPhotoSrc = '';
 let fightSoupTextIndex = -1;
 let fightSoupAlbumFetchStarted = false;
@@ -5007,6 +5061,7 @@ function fightSetDraftMoods(moods){
 function fightEnterScreen(){
   fightFlowOpen = false;
   fightSoupPageOpen = false;
+  fightSoupReturnFlow = false;
   fightInitFirebase();
   fightRender();
 }
@@ -5025,15 +5080,17 @@ function fightStartFlow(){
   setTimeout(()=>document.getElementById('fight-flow')?.scrollIntoView({behavior:'smooth',block:'start'}), 0);
 }
 function fightOpenSoupPage(){
+  fightSoupReturnFlow = fightFlowOpen;
   fightSoupPageOpen = true;
   fightRender();
   setTimeout(()=>document.getElementById('fight-soup-page')?.scrollIntoView({behavior:'smooth',block:'start'}), 0);
 }
 function fightCloseSoupPage(){
   fightSoupPageOpen = false;
-  fightFlowOpen = true;
+  fightFlowOpen = fightSoupReturnFlow;
   fightRender();
-  setTimeout(()=>document.getElementById('fight-flow')?.scrollIntoView({behavior:'smooth',block:'start'}), 0);
+  const targetId = fightFlowOpen ? 'fight-flow' : 'fight-start';
+  setTimeout(()=>document.getElementById(targetId)?.scrollIntoView({behavior:'smooth',block:'start'}), 0);
 }
 function fightInitFirebase(){
   if(fightFirebaseReady || !window._fb){

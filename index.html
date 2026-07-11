@@ -211,6 +211,11 @@ transition:background .2s;
 .fight-protocol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
 .fight-rule{border-radius:15px;background:rgba(255,255,255,.72);border:1px solid rgba(232,99,122,.12);padding:10px;font-size:12px;color:var(--text-muted);line-height:1.55}
 .fight-rule strong{display:block;color:var(--rose);font-size:13px;margin-bottom:2px}
+.fight-start{min-height:52vh;display:flex;align-items:center;justify-content:center;padding:28px 12px}
+.fight-start[hidden],.fight-flow[hidden]{display:none}
+.fight-flow{display:flex;flex-direction:column;gap:14px}
+.fight-start-btn{width:min(320px,86%);border:none;border-radius:28px;background:linear-gradient(135deg,#e85f78,#ff9aa8);color:#fff;font-family:'Noto Serif TC',serif;font-size:28px;font-weight:800;letter-spacing:.5px;padding:28px 22px;box-shadow:0 18px 38px rgba(232,99,122,.28);cursor:pointer}
+.fight-start-btn:active{transform:scale(.98)}
 .fight-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .fight-tab{border:1.5px solid rgba(232,99,122,.16);background:var(--white);color:var(--rose);border-radius:16px;padding:11px 8px;font-family:'Noto Sans TC',sans-serif;font-weight:800;cursor:pointer}
 .fight-tab.active{background:var(--pink);color:#fff;box-shadow:0 0 0 3px rgba(232,99,122,.16)}
@@ -231,10 +236,6 @@ transition:background .2s;
 .fight-read{background:var(--pink-light);border-radius:14px;padding:10px 11px;color:var(--text);font-size:13px;line-height:1.65;min-height:38px;white-space:pre-wrap}
 .fight-read.compact{min-height:36px}
 .fight-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.fight-topic-card{border-radius:18px;background:var(--white);border:1px solid var(--card-border);padding:13px}
-.fight-topic-top{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}
-.fight-topic-title{font-family:'Noto Serif TC',serif;font-size:18px;color:var(--rose);font-weight:700}
-.fight-topic-meta{font-size:11px;color:var(--text-muted)}
 .fight-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
 .fight-btn{border:none;border-radius:14px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-weight:800;padding:11px 10px;cursor:pointer}
 .fight-btn.secondary{background:var(--pink-light);color:var(--rose);border:1px solid rgba(232,99,122,.16)}
@@ -248,7 +249,7 @@ transition:background .2s;
 .fight-history-item strong{display:block;color:var(--rose);font-size:13px;margin-bottom:2px}
 .fight-empty{text-align:center;color:var(--text-muted);font-size:13px;line-height:1.8;padding:14px;background:var(--pink-light);border-radius:16px}
 [data-theme="dark"] .fight-hero{background:linear-gradient(135deg,#321821,#18281e)}
-[data-theme="dark"] .fight-card,[data-theme="dark"] .fight-tab,[data-theme="dark"] .fight-step,[data-theme="dark"] .fight-topic-card{background:#2a1820}
+[data-theme="dark"] .fight-card,[data-theme="dark"] .fight-tab,[data-theme="dark"] .fight-step{background:#2a1820}
 @media(max-width:640px){
   .fight-grid{grid-template-columns:1fr}
   .fight-protocol,.fight-split{grid-template-columns:1fr}
@@ -3876,41 +3877,31 @@ onclick="hideSpecialForToday()">
 <!-- FIGHT ROOM -->
 <div id="page-fight" class="page">
   <div class="fight-shell">
-    <div class="fight-hero">
-      <div class="fight-kicker">REPAIR ROOM</div>
-      <div class="fight-title">吵架專區</div>
-      <div class="fight-sub">這裡不是判誰贏，是把「發生了什麼、我怎麼解讀、哪裡受傷、我需要什麼、下一步怎麼做」拆開。講清楚，比講漂亮更重要。</div>
-      <div class="fight-sync" id="fight-sync-status">等待同步...</div>
-      <div class="fight-protocol">
-        <div class="fight-rule"><strong>1. 只講一件事</strong>先聚焦這次衝突，不翻舊帳。</div>
-        <div class="fight-rule"><strong>2. 分開事實與解讀</strong>先寫看見的事，再寫心裡的故事。</div>
-        <div class="fight-rule"><strong>3. 需求要具體</strong>不要只說你都不懂，要說希望對方怎麼做。</div>
-        <div class="fight-rule"><strong>4. 各自負責一點</strong>和解不是認輸，是一起把關係修回來。</div>
-      </div>
+    <div class="fight-start" id="fight-start">
+      <button type="button" class="fight-start-btn" onclick="fightStartFlow()">我們吵架了</button>
     </div>
 
-    <div class="card">
-      <div class="card-title">先選擇你是誰</div>
-      <div class="fight-tabs">
-        <button type="button" class="fight-tab" id="fight-person-sheng" onclick="fightSelectPerson('聖展')">我是聖展</button>
-        <button type="button" class="fight-tab" id="fight-person-yujun" onclick="fightSelectPerson('予君')">我是予君</button>
+    <div class="fight-flow" id="fight-flow" hidden>
+      <div class="fight-hero">
+        <div class="fight-kicker">REPAIR ROOM</div>
+        <div class="fight-title">吵架專區</div>
+        <div class="fight-sub">這裡不是判誰贏，是把「發生了什麼、我怎麼解讀、哪裡受傷、我需要什麼、下一步怎麼做」拆開。講清楚，比講漂亮更重要。</div>
+        <div class="fight-sync" id="fight-sync-status">等待同步...</div>
+        <div class="fight-protocol">
+          <div class="fight-rule"><strong>1. 只講一件事</strong>先聚焦這次衝突，不翻舊帳。</div>
+          <div class="fight-rule"><strong>2. 分開事實與解讀</strong>先寫看見的事，再寫心裡的故事。</div>
+          <div class="fight-rule"><strong>3. 需求要具體</strong>不要只說你都不懂，要說希望對方怎麼做。</div>
+          <div class="fight-rule"><strong>4. 各自負責一點</strong>和解不是認輸，是一起把關係修回來。</div>
+        </div>
       </div>
-    </div>
 
-    <div class="fight-topic-card">
-      <div class="fight-topic-top">
-        <div class="fight-topic-title">這次真正要談的是</div>
-        <div class="fight-topic-meta" id="fight-topic-updated">尚未設定</div>
+      <div class="card">
+        <div class="card-title">先選擇你是誰</div>
+        <div class="fight-tabs">
+          <button type="button" class="fight-tab" id="fight-person-sheng" onclick="fightSelectPerson('聖展')">我是聖展</button>
+          <button type="button" class="fight-tab" id="fight-person-yujun" onclick="fightSelectPerson('予君')">我是予君</button>
+        </div>
       </div>
-      <div class="fight-read compact" id="fight-topic-read">先把題目寫清楚，才不會越吵越散。</div>
-      <div class="fight-field">
-        <input class="fight-input" id="fight-topic-input" placeholder="例如：昨天訊息沒有回、講話語氣、約定被改掉...">
-      </div>
-      <div class="fight-actions">
-        <button type="button" class="fight-btn" onclick="fightSaveTopic()">同步衝突焦點</button>
-        <button type="button" class="fight-btn secondary" onclick="fightUsePauseTemplate()">先暫停 20 分鐘</button>
-      </div>
-    </div>
 
     <div class="fight-grid">
       <div class="fight-card" id="fight-card-sheng">
@@ -3974,6 +3965,7 @@ onclick="hideSpecialForToday()">
       <div class="fight-history-list" id="fight-history-list">
         <div class="fight-empty">目前還沒有紀錄。</div>
       </div>
+    </div>
     </div>
   </div>
 </div>
@@ -4875,6 +4867,7 @@ let fightPerson = localStorage.getItem('fightRoomPerson') || '';
 let fightDraftMood = '';
 let fightData = fightNormalizeData(null);
 let fightFirebaseReady = false;
+let fightFlowOpen = false;
 
 function fightEmptyPerson(){
   return {mood:'',feeling:'',need:'',offer:'',fact:'',story:'',impact:'',request:'',repair:'',reflect:'',updatedAt:0};
@@ -4922,8 +4915,20 @@ function fightText(value, fallback='還沒有寫。'){
   return text ? escapeHtml(text) : fallback;
 }
 function fightEnterScreen(){
+  fightFlowOpen = false;
   fightInitFirebase();
   fightRender();
+}
+function fightRenderGate(){
+  const start=document.getElementById('fight-start');
+  const flow=document.getElementById('fight-flow');
+  if(start) start.hidden = fightFlowOpen;
+  if(flow) flow.hidden = !fightFlowOpen;
+}
+function fightStartFlow(){
+  fightFlowOpen = true;
+  fightRender(true);
+  setTimeout(()=>document.getElementById('fight-flow')?.scrollIntoView({behavior:'smooth',block:'start'}), 0);
 }
 function fightInitFirebase(){
   if(fightFirebaseReady || !window._fb){
@@ -4987,27 +4992,6 @@ function fightSummaryText(entry){
   if(impact) lines.push(`在意：${impact}`);
   return lines.join('\n');
 }
-function fightFormatPauseText(value){
-  if(!value) return '';
-  const time=new Date(value).getTime();
-  if(!Number.isFinite(time)) return '';
-  const label=new Date(time).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
-  return time>Date.now() ? `冷靜到 ${label}` : '暫停時間已到，可以重新開始談。';
-}
-function fightRenderTopic(){
-  const current=fightData.current || {};
-  const topic=String(current.topic || '').trim();
-  const pauseText=fightFormatPauseText(current.pauseUntil);
-  const meta=document.getElementById('fight-topic-updated');
-  const read=document.getElementById('fight-topic-read');
-  const input=document.getElementById('fight-topic-input');
-  if(meta){
-    const updated=current.updatedAt ? fightFormatTime(current.updatedAt) : '尚未設定';
-    meta.textContent = pauseText ? `${updated}｜${pauseText}` : updated;
-  }
-  if(read) read.innerHTML = fightText(topic, '先把題目寫清楚，才不會越吵越散。');
-  if(input && document.activeElement!==input) input.value = topic;
-}
 function fightFillEditor(force=false){
   if(!fightPerson) return;
   const active = document.activeElement;
@@ -5022,7 +5006,8 @@ function fightFillEditor(force=false){
   fightSetFieldValue('fight-input-repair', fightReadCompat(entry,'repair'));
 }
 function fightRender(forceEditor=false){
-  fightRenderTopic();
+  fightRenderGate();
+  if(!fightFlowOpen) return;
   FIGHT_PLAYERS.forEach(name=>{
     const suffix=fightPersonSuffix(name);
     const entry=fightData.current.people[name] || fightEmptyPerson();
@@ -5068,36 +5053,6 @@ function fightRenderHistory(){
     const topic=String(item.topic || '').trim() || '未填主題';
     return `<div class="fight-history-item"><strong>${fightFormatTime(item.resolvedAt)} 和解完成</strong>${escapeHtml(topic)}<br>聖展：${escapeHtml(sh.mood||'未填')}｜予君：${escapeHtml(yu.mood||'未填')}</div>`;
   }).join('');
-}
-async function fightSaveTopic(){
-  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
-  const topic=fightFieldValue('fight-topic-input');
-  const now=Date.now();
-  const {db,ref,update}=window._fb;
-  await update(ref(db,'fightRoom/current'), {
-    topic,
-    updatedAt:now,
-    createdAt:fightData.current.createdAt || now
-  }).catch(err=>{
-    console.error('fight topic save failed', err);
-    alert('同步失敗，請確認網路後再試一次');
-  });
-}
-async function fightUsePauseTemplate(){
-  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
-  const now=Date.now();
-  const pauseUntil=new Date(now + 20*60*1000).toISOString();
-  const topic=fightFieldValue('fight-topic-input') || fightData.current.topic || '';
-  const {db,ref,update}=window._fb;
-  await update(ref(db,'fightRoom/current'), {
-    topic,
-    pauseUntil,
-    updatedAt:now,
-    createdAt:fightData.current.createdAt || now
-  }).catch(err=>{
-    console.error('fight pause failed', err);
-    alert('同步失敗，請確認網路後再試一次');
-  });
 }
 async function fightSaveMyHeart(){
   if(!fightPerson){alert('先選擇你是誰');return;}
@@ -5156,12 +5111,16 @@ async function fightResolveCurrent(){
   const historyRef=push(ref(db,'fightRoom/history'));
   await set(historyRef,item);
   await set(ref(db,'fightRoom/current'), fightDefaultCurrent());
+  fightFlowOpen = false;
+  fightRender();
 }
 async function fightResetCurrent(){
   if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
   if(!confirm('確定清空目前這次吵架專區內容嗎？')) return;
   const {db,ref,set}=window._fb;
   await set(ref(db,'fightRoom/current'), fightDefaultCurrent());
+  fightFlowOpen = false;
+  fightRender();
 }
 window.addEventListener('firebaseReady', fightInitFirebase);
 if(window._fb) fightInitFirebase();

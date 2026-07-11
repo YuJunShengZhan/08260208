@@ -247,7 +247,7 @@ transition:background .2s;
 .fight-btn:disabled{opacity:.5;cursor:not-allowed}
 .fight-btn.secondary{background:var(--pink-light);color:var(--rose);border:1px solid rgba(232,99,122,.16)}
 .fight-btn.green{background:#2f9a68}
-.fight-next-actions[hidden],.fight-next-after[hidden],.fight-next-result[hidden],.fight-peace-panel[hidden]{display:none}
+.fight-next-actions[hidden],.fight-next-after[hidden],.fight-next-result[hidden],.fight-peace-panel[hidden],.fight-peace-custom[hidden],.fight-peace-vote[hidden],.fight-peace-blocker[hidden]{display:none}
 .fight-next-result{margin-top:10px}
 .fight-peace-panel{margin-top:12px;padding-top:12px;border-top:1px solid var(--card-border)}
 .fight-peace-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--rose)}
@@ -264,14 +264,32 @@ transition:background .2s;
 .fight-peace-person{border-left:4px solid var(--pink);background:var(--pink-light);border-radius:0 14px 14px 0;padding:10px 11px;font-size:13px;line-height:1.75}
 .fight-peace-person strong{color:var(--rose)}
 .fight-peace-final{border-radius:14px;background:rgba(47,154,104,.13);color:#247653;font-size:13px;font-weight:700;line-height:1.75;padding:11px}
+.fight-peace-custom{margin-top:7px;min-height:76px}
+.fight-peace-vote,.fight-peace-blocker{margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border)}
+.fight-peace-question{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--rose);text-align:center}
+.fight-peace-vote-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.fight-peace-vote-btn{border:1px solid rgba(232,99,122,.18);border-radius:14px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:800;padding:12px;cursor:pointer}
+.fight-peace-vote-btn:disabled{cursor:default;opacity:.82}
+.fight-peace-vote-btn.active.yes{background:#2f9a68;border-color:#2f9a68;color:#fff}
+.fight-peace-vote-btn.active.no{background:var(--pink);border-color:var(--pink);color:#fff}
+.fight-blocker-entry{margin-top:10px;border-radius:14px;background:var(--pink-light);padding:11px;font-size:13px;line-height:1.7;overflow-wrap:anywhere}
+.fight-blocker-entry strong{color:var(--rose)}
+.fight-blocker-editor{margin-top:10px}
+.fight-blocker-editor .fight-textarea{min-height:82px;margin-bottom:8px}
 .fight-soup-photo{position:relative;overflow:hidden;border-radius:18px;width:100%;min-height:360px;background:linear-gradient(135deg,#ffe9ef,#f4fff4);border:1px solid rgba(232,99,122,.14);margin:10px auto 0;display:flex;align-items:center;justify-content:center}
 .fight-soup-photo img{width:100%;height:auto;max-height:70vh;object-fit:contain;display:block}
 .fight-soup-photo.empty{display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;padding:20px;text-align:center}
 .fight-soup-text{margin-top:10px;font-size:14px;line-height:1.9}
 .fight-history-list{display:flex;flex-direction:column;gap:8px}
-.fight-history-item{position:relative;border-radius:15px;background:var(--pink-light);padding:11px 76px 11px 11px;font-size:12px;color:var(--text-muted);line-height:1.65}
+.fight-history-item{position:relative;border-radius:15px;background:var(--pink-light);padding:11px;font-size:12px;color:var(--text-muted);line-height:1.65}
 .fight-history-item strong{display:block;color:var(--rose);font-size:13px;margin-bottom:2px}
-.fight-history-del{position:absolute;top:9px;right:9px;border:1px solid rgba(232,99,122,.16);border-radius:999px;background:rgba(255,255,255,.76);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;padding:5px 9px;cursor:pointer}
+.fight-history-del{border:1px solid rgba(232,99,122,.16);border-radius:999px;background:rgba(255,255,255,.76);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;padding:5px 9px;cursor:pointer}
+.fight-history-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.fight-history-details{margin-top:8px;border-top:1px solid rgba(232,99,122,.14);padding-top:8px}
+.fight-history-details summary{color:var(--rose);font-weight:800;cursor:pointer;list-style:none}
+.fight-history-details summary::-webkit-details-marker{display:none}
+.fight-history-full{display:grid;gap:8px;margin-top:9px}
+.fight-history-section{border-radius:12px;background:rgba(255,255,255,.62);padding:9px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--text)}
 .fight-empty{text-align:center;color:var(--text-muted);font-size:13px;line-height:1.8;padding:14px;background:var(--pink-light);border-radius:16px}
 [data-theme="dark"] .fight-hero{background:linear-gradient(135deg,#321821,#18281e)}
 [data-theme="dark"] .fight-soup-card{background:linear-gradient(135deg,#321821,#18281e)}
@@ -280,6 +298,7 @@ transition:background .2s;
 [data-theme="dark"] .fight-soup-photo{background:linear-gradient(135deg,#2f1b25,#1b2d24);border-color:rgba(255,170,190,.18)}
 [data-theme="dark"] .fight-history-del{background:rgba(42,24,32,.86);border-color:rgba(255,170,190,.18)}
 [data-theme="dark"] .fight-peace-status span.done,[data-theme="dark"] .fight-peace-final{background:rgba(71,190,132,.16);color:#9be2bd}
+[data-theme="dark"] .fight-history-section{background:rgba(255,255,255,.05)}
 @media(max-width:640px){
   .fight-grid{grid-template-columns:1fr}
   .fight-protocol,.fight-split{grid-template-columns:1fr}
@@ -3978,16 +3997,24 @@ onclick="hideSpecialForToday()">
         <div class="fight-peace-group">
           <div class="fight-peace-label">我現在最需要</div>
           <div class="fight-peace-options" id="fight-peace-needs"></div>
+          <textarea class="fight-textarea fight-peace-custom" id="fight-peace-need-custom" wrap="soft" placeholder="寫下你真正需要的回應" oninput="fightSetPeaceCustom('need',this.value)" hidden></textarea>
         </div>
         <div class="fight-peace-group">
           <div class="fight-peace-label">我願意先做到</div>
           <div class="fight-peace-options" id="fight-peace-offers"></div>
+          <textarea class="fight-textarea fight-peace-custom" id="fight-peace-offer-custom" wrap="soft" placeholder="寫下你願意先做的事" oninput="fightSetPeaceCustom('offer',this.value)" hidden></textarea>
         </div>
         <div class="fight-actions single">
           <button type="button" class="fight-btn green" id="fight-peace-save" onclick="fightSavePeaceChoice()">送出我的和好選擇</button>
         </div>
         <div class="fight-peace-status" id="fight-peace-status"></div>
         <div class="fight-peace-summary fight-next-result" id="fight-next-result" hidden></div>
+        <div class="fight-peace-vote" id="fight-peace-vote" hidden>
+          <div class="fight-peace-question">願意和對方和好嗎？</div>
+          <div class="fight-peace-vote-actions" id="fight-peace-vote-actions"></div>
+          <div class="fight-peace-status" id="fight-peace-vote-status"></div>
+        </div>
+        <div class="fight-peace-blocker" id="fight-peace-blocker" hidden></div>
         <div class="fight-actions single fight-next-after" id="fight-next-after" hidden>
           <button type="button" class="fight-btn green" onclick="fightResolveCurrent()">和解完成並歸檔</button>
         </div>
@@ -4904,8 +4931,8 @@ function showPage(id,btn){
 // ── 吵架專區：同步心聲與和解清單 ──
 const FIGHT_PLAYERS = ['聖展','予君'];
 const FIGHT_MOODS = ['委屈','生氣','難過','被忽略','需要冷靜','願意談','想要抱抱','想要做愛','想被哄','想撒嬌','想親親','想牽手','想被安慰','想聽道歉','想被在乎','想講清楚','想先睡覺','想要陪陪','想要空間','想要和好'];
-const FIGHT_PEACE_NEEDS = ['先抱抱我','真心跟我道歉','先聽我說完','告訴我你還在乎','一起把誤會說清楚','陪我安靜一下'];
-const FIGHT_PEACE_OFFERS = ['我會先放軟語氣','我願意承認做錯的地方','我會聽完不插話','我不再翻舊帳','我願意先抱抱你','我會做出一個具體改變'];
+const FIGHT_PEACE_NEEDS = ['先抱抱我','真心跟我道歉','先聽我說完','告訴我你還在乎','一起把誤會說清楚','陪我安靜一下','其他'];
+const FIGHT_PEACE_OFFERS = ['我會先放軟語氣','我願意承認做錯的地方','我會聽完不插話','我不再翻舊帳','我願意先抱抱你','我會做出一個具體改變','其他'];
 const FIGHT_SOUP_TEXTS = [
   '你們會吵架，不代表你們不適合；很多時候只是兩個都很在乎的人，剛好用太急、太痛、太害怕失去的方式在說話。真正珍貴的感情不是永遠不吵，而是吵完以後還願意回頭看見對方，願意把刺收起來，再用比較柔軟的方式靠近。',
   '如果今天的話說得重了一點，先別急著把它當成不愛了。有些情緒其實是很笨拙的求救：我想被在乎、我想被理解、我想知道你還站在我這邊。願你們把誤會放慢，把愛放大，慢慢找回一開始牽手時的那份心安。',
@@ -5025,13 +5052,21 @@ let fightSoupAlbumHasLoaded = false;
 let fightEditorKeepLocal = false;
 let fightPeaceNeedDraft = '';
 let fightPeaceOfferDraft = '';
+let fightPeaceNeedCustom = '';
+let fightPeaceOfferCustom = '';
 let fightPeaceDraftPerson = '';
+let fightBlockerReasonDraft = '';
+let fightBlockerRequestDraft = '';
+let fightBlockerDraftPerson = '';
 
 function fightEmptyPerson(){
   return {mood:'',moods:[],message:'',feeling:'',need:'',offer:'',fact:'',story:'',impact:'',request:'',repair:'',reflect:'',updatedAt:0};
 }
 function fightEmptyPeaceChoice(){
   return {need:'',offer:'',updatedAt:0};
+}
+function fightEmptyPeaceBlocker(){
+  return {reason:'',request:'',acknowledgedBy:'',updatedAt:0};
 }
 function fightDefaultCurrent(){
   return {
@@ -5041,6 +5076,9 @@ function fightDefaultCurrent(){
     pauseUntil:'',
     nextAction:{type:'',text:'',by:'',updatedAt:0},
     peaceChoices:{},
+    peaceVotes:{},
+    peaceBlockers:{},
+    peaceRounds:{},
     people:{'聖展':fightEmptyPerson(),'予君':fightEmptyPerson()},
     steps:{}
   };
@@ -5052,8 +5090,12 @@ function fightNormalizeData(raw){
   current.pauseUntil = String(current.pauseUntil || '');
   current.nextAction = Object.assign({type:'',text:'',by:'',updatedAt:0}, current.nextAction || {});
   current.peaceChoices = Object.assign({}, current.peaceChoices || {});
+  current.peaceVotes = Object.assign({}, current.peaceVotes || {});
+  current.peaceBlockers = Object.assign({}, current.peaceBlockers || {});
+  current.peaceRounds = Object.assign({}, current.peaceRounds || {});
   FIGHT_PLAYERS.forEach(name=>{
     if(current.peaceChoices[name]) current.peaceChoices[name] = Object.assign(fightEmptyPeaceChoice(), current.peaceChoices[name]);
+    if(current.peaceBlockers[name]) current.peaceBlockers[name] = Object.assign(fightEmptyPeaceBlocker(), current.peaceBlockers[name]);
   });
   current.people = Object.assign({}, current.people || {});
   FIGHT_PLAYERS.forEach(name=>{
@@ -5099,7 +5141,12 @@ function fightEnterScreen(){
   fightSoupReturnFlow = false;
   fightPeaceNeedDraft = '';
   fightPeaceOfferDraft = '';
+  fightPeaceNeedCustom = '';
+  fightPeaceOfferCustom = '';
   fightPeaceDraftPerson = '';
+  fightBlockerReasonDraft = '';
+  fightBlockerRequestDraft = '';
+  fightBlockerDraftPerson = '';
   fightInitFirebase();
   fightRender();
 }
@@ -5152,10 +5199,18 @@ function fightSelectPerson(name){
   localStorage.setItem('fightRoomPerson', fightPerson);
   const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
   const peace=fightData.current.peaceChoices?.[fightPerson] || fightEmptyPeaceChoice();
+  const blocker=fightData.current.peaceBlockers?.[fightPerson] || fightEmptyPeaceBlocker();
   fightSetDraftMoods(fightEntryMoods(entry));
-  fightPeaceNeedDraft=String(peace.need || '');
-  fightPeaceOfferDraft=String(peace.offer || '');
+  const savedNeed=String(peace.need || '');
+  const savedOffer=String(peace.offer || '');
+  fightPeaceNeedDraft=FIGHT_PEACE_NEEDS.includes(savedNeed) ? savedNeed : (savedNeed ? '其他' : '');
+  fightPeaceOfferDraft=FIGHT_PEACE_OFFERS.includes(savedOffer) ? savedOffer : (savedOffer ? '其他' : '');
+  fightPeaceNeedCustom=fightPeaceNeedDraft==='其他' ? savedNeed : '';
+  fightPeaceOfferCustom=fightPeaceOfferDraft==='其他' ? savedOffer : '';
   fightPeaceDraftPerson=fightPerson;
+  fightBlockerReasonDraft=String(blocker.reason || '');
+  fightBlockerRequestDraft=String(blocker.request || '');
+  fightBlockerDraftPerson=fightPerson;
   fightEditorKeepLocal = false;
   fightRender(true);
 }
@@ -5262,9 +5317,28 @@ function fightPeaceChoicesReady(){
 function fightEnsurePeaceDraft(){
   if(fightPeaceDraftPerson===fightPerson) return;
   const choice=fightData.current.peaceChoices?.[fightPerson] || fightEmptyPeaceChoice();
-  fightPeaceNeedDraft=String(choice.need || '');
-  fightPeaceOfferDraft=String(choice.offer || '');
+  const savedNeed=String(choice.need || '');
+  const savedOffer=String(choice.offer || '');
+  fightPeaceNeedDraft=FIGHT_PEACE_NEEDS.includes(savedNeed) ? savedNeed : (savedNeed ? '其他' : '');
+  fightPeaceOfferDraft=FIGHT_PEACE_OFFERS.includes(savedOffer) ? savedOffer : (savedOffer ? '其他' : '');
+  fightPeaceNeedCustom=fightPeaceNeedDraft==='其他' ? savedNeed : '';
+  fightPeaceOfferCustom=fightPeaceOfferDraft==='其他' ? savedOffer : '';
   fightPeaceDraftPerson=fightPerson;
+}
+function fightResolvedPeaceNeed(){
+  return fightPeaceNeedDraft==='其他' ? fightPeaceNeedCustom.trim() : fightPeaceNeedDraft;
+}
+function fightResolvedPeaceOffer(){
+  return fightPeaceOfferDraft==='其他' ? fightPeaceOfferCustom.trim() : fightPeaceOfferDraft;
+}
+function fightUpdatePeaceSaveState(){
+  const save=document.getElementById('fight-peace-save');
+  if(save) save.disabled=!(fightPerson && fightResolvedPeaceNeed() && fightResolvedPeaceOffer());
+}
+function fightSetPeaceCustom(kind,value){
+  if(kind==='need') fightPeaceNeedCustom=String(value || '');
+  if(kind==='offer') fightPeaceOfferCustom=String(value || '');
+  fightUpdatePeaceSaveState();
 }
 function fightRenderPeaceOptions(){
   fightEnsurePeaceDraft();
@@ -5276,15 +5350,103 @@ function fightRenderPeaceOptions(){
   if(offers){
     offers.innerHTML=FIGHT_PEACE_OFFERS.map((text,index)=>`<button type="button" class="fight-peace-choice${fightPeaceOfferDraft===text?' active':''}" onclick="fightChoosePeaceOffer(${index})">${escapeHtml(text)}</button>`).join('');
   }
-  const save=document.getElementById('fight-peace-save');
-  if(save) save.disabled=!(fightPerson && fightPeaceNeedDraft && fightPeaceOfferDraft);
+  const needCustom=document.getElementById('fight-peace-need-custom');
+  const offerCustom=document.getElementById('fight-peace-offer-custom');
+  if(needCustom){
+    needCustom.hidden=fightPeaceNeedDraft!=='其他';
+    if(document.activeElement!==needCustom) needCustom.value=fightPeaceNeedCustom;
+  }
+  if(offerCustom){
+    offerCustom.hidden=fightPeaceOfferDraft!=='其他';
+    if(document.activeElement!==offerCustom) offerCustom.value=fightPeaceOfferCustom;
+  }
+  fightUpdatePeaceSaveState();
 }
 function fightPeaceSummaryHtml(){
   const people=FIGHT_PLAYERS.map(name=>{
     const choice=fightData.current.peaceChoices?.[name] || fightEmptyPeaceChoice();
     return `<div class="fight-peace-person"><strong>${escapeHtml(name)}</strong><br>現在最需要：${escapeHtml(choice.need)}<br>願意先做到：${escapeHtml(choice.offer)}</div>`;
   }).join('');
-  return `${people}<div class="fight-peace-final">現在先完成自己選的「我願意」，再用對方選的方式回應對方。兩件事都真的做到後，再一起按下完成歸檔。</div>`;
+  return `${people}<div class="fight-peace-final">先看清楚彼此真正需要什麼，再各自回答是否願意和好。只有兩邊都願意，這次對話才會完成。</div>`;
+}
+function fightPeaceVote(name){
+  const vote=String(fightData.current.peaceVotes?.[name] || '');
+  return vote==='yes' || vote==='no' ? vote : '';
+}
+function fightPeaceVotesReady(){
+  return FIGHT_PLAYERS.every(name=>fightPeaceVote(name));
+}
+function fightPeaceBothYes(){
+  return FIGHT_PLAYERS.every(name=>fightPeaceVote(name)==='yes');
+}
+function fightPeaceNoPlayers(){
+  return FIGHT_PLAYERS.filter(name=>fightPeaceVote(name)==='no');
+}
+function fightPeaceBlockerDone(name){
+  const blocker=fightData.current.peaceBlockers?.[name] || fightEmptyPeaceBlocker();
+  return !!(String(blocker.reason || '').trim() && String(blocker.request || '').trim());
+}
+function fightPeaceBlockersReadyForRetry(){
+  const noPlayers=fightPeaceNoPlayers();
+  return !!noPlayers.length && noPlayers.every(name=>{
+    const blocker=fightData.current.peaceBlockers?.[name] || fightEmptyPeaceBlocker();
+    const other=FIGHT_PLAYERS.find(player=>player!==name) || '';
+    return fightPeaceBlockerDone(name) && blocker.acknowledgedBy===other;
+  });
+}
+function fightEnsureBlockerDraft(){
+  if(fightBlockerDraftPerson===fightPerson) return;
+  const blocker=fightData.current.peaceBlockers?.[fightPerson] || fightEmptyPeaceBlocker();
+  fightBlockerReasonDraft=String(blocker.reason || '');
+  fightBlockerRequestDraft=String(blocker.request || '');
+  fightBlockerDraftPerson=fightPerson;
+}
+function fightSetBlockerDraft(kind,value){
+  if(kind==='reason') fightBlockerReasonDraft=String(value || '');
+  if(kind==='request') fightBlockerRequestDraft=String(value || '');
+}
+function fightRenderPeaceVote(){
+  const panel=document.getElementById('fight-peace-vote');
+  const actions=document.getElementById('fight-peace-vote-actions');
+  const status=document.getElementById('fight-peace-vote-status');
+  const choicesReady=fightPeaceChoicesReady();
+  const votesReady=fightPeaceVotesReady();
+  if(panel) panel.hidden=!choicesReady;
+  if(!choicesReady) return;
+  const mine=fightPeaceVote(fightPerson);
+  if(actions){
+    actions.innerHTML=`<button type="button" class="fight-peace-vote-btn yes${mine==='yes'?' active':''}" onclick="fightSavePeaceVote('yes')" ${votesReady?'disabled':''}>願意</button><button type="button" class="fight-peace-vote-btn no${mine==='no'?' active':''}" onclick="fightSavePeaceVote('no')" ${votesReady?'disabled':''}>不願意</button>`;
+  }
+  if(status){
+    status.innerHTML=FIGHT_PLAYERS.map(name=>`<span class="${fightPeaceVote(name)?'done':''}">${escapeHtml(name)} ${fightPeaceVote(name)?'已回答':'還沒回答'}</span>`).join('');
+  }
+}
+function fightRenderPeaceBlocker(){
+  const panel=document.getElementById('fight-peace-blocker');
+  if(!panel) return;
+  const show=fightPeaceVotesReady() && fightPeaceNoPlayers().length>0;
+  panel.hidden=!show;
+  if(!show){panel.innerHTML='';return;}
+  fightEnsureBlockerDraft();
+  const noPlayers=fightPeaceNoPlayers();
+  let html='<div class="fight-peace-question">還差哪一步？</div><div class="fight-peace-sub">不願意不是結束。把真正卡住的地方說清楚，讓對方知道要怎麼接住你。</div>';
+  if(fightPeaceVote(fightPerson)==='no'){
+    html+=`<div class="fight-blocker-editor"><div class="fight-peace-label">我現在還不能和好的原因</div><textarea class="fight-textarea" wrap="soft" placeholder="寫出真正卡住你的地方" oninput="fightSetBlockerDraft('reason',this.value)">${escapeHtml(fightBlockerReasonDraft)}</textarea><div class="fight-peace-label">對方做到什麼，我願意再回答一次</div><textarea class="fight-textarea" wrap="soft" placeholder="請寫一件具體、做得到的事" oninput="fightSetBlockerDraft('request',this.value)">${escapeHtml(fightBlockerRequestDraft)}</textarea><button type="button" class="fight-btn green" style="width:100%" onclick="fightSavePeaceBlocker()">送出我的卡點</button></div>`;
+  }
+  noPlayers.forEach(name=>{
+    const blocker=fightData.current.peaceBlockers?.[name] || fightEmptyPeaceBlocker();
+    if(!fightPeaceBlockerDone(name)){
+      html+=`<div class="fight-blocker-entry"><strong>${escapeHtml(name)}</strong> 還在整理真正卡住的原因。</div>`;
+      return;
+    }
+    const other=FIGHT_PLAYERS.find(player=>player!==name) || '';
+    const canAck=fightPerson===other && blocker.acknowledgedBy!==other;
+    html+=`<div class="fight-blocker-entry"><strong>${escapeHtml(name)} 還卡在</strong>${escapeHtml(blocker.reason)}<br><strong>願意再回答的條件</strong>${escapeHtml(blocker.request)}${canAck?`<button type="button" class="fight-btn green" style="width:100%;margin-top:8px" onclick="fightAcknowledgeBlocker('${escapeHtml(name)}')">我收到，願意認真做到</button>`:`<div style="margin-top:6px;color:#2f9a68;font-weight:800">${blocker.acknowledgedBy?'對方已收到':'等待對方確認'}</div>`}</div>`;
+  });
+  if(fightPeaceBlockersReadyForRetry()){
+    html+='<button type="button" class="fight-btn green" style="width:100%;margin-top:10px" onclick="fightRestartPeaceVote()">重新回答願不願意和好</button>';
+  }
+  panel.innerHTML=html;
 }
 function fightRenderNextStep(){
   const hint=document.getElementById('fight-next-hint');
@@ -5297,18 +5459,24 @@ function fightRenderNextStep(){
   const nextAction=fightData.current.nextAction || {};
   const active=nextAction.type==='peace-match';
   const choicesReady=fightPeaceChoicesReady();
+  const votesReady=fightPeaceVotesReady();
+  const bothYes=fightPeaceBothYes();
   if(hint){
     hint.textContent = !ready
       ? '等兩邊都寫好想說的話，這裡會出現下一步。'
       : !active
         ? '兩邊都寫好了。進入快速和好配對，選出彼此真正需要的回應。'
-        : choicesReady
-          ? '你們都選好了。照著彼此的需求和承諾完成這次和好。'
+        : choicesReady && bothYes
+          ? '你們都願意和好。確認彼此的承諾後，就可以完成歸檔。'
+          : choicesReady && votesReady
+            ? '回答已同步。若有人還不願意，請完成「還差哪一步」。'
+          : choicesReady
+            ? '你們都選好了。現在各自回答是否願意和好。'
           : '正在配對和好方式，等兩邊都送出選擇。';
   }
   if(actions) actions.hidden = !ready || active;
   if(panel) panel.hidden = !active;
-  if(after) after.hidden = !active || !choicesReady;
+  if(after) after.hidden = !active || !bothYes;
   if(result){
     result.hidden = !active || !choicesReady;
     result.innerHTML = active && choicesReady ? fightPeaceSummaryHtml() : '';
@@ -5317,6 +5485,8 @@ function fightRenderNextStep(){
     status.innerHTML=active ? FIGHT_PLAYERS.map(name=>`<span class="${fightPeaceChoiceDone(name)?'done':''}">${escapeHtml(name)} ${fightPeaceChoiceDone(name)?'已選好':'還沒選'}</span>`).join('') : '';
   }
   if(active) fightRenderPeaceOptions();
+  fightRenderPeaceVote();
+  fightRenderPeaceBlocker();
 }
 function fightCollectAlbumPhotos(){
   const photos=[];
@@ -5378,6 +5548,33 @@ function fightRenderSoupCard(force=false){
 function fightRefreshSoupCard(){
   fightRenderSoupCard(true);
 }
+function fightVoteLabel(vote){
+  return vote==='yes' ? '願意和好' : vote==='no' ? '當時還不願意' : '未回答';
+}
+function fightHistoryFullHtml(item){
+  const peopleHtml=FIGHT_PLAYERS.map(name=>{
+    const person=item.people?.[name] || {};
+    const moods=fightEntryMoods(person).join('、') || '未選';
+    const choice=item.peaceChoices?.[name] || {};
+    return `<div class="fight-history-section"><strong>${escapeHtml(name)}</strong>情緒：${escapeHtml(moods)}\n想說的話：${escapeHtml(fightMessageText(person) || '未填')}\n最需要：${escapeHtml(choice.need || '未填')}\n願意先做到：${escapeHtml(choice.offer || '未填')}\n最後回答：${escapeHtml(fightVoteLabel(item.peaceVotes?.[name]))}</div>`;
+  }).join('');
+  const rounds=Object.values(item.peaceRounds || {}).sort((a,b)=>(Number(a.completedAt)||0)-(Number(b.completedAt)||0));
+  const roundsHtml=rounds.map((round,index)=>{
+    const votes=FIGHT_PLAYERS.map(name=>`${name}：${fightVoteLabel(round.votes?.[name])}`).join('｜');
+    const blockers=FIGHT_PLAYERS.map(name=>{
+      const blocker=round.blockers?.[name] || {};
+      if(!blocker.reason && !blocker.request) return '';
+      return `${name} 卡住的原因：${blocker.reason || '未填'}\n希望對方做到：${blocker.request || '未填'}\n對方確認：${blocker.acknowledgedBy ? `${blocker.acknowledgedBy} 已收到` : '尚未確認'}`;
+    }).filter(Boolean).join('\n\n');
+    return `<div class="fight-history-section"><strong>第 ${index+1} 次和好回答</strong>${escapeHtml(votes)}${blockers?`\n${escapeHtml(blockers)}`:''}</div>`;
+  }).join('');
+  const currentBlockers=FIGHT_PLAYERS.map(name=>{
+    const blocker=item.peaceBlockers?.[name] || {};
+    if(!blocker.reason && !blocker.request) return '';
+    return `${name}：${blocker.reason || '未填'}／希望：${blocker.request || '未填'}`;
+  }).filter(Boolean).join('\n');
+  return `<div class="fight-history-full">${peopleHtml}${roundsHtml}${currentBlockers?`<div class="fight-history-section"><strong>最後一輪卡點</strong>${escapeHtml(currentBlockers)}</div>`:''}<div class="fight-history-section"><strong>時間</strong>開始：${escapeHtml(fightFormatTime(item.createdAt))}\n完成：${escapeHtml(fightFormatTime(item.resolvedAt))}</div></div>`;
+}
 function fightRenderHistory(){
   const el=document.getElementById('fight-history-list');
   if(!el) return;
@@ -5390,7 +5587,7 @@ function fightRenderHistory(){
     const sh=item.people?.['聖展'] || {};
     const yu=item.people?.['予君'] || {};
     const topic=String(item.topic || '').trim() || '這次對話';
-    return `<div class="fight-history-item"><button type="button" class="fight-history-del" onclick="fightDeleteHistory('${escapeHtml(item._key || '')}')">刪除</button><strong>${fightFormatTime(item.resolvedAt)} 和解完成</strong>${escapeHtml(topic)}<br>聖展：${escapeHtml(sh.mood||'未填')}｜予君：${escapeHtml(yu.mood||'未填')}</div>`;
+    return `<div class="fight-history-item"><div class="fight-history-head"><div><strong>${fightFormatTime(item.resolvedAt)} 和解完成</strong>${escapeHtml(topic)}<br>聖展：${escapeHtml(sh.mood||'未填')}｜予君：${escapeHtml(yu.mood||'未填')}</div><button type="button" class="fight-history-del" onclick="fightDeleteHistory('${escapeHtml(item._key || '')}')">刪除</button></div><details class="fight-history-details"><summary>查看完整紀錄</summary>${fightHistoryFullHtml(item)}</details></div>`;
   }).join('');
 }
 async function fightDeleteHistory(key){
@@ -5431,6 +5628,9 @@ async function fightSaveMyHeart(){
       updatedAt:now,
       nextAction:{type:'',text:'',by:'',updatedAt:0},
       peaceChoices:null,
+      peaceVotes:null,
+      peaceBlockers:null,
+      peaceRounds:null,
       createdAt:fightData.current.createdAt || now
     });
     fightClearEditor();
@@ -5448,6 +5648,7 @@ function fightChoosePeaceNeed(index){
   if(!value) return;
   fightPeaceDraftPerson=fightPerson;
   fightPeaceNeedDraft=value;
+  if(value!=='其他') fightPeaceNeedCustom='';
   fightRenderPeaceOptions();
 }
 function fightChoosePeaceOffer(index){
@@ -5456,6 +5657,7 @@ function fightChoosePeaceOffer(index){
   if(!value) return;
   fightPeaceDraftPerson=fightPerson;
   fightPeaceOfferDraft=value;
+  if(value!=='其他') fightPeaceOfferCustom='';
   fightRenderPeaceOptions();
 }
 async function fightStartPeaceMatch(){
@@ -5465,11 +5667,19 @@ async function fightStartPeaceMatch(){
   const by=fightPerson || '我們';
   fightPeaceNeedDraft='';
   fightPeaceOfferDraft='';
+  fightPeaceNeedCustom='';
+  fightPeaceOfferCustom='';
   fightPeaceDraftPerson=fightPerson;
+  fightBlockerReasonDraft='';
+  fightBlockerRequestDraft='';
+  fightBlockerDraftPerson=fightPerson;
   const {db,ref,update}=window._fb;
   await update(ref(db,'fightRoom/current'), {
     nextAction:{type:'peace-match',text:'',by,updatedAt:now},
     peaceChoices:null,
+    peaceVotes:null,
+    peaceBlockers:null,
+    peaceRounds:null,
     updatedAt:now
   }).catch(err=>{
     console.error('fight peace match start failed', err);
@@ -5478,24 +5688,99 @@ async function fightStartPeaceMatch(){
 }
 async function fightSavePeaceChoice(){
   if(!fightPerson){alert('先選擇你是誰');return;}
-  if(!fightPeaceNeedDraft || !fightPeaceOfferDraft){alert('兩個選項都要選');return;}
+  const need=fightResolvedPeaceNeed();
+  const offer=fightResolvedPeaceOffer();
+  if(!need || !offer){alert('兩個選項都要選，選其他時也要填寫內容');return;}
   if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
   const now=Date.now();
   const {db,ref,update}=window._fb;
   await update(ref(db,'fightRoom/current'), {
     [`peaceChoices/${fightPerson}`]:{
-      need:fightPeaceNeedDraft,
-      offer:fightPeaceOfferDraft,
+      need,
+      offer,
       updatedAt:now
     },
+    peaceVotes:null,
+    peaceBlockers:null,
+    peaceRounds:null,
     updatedAt:now
   }).catch(err=>{
     console.error('fight peace choice save failed', err);
     alert('同步失敗，請確認網路後再試一次');
   });
 }
+async function fightSavePeaceVote(vote){
+  if(!fightPerson){alert('先選擇你是誰');return;}
+  if(!fightPeaceChoicesReady()){alert('要等兩邊都送出和好選擇');return;}
+  if(vote!=='yes' && vote!=='no') return;
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  const now=Date.now();
+  const {db,ref,update}=window._fb;
+  await update(ref(db,'fightRoom/current'), {
+    [`peaceVotes/${fightPerson}`]:vote,
+    updatedAt:now
+  }).catch(err=>{
+    console.error('fight peace vote save failed', err);
+    alert('同步失敗，請確認網路後再試一次');
+  });
+}
+async function fightSavePeaceBlocker(){
+  if(!fightPerson || fightPeaceVote(fightPerson)!=='no'){alert('只有選擇不願意的一方需要填寫');return;}
+  const reason=fightBlockerReasonDraft.trim();
+  const request=fightBlockerRequestDraft.trim();
+  if(!reason || !request){alert('請把卡住的原因和希望對方做到的事都寫完');return;}
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  const now=Date.now();
+  const {db,ref,update}=window._fb;
+  await update(ref(db,'fightRoom/current'), {
+    [`peaceBlockers/${fightPerson}`]:{reason,request,acknowledgedBy:'',updatedAt:now},
+    updatedAt:now
+  }).catch(err=>{
+    console.error('fight blocker save failed', err);
+    alert('同步失敗，請確認網路後再試一次');
+  });
+}
+async function fightAcknowledgeBlocker(owner){
+  if(!fightPerson){alert('先選擇你是誰');return;}
+  if(!FIGHT_PLAYERS.includes(owner) || owner===fightPerson) return;
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  const now=Date.now();
+  const {db,ref,update}=window._fb;
+  await update(ref(db,'fightRoom/current'), {
+    [`peaceBlockers/${owner}/acknowledgedBy`]:fightPerson,
+    [`peaceBlockers/${owner}/acknowledgedAt`]:now,
+    updatedAt:now
+  }).catch(err=>{
+    console.error('fight blocker acknowledge failed', err);
+    alert('同步失敗，請確認網路後再試一次');
+  });
+}
+async function fightRestartPeaceVote(){
+  if(!fightPeaceBlockersReadyForRetry()){alert('要等卡點寫完並由對方確認收到');return;}
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  const now=Date.now();
+  const round={
+    votes:JSON.parse(JSON.stringify(fightData.current.peaceVotes || {})),
+    blockers:JSON.parse(JSON.stringify(fightData.current.peaceBlockers || {})),
+    completedAt:now
+  };
+  fightBlockerReasonDraft='';
+  fightBlockerRequestDraft='';
+  fightBlockerDraftPerson=fightPerson;
+  const {db,ref,update}=window._fb;
+  await update(ref(db,'fightRoom/current'), {
+    [`peaceRounds/${now}`]:round,
+    peaceVotes:null,
+    peaceBlockers:null,
+    updatedAt:now
+  }).catch(err=>{
+    console.error('fight peace vote restart failed', err);
+    alert('同步失敗，請確認網路後再試一次');
+  });
+}
 async function fightResolveCurrent(){
   if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  if(!fightPeaceBothYes()){alert('要等雙方都選擇願意和好');return;}
   if(!confirm('確定要把這次對話標記為和解完成並歸檔嗎？')) return;
   const {db,ref,set,push}=window._fb;
   const resolvedAt=Date.now();

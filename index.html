@@ -119,6 +119,7 @@ gap:2px;cursor:pointer;padding:3px 5px;
 color:var(--text-muted);font-size:9px;
 transition:color .2s;
 border-radius:10px;
+flex:1;min-width:0;
 }
 .nav-btn.active{color:var(--pink);font-weight:700;}
 .nav-btn:hover{color:var(--pink);}
@@ -199,6 +200,49 @@ font-family:'Noto Sans TC',sans-serif;
 transition:background .2s;
 }
 .open-btn:hover{background:var(--rose);}
+
+/* Fight room */
+.fight-shell{display:flex;flex-direction:column;gap:14px}
+.fight-hero{border-radius:24px;padding:18px;background:linear-gradient(135deg,#fff5f7,#f8fff6);border:1px solid rgba(232,99,122,.14);box-shadow:0 12px 28px rgba(201,75,100,.08)}
+.fight-kicker{font-size:11px;font-weight:800;color:#2f9a68;letter-spacing:.6px;margin-bottom:4px}
+.fight-title{font-family:'Noto Serif TC',serif;font-size:25px;font-weight:700;color:var(--rose);line-height:1.25}
+.fight-sub{font-size:13px;color:var(--text-muted);line-height:1.75;margin-top:6px}
+.fight-sync{display:inline-flex;margin-top:10px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.78);border:1px solid rgba(232,99,122,.14);font-size:11px;color:var(--text-muted)}
+.fight-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fight-tab{border:1.5px solid rgba(232,99,122,.16);background:var(--white);color:var(--rose);border-radius:16px;padding:11px 8px;font-family:'Noto Sans TC',sans-serif;font-weight:800;cursor:pointer}
+.fight-tab.active{background:var(--pink);color:#fff;box-shadow:0 0 0 3px rgba(232,99,122,.16)}
+.fight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fight-card{border-radius:20px;background:var(--white);border:1px solid var(--card-border);padding:14px}
+.fight-card.mine{border-color:rgba(232,99,122,.35);box-shadow:0 12px 26px rgba(232,99,122,.08)}
+.fight-card-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}
+.fight-name{font-family:'Noto Serif TC',serif;font-size:20px;color:var(--rose);font-weight:700}
+.fight-time{font-size:11px;color:var(--text-muted);white-space:nowrap}
+.fight-mood-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.fight-mood{border:1px solid rgba(232,99,122,.16);background:var(--pink-light);color:var(--rose);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.fight-mood.active{background:var(--pink);color:#fff;border-color:var(--pink)}
+.fight-field{margin-top:10px}
+.fight-label{font-size:12px;color:var(--text-muted);margin-bottom:6px}
+.fight-input,.fight-textarea{width:100%;border:1px solid var(--card-border);border-radius:14px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:10px 11px;outline:none}
+.fight-textarea{resize:vertical;min-height:84px;line-height:1.7}
+.fight-read{background:var(--pink-light);border-radius:14px;padding:11px;color:var(--text);font-size:13px;line-height:1.75;min-height:44px;white-space:pre-wrap}
+.fight-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.fight-btn{border:none;border-radius:14px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-weight:800;padding:11px 10px;cursor:pointer}
+.fight-btn.secondary{background:var(--pink-light);color:var(--rose);border:1px solid rgba(232,99,122,.16)}
+.fight-btn.green{background:#2f9a68}
+.fight-plan{display:grid;gap:8px}
+.fight-step{display:flex;gap:9px;align-items:flex-start;border:1px solid rgba(232,99,122,.12);border-radius:15px;background:var(--white);padding:10px;cursor:pointer}
+.fight-step input{margin-top:3px;accent-color:var(--pink)}
+.fight-step span{font-size:13px;color:var(--text);line-height:1.55}
+.fight-history-list{display:flex;flex-direction:column;gap:8px}
+.fight-history-item{border-radius:15px;background:var(--pink-light);padding:11px;font-size:12px;color:var(--text-muted);line-height:1.65}
+.fight-history-item strong{display:block;color:var(--rose);font-size:13px;margin-bottom:2px}
+.fight-empty{text-align:center;color:var(--text-muted);font-size:13px;line-height:1.8;padding:14px;background:var(--pink-light);border-radius:16px}
+[data-theme="dark"] .fight-hero{background:linear-gradient(135deg,#321821,#18281e)}
+[data-theme="dark"] .fight-card,[data-theme="dark"] .fight-tab,[data-theme="dark"] .fight-step{background:#2a1820}
+@media(max-width:640px){
+  .fight-grid{grid-template-columns:1fr}
+  .fight-title{font-size:23px}
+}
 
 .special-overlay{
 position:fixed;inset:0;
@@ -3818,6 +3862,84 @@ onclick="hideSpecialForToday()">
 
 </div>
 
+<!-- FIGHT ROOM -->
+<div id="page-fight" class="page">
+  <div class="fight-shell">
+    <div class="fight-hero">
+      <div class="fight-kicker">PEACE ROOM</div>
+      <div class="fight-title">吵架專區</div>
+      <div class="fight-sub">先把情緒放到桌上，再慢慢聽見對方真正想說的話。這裡會同步保存兩個人的心聲和和解進度。</div>
+      <div class="fight-sync" id="fight-sync-status">等待同步...</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">先選擇你是誰</div>
+      <div class="fight-tabs">
+        <button type="button" class="fight-tab" id="fight-person-sheng" onclick="fightSelectPerson('聖展')">我是聖展</button>
+        <button type="button" class="fight-tab" id="fight-person-yujun" onclick="fightSelectPerson('予君')">我是予君</button>
+      </div>
+    </div>
+
+    <div class="fight-grid">
+      <div class="fight-card" id="fight-card-sheng">
+        <div class="fight-card-head"><div class="fight-name">聖展</div><div class="fight-time" id="fight-time-sheng">尚未更新</div></div>
+        <div class="fight-mood-row" id="fight-mood-sheng"></div>
+        <div class="fight-field"><div class="fight-label">我現在真正的感覺</div><div class="fight-read" id="fight-feeling-sheng">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我希望你先聽見</div><div class="fight-read" id="fight-need-sheng">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我願意先做的一件事</div><div class="fight-read" id="fight-offer-sheng">還沒有寫。</div></div>
+      </div>
+
+      <div class="fight-card" id="fight-card-yujun">
+        <div class="fight-card-head"><div class="fight-name">予君</div><div class="fight-time" id="fight-time-yujun">尚未更新</div></div>
+        <div class="fight-mood-row" id="fight-mood-yujun"></div>
+        <div class="fight-field"><div class="fight-label">我現在真正的感覺</div><div class="fight-read" id="fight-feeling-yujun">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我希望你先聽見</div><div class="fight-read" id="fight-need-yujun">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我願意先做的一件事</div><div class="fight-read" id="fight-offer-yujun">還沒有寫。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">寫下我的心聲</div>
+      <div class="fight-field">
+        <div class="fight-label">現在的情緒</div>
+        <div class="fight-mood-row" id="fight-edit-moods"></div>
+      </div>
+      <div class="fight-field">
+        <div class="fight-label">我現在真正的感覺</div>
+        <textarea class="fight-textarea" id="fight-input-feeling" placeholder="例如：我其實不是想吵，我是覺得自己沒有被在乎..."></textarea>
+      </div>
+      <div class="fight-field">
+        <div class="fight-label">我希望你先聽見</div>
+        <textarea class="fight-textarea" id="fight-input-need" placeholder="例如：我希望你先聽我講完，不要急著反駁。"></textarea>
+      </div>
+      <div class="fight-field">
+        <div class="fight-label">我願意先做的一件事</div>
+        <input class="fight-input" id="fight-input-offer" placeholder="例如：我可以先好好說，不用刺人的語氣。">
+      </div>
+      <div class="fight-actions">
+        <button type="button" class="fight-btn" onclick="fightSaveMyHeart()">同步我的心聲</button>
+        <button type="button" class="fight-btn secondary" onclick="fightSendQuickPeace()">送出和好訊號</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">和解清單</div>
+      <div class="fight-plan" id="fight-plan-list"></div>
+      <div class="fight-actions">
+        <button type="button" class="fight-btn green" onclick="fightResolveCurrent()">和解完成並歸檔</button>
+        <button type="button" class="fight-btn secondary" onclick="fightResetCurrent()">重新開始這次對話</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">最近和解紀錄</div>
+      <div class="fight-history-list" id="fight-history-list">
+        <div class="fight-empty">目前還沒有紀錄。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- PERIOD -->
 <div id="page-period" class="page">
   <div id="pd-status-banner" style="border-radius:20px;padding:20px;margin-bottom:16px;text-align:center;background:var(--pd-banner-default,var(--white));border:1px solid var(--card-border)">
@@ -3915,6 +4037,7 @@ onclick="hideSpecialForToday()">
   <button class="nav-btn active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>首頁</button>
   <button class="nav-btn" onclick="showPage('album',this)"><span class="nav-icon">📸</span>相簿</button>
   <button class="nav-btn" onclick="showPage('memories',this)"><span class="nav-icon">🎞️</span>回憶</button>
+  <button class="nav-btn" onclick="showPage('fight',this)"><span class="nav-icon">🕊️</span>吵架</button>
   <button class="nav-btn" onclick="showPage('period',this)"><span class="nav-icon">🌸</span>生理期</button>
   <button class="nav-btn" onclick="showPage('game',this)"><span class="nav-icon">🎮</span>遊戲</button>
 </nav>
@@ -4692,10 +4815,223 @@ function showPage(id,btn){
   if(id==='period') pdRefresh();
   if(id==='album') albumRenderCal();
   if(id==='memories') renderMemories();
+  if(id==='fight') fightEnterScreen();
   if(isGamePage){
     showGameHub();
   }
 }
+
+// ── 吵架專區：同步心聲與和解清單 ──
+const FIGHT_PLAYERS = ['聖展','予君'];
+const FIGHT_MOODS = ['委屈','生氣','難過','怕失去','想被抱抱','需要冷靜'];
+const FIGHT_STEPS = [
+  {id:'pause',text:'先停下來，不用刺人的話繼續攻擊。'},
+  {id:'listen',text:'兩個人輪流說完，中間先不要反駁。'},
+  {id:'understand',text:'各自說出「我聽懂你在意的是什麼」。'},
+  {id:'next',text:'一起決定一件下一步可以做到的小事。'},
+  {id:'warm',text:'如果可以，用一句溫柔的話結尾。'}
+];
+let fightPerson = localStorage.getItem('fightRoomPerson') || '';
+let fightDraftMood = '';
+let fightData = fightNormalizeData(null);
+let fightFirebaseReady = false;
+
+function fightEmptyPerson(){
+  return {mood:'',feeling:'',need:'',offer:'',updatedAt:0};
+}
+function fightDefaultCurrent(){
+  return {
+    createdAt:Date.now(),
+    updatedAt:0,
+    people:{'聖展':fightEmptyPerson(),'予君':fightEmptyPerson()},
+    steps:{}
+  };
+}
+function fightNormalizeData(raw){
+  const data = raw || {};
+  const current = Object.assign(fightDefaultCurrent(), data.current || {});
+  current.people = Object.assign({}, current.people || {});
+  FIGHT_PLAYERS.forEach(name=>{
+    current.people[name] = Object.assign(fightEmptyPerson(), current.people[name] || {});
+  });
+  current.steps = Object.assign({}, current.steps || {});
+  const history = Object.entries(data.history || {})
+    .map(([key,item])=>Object.assign({_key:key}, item || {}))
+    .sort((a,b)=>(Number(b.resolvedAt)||0)-(Number(a.resolvedAt)||0))
+    .slice(0,8);
+  return {current, history};
+}
+function fightPersonSuffix(name){
+  return name==='聖展' ? 'sheng' : 'yujun';
+}
+function fightSetStatus(text){
+  const el=document.getElementById('fight-sync-status');
+  if(el) el.textContent=text;
+}
+function fightFormatTime(ts){
+  const n=Number(ts)||0;
+  if(!n) return '尚未更新';
+  return new Date(n).toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+}
+function fightText(value, fallback='還沒有寫。'){
+  const text=String(value||'').trim();
+  return text ? escapeHtml(text) : fallback;
+}
+function fightEnterScreen(){
+  fightInitFirebase();
+  fightRender();
+}
+function fightInitFirebase(){
+  if(fightFirebaseReady || !window._fb){
+    if(!window._fb) fightSetStatus('尚未連線，等待同步...');
+    return;
+  }
+  fightFirebaseReady = true;
+  const {db,ref,onValue}=window._fb;
+  fightSetStatus('同步中...');
+  onValue(ref(db,'fightRoom'), snap=>{
+    fightData = fightNormalizeData(snap.val());
+    fightSetStatus('已同步');
+    fightRender();
+  }, err=>{
+    console.warn('fight room sync failed', err);
+    fightSetStatus('同步失敗，請稍後再試');
+  });
+}
+function fightSelectPerson(name){
+  fightPerson = FIGHT_PLAYERS.includes(name) ? name : '';
+  localStorage.setItem('fightRoomPerson', fightPerson);
+  const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
+  fightDraftMood = entry.mood || '';
+  fightRender(true);
+}
+function fightChooseMood(mood){
+  fightDraftMood = mood;
+  fightRenderMoodEditor();
+}
+function fightRenderMoodBadges(name){
+  const mood = fightData.current.people[name]?.mood || '';
+  const el=document.getElementById(`fight-mood-${fightPersonSuffix(name)}`);
+  if(!el) return;
+  el.innerHTML = mood
+    ? `<span class="fight-mood active">${escapeHtml(mood)}</span>`
+    : `<span class="fight-mood">還沒選情緒</span>`;
+}
+function fightRenderMoodEditor(){
+  const el=document.getElementById('fight-edit-moods');
+  if(!el) return;
+  el.innerHTML = FIGHT_MOODS.map(mood=>`<button type="button" class="fight-mood${fightDraftMood===mood?' active':''}" onclick="fightChooseMood('${escapeHtml(mood)}')">${escapeHtml(mood)}</button>`).join('');
+}
+function fightFillEditor(force=false){
+  if(!fightPerson) return;
+  const active = document.activeElement;
+  const isEditing = active && ['fight-input-feeling','fight-input-need','fight-input-offer'].includes(active.id);
+  if(isEditing && !force) return;
+  const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
+  fightDraftMood = fightDraftMood || entry.mood || '';
+  const feeling=document.getElementById('fight-input-feeling');
+  const need=document.getElementById('fight-input-need');
+  const offer=document.getElementById('fight-input-offer');
+  if(feeling) feeling.value = entry.feeling || '';
+  if(need) need.value = entry.need || '';
+  if(offer) offer.value = entry.offer || '';
+}
+function fightRender(forceEditor=false){
+  FIGHT_PLAYERS.forEach(name=>{
+    const suffix=fightPersonSuffix(name);
+    const entry=fightData.current.people[name] || fightEmptyPerson();
+    document.getElementById(`fight-card-${suffix}`)?.classList.toggle('mine', fightPerson===name);
+    const time=document.getElementById(`fight-time-${suffix}`);
+    const feeling=document.getElementById(`fight-feeling-${suffix}`);
+    const need=document.getElementById(`fight-need-${suffix}`);
+    const offer=document.getElementById(`fight-offer-${suffix}`);
+    if(time) time.textContent=fightFormatTime(entry.updatedAt);
+    if(feeling) feeling.innerHTML=fightText(entry.feeling);
+    if(need) need.innerHTML=fightText(entry.need);
+    if(offer) offer.innerHTML=fightText(entry.offer);
+    fightRenderMoodBadges(name);
+  });
+  document.getElementById('fight-person-sheng')?.classList.toggle('active', fightPerson==='聖展');
+  document.getElementById('fight-person-yujun')?.classList.toggle('active', fightPerson==='予君');
+  fightRenderMoodEditor();
+  fightFillEditor(forceEditor);
+  fightRenderPlan();
+  fightRenderHistory();
+}
+function fightRenderPlan(){
+  const el=document.getElementById('fight-plan-list');
+  if(!el) return;
+  const steps=fightData.current.steps || {};
+  el.innerHTML = FIGHT_STEPS.map(step=>`
+    <label class="fight-step">
+      <input type="checkbox" ${steps[step.id]?'checked':''} onchange="fightToggleStep('${step.id}',this.checked)">
+      <span>${escapeHtml(step.text)}</span>
+    </label>`).join('');
+}
+function fightRenderHistory(){
+  const el=document.getElementById('fight-history-list');
+  if(!el) return;
+  const history=fightData.history || [];
+  if(!history.length){
+    el.innerHTML='<div class="fight-empty">目前還沒有紀錄。</div>';
+    return;
+  }
+  el.innerHTML = history.map(item=>{
+    const sh=item.people?.['聖展'] || {};
+    const yu=item.people?.['予君'] || {};
+    return `<div class="fight-history-item"><strong>${fightFormatTime(item.resolvedAt)} 和解完成</strong>聖展：${escapeHtml(sh.mood||'未填')}｜予君：${escapeHtml(yu.mood||'未填')}</div>`;
+  }).join('');
+}
+async function fightSaveMyHeart(){
+  if(!fightPerson){alert('先選擇你是誰');return;}
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  const feeling=document.getElementById('fight-input-feeling')?.value.trim() || '';
+  const need=document.getElementById('fight-input-need')?.value.trim() || '';
+  const offer=document.getElementById('fight-input-offer')?.value.trim() || '';
+  const now=Date.now();
+  const {db,ref,update}=window._fb;
+  await update(ref(db,'fightRoom/current'), {
+    [`people/${fightPerson}`]: {mood:fightDraftMood,feeling,need,offer,updatedAt:now},
+    updatedAt:now,
+    createdAt:fightData.current.createdAt || now
+  }).catch(err=>{
+    console.error('fight save failed', err);
+    alert('同步失敗，請確認網路後再試一次');
+  });
+}
+function fightSendQuickPeace(){
+  if(!fightPerson){alert('先選擇你是誰');return;}
+  fightDraftMood = '想被抱抱';
+  const offer=document.getElementById('fight-input-offer');
+  if(offer && !offer.value.trim()) offer.value='我想和好，也願意先聽你說。';
+  fightSaveMyHeart();
+}
+async function fightToggleStep(id, checked){
+  if(!window._fb) return;
+  const {db,ref,update}=window._fb;
+  await update(ref(db,'fightRoom/current'), {
+    [`steps/${id}`]: !!checked,
+    updatedAt:Date.now()
+  }).catch(err=>console.warn('fight step sync failed', err));
+}
+async function fightResolveCurrent(){
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  if(!confirm('確定要把這次對話標記為和解完成並歸檔嗎？')) return;
+  const {db,ref,set,push}=window._fb;
+  const resolvedAt=Date.now();
+  const item=Object.assign({}, fightData.current, {resolvedAt});
+  const historyRef=push(ref(db,'fightRoom/history'));
+  await set(historyRef,item);
+  await set(ref(db,'fightRoom/current'), fightDefaultCurrent());
+}
+async function fightResetCurrent(){
+  if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
+  if(!confirm('確定清空目前這次吵架專區內容嗎？')) return;
+  const {db,ref,set}=window._fb;
+  await set(ref(db,'fightRoom/current'), fightDefaultCurrent());
+}
+window.addEventListener('firebaseReady', fightInitFirebase);
+if(window._fb) fightInitFirebase();
 
 let gameTabsNudged=false;
 function gameTabsNudge(){

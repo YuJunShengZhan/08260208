@@ -244,8 +244,8 @@ transition:background .2s;
 .fight-btn.green{background:#2f9a68}
 .fight-mediation-result{margin-top:10px}
 .fight-mediation-result[hidden]{display:none}
-.fight-soup-photo{position:relative;overflow:hidden;border-radius:18px;min-height:190px;background:linear-gradient(135deg,#ffe9ef,#f4fff4);border:1px solid rgba(232,99,122,.14);margin-top:10px}
-.fight-soup-photo img{width:100%;height:100%;min-height:190px;object-fit:cover;display:block}
+.fight-soup-photo{position:relative;overflow:hidden;border-radius:18px;width:min(240px,100%);height:150px;background:linear-gradient(135deg,#ffe9ef,#f4fff4);border:1px solid rgba(232,99,122,.14);margin:10px auto 0}
+.fight-soup-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .fight-soup-photo.empty{display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:13px;padding:20px;text-align:center}
 .fight-soup-text{margin-top:10px;font-size:14px;line-height:1.9}
 .fight-history-list{display:flex;flex-direction:column;gap:8px}
@@ -254,6 +254,7 @@ transition:background .2s;
 .fight-empty{text-align:center;color:var(--text-muted);font-size:13px;line-height:1.8;padding:14px;background:var(--pink-light);border-radius:16px}
 [data-theme="dark"] .fight-hero{background:linear-gradient(135deg,#321821,#18281e)}
 [data-theme="dark"] .fight-card,[data-theme="dark"] .fight-tab{background:#2a1820}
+[data-theme="dark"] .fight-soup-photo{background:linear-gradient(135deg,#2f1b25,#1b2d24);border-color:rgba(255,170,190,.18)}
 @media(max-width:640px){
   .fight-grid{grid-template-columns:1fr}
   .fight-protocol,.fight-split{grid-template-columns:1fr}
@@ -4853,12 +4854,78 @@ function showPage(id,btn){
 // ── 吵架專區：同步心聲與和解清單 ──
 const FIGHT_PLAYERS = ['聖展','予君'];
 const FIGHT_MOODS = ['委屈','生氣','難過','被忽略','不安全','需要冷靜','願意談'];
+const FIGHT_SOUP_TEXTS = [
+  '你們會吵架，不代表你們不適合；很多時候只是兩個都很在乎的人，剛好用太急、太痛、太害怕失去的方式在說話。真正珍貴的感情不是永遠不吵，而是吵完以後還願意回頭看見對方，願意把刺收起來，再用比較柔軟的方式靠近。',
+  '如果今天的話說得重了一點，先別急著把它當成不愛了。有些情緒其實是很笨拙的求救：我想被在乎、我想被理解、我想知道你還站在我這邊。願你們把誤會放慢，把愛放大，慢慢找回一開始牽手時的那份心安。',
+  '愛不是每一次都要漂亮地解決問題，有時候愛只是願意停下來說一句：我剛剛太急了，但我不是不愛你。願你們都記得，眼前這個人不是敵人，是陪你笑過、鬧過、留下很多回憶的人，值得再被溫柔對待一次。',
+  '兩個人在一起最難的，不是沒有情緒，而是有情緒的時候還願意保護彼此。今天如果都受傷了，那就先別比誰比較痛，先承認我們都不好受，再一起想怎麼讓明天的我們不要重複今天的難過。',
+  '吵架的時候，人很容易把對方看成問題本身，但其實真正要一起面對的是誤會、疲累、害怕和沒有說出口的期待。願你們把矛頭轉向問題，不要轉向彼此，因為你們本來就應該是同一隊。',
+  '感情裡最溫柔的能力，是聽見對方話裡那句沒有說出口的「你可不可以在乎我」。如果今天誰先開口和好，不是輸了，是他比面子更珍惜你們。願你們都能被好好接住，也願你們都願意接住對方。',
+  '有些吵架不是因為不愛，而是因為太想被愛得確定。當不安變成語氣，委屈變成冷淡，兩個人就容易錯過真正想說的話。願你們慢慢把情緒翻譯成需要，把防備翻譯成靠近。',
+  '今天不需要一次把所有問題都解完，只要先做到一件事：不要讓彼此孤單地難過。願你們先把聲音放低，把心打開一點點，從一句「我聽懂你剛剛很難受」開始，關係就會慢慢回來。',
+  '一段好的感情，不是靠沒有爭執證明，而是靠每次爭執後都更懂彼此一點。願這次不只是吵架，而是一次重新認識對方的機會，知道彼此的雷點，也知道彼此最需要被愛的地方。',
+  '你們曾經一起留下的照片，不只是畫面，是證明：你們不是只有今天的生氣，也有很多值得被記得的溫柔。先讓那些好回憶幫你們把心放軟，再回來好好說話，好嗎。',
+  '如果愛是一間房子，吵架不是把房子拆掉，而是提醒哪裡漏風了。今天先別急著怪誰沒修好，先一起把窗關上、把燈打開，讓兩個人都知道：我們還想住在這裡。',
+  '有時候最傷人的不是事情本身，而是那一刻覺得自己沒有被選擇。願你們在談之前先記得：對方不是故意讓你痛，他可能也正在用不成熟的方式保護自己的難過。',
+  '和好不是把事情假裝沒發生，而是願意把發生的事放到桌上，然後一起說：我們下次可不可以換一種方式。願你們不要用沉默懲罰愛，也不要用氣話定義彼此。',
+  '如果現在心裡還有刺，不用假裝沒事。真正的靠近不是立刻笑出來，而是可以誠實地說：我還有點痛，但我願意聽你說。這樣的願意，本身就很珍貴。',
+  '感情最怕的不是吵，是吵完後兩個人都躲進自己的委屈裡。願你們有一個人先伸手，也願另一個人看見那隻手不是挑釁，是想回家的訊號。',
+  '每一次不舒服，都在提醒你們：這裡有一個需要被照顧的地方。不要把需要說成指責，也不要把委屈說成攻擊。慢慢說，說清楚，愛才有地方可以落下來。',
+  '你們不需要成為完全不吵架的情侶，你們只需要成為吵架後還願意學會彼此語言的人。願這次讓你們更懂：對方生氣背後在怕什麼，沉默背後在等什麼。',
+  '如果今天彼此都累了，就先不要硬談到完美。先抱抱也可以，先安靜也可以，先說一句「我還在」也可以。愛有時候不是答案，是陪伴答案慢慢出現的耐心。',
+  '有些話在生氣時說出口，會比真正想表達的意思硬很多。願你們都願意替對方留一點餘地：也許他不是不在乎，只是當下不會說；也許她不是要鬧，只是很想被安撫。',
+  '兩個人的世界裡，最重要的不是誰比較有道理，而是誰願意先讓關係不要繼續受傷。願你們把「我對你錯」換成「我們怎麼一起好起來」，這就是很成熟的愛。',
+  '照片裡的你們曾經那麼靠近，所以今天即使有距離，也不是回不去了。願你們把那份靠近重新拿出來，用比較輕的語氣、比較真的心，慢慢走回彼此身邊。',
+  '吵架會讓人忘記愛的全貌，只看見眼前這一個不舒服的片段。願你們先不要用一場吵架否定整段感情，因為你們之間還有很多真心，值得被重新看見。',
+  '如果你們都還願意點進這個地方，代表心裡其實都還想修好。那就別讓面子坐在主位，讓珍惜坐上來。願今天的話，最後不是把彼此推遠，而是讓彼此更懂怎麼靠近。',
+  '真正愛一個人，不是永遠情緒穩定，而是情緒來了之後還願意負責。願你們都能說出自己的痛，也都能為自己的語氣負責，讓愛不是被消耗，而是被修復。',
+  '有時候一句「你剛剛那樣我很難過」比一百句反擊更有力量。願你們都勇敢一點，把最真實的在意說出來，而不是躲在冷淡、酸話或生氣後面等對方猜。',
+  '你們不是因為一模一樣才在一起，而是因為願意理解彼此的不同。這次如果想法不一樣，就先別急著判誰錯，先問一句：你為什麼會這樣感覺？理解會比反駁更靠近愛。',
+  '感情需要被照顧，就像照片需要被保存。不是每一天都完美，但願意整理、願意回看、願意珍惜，那些日子就會變成你們一起走過的證明。',
+  '如果今天誰覺得委屈，請先記得：你值得被聽見；如果誰覺得被責怪，也請記得：對方可能只是太需要你。願你們把彼此的防衛拆開，看見裡面真正柔軟的地方。',
+  '一段關係裡最幸福的事，是吵架後還能確認：我們不是要分開，我們只是要找到更好的相處方式。願你們每一次修復，都比上一次更懂得保護對方。',
+  '別讓一時的氣話，偷走你們好多天累積的甜。先停一下，喝口水，想想對方曾經讓你安心的樣子，再回來說話。愛不是沒有裂縫，是願意一起補起來。',
+  '有些誤會像霧，看起來很大，其實只要願意靠近一點、問清楚一點，就會散開。願你們不要在霧裡互相丟石頭，而是一起牽著手慢慢走出去。',
+  '今天可以先不完美，但不要放棄溫柔。哪怕只是一句「我剛剛有點過分」，都能讓對方知道：你在乎的不是輸贏，是我們還能不能好好在一起。',
+  '愛的安全感不是猜出對方所有心思，而是願意在不確定時開口確認。願你們下次少一點試探，多一點直說；少一點硬撐，多一點抱抱。',
+  '每段深的感情都會遇到需要磨合的地方，這不是壞事，這代表你們真的走進彼此生活裡了。願這些摩擦最後不是傷痕，而是讓你們更貼合的痕跡。',
+  '如果今天你們都覺得自己沒被懂，那就先從懂對方一句話開始。不是同意全部，而是先承認：你這樣感覺對你來說是真的。被承認以後，心就比較不需要用力防衛。',
+  '和好不是立刻忘記難過，而是有人願意陪你把難過慢慢放下。願你們都能成為對方的那個人：不一定完美，但願意留下，願意聽，願意改。',
+  '很多情侶散掉，不是因為不愛，是因為都在等對方先低頭。願你們不要把珍惜輸給等待。先開口的人不是比較卑微，是比較勇敢。',
+  '你們的愛不只存在順利的時候，也存在願意修補的時候。今天如果修好了，這段回憶以後會提醒你們：原來我們不是不能吵，是吵完還能更懂彼此。',
+  '請不要用最生氣的那一刻，決定對方在你心裡的位置。人會有笨拙、會有失控、會有沒說好的時候，但願意回頭、願意道歉、願意改，就是很值得珍惜的真心。',
+  '你們都不是壞人，只是剛好在同一個晚上帶著自己的傷說話。願你們把對方的話聽慢一點，把自己的話說真一點，讓誤會不要比愛還大聲。',
+  '有些愛需要一句確認：我還愛你，我只是現在很難受。願你們在吵架裡也保留這句底線，讓對方知道就算現在不舒服，關係還是有可以回來的門。',
+  '如果對方今天說得不好聽，先不要急著用更難聽的話回去。可以先說：我想聽你真正想講的是什麼，但這個語氣我會受傷。這樣的界線，也是一種溫柔。',
+  '最好的和解不是誰吞下去，而是兩個人都被看見。願你們的對話最後不是「算了」，而是「我懂了，原來你在意的是這個」。懂了，心就會靠近。',
+  '當你們願意把想說的話寫下來，其實就是在替愛留一條路。願這條路今天走得慢一點也沒關係，只要不是背對背越走越遠，就已經很好了。',
+  '一段長久的感情，靠的不是永遠浪漫，而是平凡日子裡一次又一次選擇彼此。今天也可以再選一次：選擇好好說，選擇不傷害，選擇把我們放在第一位。',
+  '如果心裡還很亂，就先不要急著講大道理。先說感受，先說需要，先說你其實很在乎。真正能讓人軟下來的，通常不是辯贏，而是真心。',
+  '你們的照片會被留下，是因為那些瞬間曾經很值得。願今天這次吵架，也能被你們變成值得的一部分：不是因為它好受，而是因為你們從裡面學會更愛對方。',
+  '願你們在彼此生氣的時候，也不要忘記彼此可愛的樣子。那個會笑、會撒嬌、會陪你的人還在，只是現在被情緒蓋住了。等霧散一點，再好好抱抱吧。',
+  '真正的親密，是可以把不好看的情緒拿出來，但不把對方弄碎。願你們都慢慢練習：我可以生氣，但我不羞辱你；我可以委屈，但我不消失。',
+  '如果愛有方向，那一定不是往誰贏誰輸走，而是往我們怎麼更懂彼此走。願你們今天都放下一點武器，拿起一點耐心，讓這段關係重新被好好照顧。',
+  '你們能遇見彼此、留下這些回憶，本來就不是容易的事。不要讓一場情緒把那麼多珍貴都蓋掉。願你們用今天的修復，替未來的自己留下一句：還好我們當時沒有放棄好好說話。'
+];
+const FIGHT_MEDIATION_RULES = [
+  {id:'reply',label:'回覆和安全感',words:['訊息','回訊息','已讀','未讀','不回','晚回','消失','電話','聯絡','報備'],need:'想被穩定放在心上',advice:'先約定回覆節奏，例如忙的時候留一句「我在忙，晚點回你」，讓等待不要變成猜測。'},
+  {id:'tone',label:'說話語氣',words:['語氣','口氣','兇','大聲','罵','吼','不耐煩','酸','反話','難聽'],need:'想被尊重地對待',advice:'先處理語氣再處理事情，可以說「我想聽你說，但這個語氣我會受傷」。'},
+  {id:'care',label:'被重視感',words:['不在乎','忽略','冷落','不重要','重視','陪我','陪伴','敷衍','在乎'],need:'想確認自己很重要',advice:'不要只說「你都不在乎」，改成說「我需要你用一個具體行動讓我安心」。'},
+  {id:'promise',label:'約定和可靠感',words:['約定','答應','說好','取消','改時間','遲到','忘記','承諾'],need:'想相信說好的事會被放在心上',advice:'把下次做法講清楚，例如變動前先告知、不能做到就提前說，不要讓對方空等。'},
+  {id:'jealousy',label:'界線和吃醋',words:['吃醋','曖昧','女生','男生','前任','聊天','朋友','界線'],need:'想知道彼此的界線是被保護的',advice:'先講清楚哪些互動會不舒服，再一起訂一個雙方都做得到的界線。'},
+  {id:'intimacy',label:'親密和靠近',words:['抱','親','靠近','做愛','愛愛','親密','牽手','抱抱'],need:'想用親密確認彼此還在一起',advice:'如果現在還有情緒，先不要勉強親密，可以先從牽手、抱一下或一句確認開始。'},
+  {id:'apology',label:'道歉和修復',words:['對不起','抱歉','我錯了','和好','修復','原諒'],need:'想把關係修回來',advice:'道歉後再加一句具體改法，會比只說對不起更讓人安心。'},
+  {id:'pressure',label:'壓力和疲累',words:['累','壓力','工作','上班','很煩','心情差','睡覺','疲憊'],need:'想先被體諒，不想再被逼問',advice:'先確認是不是太累，如果是，約一個明確時間再談，避免疲累時越說越重。'},
+  {id:'fairness',label:'公平和付出',words:['每次','都我','只有我','不公平','付出','主動','一直都是'],need:'想感覺付出有被看見',advice:'把「每次都我」改成列一件最需要被分擔的事，讓對方知道可以怎麼補位。'},
+  {id:'future',label:'未來和安全感',words:['以後','未來','結婚','分手','在一起','永遠','安全感'],need:'想知道這段關係有方向',advice:'先不要在氣頭上談分開，可以改談「我們下次遇到這件事要怎麼一起處理」。'}
+];
 let fightPerson = localStorage.getItem('fightRoomPerson') || '';
 let fightDraftMood = '';
 let fightData = fightNormalizeData(null);
 let fightFirebaseReady = false;
 let fightFlowOpen = false;
 let fightSoupPhotoSrc = '';
+let fightSoupTextIndex = -1;
 let fightSoupAlbumFetchStarted = false;
 
 function fightEmptyPerson(){
@@ -5040,27 +5107,71 @@ function fightRenderMediation(){
     result.innerHTML = text ? escapeHtml(text) : '';
   }
 }
+function fightAnalyzeMessage(name, entry){
+  const text=fightMessageText(entry);
+  const compact=text.replace(/\s+/g,'');
+  const themes=FIGHT_MEDIATION_RULES.filter(rule=>rule.words.some(word=>compact.includes(word)));
+  return {
+    name,
+    text,
+    mood:entry.mood || '還沒選情緒',
+    themes:themes.length ? themes : [{id:'general',label:'想被理解',need:'想被好好聽見',advice:'先用自己的話重述對方的重點，確認沒有誤會後再回應。'}]
+  };
+}
+function fightThemeLabels(analysis){
+  return analysis.themes.map(t=>t.label).filter(Boolean).slice(0,3).join('、') || '想被理解';
+}
+function fightNeedText(analysis){
+  const needs=[...new Set(analysis.themes.map(t=>t.need).filter(Boolean))];
+  return needs.slice(0,2).join('，也') || '想被好好聽見';
+}
+function fightShortMessage(text){
+  const clean=String(text||'').replace(/\s+/g,' ').trim();
+  return clean.length>80 ? `${clean.slice(0,80)}...` : clean;
+}
+function fightSharedThemeText(a,b){
+  const aIds=new Set(a.themes.map(t=>t.id));
+  const shared=b.themes.filter(t=>aIds.has(t.id) && t.id!=='general');
+  if(shared.length) return `你們共同卡住的地方比較像是「${shared.map(t=>t.label).join('、')}」，所以這次先不要急著分對錯，要先把這個需求說清楚。`;
+  return `你們卡住的點不完全一樣：${a.name}比較在意「${fightThemeLabels(a)}」，${b.name}比較在意「${fightThemeLabels(b)}」。所以要先互相翻譯，不要用自己的題目去回答對方的痛點。`;
+}
+function fightMediationAdviceList(a,b){
+  const all=[...a.themes,...b.themes];
+  const advice=[];
+  all.forEach(theme=>{
+    if(theme.advice && !advice.includes(theme.advice)) advice.push(theme.advice);
+  });
+  advice.push('兩邊各自先回一句「我聽到你在意的是...，我有沒有理解錯？」確認聽懂以後，再講自己的感受。');
+  advice.push('最後各自說一個今天做得到的小行動，不要承諾太大，先讓對方感覺到你真的有在修。');
+  return advice.slice(0,5);
+}
 function fightBuildMediationText(){
-  const sh=fightData.current.people['聖展'] || fightEmptyPerson();
-  const yu=fightData.current.people['予君'] || fightEmptyPerson();
-  const shMood=sh.mood || '還沒選情緒';
-  const yuMood=yu.mood || '還沒選情緒';
-  const shMsg=fightMessageText(sh);
-  const yuMsg=fightMessageText(yu);
+  const sh=fightAnalyzeMessage('聖展', fightData.current.people['聖展'] || fightEmptyPerson());
+  const yu=fightAnalyzeMessage('予君', fightData.current.people['予君'] || fightEmptyPerson());
+  const advice=fightMediationAdviceList(sh,yu);
   return [
-    `AI 調解建議｜${fightFormatTime(Date.now())}`,
+    `AI 調解分析｜${fightFormatTime(Date.now())}`,
     '',
-    `聖展現在比較像是：${shMood}`,
-    `予君現在比較像是：${yuMood}`,
+    '我有讀你們兩邊寫的話，先把情緒後面的需求翻譯出來，不先判誰對誰錯。',
     '',
-    `我先幫你們翻譯一下：兩邊現在都不是只想吵贏，而是都希望自己的感受有被對方接住。`,
+    `聖展現在的情緒：${sh.mood}`,
+    `我讀到聖展比較在意：${fightThemeLabels(sh)}。可能真正想要的是：${fightNeedText(sh)}。`,
+    `聖展原話重點：${fightShortMessage(sh.text)}`,
     '',
-    `聖展想讓對方知道：${shMsg}`,
+    `予君現在的情緒：${yu.mood}`,
+    `我讀到予君比較在意：${fightThemeLabels(yu)}。可能真正想要的是：${fightNeedText(yu)}。`,
+    `予君原話重點：${fightShortMessage(yu.text)}`,
     '',
-    `予君想讓對方知道：${yuMsg}`,
+    fightSharedThemeText(sh,yu),
     '',
-    `建議你們接下來先不要急著反駁，先各自回一句：「我聽到你在意的是＿＿＿，我有沒有理解錯？」`,
-    `等兩邊都確認被聽懂，再各自說一件今天願意先做到的小事。`
+    '接下來建議這樣做：',
+    ...advice.map((item,idx)=>`${idx+1}. ${item}`),
+    '',
+    `可以直接這樣開口：`,
+    `${sh.name}可以先說：「我不是要跟你吵贏，我真正想讓你知道的是，我在意的是${fightThemeLabels(sh)}，我需要的是${fightNeedText(sh)}。」`,
+    `${yu.name}可以先說：「我也不是不在乎你，我想讓你知道的是，我在意的是${fightThemeLabels(yu)}，我需要的是${fightNeedText(yu)}。」`,
+    '',
+    '最後先不要追求一次完美和好，只要今天比剛剛更懂彼此一點，就已經是在修復了。'
   ].join('\n');
 }
 async function fightRunMediation(){
@@ -5104,15 +5215,15 @@ async function fightLoadSoupAlbumPhotos(){
   }
 }
 function fightBuildSoupText(){
-  return [
-    '你們會吵架，不代表你們不適合；很多時候只是兩個都很在乎的人，剛好用太急、太痛、太害怕失去的方式在說話。',
-    '真正珍貴的感情，不是永遠不吵，而是吵完以後還願意回頭看見對方：原來你剛剛不是故意要傷我，你只是也有委屈；原來我不是沒被愛，我只是那一刻太需要被確認。',
-    '所以先慢一點，不用急著分輸贏。你們能坐下來把話寫出來，已經是在替這段關係選擇溫柔了。願你們都被好好聽見，也都記得，眼前這個人不是敵人，是曾經一起留下很多可愛回憶、也值得再被好好擁抱的人。'
-  ].join('\n\n');
+  if(fightSoupTextIndex < 0 || !FIGHT_SOUP_TEXTS[fightSoupTextIndex]){
+    fightSoupTextIndex = Math.floor(Math.random()*FIGHT_SOUP_TEXTS.length);
+  }
+  return FIGHT_SOUP_TEXTS[fightSoupTextIndex];
 }
 function fightRenderSoupCard(force=false){
   const photoBox=document.getElementById('fight-soup-photo');
   const textEl=document.getElementById('fight-soup-text');
+  if(force) fightSoupTextIndex = Math.floor(Math.random()*FIGHT_SOUP_TEXTS.length);
   if(textEl) textEl.innerHTML = escapeHtml(fightBuildSoupText());
   if(!photoBox) return;
   const photos=fightCollectAlbumPhotos();

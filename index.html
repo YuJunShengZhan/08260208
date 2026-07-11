@@ -137,6 +137,20 @@ background:var(--pink);margin-top:1px;
 
 .page{display:none;padding:16px;}
 .page.active{display:block;}
+.home-countdown-broadcast{position:relative;height:50px;margin:0 0 12px;border:1px solid rgba(232,99,122,.2);border-radius:15px;background:var(--white);display:grid;grid-template-columns:86px minmax(0,1fr);align-items:center;overflow:hidden;box-shadow:0 8px 22px rgba(201,75,100,.1),inset 0 0 0 1px rgba(255,255,255,.7)}
+.home-countdown-broadcast[hidden]{display:none}
+.home-countdown-broadcast::before{content:'';position:absolute;z-index:3;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),#2f9a68,var(--pink))}
+.home-countdown-broadcast::after{content:'';position:absolute;z-index:2;top:3px;bottom:0;width:72px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:homeBroadcastShine 4.6s ease-in-out infinite;pointer-events:none}
+.home-countdown-broadcast-icon{position:relative;z-index:4;height:100%;display:flex;flex-direction:column;gap:1px;align-items:center;justify-content:center;background:var(--rose);color:#fff;font-size:17px;border-right:1px solid rgba(255,255,255,.3);font-weight:800;line-height:1.05}
+.home-countdown-broadcast-icon span{font-family:'Noto Sans TC',sans-serif;font-size:9px;letter-spacing:0}
+.home-countdown-broadcast-icon b{display:inline-block;animation:homeBroadcastIcon 1.8s ease-in-out infinite}
+.home-countdown-broadcast-viewport{height:100%;position:relative;overflow:hidden;display:flex;align-items:center}
+.home-countdown-broadcast-message{position:absolute;z-index:1;left:0;white-space:nowrap;color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:900;letter-spacing:0;text-shadow:0 1px 0 rgba(255,255,255,.85);will-change:transform}
+@keyframes homeBroadcastShine{0%{left:-90px;opacity:0}18%{opacity:.8}50%,100%{left:calc(100% + 20px);opacity:0}}
+@keyframes homeBroadcastIcon{0%,100%{transform:rotate(-5deg) scale(1)}50%{transform:rotate(6deg) scale(1.12)}}
+[data-theme="dark"] .home-countdown-broadcast{background:#28191f;border-color:rgba(255,154,174,.28);box-shadow:0 8px 24px rgba(0,0,0,.25),inset 0 0 0 1px rgba(255,255,255,.04)}
+[data-theme="dark"] .home-countdown-broadcast-icon{background:#b9435e}
+[data-theme="dark"] .home-countdown-broadcast-message{color:#ff9eb2;text-shadow:none}
 
 .card{
 background:var(--white);
@@ -3312,6 +3326,13 @@ onclick="hideSpecialForToday()">
 <!-- HOME -->
 <div id="page-home" class="page active">
 
+  <div class="home-countdown-broadcast" id="home-countdown-broadcast" hidden>
+    <div class="home-countdown-broadcast-icon" aria-hidden="true"><b>📣</b><span>戀愛快報</span></div>
+    <div class="home-countdown-broadcast-viewport" id="home-countdown-broadcast-viewport">
+      <div class="home-countdown-broadcast-message" id="home-countdown-broadcast-message"></div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-title">💕 在一起多久了</div>
     <div style="text-align:center">
@@ -4244,8 +4265,10 @@ function nextAnniv(){
   let next=new Date(t.getFullYear(),11,1);
   if(next<=t) next=new Date(t.getFullYear()+1,11,1);
   const days=Math.ceil((next-t)/864e5);
-  document.getElementById('annivLabel').textContent=`${next.getFullYear()}/12/01 週年`;
+  const anniversaryNumber=next.getFullYear()-START.getFullYear();
+  document.getElementById('annivLabel').textContent=`${next.getFullYear()}/12/01 第 ${anniversaryNumber} 週年`;
   cdEl('annivDays',days);
+  return {label:`${next.getFullYear()}/12/01 第 ${anniversaryNumber} 週年紀念日`,days};
 }
 function nextVday(){
   const t=today();
@@ -4255,6 +4278,7 @@ function nextVday(){
   const days=Math.ceil((candidate-t)/864e5);
   document.getElementById('vdLabel').textContent=`${candidate.getMonth()+1}/14 情人節`;
   cdEl('vdDays',days);
+  return {label:`${candidate.getMonth()+1}/14 情人節`,days};
 }
 function localDateKey(){
   const d = new Date();
@@ -4271,14 +4295,84 @@ function hideSpecialForToday(){
   closeSpecial();
 }
 
+let homeBroadcastItems=[];
+let homeBroadcastIndex=0;
+let homeBroadcastTimer=null;
+let homeBroadcastAnimation=null;
+let homeBroadcastSignature='';
+function stopHomeCountdownBroadcast(){
+  if(homeBroadcastTimer){clearTimeout(homeBroadcastTimer);homeBroadcastTimer=null;}
+  if(homeBroadcastAnimation){homeBroadcastAnimation.cancel();homeBroadcastAnimation=null;}
+  const message=document.getElementById('home-countdown-broadcast-message');
+  if(message){message.style.transition='none';message.style.transform='';}
+}
+function playHomeCountdownBroadcast(){
+  const box=document.getElementById('home-countdown-broadcast');
+  const viewport=document.getElementById('home-countdown-broadcast-viewport');
+  const message=document.getElementById('home-countdown-broadcast-message');
+  if(!box || box.hidden || !viewport || !message || !homeBroadcastItems.length) return;
+  const item=homeBroadcastItems[homeBroadcastIndex % homeBroadcastItems.length];
+  message.textContent=`♡ ${item.label}倒數 ${item.days} 天 ♡`;
+  requestAnimationFrame(()=>{
+    const start=viewport.clientWidth+12;
+    const end=-(message.scrollWidth+12);
+    const duration=Math.max(5500,Math.round((start-end)/72*1000));
+    if(typeof message.animate==='function'){
+      homeBroadcastAnimation=message.animate(
+        [{transform:`translateX(${start}px)`},{transform:`translateX(${end}px)`}],
+        {duration,easing:'linear',fill:'forwards'}
+      );
+      homeBroadcastAnimation.finished.then(()=>{
+        homeBroadcastAnimation=null;
+        homeBroadcastIndex=(homeBroadcastIndex+1)%homeBroadcastItems.length;
+        homeBroadcastTimer=setTimeout(playHomeCountdownBroadcast,3000);
+      }).catch(()=>{});
+      return;
+    }
+    message.style.transition='none';
+    message.style.transform=`translateX(${start}px)`;
+    requestAnimationFrame(()=>{
+      message.style.transition=`transform ${duration}ms linear`;
+      message.style.transform=`translateX(${end}px)`;
+      homeBroadcastTimer=setTimeout(()=>{
+        homeBroadcastIndex=(homeBroadcastIndex+1)%homeBroadcastItems.length;
+        homeBroadcastTimer=setTimeout(playHomeCountdownBroadcast,3000);
+      },duration);
+    });
+  });
+}
+function updateHomeCountdownBroadcast(items){
+  const box=document.getElementById('home-countdown-broadcast');
+  if(!box) return;
+  const upcoming=(items||[])
+    .filter(item=>Number.isFinite(item.days) && item.days>=1 && item.days<=10)
+    .sort((a,b)=>a.days-b.days || a.label.localeCompare(b.label,'zh-TW'));
+  const signature=upcoming.map(item=>`${item.label}:${item.days}`).join('|');
+  if(signature===homeBroadcastSignature && ((upcoming.length && !box.hidden) || (!upcoming.length && box.hidden))) return;
+  stopHomeCountdownBroadcast();
+  homeBroadcastItems=upcoming;
+  homeBroadcastIndex=0;
+  homeBroadcastSignature=signature;
+  box.hidden=!upcoming.length;
+  if(upcoming.length) homeBroadcastTimer=setTimeout(playHomeCountdownBroadcast,120);
+}
+
 function updateHome(){
   const diff=Math.floor((today()-START)/864e5);
   document.getElementById('loveDays').textContent=diff;
 
-  nextAnniv();
-  cdEl('bd1Days',daysUntilNext(2,8));
-  cdEl('bd2Days',daysUntilNext(8,26));
-  nextVday();
+  const anniv=nextAnniv();
+  const bd1Days=daysUntilNext(2,8);
+  const bd2Days=daysUntilNext(8,26);
+  const vday=nextVday();
+  cdEl('bd1Days',bd1Days);
+  cdEl('bd2Days',bd2Days);
+  updateHomeCountdownBroadcast([
+    anniv,
+    vday,
+    {label:'聖展生日',days:bd1Days},
+    {label:'予君生日',days:bd2Days}
+  ]);
 
   checkLoveDaysMilestone(diff);
   check67DayGifReminder();

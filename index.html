@@ -3981,7 +3981,7 @@ onclick="hideSpecialForToday()">
         <div class="fight-soup-photo empty" id="fight-soup-photo">相簿照片同步後，這裡會隨機放上一張你們的回憶。</div>
         <div class="fight-read fight-soup-text" id="fight-soup-text"></div>
         <div class="fight-actions single">
-          <button type="button" class="fight-btn secondary" onclick="fightRefreshSoupCard()">換一張好話</button>
+          <button type="button" class="fight-btn secondary" onclick="fightRefreshSoupCard()">換一則</button>
         </div>
       </div>
     </div>
@@ -4997,7 +4997,9 @@ let fightSoupPageOpen = false;
 let fightSoupReturnFlow = false;
 let fightSoupPhotoSrc = '';
 let fightSoupTextIndex = -1;
-let fightSoupAlbumFetchStarted = false;
+let fightSoupAlbumData = {};
+let fightSoupAlbumSubscriptionStarted = false;
+let fightSoupAlbumHasLoaded = false;
 let fightMessageInputCleared = false;
 
 function fightEmptyPerson(){
@@ -5227,25 +5229,34 @@ function fightRenderNextStep(){
 }
 function fightCollectAlbumPhotos(){
   const photos=[];
-  Object.entries(albumFirebaseData || {}).forEach(([date, dayData])=>{
+  const seen=new Set();
+  const allDays=Object.assign({}, albumFirebaseData || {}, fightSoupAlbumData || {});
+  Object.entries(allDays).forEach(([date, dayData])=>{
     const list=Array.isArray(dayData?.photos) ? dayData.photos : [];
     list.forEach(src=>{
-      if(typeof src==='string' && src.trim()) photos.push({src:src.trim(), date});
+      const clean=typeof src==='string' ? src.trim() : '';
+      if(clean && !seen.has(clean)){
+        seen.add(clean);
+        photos.push({src:clean, date});
+      }
     });
   });
   return photos;
 }
 async function fightLoadSoupAlbumPhotos(){
-  if(fightSoupAlbumFetchStarted || !window._fb) return;
-  fightSoupAlbumFetchStarted = true;
-  const {db,ref,get}=window._fb;
-  try{
-    const snap=await get(ref(db,'albumData'));
-    Object.assign(albumFirebaseData, snap.val() || {});
-    fightRenderSoupCard(true);
-  }catch(err){
-    console.warn('fight soup album load failed', err);
-  }
+  if(fightSoupAlbumSubscriptionStarted || !window._fb) return;
+  fightSoupAlbumSubscriptionStarted = true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'albumData'),snap=>{
+    const firstLoad=!fightSoupAlbumHasLoaded;
+    fightSoupAlbumData=snap.val() || {};
+    fightSoupAlbumHasLoaded=true;
+    if(firstLoad) fightSoupPhotoSrc='';
+    fightRenderSoupCard(false);
+  },err=>{
+    fightSoupAlbumSubscriptionStarted=false;
+    console.warn('fight soup album sync failed', err);
+  });
 }
 function fightBuildSoupText(){
   if(fightSoupTextIndex < 0 || !FIGHT_SOUP_TEXTS[fightSoupTextIndex]){
@@ -5256,6 +5267,7 @@ function fightBuildSoupText(){
 function fightRenderSoupCard(force=false){
   const photoBox=document.getElementById('fight-soup-photo');
   const textEl=document.getElementById('fight-soup-text');
+  fightLoadSoupAlbumPhotos();
   if(force) fightSoupTextIndex = Math.floor(Math.random()*FIGHT_SOUP_TEXTS.length);
   if(textEl) textEl.innerHTML = escapeHtml(fightBuildSoupText());
   if(!photoBox) return;
@@ -5263,7 +5275,6 @@ function fightRenderSoupCard(force=false){
   if(!photos.length){
     photoBox.classList.add('empty');
     photoBox.innerHTML='相簿照片同步後，這裡會隨機放上一張你們的回憶。';
-    fightLoadSoupAlbumPhotos();
     return;
   }
   const exists=photos.some(p=>p.src===fightSoupPhotoSrc);

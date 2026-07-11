@@ -4924,6 +4924,7 @@ let fightFlowOpen = false;
 let fightSoupPhotoSrc = '';
 let fightSoupTextIndex = -1;
 let fightSoupAlbumFetchStarted = false;
+let fightMessageInputCleared = false;
 
 function fightEmptyPerson(){
   return {mood:'',message:'',feeling:'',need:'',offer:'',fact:'',story:'',impact:'',request:'',repair:'',reflect:'',updatedAt:0};
@@ -5012,6 +5013,7 @@ function fightSelectPerson(name){
   localStorage.setItem('fightRoomPerson', fightPerson);
   const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
   fightDraftMood = entry.mood || '';
+  fightMessageInputCleared = false;
   fightRender(true);
 }
 function fightChooseMood(mood){
@@ -5062,6 +5064,10 @@ function fightFillEditor(force=false){
   if(isEditing && !force) return;
   const entry=fightData.current.people[fightPerson] || fightEmptyPerson();
   fightDraftMood = fightDraftMood || entry.mood || '';
+  if(fightMessageInputCleared && !force){
+    fightSetFieldValue('fight-input-message', '');
+    return;
+  }
   fightSetFieldValue('fight-input-message', fightMessageText(entry));
 }
 function fightRender(forceEditor=false){
@@ -5199,29 +5205,33 @@ async function fightSaveMyHeart(){
   const message=fightFieldValue('fight-input-message');
   const now=Date.now();
   const {db,ref,update}=window._fb;
-  await update(ref(db,'fightRoom/current'), {
-    [`people/${fightPerson}`]: {
-      mood:fightDraftMood,
-      message,
-      feeling:message,
-      need:'',
-      offer:'',
-      fact:message,
-      story:'',
-      impact:'',
-      request:'',
-      repair:'',
-      reflect:'',
-      updatedAt:now
-    },
-    updatedAt:now,
-    readBy:{'聖展':0,'予君':0},
-    nextAction:{text:'',by:'',updatedAt:0},
-    createdAt:fightData.current.createdAt || now
-  }).catch(err=>{
+  try{
+    await update(ref(db,'fightRoom/current'), {
+      [`people/${fightPerson}`]: {
+        mood:fightDraftMood,
+        message,
+        feeling:message,
+        need:'',
+        offer:'',
+        fact:message,
+        story:'',
+        impact:'',
+        request:'',
+        repair:'',
+        reflect:'',
+        updatedAt:now
+      },
+      updatedAt:now,
+      readBy:{'聖展':0,'予君':0},
+      nextAction:{text:'',by:'',updatedAt:0},
+      createdAt:fightData.current.createdAt || now
+    });
+    fightMessageInputCleared = true;
+    fightSetFieldValue('fight-input-message', '');
+  }catch(err){
     console.error('fight save failed', err);
     alert('同步失敗，請確認網路後再試一次');
-  });
+  }
 }
 function fightSendQuickPeace(){
   if(!fightPerson){alert('先選擇你是誰');return;}

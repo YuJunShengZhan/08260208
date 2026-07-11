@@ -245,7 +245,7 @@ transition:background .2s;
 .fight-btn:disabled{opacity:.5;cursor:not-allowed}
 .fight-btn.secondary{background:var(--pink-light);color:var(--rose);border:1px solid rgba(232,99,122,.16)}
 .fight-btn.green{background:#2f9a68}
-.fight-next-actions[hidden],.fight-next-result[hidden]{display:none}
+.fight-next-actions[hidden],.fight-next-after[hidden],.fight-next-result[hidden]{display:none}
 .fight-next-result{margin-top:10px}
 .fight-soup-photo{position:relative;overflow:hidden;border-radius:18px;width:100%;min-height:360px;background:linear-gradient(135deg,#ffe9ef,#f4fff4);border:1px solid rgba(232,99,122,.14);margin:10px auto 0;display:flex;align-items:center;justify-content:center}
 .fight-soup-photo img{width:100%;height:auto;max-height:70vh;object-fit:contain;display:block}
@@ -3895,7 +3895,7 @@ onclick="hideSpecialForToday()">
 
     <div class="fight-flow" id="fight-flow" hidden>
       <div class="fight-hero">
-        <button type="button" class="fight-soup-open" onclick="fightOpenSoupPage()">感情雞湯</button>
+        <button type="button" class="fight-soup-open" onclick="fightOpenSoupPage()">給你們的話</button>
         <div class="fight-kicker">REPAIR ROOM</div>
         <div class="fight-title">吵架專區</div>
         <div class="fight-sub">這裡不是判誰贏，是把「發生了什麼、我怎麼解讀、哪裡受傷、我需要什麼、下一步怎麼做」拆開。講清楚，比講漂亮更重要。</div>
@@ -3951,12 +3951,14 @@ onclick="hideSpecialForToday()">
       <div class="fight-empty" id="fight-next-hint">等兩邊都寫好想說的話，這裡會出現下一步。</div>
       <div class="fight-read fight-next-result" id="fight-next-result" hidden></div>
       <div class="fight-actions fight-next-actions" id="fight-next-actions" hidden>
-        <button type="button" class="fight-btn secondary" onclick="fightChooseNextAction('hug')">先抱一下</button>
-        <button type="button" class="fight-btn secondary" onclick="fightChooseNextAction('pause')">晚點再談</button>
+        <button type="button" class="fight-btn green" onclick="fightChooseNextAction('ritual')">開始下一步</button>
       </div>
-      <div class="fight-actions">
-        <button type="button" class="fight-btn secondary" onclick="fightResetCurrent()">重新開始這次對話</button>
+      <div class="fight-actions fight-next-after" id="fight-next-after" hidden>
+        <button type="button" class="fight-btn secondary" onclick="fightChooseNextAction('ritual')">換一個和解小任務</button>
         <button type="button" class="fight-btn secondary" onclick="fightResolveCurrent()">和解完成並歸檔</button>
+      </div>
+      <div class="fight-actions single">
+        <button type="button" class="fight-btn secondary" onclick="fightResetCurrent()">重新開始這次對話</button>
       </div>
     </div>
 
@@ -4867,6 +4869,18 @@ function showPage(id,btn){
 // ── 吵架專區：同步心聲與和解清單 ──
 const FIGHT_PLAYERS = ['聖展','予君'];
 const FIGHT_MOODS = ['委屈','生氣','難過','被忽略','不安全','需要冷靜','願意談','想要抱抱','想要做愛','想被哄','想撒嬌','想親親','想牽手','想被安慰','想聽道歉','想被在乎','想講清楚','想先睡覺','想要陪陪','想要空間'];
+const FIGHT_REPAIR_RITUALS = [
+  {title:'20 秒抱抱休戰',lines:['先不要講道理，抱 20 秒。','抱完後各自只說一句：「我剛剛真正難過的是...」', '如果現在還抱不下去，就改成牽手 10 秒。']},
+  {title:'我聽到你了',lines:['兩個人輪流把對方剛剛寫的話念一次。','念完只能問：「我有沒有理解錯？」先不要反駁。','確認聽懂後，再各自說一句自己願意調整的小事。']},
+  {title:'一句好話交換',lines:['各自說一件對方最近做得好的事。','再各自說一句：「我不是要跟你當敵人。」','最後才回來談今天最重要的一件事。']},
+  {title:'手心約定',lines:['牽手或把手放在同一個地方。','一起說：「今天先不互相傷害，我們先把話說清楚。」','接著一人只講 30 秒，不插話。']},
+  {title:'三句話和解法',lines:['每個人照順序說三句：我剛剛在意的是...','我希望下次可以...','我願意先做到的是...']},
+  {title:'先哄一下再談',lines:['先用一句好聽的話哄對方，不准酸。','例如：「我還是很在乎你，只是我剛剛很難受。」','哄完再談事情，語氣要比剛剛低一點。']},
+  {title:'暫停但不消失',lines:['如果現在太氣，就設定 20 分鐘後再談。','暫停前要先說：「我不是不要你，我只是需要冷靜。」','時間到要回來，不可以讓對方一直等。']},
+  {title:'剪刀石頭布先低頭',lines:['剪刀石頭布，輸的人先說一句軟話。','贏的人不能囂張，只能回：「我也想好好講。」','用一點幼稚把氣氛拉回來。']},
+  {title:'抱怨換願望',lines:['把一句抱怨改成願望。','不要說「你都不理我」，改說「我希望你忙的時候也跟我說一聲」。','兩個人各改一句就好。']},
+  {title:'今天先修一小塊',lines:['不要一次解決全部問題。','只選今天最痛的一件事，其他先放旁邊。','講完後用一句「我們今天先做到這樣」收尾。']}
+];
 const FIGHT_SOUP_TEXTS = [
   '你們會吵架，不代表你們不適合；很多時候只是兩個都很在乎的人，剛好用太急、太痛、太害怕失去的方式在說話。真正珍貴的感情不是永遠不吵，而是吵完以後還願意回頭看見對方，願意把刺收起來，再用比較柔軟的方式靠近。',
   '如果今天的話說得重了一點，先別急著把它當成不愛了。有些情緒其實是很笨拙的求救：我想被在乎、我想被理解、我想知道你還站在我這邊。願你們把誤會放慢，把愛放大，慢慢找回一開始牽手時的那份心安。',
@@ -5134,15 +5148,20 @@ function fightBothMessagesReady(){
 function fightRenderNextStep(){
   const hint=document.getElementById('fight-next-hint');
   const actions=document.getElementById('fight-next-actions');
+  const after=document.getElementById('fight-next-after');
   const result=document.getElementById('fight-next-result');
   const ready=fightBothMessagesReady();
   const nextAction=fightData.current.nextAction || {};
+  const hasAction=!!String(nextAction.text || '').trim();
   if(hint){
     hint.textContent = !ready
       ? '等兩邊都寫好想說的話，這裡會出現下一步。'
-      : '兩邊都寫好了。現在不用再多一個確認步驟，直接選一個此刻做得到的小動作就好。';
+      : hasAction
+        ? '下一步已經出現了。先照這個小任務做，做完再決定要不要歸檔。'
+        : '兩邊都寫好了。按下一步，抽一個和解小任務。';
   }
-  if(actions) actions.hidden = !ready;
+  if(actions) actions.hidden = !ready || hasAction;
+  if(after) after.hidden = !hasAction;
   if(result){
     const text=String(nextAction.text || '').trim();
     result.hidden = !text;
@@ -5270,17 +5289,32 @@ function fightSendQuickPeace(){
   if(message && !message.value.trim()) message.value='我想和好，也想好好聽你說。';
   fightSaveMyHeart();
 }
+function fightBuildRepairRitual(){
+  const pick=FIGHT_REPAIR_RITUALS[Math.floor(Math.random()*FIGHT_REPAIR_RITUALS.length)];
+  const sh=fightData.current.people['聖展'] || fightEmptyPerson();
+  const yu=fightData.current.people['予君'] || fightEmptyPerson();
+  const shMoods=fightEntryMoods(sh).join('、') || '還沒選';
+  const yuMoods=fightEntryMoods(yu).join('、') || '還沒選';
+  return [
+    `和解小任務：${pick.title}`,
+    '',
+    `聖展現在：${shMoods}`,
+    `予君現在：${yuMoods}`,
+    '',
+    ...pick.lines.map((line,idx)=>`${idx+1}. ${line}`),
+    '',
+    '做完之後，如果心比較軟了，再按「和解完成並歸檔」。'
+  ].join('\n');
+}
 async function fightChooseNextAction(type){
   if(!fightBothMessagesReady()){alert('要等兩邊都寫好想說的話');return;}
   if(!window._fb){alert('目前還沒連上同步，請稍後再試');return;}
   const now=Date.now();
   const by=fightPerson || '我們';
-  const text = type==='hug'
-    ? `${by} 選擇：先抱一下。\n現在先不要急著講道理，先確認我們還在同一邊。抱完之後，一人只說一句最重要的話，不翻舊帳。`
-    : `${by} 選擇：晚點再談。\n現在先休息一下，不用硬聊到更受傷。等心情降下來，再回來各自說一句「我剛剛真正想表達的是...」。`;
+  const text = fightBuildRepairRitual();
   const {db,ref,update}=window._fb;
   await update(ref(db,'fightRoom/current'), {
-    nextAction:{text,by,updatedAt:now},
+    nextAction:{type,text,by,updatedAt:now},
     updatedAt:now
   }).catch(err=>{
     console.error('fight next action failed', err);

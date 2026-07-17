@@ -6228,12 +6228,33 @@ function renderModalPhotosEdit(photos){
   grid.innerHTML=(photos||[]).map((src,i)=>`<div class="modal-photo-item"><img src="${src}"><button class="modal-photo-del" onclick="modalDeletePhoto(${i})">✕</button></div>`).join('');
 }
 function openPhotoFullscreen(img){
+  document.getElementById('photo-fullscreen-overlay')?.remove();
   const overlay=document.createElement('div');
-  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.id='photo-fullscreen-overlay';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;';
   const imgEl=document.createElement('img');imgEl.src=img.src;
-  imgEl.style.cssText='max-width:95vw;max-height:90vh;border-radius:12px;object-fit:contain;';
-  overlay.appendChild(imgEl);overlay.onclick=()=>document.body.removeChild(overlay);
+  imgEl.alt=img.alt||'放大照片';
+  imgEl.style.cssText='max-width:95vw;max-height:90vh;border-radius:12px;object-fit:contain;box-shadow:0 16px 48px rgba(0,0,0,.42);';
+  const closeBtn=document.createElement('button');
+  closeBtn.type='button';
+  closeBtn.setAttribute('aria-label','關閉照片');
+  closeBtn.textContent='✕';
+  closeBtn.style.cssText='position:absolute;top:max(16px,env(safe-area-inset-top));right:16px;width:42px;height:42px;border:1px solid rgba(255,255,255,.38);border-radius:50%;background:rgba(20,20,20,.72);color:#fff;font-size:20px;cursor:pointer;';
+  const previousOverflow=document.body.style.overflow;
+  const close=()=>{
+    if(!overlay.isConnected) return;
+    document.removeEventListener('keydown',onKeydown);
+    document.body.style.overflow=previousOverflow;
+    overlay.remove();
+  };
+  const onKeydown=event=>{if(event.key==='Escape') close();};
+  closeBtn.onclick=close;
+  overlay.onclick=event=>{if(event.target===overlay) close();};
+  imgEl.onclick=event=>event.stopPropagation();
+  overlay.append(imgEl,closeBtn);
   document.body.appendChild(overlay);
+  document.body.style.overflow='hidden';
+  document.addEventListener('keydown',onKeydown);
 }
 function compressToBlob(file, maxSize=1280, quality=0.82) {
   return new Promise((resolve, reject) => {
@@ -6489,7 +6510,8 @@ function renderMemories(){
       if(pagePhotos[i]){
         cells.push(`
           <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative">
-            <img src="${pagePhotos[i].src}" onclick="openPhotoFullscreen(this)"
+            <img src="${pagePhotos[i].src}" data-memory-photo="1" tabindex="0" role="button" aria-label="放大 ${pagePhotos[i].date.slice(5).replace('-','/')} 的照片"
+              onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPhotoFullscreen(this)}"
               style="width:100%;height:100%;object-fit:cover;cursor:pointer;-webkit-user-drag:none;user-select:none">
             <div style="position:absolute;bottom:0;left:0;right:0;padding:3px 5px;
               background:linear-gradient(transparent,rgba(0,0,0,0.45));
@@ -6573,6 +6595,7 @@ function renderMemories(){
     let activePointerId = null;
     let dragging = false;
     let movedEnough = false;
+    let tapPhoto = null;
 
     const snapBack = () => {
       track.style.transition = 'transform .22s ease';
@@ -6616,6 +6639,7 @@ function renderMemories(){
       startY = event.clientY;
       dragging = true;
       movedEnough = false;
+      tapPhoto = event.target.closest?.('img[data-memory-photo]') || null;
       scroller.classList.add('dragging');
       scroller.setPointerCapture?.(event.pointerId);
       track.style.transition = 'none';
@@ -6641,11 +6665,14 @@ function renderMemories(){
       if(!dragging || event.pointerId !== activePointerId) return;
       const dx = event.clientX - startX;
       const dy = event.clientY - startY;
+      const photoToOpen = !movedEnough ? tapPhoto : null;
       dragging = false;
       activePointerId = null;
+      tapPhoto = null;
       scroller.classList.remove('dragging');
       try{ scroller.releasePointerCapture?.(event.pointerId); }catch(e){}
       finishSwipe(dx, dy);
+      if(photoToOpen) setTimeout(()=>openPhotoFullscreen(photoToOpen),0);
       if(movedEnough){
         scroller.dataset.wasDrag = '1';
         setTimeout(() => { scroller.dataset.wasDrag = '0'; }, 80);
@@ -6656,6 +6683,7 @@ function renderMemories(){
     scroller.addEventListener('pointercancel', event => {
       dragging = false;
       activePointerId = null;
+      tapPhoto = null;
       scroller.classList.remove('dragging');
       snapBack();
     });

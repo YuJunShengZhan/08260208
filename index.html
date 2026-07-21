@@ -199,6 +199,24 @@ font-family:'Noto Serif TC',serif;
 font-size:28px;font-weight:700;color:var(--rose);
 }
 .countdown-desc{font-size:11px;color:var(--text-muted);margin-top:3px;}
+.countdown-preview{
+margin-top:8px;padding:6px 10px;border:1px solid rgba(232,99,122,.25);border-radius:999px;
+background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;
+cursor:pointer;touch-action:manipulation;transition:transform .18s,background .18s,color .18s;
+}
+.countdown-preview:active{transform:scale(.96);background:var(--pink);color:#fff}
+[data-theme="dark"] .countdown-preview{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
+.birthday-fireworks{
+position:fixed;inset:0;z-index:12000;background:#030205;overflow:hidden;display:flex;align-items:center;justify-content:center;
+animation:birthdayNightIn .7s ease both;
+}
+.birthday-fireworks canvas{position:absolute;inset:0;width:100%;height:100%}
+.birthday-fireworks-message{position:relative;z-index:2;text-align:center;color:#fff;padding:24px;pointer-events:none;text-shadow:0 3px 18px rgba(0,0,0,.9);animation:birthdayWishIn .9s .55s ease both}
+.birthday-fireworks-message b{display:block;font-family:'Noto Serif TC',serif;font-size:clamp(34px,9vw,68px);line-height:1.25;font-weight:800;letter-spacing:0}
+.birthday-fireworks-message span{display:block;margin-top:10px;font-size:clamp(14px,4vw,21px);line-height:1.7;font-weight:700;letter-spacing:0}
+.birthday-fireworks-close{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));right:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:26px;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
+@keyframes birthdayNightIn{from{opacity:0}to{opacity:1}}
+@keyframes birthdayWishIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
 
 .timeline{margin-top:4px;}
 .tl-item{
@@ -3360,6 +3378,7 @@ onclick="hideSpecialForToday()">
       <div class="countdown-item">
         <div class="countdown-num" id="bd2Days">—</div>
         <div class="countdown-desc">予君生日 (8/26)</div>
+        <button type="button" class="countdown-preview" onclick="launchYujunBirthdayFireworks(false)">🎆 預覽煙火</button>
       </div>
     </div>
   </div>
@@ -4292,6 +4311,7 @@ let homeBroadcastIndex=0;
 let homeBroadcastTimer=null;
 let homeBroadcastAnimation=null;
 let homeBroadcastSignature='';
+let homePeriodBroadcastItem=null;
 function stopHomeCountdownBroadcast(){
   if(homeBroadcastTimer){clearTimeout(homeBroadcastTimer);homeBroadcastTimer=null;}
   if(homeBroadcastAnimation){homeBroadcastAnimation.cancel();homeBroadcastAnimation=null;}
@@ -4304,7 +4324,7 @@ function playHomeCountdownBroadcast(){
   const message=document.getElementById('home-countdown-broadcast-message');
   if(!box || box.hidden || !viewport || !message || !homeBroadcastItems.length) return;
   const item=homeBroadcastItems[homeBroadcastIndex % homeBroadcastItems.length];
-  message.textContent=`♡ ${item.label}倒數 ${item.days} 天 ♡`;
+  message.textContent=item.message || `♡ ${item.label}倒數 ${item.days} 天 ♡`;
   requestAnimationFrame(()=>{
     const start=viewport.clientWidth+12;
     const end=-(message.scrollWidth+12);
@@ -4337,6 +4357,7 @@ function updateHomeCountdownBroadcast(items){
   const box=document.getElementById('home-countdown-broadcast');
   if(!box) return;
   const upcoming=(items||[])
+    .filter(Boolean)
     .filter(item=>Number.isFinite(item.days) && item.days>=1 && item.days<=10)
     .sort((a,b)=>a.days-b.days || a.label.localeCompare(b.label,'zh-TW'));
   const signature=upcoming.map(item=>`${item.label}:${item.days}`).join('|');
@@ -4363,7 +4384,8 @@ function updateHome(){
     anniv,
     vday,
     {label:'聖展生日',days:bd1Days},
-    {label:'予君生日',days:bd2Days}
+    {label:'予君生日',days:bd2Days},
+    homePeriodBroadcastItem
   ]);
 
   checkLoveDaysMilestone(diff);
@@ -4653,6 +4675,19 @@ let monthlyBackupCheckedMonth = '';
 function monthlyBackupKey(date=new Date()){
   return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
 }
+function monthlyBackupSize(value){
+  try{return new Blob([JSON.stringify(value)]).size;}catch(e){return String(JSON.stringify(value)||'').length*2;}
+}
+async function monthlyBackupWriteNode(db,ref,set,path,value,depth=0){
+  const canSplit=value && typeof value==='object' && Object.keys(value).length>0;
+  if(!canSplit || monthlyBackupSize(value)<=4*1024*1024 || depth>=6){
+    await set(ref(db,path),value);
+    return;
+  }
+  for(const [key,childValue] of Object.entries(value)){
+    await monthlyBackupWriteNode(db,ref,set,`${path}/${key}`,childValue,depth+1);
+  }
+}
 async function runMonthlyAutoBackup(){
   if(!window._fb) return;
   const monthKey=monthlyBackupKey();
@@ -4660,18 +4695,21 @@ async function runMonthlyAutoBackup(){
   monthlyBackupCheckedMonth=monthKey;
   const {db,ref,get,set}=window._fb;
   try{
-    const backupRef=ref(db,`${MONTHLY_AUTO_BACKUP_ROOT}/${monthKey}`);
-    const existing=await get(backupRef);
-    if(existing.exists()) return;
+    const backupPath=`${MONTHLY_AUTO_BACKUP_ROOT}/${monthKey}`;
+    const existing=await get(ref(db,`${backupPath}/complete`));
+    if(existing.val()===true) return;
     const rootSnapshot=await get(ref(db,'/'));
     const snapshot=rootSnapshot.val() || {};
     delete snapshot.systemBackups;
-    await set(backupRef,{
+    await set(ref(db,`${backupPath}/meta`),{
       month:monthKey,
       createdAt:Date.now(),
-      timezone:'Asia/Taipei',
-      snapshot
+      timezone:'Asia/Taipei'
     });
+    for(const [key,value] of Object.entries(snapshot)){
+      await monthlyBackupWriteNode(db,ref,set,`${backupPath}/snapshot/${key}`,value);
+    }
+    await set(ref(db,`${backupPath}/complete`),true);
   }catch(err){
     if(monthlyBackupCheckedMonth===monthKey) monthlyBackupCheckedMonth='';
     console.warn('monthly automatic backup failed',err);
@@ -4960,15 +4998,18 @@ function checkLoveSurprise(){
 
 // ── Special Day ──
 function checkSpecialDay(){
+  const t=today();
+  const m=t.getMonth()+1;
+  const d=t.getDate();
+
+  if(m===8&&d===26){
+    launchYujunBirthdayFireworks(true);
+    return;
+  }
 
   // 每台裝置獨立紀錄
   // 今天已選擇不提醒
   if(isDailyReminderSet('specialShownDate')) return;
-
-
-  const t=today();
-  const m=t.getMonth()+1;
-  const d=t.getDate();
 
   let emoji='',title='',sub='';
 
@@ -4983,12 +5024,6 @@ function checkSpecialDay(){
     emoji='🎂';
     title='聖展生日快樂！';
     sub='今天是屬於你的特別日子\n謝謝你出現在我的生命裡 ❤️';
-
-  }else if(m===8&&d===26){
-
-    emoji='🎂';
-    title='予君生日快樂！';
-    sub='今天是寶包最特別的日子\n希望每個願望都能實現 🌸';
 
   }else if(d===14){
 
@@ -5009,6 +5044,82 @@ function checkSpecialDay(){
 
     launchConfetti();
   }
+}
+
+function closeYujunBirthdayFireworks(){
+  const overlay=document.getElementById('yujun-birthday-fireworks');
+  if(!overlay) return;
+  if(typeof overlay._cleanup==='function') overlay._cleanup();
+  overlay.remove();
+}
+function launchYujunBirthdayFireworks(autoPlay=false){
+  const year=today().getFullYear();
+  const shownKey=`yujunBirthdayFireworksShown-${year}`;
+  if(autoPlay && localStorage.getItem(shownKey)==='1') return;
+  if(autoPlay) localStorage.setItem(shownKey,'1');
+  closeYujunBirthdayFireworks();
+
+  const overlay=document.createElement('div');
+  overlay.id='yujun-birthday-fireworks';
+  overlay.className='birthday-fireworks';
+  overlay.innerHTML=`<canvas aria-hidden="true"></canvas><div class="birthday-fireworks-message"><b>予君，生日快樂</b><span>願妳每一歲都被愛包圍，所有願望都閃閃發亮。</span></div><button type="button" class="birthday-fireworks-close" onclick="closeYujunBirthdayFireworks()" aria-label="關閉煙火" title="關閉">×</button>`;
+  document.body.appendChild(overlay);
+
+  const canvas=overlay.querySelector('canvas');
+  const ctx=canvas.getContext('2d');
+  const colors=['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff'];
+  let width=0,height=0,dpr=1,frame=0,lastTime=performance.now();
+  let rockets=[],particles=[],running=true;
+  const timers=[];
+  const resize=()=>{
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    width=window.innerWidth;height=window.innerHeight;
+    canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+    canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  };
+  const explode=(x,y,color)=>{
+    const count=54+Math.floor(Math.random()*34);
+    for(let i=0;i<count;i+=1){
+      const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.12;
+      const speed=1.6+Math.random()*4.2;
+      particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.010+Math.random()*.012,color,size:1.2+Math.random()*1.8});
+    }
+  };
+  const launch=()=>{
+    const startX=width*(.08+Math.random()*.84);
+    const targetX=width*(.1+Math.random()*.8);
+    const targetY=height*(.1+Math.random()*.43);
+    rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/68,vy:(targetY-height-14)/68,color:colors[Math.floor(Math.random()*colors.length)]});
+  };
+  const draw=(now)=>{
+    if(!running) return;
+    const step=Math.min(2,(now-lastTime)/16.67||1);lastTime=now;
+    ctx.fillStyle='rgba(3,2,5,.22)';ctx.fillRect(0,0,width,height);
+    rockets=rockets.filter(rocket=>{
+      rocket.px=rocket.x;rocket.py=rocket.y;rocket.x+=rocket.vx*step;rocket.y+=rocket.vy*step;
+      ctx.beginPath();ctx.moveTo(rocket.px,rocket.py);ctx.lineTo(rocket.x,rocket.y);ctx.strokeStyle=rocket.color;ctx.lineWidth=2.3;ctx.stroke();
+      ctx.beginPath();ctx.arc(rocket.x,rocket.y,2.4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+      if(rocket.y<=rocket.targetY){explode(rocket.x,rocket.y,rocket.color);return false;}
+      return true;
+    });
+    particles=particles.filter(p=>{
+      p.px=p.x;p.py=p.y;p.x+=p.vx*step;p.y+=p.vy*step;p.vx*=Math.pow(.985,step);p.vy=(p.vy+.045*step)*Math.pow(.994,step);p.life-=p.decay*step;
+      if(p.life<=0) return false;
+      ctx.globalAlpha=Math.max(0,p.life);ctx.beginPath();ctx.moveTo(p.px,p.py);ctx.lineTo(p.x,p.y);ctx.strokeStyle=p.color;ctx.lineWidth=p.size;ctx.stroke();ctx.globalAlpha=1;
+      return true;
+    });
+    frame=requestAnimationFrame(draw);
+  };
+  resize();
+  window.addEventListener('resize',resize);
+  for(let i=0;i<9;i+=1) timers.push(setTimeout(launch,180+i*230));
+  const launchTimer=setInterval(()=>{launch();if(Math.random()>.38) timers.push(setTimeout(launch,150));},620);
+  const autoClose=setTimeout(closeYujunBirthdayFireworks,12000);
+  overlay._cleanup=()=>{
+    running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearTimeout(autoClose);timers.forEach(clearTimeout);window.removeEventListener('resize',resize);
+  };
+  frame=requestAnimationFrame(draw);
 }
 
 function launchConfetti(){
@@ -7691,6 +7802,7 @@ const CPBLG_TEAM_META = {
 const CPBLG_HISTORY_PLAYERS = ['聖展','予君'];
 const CPBLG_DEFAULT_ODDS = 2;
 const CPBLG_COIN_LOG_VERSION = 4;
+const CPBLG_CHECKIN_VERSION = 2;
 let cpblgChestOpening = false;
 
 function cpblMakeLogoData(team){
@@ -7713,6 +7825,7 @@ function cpblBaseData(){
     },
     coinRulesVersion:0,
     coinLogVersion:0,
+    checkinVersion:0,
     updatedAt:0
   };
 }
@@ -8070,24 +8183,52 @@ function cpblHasChestRewardForCycle(data, player, cycleKey){
     return row.date===cycleKey || createdDate===cycleKey || row.id===`chest-${player}-${cycleKey}`;
   });
 }
+function cpblDerivedCheckinStreak(checkin={}){
+  const lastDate = String(checkin?.lastDate||'');
+  if(!lastDate) return null;
+  const dates = Array.from(new Set((Array.isArray(checkin?.history) ? checkin.history : [])
+    .map(item=>String(item?.date||''))
+    .filter(date=>/^\d{4}-\d{2}-\d{2}$/.test(date))))
+    .sort();
+  const lastIndex = dates.lastIndexOf(lastDate);
+  if(lastIndex<0) return null;
+  const openedDate = String(checkin?.chestOpenedCycleKey||'');
+  if(openedDate && lastDate<=openedDate) return 0;
+  let streak = 1;
+  for(let index=lastIndex-1; index>=0 && streak<5; index-=1){
+    const newerDate = dates[index+1];
+    const olderDate = dates[index];
+    if(openedDate && olderDate<=openedDate) break;
+    if(cpblDaysBetween(olderDate,newerDate)!==1) break;
+    streak += 1;
+  }
+  return streak;
+}
 function cpblNormalizeCheckinState(checkin={}){
   const state = Object.assign({lastDate:'',streak:0,chestReady:false,chestCycleKey:'',chestOpenedCycle:0,chestOpenedCycleKey:'',history:[]}, checkin||{});
   state.lastDate = String(state.lastDate||'');
-  state.streak = Number(state.streak)||0;
+  state.streak = Math.max(0, Math.min(5, Math.floor(Number(state.streak)||0)));
   state.chestOpenedCycle = Number(state.chestOpenedCycle)||0;
+  state.chestCycleKey = String(state.chestCycleKey||'');
+  state.chestOpenedCycleKey = String(state.chestOpenedCycleKey||'');
+  state.history = Array.isArray(state.history) ? state.history : [];
+  if(!state.chestReady && state.chestCycleKey && state.lastDate>state.chestCycleKey){
+    state.chestCycleKey = '';
+  }
+  const derivedStreak = cpblDerivedCheckinStreak(state);
+  if(derivedStreak!==null) state.streak = derivedStreak;
   if(state.chestReady && state.streak < 5){
     state.chestReady = false;
   }
   state.chestCycleKey = cpblCheckinChestCycleKey(state);
-  state.chestOpenedCycleKey = String(state.chestOpenedCycleKey || '');
   if(state.chestReady && !state.chestCycleKey && state.chestOpenedCycle>0){
     state.chestReady = false;
     state.streak = 0;
   }
   if(state.chestReady && state.chestCycleKey && state.chestOpenedCycleKey===state.chestCycleKey){
     state.chestReady = false;
+    state.streak = 0;
   }
-  state.history = Array.isArray(state.history) ? state.history : [];
   return state;
 }
 function cpblFixWrongRefundLogs(data){
@@ -8173,6 +8314,7 @@ function cpblMergeData(base, incoming){
   data.postponed = Object.assign({},data.postponed||{},incoming.postponed||{});
   data.coinRulesVersion = Number(incoming.coinRulesVersion || data.coinRulesVersion || 0);
   data.coinLogVersion = Number(incoming.coinLogVersion || data.coinLogVersion || 0);
+  data.checkinVersion = Math.max(Number(data.checkinVersion)||0, Number(incoming.checkinVersion)||0);
   data.economy = data.economy || {};
   CPBLG_HISTORY_PLAYERS.forEach(name=>{
     const current = data.economy[name] || {};
@@ -8236,6 +8378,7 @@ function cpblMergeData(base, incoming){
   cpblFixWrongRefundLogs(data);
   cpblApplyKnownFinalsToData(data);
   cpblBackfillCoinLogs(data);
+  data.checkinVersion = CPBLG_CHECKIN_VERSION;
   data.updatedAt = Number(incoming.updatedAt || data.updatedAt || 0);
   return data;
 }
@@ -8276,6 +8419,7 @@ function cpblInitFirebase(){
     if(remote){
       const needsCoinRulePush = Number(remote.coinRulesVersion||0) < 2;
       const needsCoinLogPush = Array.isArray(remote.betLogs) || !Array.isArray(remote.coinLogs) || Number(remote.coinLogVersion||0) < CPBLG_COIN_LOG_VERSION;
+      const needsCheckinPush = Number(remote.checkinVersion||0) < CPBLG_CHECKIN_VERSION;
       cpblgData = cpblMergeData(cpblMergeData(cpblBaseData(), cpblgData), remote);
       localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
       cpblResolveFinishedGames(false);
@@ -8284,7 +8428,7 @@ function cpblInitFirebase(){
         cpblRecountPlayerStats();
         localStorage.setItem(CPBLG_STORE, JSON.stringify(cpblgData));
       }
-      if(needsCoinRulePush || needsCoinLogPush || correctionChanged) set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
+      if(needsCoinRulePush || needsCoinLogPush || needsCheckinPush || correctionChanged) set(ref(db,'cpblGuess'), cpblgData).catch(()=>{});
       if(typeof cpblRenderEconomy==='function') cpblRenderEconomy();
       cpblRenderStats();
       cpblRenderGames();
@@ -11096,6 +11240,7 @@ function pdApplySettings(s){
   document.getElementById('pd-dur-val').textContent=pdSettings.dur+' 天';
   pdRefresh();
   pdUpdateSettingsSummary();
+  pdSyncHomeBroadcast();
 }
 function pdNormalizeHistoryItem(item, key=''){
   const start = String(item?.start || '').slice(0,10);
@@ -11157,6 +11302,7 @@ function pdRenderHistory(val){
       <button onclick="pdDeleteHistory('${r._key}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:15px">✕</button>
     </div>`).join('');
   pdRefresh();
+  pdSyncHomeBroadcast();
 }
 
 function pdDeleteHistory(key){
@@ -11191,7 +11337,20 @@ async function pdSaveSettingsWithHistory(newSettings){
   ]);
 }
 function pdGetSeedCycles(){
-  const cycles = pdCycleHistory.map(item=>{
+  const cycleRecords=pdCycleHistory.slice();
+  if(pdSettings.start && !cycleRecords.some(item=>item.start===pdSettings.start)){
+    const currentRecord=pdNormalizeHistoryItem({
+      start:pdSettings.start,
+      end:pdSettings.end,
+      cycle:pdSettings.cycle,
+      dur:pdSettings.dur,
+      completed:pdSettings.completed===true,
+      createdAt:Date.now()
+    },'settings-current');
+    if(currentRecord) cycleRecords.push(currentRecord);
+  }
+  cycleRecords.sort((a,b)=>a.start.localeCompare(b.start) || (a.createdAt-b.createdAt));
+  const cycles = cycleRecords.map(item=>{
     const pStart = new Date(item.start+'T00:00:00');
     if(Number.isNaN(pStart.getTime())) return null;
     const cycle = Number(item.cycle) || Number(pdSettings.cycle) || 28;
@@ -11241,6 +11400,24 @@ function pdExpandForecast(count=14){
 }
 function pdGetCycles(count){
   return pdExpandForecast(count);
+}
+function pdSyncHomeBroadcast(){
+  homePeriodBroadcastItem=null;
+  if(pdSettings.start){
+    const current=today();
+    const nextCycle=pdGetCycles(12).find(cycle=>cycle?.pStart?.getTime()>current.getTime());
+    if(nextCycle){
+      const daysTo=Math.ceil((nextCycle.pStart.getTime()-current.getTime())/864e5);
+      if(daysTo>=1 && daysTo<=7){
+        homePeriodBroadcastItem={
+          label:'月經預測',
+          days:daysTo,
+          message:`♡ 月經預測：預計還有 ${daysTo} 天，記得提前準備 ♡`
+        };
+      }
+    }
+  }
+  if(typeof updateHome==='function') updateHome();
 }
 function pdDayType(dateObj,cycles){
   const t=dateObj.getTime();

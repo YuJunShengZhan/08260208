@@ -4011,13 +4011,13 @@ onclick="hideSpecialForToday()">
       <div class="fight-card" id="fight-card-sheng">
         <div class="fight-card-head"><div class="fight-name">聖展</div><div class="fight-time" id="fight-time-sheng">尚未更新</div></div>
         <div class="fight-mood-row" id="fight-mood-sheng"></div>
-        <div class="fight-field"><div class="fight-label">我想說的話</div><div class="fight-read" id="fight-message-sheng">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我想說的話</div><div class="fight-read" id="fight-message-sheng">正在輸入中...</div></div>
       </div>
 
       <div class="fight-card" id="fight-card-yujun">
         <div class="fight-card-head"><div class="fight-name">予君</div><div class="fight-time" id="fight-time-yujun">尚未更新</div></div>
         <div class="fight-mood-row" id="fight-mood-yujun"></div>
-        <div class="fight-field"><div class="fight-label">我想說的話</div><div class="fight-read" id="fight-message-yujun">還沒有寫。</div></div>
+        <div class="fight-field"><div class="fight-label">我想說的話</div><div class="fight-read" id="fight-message-yujun">正在輸入中...</div></div>
       </div>
     </div>
 
@@ -5496,7 +5496,7 @@ function fightFormatTime(ts){
   if(!n) return '尚未更新';
   return new Date(n).toLocaleString('zh-TW',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
 }
-function fightText(value, fallback='還沒有寫。'){
+function fightText(value, fallback='正在輸入中...'){
   const text=String(value||'').trim();
   return text ? escapeHtml(text) : fallback;
 }

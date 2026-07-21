@@ -211,6 +211,9 @@ font-family:'Noto Serif TC',serif;
 font-size:28px;font-weight:700;color:var(--rose);
 }
 .countdown-desc{font-size:11px;color:var(--text-muted);margin-top:3px;}
+.countdown-preview{margin-top:8px;padding:6px 10px;border:1px solid rgba(232,99,122,.25);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer;touch-action:manipulation;transition:transform .18s,background .18s,color .18s}
+.countdown-preview:active{transform:scale(.96);background:var(--pink);color:#fff}
+[data-theme="dark"] .countdown-preview{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
 .birthday-fireworks{
 position:fixed;inset:0;z-index:12000;background:rgba(20,16,28,.9);overflow:hidden;display:flex;align-items:center;justify-content:center;
 animation:birthdayNightIn .7s ease both;
@@ -226,6 +229,36 @@ animation:birthdayNightIn .7s ease both;
 @keyframes birthdayNightIn{from{opacity:0}to{opacity:1}}
 @keyframes birthdayWishIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes birthdayFinaleIn{from{opacity:0;transform:translateY(-12px) scale(.94)}to{opacity:1;transform:none}}
+.occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both}
+.occasion-overlay canvas{position:absolute;inset:0;width:100%;height:100%}
+.occasion-overlay.birthday{background:rgba(26,39,67,.94)}
+.occasion-overlay.valentine{background:rgba(77,29,49,.94)}
+.occasion-overlay.anniversary{background:rgba(24,15,25,.96)}
+.occasion-content{position:relative;z-index:2;width:min(92%,680px);padding:24px;text-align:center;color:#fff;pointer-events:none;text-shadow:0 3px 18px rgba(0,0,0,.72)}
+.occasion-kicker{font-size:12px;font-weight:900;letter-spacing:0;margin-bottom:12px;color:#ffd36e}
+.occasion-title{font-family:'Noto Serif TC',serif;font-size:clamp(34px,9vw,70px);font-weight:800;line-height:1.25;letter-spacing:0}
+.occasion-sub{margin-top:12px;font-size:clamp(14px,4vw,21px);font-weight:700;line-height:1.8;letter-spacing:0}
+.occasion-symbol{height:92px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:68px;line-height:1}
+.occasion-overlay.birthday .occasion-symbol{animation:occasionCakeBounce 1.15s ease-in-out infinite}
+.occasion-envelope{position:relative;width:96px;height:66px;border:2px solid rgba(255,255,255,.9);border-radius:5px;background:#fff4f6;box-shadow:0 10px 30px rgba(0,0,0,.22);animation:occasionEnvelope 2.1s ease-in-out infinite}
+.occasion-envelope::before{content:'';position:absolute;left:10px;right:10px;top:-30px;height:54px;background:#ffb7c6;clip-path:polygon(0 100%,50% 0,100% 100%);transform-origin:50% 100%;animation:occasionEnvelopeFlap 2.1s ease-in-out infinite}
+.occasion-envelope::after{content:'♡';position:absolute;left:50%;top:14px;transform:translateX(-50%);font-size:31px;color:#e85d75;font-weight:900}
+.occasion-anniversary-mark{position:relative;width:118px;height:92px;display:flex;align-items:center;justify-content:center;color:#ffd36e;font-size:72px;margin:auto}
+.occasion-anniversary-mark::before,.occasion-anniversary-mark::after{content:'';position:absolute;inset:5px 18px;border:1px solid rgba(255,211,110,.8);border-radius:50%;animation:occasionRing 2.2s ease-out infinite}
+.occasion-anniversary-mark::after{animation-delay:1.1s}
+.occasion-control{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.32);color:#fff;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
+.occasion-control.sound{left:14px;font-size:20px}.occasion-control.close{right:14px;font-size:26px}
+.occasion-lock{position:fixed;inset:0;z-index:12100;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(25,15,20,.58);backdrop-filter:blur(8px);animation:occasionFadeIn .22s ease both}
+.occasion-lock-panel{width:min(100%,360px);padding:22px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 18px 55px rgba(34,12,21,.28);text-align:center}
+.occasion-lock-icon{font-size:34px;line-height:1;margin-bottom:10px}.occasion-lock-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:800;color:var(--rose);letter-spacing:0}.occasion-lock-sub{margin-top:6px;color:var(--text-muted);font-size:12px;line-height:1.6}
+.occasion-lock-input{width:100%;margin-top:16px;padding:13px 14px;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--text);font:700 20px/1 'Noto Sans TC',sans-serif;text-align:center;letter-spacing:6px;outline:none}.occasion-lock-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
+.occasion-lock-error{min-height:20px;margin-top:7px;color:var(--rose);font-size:12px;font-weight:700}.occasion-lock-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:5px}.occasion-lock-actions button{min-height:43px;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--rose);font:800 14px/1 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-lock-actions .confirm{border-color:var(--pink);background:var(--pink);color:#fff}
+[data-theme="dark"] .occasion-lock{background:rgba(8,5,7,.72)}[data-theme="dark"] .occasion-lock-panel{box-shadow:0 18px 55px rgba(0,0,0,.55)}
+@keyframes occasionFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes occasionCakeBounce{0%,100%{transform:translateY(2px) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+@keyframes occasionEnvelope{0%,100%{transform:translateY(3px)}50%{transform:translateY(-7px)}}
+@keyframes occasionEnvelopeFlap{0%,20%,100%{transform:rotateX(0)}45%,75%{transform:rotateX(150deg)}}
+@keyframes occasionRing{0%{opacity:.9;transform:scale(.45)}100%{opacity:0;transform:scale(1.55)}}
 
 .timeline{margin-top:4px;}
 .tl-item{
@@ -3379,42 +3412,26 @@ onclick="hideSpecialForToday()">
       <div class="countdown-item">
         <div class="countdown-num" id="annivDays">—</div>
         <div class="countdown-desc" id="annivLabel">下個週年紀念日</div>
+        <button type="button" class="countdown-preview" onclick="previewOccasionEffect('anniversary')">✨ 預覽特效</button>
       </div>
       <div class="countdown-item">
         <div class="countdown-num" id="vdDays">—</div>
         <div class="countdown-desc" id="vdLabel">下個情人節</div>
+        <button type="button" class="countdown-preview" onclick="previewOccasionEffect('valentine')">💌 預覽特效</button>
       </div>
       <div class="countdown-item">
         <div class="countdown-num" id="bd1Days">—</div>
         <div class="countdown-desc">聖展生日 (2/8)</div>
+        <button type="button" class="countdown-preview" onclick="previewOccasionEffect('shengzhan')">🎂 預覽特效</button>
       </div>
       <div class="countdown-item">
         <div class="countdown-num" id="bd2Days">—</div>
         <div class="countdown-desc">予君生日 (8/26)</div>
+        <button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">🎆 預覽煙火</button>
       </div>
     </div>
   </div>
 
-  <div class="card">
-  <div class="card-title">💑 我們的第一次</div>
-  <div class="timeline" id="firsttime-list">
-    <div style="text-align:center;color:var(--text-muted);font-size:13px;padding:12px 0">載入中...</div>
-  </div>
-  <!-- 新增區 -->
-  <div id="firsttime-add-area" style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
-    <label onclick="openFtDatePicker(event)" style="display:block;position:relative;margin-bottom:0;cursor:pointer">
-      <span id="ft-date-label" class="modal-input" style="display:flex;align-items:center;width:100%;min-height:44px;margin-bottom:0;color:var(--text-muted);font-size:14px;line-height:1.3;pointer-events:none">
-        📅 點擊選擇日期
-      </span>
-      <input type="date" id="ft-date-input" oninput="updateFtDateLabel()" onchange="updateFtDateLabel()" style="position:absolute;inset:0;width:100%;height:100%;opacity:.01;cursor:pointer;z-index:2;color:transparent;background:transparent;border:0;-webkit-appearance:none;appearance:none">
-    </label>
-  
-    <div style="display:flex;gap:8px">
-      <input id="ft-text-input" class="modal-input" placeholder="紀錄做了什麼事..." style="flex:1;margin-bottom:0">
-      <button onclick="ftAdd()" style="background:var(--pink);color:white;border:none;border-radius:10px;padding:0 16px;cursor:pointer;font-size:14px;flex-shrink:0">＋</button>
-    </div>
-  </div>
-</div>
   <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px">
       <div class="card-title" style="margin-bottom:0">🎁 給對方驚喜</div>
@@ -4328,7 +4345,14 @@ function stopHomeCountdownBroadcast(){
   if(homeBroadcastTimer){clearTimeout(homeBroadcastTimer);homeBroadcastTimer=null;}
   if(homeBroadcastAnimation){homeBroadcastAnimation.cancel();homeBroadcastAnimation=null;}
   const message=document.getElementById('home-countdown-broadcast-message');
-  if(message){message.style.transition='none';message.style.transform='';}
+  if(message){message.style.transition='none';message.style.transform='';message.textContent='';}
+}
+function restartHomeCountdownBroadcast(){
+  const box=document.getElementById('home-countdown-broadcast');
+  stopHomeCountdownBroadcast();
+  if(!box || box.hidden || !homeBroadcastItems.length) return;
+  if(homeBroadcastItems.length>1) homeBroadcastIndex=(homeBroadcastIndex+1)%homeBroadcastItems.length;
+  homeBroadcastTimer=setTimeout(playHomeCountdownBroadcast,80);
 }
 function playHomeCountdownBroadcast(){
   const box=document.getElementById('home-countdown-broadcast');
@@ -5018,48 +5042,279 @@ function checkSpecialDay(){
   const m=t.getMonth()+1;
   const d=t.getDate();
 
+  if(m===12&&d===1){
+    launchAnniversaryEffect(true);
+    return;
+  }
+
+  if(m===2&&d===8){
+    launchShengzhanBirthdayEffect(true);
+    return;
+  }
+
   if(m===8&&d===26){
     launchYujunBirthdayFireworks(true);
     return;
   }
 
-  // 每台裝置獨立紀錄
-  // 今天已選擇不提醒
-  if(isDailyReminderSet('specialShownDate')) return;
-
-  let emoji='',title='',sub='';
-
-
-  if(m===12&&d===1){
-    emoji='🎊';
-    title='週年紀念日快樂！';
-    sub='又過了一年，謝謝予君和聖展一直在我身邊 💕\n每一天有你們都是最珍貴的禮物。';
-
-  }else if(m===2&&d===8){
-
-    emoji='🎂';
-    title='聖展生日快樂！';
-    sub='今天是屬於你的特別日子\n謝謝你出現在我的生命裡 ❤️';
-
-  }else if(d===14){
-
-    emoji='💝';
-    title=`${m}/14 情人節快樂！`;
-    sub='今天是情人節，記得讓對方感受到你的愛 💌';
+  if(d===14){
+    launchValentineEffect(true);
   }
+}
 
-
-  if(title){
-
-    document.getElementById('special-emoji').textContent=emoji;
-    document.getElementById('special-title').textContent=title;
-    document.getElementById('special-sub').textContent=sub;
-
-    document.getElementById('special-overlay')
-    .classList.remove('hidden');
-
-    launchConfetti();
+function previewOccasionEffect(type){
+  closeOccasionPreviewLock();
+  const lock=document.createElement('div');
+  lock.id='occasion-preview-lock';
+  lock.className='occasion-lock';
+  lock.setAttribute('role','dialog');
+  lock.setAttribute('aria-modal','true');
+  lock.setAttribute('aria-labelledby','occasion-lock-title');
+  lock.dataset.type=type;
+  lock.innerHTML=`<div class="occasion-lock-panel"><div class="occasion-lock-icon">🔒</div><div class="occasion-lock-title" id="occasion-lock-title">預覽鎖定</div><div class="occasion-lock-sub">請輸入密碼才能播放驚喜特效</div><input class="occasion-lock-input" id="occasion-lock-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="預覽密碼"><div class="occasion-lock-error" id="occasion-lock-error" aria-live="polite"></div><div class="occasion-lock-actions"><button type="button" onclick="closeOccasionPreviewLock()">取消</button><button type="button" class="confirm" onclick="unlockOccasionPreview()">解鎖預覽</button></div></div>`;
+  document.body.appendChild(lock);
+  const input=lock.querySelector('input');
+  input.addEventListener('keydown',event=>{
+    if(event.key==='Enter') unlockOccasionPreview();
+    else if(event.key==='Escape') closeOccasionPreviewLock();
+  });
+  setTimeout(()=>input.focus(),30);
+}
+function closeOccasionPreviewLock(){
+  document.getElementById('occasion-preview-lock')?.remove();
+}
+function unlockOccasionPreview(){
+  const lock=document.getElementById('occasion-preview-lock');
+  if(!lock) return;
+  const input=lock.querySelector('#occasion-lock-input');
+  const error=lock.querySelector('#occasion-lock-error');
+  if((input?.value||'').trim()!=='9898'){
+    error.textContent='密碼錯誤，請再試一次';
+    input.value='';
+    input.focus();
+    return;
   }
+  const type=lock.dataset.type;
+  closeOccasionPreviewLock();
+  if(type==='anniversary') launchAnniversaryEffect(false);
+  else if(type==='valentine') launchValentineEffect(false);
+  else if(type==='shengzhan') launchShengzhanBirthdayEffect(false);
+  else if(type==='yujun') launchYujunBirthdayFireworks(false);
+}
+
+function closeOccasionEffect(){
+  const overlay=document.getElementById('occasion-effect');
+  if(!overlay) return;
+  if(typeof overlay._cleanup==='function') overlay._cleanup();
+  overlay.remove();
+}
+function toggleOccasionEffectSound(){
+  const overlay=document.getElementById('occasion-effect');
+  if(overlay && typeof overlay._toggleSound==='function') overlay._toggleSound();
+}
+function launchShengzhanBirthdayEffect(autoPlay=false){
+  launchOccasionEffect('birthday',autoPlay);
+}
+function launchValentineEffect(autoPlay=false){
+  launchOccasionEffect('valentine',autoPlay);
+}
+function launchAnniversaryEffect(autoPlay=false){
+  launchOccasionEffect('anniversary',autoPlay);
+}
+function launchOccasionEffect(type,autoPlay=false){
+  const now=today();
+  const anniversaryNumber=Math.max(1,now.getFullYear()-START.getFullYear());
+  const configs={
+    birthday:{
+      kicker:'2 / 8 · HAPPY BIRTHDAY',
+      title:'聖展，生日快樂',
+      sub:'願新的一歲，喜歡的事都靠近你，\n每一天都有值得大笑的理由。',
+      symbol:'🎂',duration:12000,
+      colors:['#ffd166','#ff6b8a','#64d8cb','#7aa7ff','#c59cff','#ffffff']
+    },
+    valentine:{
+      kicker:`${now.getMonth()+1} / 14 · LOVE DAY`,
+      title:'情人節快樂',
+      sub:'聖展♡予君\n今天也要把喜歡，認真地說給彼此聽。',
+      symbol:'<span class="occasion-envelope"></span>',duration:12500,
+      colors:['#ff7f9a','#ffb0bd','#ffd1d8','#fff0f2','#f05f7f']
+    },
+    anniversary:{
+      kicker:'12 / 1 · ANNIVERSARY',
+      title:`我們的第 ${anniversaryNumber} 週年`,
+      sub:'聖展♡予君｜從 2025/12/01 到永遠\n謝謝我們一次又一次，堅定地選擇彼此。',
+      symbol:'<span class="occasion-anniversary-mark">♡</span>',duration:17000,
+      colors:['#ffd36e','#fff1b8','#ff8fa8','#72dcff','#ffffff']
+    }
+  };
+  const config=configs[type];
+  if(!config) return;
+  const shownKey=`occasionEffectShown-${type}-${localDateKey()}`;
+  if(autoPlay && localStorage.getItem(shownKey)==='1') return;
+  if(autoPlay) localStorage.setItem(shownKey,'1');
+
+  closeYujunBirthdayFireworks();
+  closeOccasionEffect();
+  const overlay=document.createElement('div');
+  overlay.id='occasion-effect';
+  overlay.className=`occasion-overlay ${type}`;
+  overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="occasion-control sound" onclick="toggleOccasionEffectSound()" aria-label="切換特效音效" title="切換音效">🔊</button><div class="occasion-content"><div class="occasion-symbol">${config.symbol}</div><div class="occasion-kicker">${config.kicker}</div><div class="occasion-title">${config.title}</div><div class="occasion-sub">${config.sub.replace(/\n/g,'<br>')}</div></div><button type="button" class="occasion-control close" onclick="closeOccasionEffect()" aria-label="關閉特效" title="關閉">×</button>`;
+  document.body.appendChild(overlay);
+
+  const canvas=overlay.querySelector('canvas');
+  const ctx=canvas.getContext('2d');
+  const soundButton=overlay.querySelector('.occasion-control.sound');
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  let width=0,height=0,dpr=1,frame=0,lastTime=performance.now(),running=true;
+  let audioCtx=null,masterGain=null,soundEnabled=!!AudioContextClass;
+  const objects=[];
+  const particles=[];
+  const timers=[];
+  const intervals=[];
+
+  try{
+    if(AudioContextClass){
+      audioCtx=new AudioContextClass();
+      masterGain=audioCtx.createGain();
+      masterGain.gain.value=.38;
+      masterGain.connect(audioCtx.destination);
+    }
+  }catch(e){audioCtx=null;masterGain=null;soundEnabled=false;}
+  const updateSoundButton=()=>{
+    soundButton.hidden=!audioCtx;
+    soundButton.textContent=soundEnabled?'🔊':'🔇';
+    soundButton.setAttribute('aria-label',soundEnabled?'關閉特效音效':'開啟特效音效');
+    overlay.dataset.sound=!soundEnabled?'off':(audioCtx?.state==='running'?'on':'waiting');
+  };
+  const tone=(frequency,duration=.25,volume=.05,typeName='sine',delay=0,endFrequency=frequency)=>{
+    if(!soundEnabled || !audioCtx || audioCtx.state!=='running' || !masterGain) return;
+    const start=audioCtx.currentTime+delay;
+    const oscillator=audioCtx.createOscillator();
+    const gain=audioCtx.createGain();
+    oscillator.type=typeName;
+    oscillator.frequency.setValueAtTime(Math.max(1,frequency),start);
+    oscillator.frequency.exponentialRampToValueAtTime(Math.max(1,endFrequency),start+duration);
+    gain.gain.setValueAtTime(.0001,start);
+    gain.gain.exponentialRampToValueAtTime(volume,start+.025);
+    gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    oscillator.connect(gain);gain.connect(masterGain);
+    oscillator.start(start);oscillator.stop(start+duration+.04);
+  };
+  const playTheme=()=>{
+    if(type==='birthday'){
+      [523,523,587,523,698,659,523,523,587,523,784,698].forEach((note,i)=>tone(note,.24,.045,'triangle',i*.19));
+    }else if(type==='valentine'){
+      [392,494,587,659,587,494,440,523,659].forEach((note,i)=>tone(note,.42,.036,'sine',i*.28));
+    }else{
+      [392,523,659,784,659,784,988,1047].forEach((note,i)=>{
+        tone(note,.58,.045,'sine',i*.24);
+        if(i>2) tone(note/2,.72,.018,'triangle',i*.24);
+      });
+    }
+  };
+  let themePlayed=false;
+  const unlockSound=async()=>{
+    if(!audioCtx || !soundEnabled) return;
+    try{if(audioCtx.state==='suspended') await audioCtx.resume();}catch(e){}
+    updateSoundButton();
+    if(audioCtx.state==='running' && !themePlayed){themePlayed=true;playTheme();}
+  };
+  overlay._toggleSound=async()=>{
+    if(!audioCtx) return;
+    if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.38;themePlayed=false;await unlockSound();}
+    else if(audioCtx.state!=='running'){await unlockSound();}
+    else{soundEnabled=false;masterGain.gain.value=0;}
+    updateSoundButton();
+  };
+  updateSoundButton();
+  unlockSound();
+  overlay.addEventListener('pointerdown',unlockSound,{once:true});
+
+  const resize=()=>{
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    width=window.innerWidth;height=window.innerHeight;
+    canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+    canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  };
+  const randomColor=()=>config.colors[Math.floor(Math.random()*config.colors.length)];
+  const makeBurst=(x=width*(.12+Math.random()*.76),y=height*(.1+Math.random()*.55),large=false)=>{
+    const color=randomColor();
+    const count=(large?72:42)+Math.floor(Math.random()*24);
+    for(let i=0;i<count;i+=1){
+      const angle=Math.PI*2*i/count+(Math.random()-.5)*.08;
+      const speed=(large?2.2:1.2)+Math.random()*(large?4.8:3.2);
+      particles.push({kind:'spark',x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.009+Math.random()*.013,color,size:1+Math.random()*2});
+    }
+    if(type==='anniversary') tone(150,.35,.025,'sine',0,55);
+  };
+  const addBirthdayObjects=()=>{
+    objects.push({kind:'balloon',x:24+Math.random()*Math.max(20,width-48),y:height+70,r:17+Math.random()*13,vy:.5+Math.random()*.65,sway:Math.random()*Math.PI*2,color:randomColor()});
+    for(let i=0;i<4;i+=1) objects.push({kind:'confetti',x:Math.random()*width,y:-20-Math.random()*80,vy:1+Math.random()*1.6,spin:Math.random()*Math.PI,color:randomColor(),size:5+Math.random()*7});
+  };
+  const addValentineObject=()=>{
+    objects.push({kind:Math.random()>.28?'heart':'petal',x:Math.random()*width,y:-24,vy:.45+Math.random()*1.25,vx:(Math.random()-.5)*.45,spin:Math.random()*Math.PI,size:8+Math.random()*14,color:randomColor()});
+  };
+  const addAnniversaryRain=()=>{
+    for(let i=0;i<3;i+=1) objects.push({kind:'rain',x:Math.random()*width,y:-50-Math.random()*100,vy:2+Math.random()*2.5,len:25+Math.random()*55,color:randomColor()});
+  };
+  const drawHeart=(x,y,size,color,rotation=0)=>{
+    ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.scale(size/22,size/22);ctx.beginPath();ctx.moveTo(0,6);ctx.bezierCurveTo(-17,-5,-12,-18,0,-10);ctx.bezierCurveTo(12,-18,17,-5,0,6);ctx.fillStyle=color;ctx.fill();ctx.restore();
+  };
+  const draw=(nowTime)=>{
+    if(!running) return;
+    const step=Math.min(2,(nowTime-lastTime)/16.67||1);lastTime=nowTime;
+    ctx.clearRect(0,0,width,height);
+    for(let i=objects.length-1;i>=0;i-=1){
+      const o=objects[i];
+      if(o.kind==='balloon'){
+        o.y-=o.vy*step;o.sway+=.025*step;o.x+=Math.sin(o.sway)*.22*step;
+        ctx.save();ctx.globalAlpha=.92;ctx.beginPath();ctx.ellipse(o.x,o.y,o.r*.82,o.r,0,0,Math.PI*2);ctx.fillStyle=o.color;ctx.fill();ctx.beginPath();ctx.moveTo(o.x,o.y+o.r);ctx.lineTo(o.x-2+Math.sin(o.sway)*7,o.y+o.r+42);ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=1;ctx.stroke();ctx.restore();
+        if(o.y<-90) objects.splice(i,1);
+      }else if(o.kind==='confetti'){
+        o.y+=o.vy*step;o.spin+=.08*step;
+        ctx.save();ctx.translate(o.x,o.y);ctx.rotate(o.spin);ctx.fillStyle=o.color;ctx.fillRect(-o.size/2,-o.size/4,o.size,o.size/2);ctx.restore();
+        if(o.y>height+30) objects.splice(i,1);
+      }else if(o.kind==='heart'){
+        o.y+=o.vy*step;o.x+=o.vx*step+Math.sin(o.y*.025)*.18;o.spin+=.012*step;drawHeart(o.x,o.y,o.size,o.color,o.spin*.25);
+        if(o.y>height+35) objects.splice(i,1);
+      }else if(o.kind==='petal'){
+        o.y+=o.vy*step;o.x+=o.vx*step+Math.sin(o.y*.03)*.3;o.spin+=.035*step;
+        ctx.save();ctx.translate(o.x,o.y);ctx.rotate(o.spin);ctx.beginPath();ctx.ellipse(0,0,o.size*.38,o.size*.75,0,0,Math.PI*2);ctx.fillStyle=o.color;ctx.globalAlpha=.8;ctx.fill();ctx.restore();
+        if(o.y>height+35) objects.splice(i,1);
+      }else{
+        o.y+=o.vy*step;
+        const gradient=ctx.createLinearGradient(o.x,o.y-o.len,o.x,o.y);gradient.addColorStop(0,'transparent');gradient.addColorStop(1,o.color);
+        ctx.beginPath();ctx.moveTo(o.x,o.y-o.len);ctx.lineTo(o.x,o.y);ctx.strokeStyle=gradient;ctx.lineWidth=1.3;ctx.stroke();
+        if(o.y>height+o.len) objects.splice(i,1);
+      }
+    }
+    for(let i=particles.length-1;i>=0;i-=1){
+      const p=particles[i];p.px=p.x;p.py=p.y;p.x+=p.vx*step;p.y+=p.vy*step;p.vx*=Math.pow(.986,step);p.vy=(p.vy+.04*step)*Math.pow(.995,step);p.life-=p.decay*step;
+      if(p.life<=0){particles.splice(i,1);continue;}
+      ctx.globalAlpha=p.life;ctx.beginPath();ctx.moveTo(p.px,p.py);ctx.lineTo(p.x,p.y);ctx.strokeStyle=p.color;ctx.lineWidth=p.size;ctx.stroke();ctx.globalAlpha=1;
+    }
+    frame=requestAnimationFrame(draw);
+  };
+  resize();
+  window.addEventListener('resize',resize);
+  if(type==='birthday'){
+    for(let i=0;i<14;i+=1) timers.push(setTimeout(addBirthdayObjects,i*170));
+    intervals.push(setInterval(addBirthdayObjects,430));
+  }else if(type==='valentine'){
+    for(let i=0;i<24;i+=1) timers.push(setTimeout(addValentineObject,i*95));
+    intervals.push(setInterval(addValentineObject,180));
+  }else{
+    for(let i=0;i<5;i+=1) timers.push(setTimeout(()=>makeBurst(undefined,undefined,true),350+i*360));
+    intervals.push(setInterval(addAnniversaryRain,180));
+    intervals.push(setInterval(()=>makeBurst(undefined,undefined,true),760));
+  }
+  const autoClose=setTimeout(closeOccasionEffect,config.duration);
+  overlay._cleanup=()=>{
+    running=false;cancelAnimationFrame(frame);clearTimeout(autoClose);timers.forEach(clearTimeout);intervals.forEach(clearInterval);window.removeEventListener('resize',resize);
+    if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
+  };
+  frame=requestAnimationFrame(draw);
 }
 
 function closeYujunBirthdayFireworks(){
@@ -5077,6 +5332,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const shownKey=`yujunBirthdayFireworksShown-${year}`;
   if(autoPlay && localStorage.getItem(shownKey)==='1') return;
   if(autoPlay) localStorage.setItem(shownKey,'1');
+  closeOccasionEffect();
   closeYujunBirthdayFireworks();
 
   const overlay=document.createElement('div');
@@ -5263,7 +5519,12 @@ function showPage(id,btn){
   }
 
   if(id==='period') pdRefresh();
-  if(id==='home' && typeof pdSyncHomeBroadcast==='function') pdSyncHomeBroadcast();
+  if(id==='home'){
+    if(typeof pdSyncHomeBroadcast==='function') pdSyncHomeBroadcast();
+    restartHomeCountdownBroadcast();
+  }else{
+    stopHomeCountdownBroadcast();
+  }
   if(id==='album') albumRenderCal();
   if(id==='memories') renderMemories();
   if(id==='fight') fightEnterScreen();
@@ -12935,101 +13196,6 @@ function rgHandleKeyup(e){
   rgPadRelease(null, lane);
 }
 
-// ── 我們的第一次 (Firebase 同步) ──
-const FT_DEFAULTS = [
-  {date:'2025-10-05', text:'第一天認識，在交友軟體裡面'},
-  {date:'2025-10-08', text:'第一次見面，一起吃藏壽司，看了電影他年他日'},
-  {date:'2025-11-09', text:'第一次做愛，在板橋開房間'},
-  {date:'2025-12-01', text:'正式在一起 ❤️'},
-  {date:'2025-12-02', text:'交往後第一次見面'},
-  {date:'2026-02-07', text:'第一次騎機車載妳、一起看夜景'},
-];
-
-function openFtDatePicker(event){
-  const input = document.getElementById('ft-date-input');
-  if(!input) return;
-  if(event && event.target === input) return;
-  if(typeof input.showPicker === 'function'){
-    input.showPicker();
-  } else {
-    input.focus();
-    input.click();
-  }
-}
-
-function updateFtDateLabel(){
-  const input = document.getElementById('ft-date-input');
-  const label = document.getElementById('ft-date-label');
-  if(!input || !label) return;
-  if(!input.value){
-    label.textContent = '📅 點擊選擇日期';
-    label.style.color = 'var(--text-muted)';
-    return;
-  }
-  const [y,m,d] = input.value.split('-');
-  label.textContent = `📅 ${y}/${m}/${d}`;
-  label.style.color = 'var(--text)';
-}
-function ftFmtDate(d){
-  if(d==='未來') return '未來';
-  const [y,m,day]=d.split('-');
-  return `${y} / ${m} / ${day}`;
-}
-
-function ftRender(items){
-  const list = document.getElementById('firsttime-list');
-  if(!items||!items.length){
-    list.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:12px 0">還沒有記錄，新增第一筆吧 💕</div>';
-    return;
-  }
-  // 排序：未來排最後，其他按日期升序
-  const sorted=[...items].sort((a,b)=>a.date.localeCompare(b.date));
-  
-  list.innerHTML = sorted.map(item=>`
-    <div class="tl-item" style="position:relative;padding-right:28px">
-      <span class="tl-date">${ftFmtDate(item.date)}</span>${item.text}
-      ${item._key ? `<button onclick="ftDelete('${item._key}')" style="position:absolute;right:0;top:10px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:0 2px" title="刪除">✕</button>` : ''}
-    </div>`).join('');
-}
-
-function ftAdd(){
-  const dateVal = document.getElementById('ft-date-input').value;
-  const textVal = document.getElementById('ft-text-input').value.trim();
-  if(!textVal){alert('請輸入內容');return;}
-  // date 可以是空的（代表「未來」）
-  // 簡單驗證格式或留空
-  const dateStr = (dateVal && /^\d{4}-\d{2}-\d{2}$/.test(dateVal)) ? dateVal : (dateVal ? dateVal : '未來');
-  if(!window._fb){alert('Firebase 尚未連線');return;}
-  const {db,ref,push} = window._fb;
-  push(ref(db,'firstTimes'),{date:dateStr, text:textVal});
-  document.getElementById('ft-date-input').value='';
-  updateFtDateLabel();
-  document.getElementById('ft-text-input').value='';
-}
-
-function ftDelete(key){
-  if(!confirm('刪除這筆記錄？')) return;
-  const {db,ref,remove} = window._fb;
-  remove(ref(db,`firstTimes/${key}`));
-}
-
-function ftInit(){
-  const {db,ref,get,set,push,onValue} = window._fb;
-  // 第一次：如果 Firebase 裡是空的，寫入預設資料
-  get(ref(db,'firstTimes')).then(snap=>{
-    if(!snap.val()){
-      FT_DEFAULTS.forEach(item=>push(ref(db,'firstTimes'),item));
-    }
-  });
-  // 即時監聽
-  onValue(ref(db,'firstTimes'),snap=>{
-    const val=snap.val();
-    const items = val ? Object.entries(val).map(([k,v])=>({...v,_key:k})) : [];
-    ftRender(items);
-  });
-}
-
-
 /* ─────────────────────────────────────────────
    2026-06-22 修正覆蓋區
    1) 驚喜提醒：今天內不再提醒只擋當天；收下才視為本機已看過。
@@ -14379,7 +14545,6 @@ window.addEventListener('firebaseReady',()=>{
   albumInitFirebase();
   initMine();
   pdLoad();
-  ftInit();
   bbInitFirebase();
   checkLoveSurprise();
 });

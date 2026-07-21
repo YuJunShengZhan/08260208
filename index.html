@@ -219,15 +219,21 @@ position:fixed;inset:0;z-index:12000;background:rgba(20,16,28,.9);overflow:hidde
 animation:birthdayNightIn .7s ease both;
 }
 .birthday-fireworks canvas{position:absolute;inset:0;width:100%;height:100%}
-.birthday-fireworks-message{position:relative;z-index:2;text-align:center;color:#fff;padding:24px;pointer-events:none;text-shadow:0 3px 18px rgba(0,0,0,.9);animation:birthdayWishIn .9s .55s ease both}
-.birthday-fireworks-message b{display:block;font-family:'Noto Serif TC',serif;font-size:clamp(34px,9vw,68px);line-height:1.25;font-weight:800;letter-spacing:0}
-.birthday-fireworks-message span{display:block;margin-top:10px;font-size:clamp(14px,4vw,21px);line-height:1.7;font-weight:700;letter-spacing:0}
+.birthday-fireworks-message{position:relative;z-index:2;width:min(92%,720px);text-align:center;color:#fff;padding:24px;pointer-events:none;text-shadow:0 3px 18px rgba(0,0,0,.9);animation:birthdayWishIn .9s .55s ease both}
+.birthday-fireworks-message::after{content:'';position:absolute;left:50%;bottom:-18px;width:min(280px,70vw);height:1px;transform:translateX(-50%);background:rgba(255,211,110,.72);box-shadow:0 0 16px rgba(255,211,110,.9)}
+.birthday-fireworks-kicker{margin-bottom:10px;color:#ffd36e;font-size:11px;font-weight:900;letter-spacing:0}
+.birthday-fireworks-crown{height:68px;color:#ffd36e;font-family:'Noto Serif TC',serif;font-size:62px;line-height:1;text-shadow:0 0 12px rgba(255,211,110,.95),0 0 34px rgba(255,93,143,.68);animation:birthdayCrown 1.6s ease-in-out infinite}
+.birthday-fireworks-message b{display:block;font-family:'Noto Serif TC',serif;font-size:clamp(38px,10vw,76px);line-height:1.22;font-weight:800;letter-spacing:0;text-shadow:0 2px 10px rgba(0,0,0,.92),0 0 24px rgba(255,93,143,.62)}
+.birthday-fireworks-message span{display:block;max-width:610px;margin:13px auto 0;font-size:clamp(14px,4vw,21px);line-height:1.8;font-weight:700;letter-spacing:0}
+.birthday-fireworks.finale-mode .birthday-fireworks-message{animation:birthdayWishOut .65s ease forwards}
 .birthday-fireworks-finale{position:absolute;z-index:2;top:max(70px,calc(env(safe-area-inset-top) + 62px));left:16px;right:16px;text-align:center;color:#fff;font-family:'Noto Serif TC',serif;font-size:clamp(28px,8vw,52px);font-weight:800;letter-spacing:0;opacity:0;transform:translateY(-12px) scale(.94);pointer-events:none;text-shadow:0 0 10px rgba(255,255,255,.9),0 0 24px rgba(255,93,143,.9),0 0 44px rgba(96,214,255,.7)}
 .birthday-fireworks-finale.show{animation:birthdayFinaleIn .55s ease forwards}
 .birthday-fireworks-close{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));right:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:26px;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
 .birthday-fireworks-sound{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));left:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:20px;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
 @keyframes birthdayNightIn{from{opacity:0}to{opacity:1}}
 @keyframes birthdayWishIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes birthdayWishOut{to{opacity:0;transform:translateY(18px) scale(.96)}}
+@keyframes birthdayCrown{0%,100%{transform:translateY(3px) scale(.96);filter:brightness(.95)}50%{transform:translateY(-4px) scale(1.05);filter:brightness(1.28)}}
 @keyframes birthdayFinaleIn{from{opacity:0;transform:translateY(-12px) scale(.94)}to{opacity:1;transform:none}}
 .occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both}
 .occasion-overlay canvas{position:absolute;inset:0;width:100%;height:100%}
@@ -3427,7 +3433,7 @@ onclick="hideSpecialForToday()">
       <div class="countdown-item">
         <div class="countdown-num" id="bd2Days">—</div>
         <div class="countdown-desc">予君生日 (8/26)</div>
-        <button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">🎆 預覽煙火</button>
+        <button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">🎆 預覽特效</button>
       </div>
     </div>
   </div>
@@ -4503,6 +4509,7 @@ let surprisePhotoBase64='';
 let surprisePhotoFile=null;
 let loveSurprisesCache = {};
 let loveSurpriseTimer = null;
+let loveSurpriseQueuedForOccasion = false;
 
 function openSurpriseTimePicker(event){
   const input = document.getElementById('surprise-time');
@@ -5005,10 +5012,56 @@ function showLoveSurprise(item){
   document.body.appendChild(overlay);
 }
 
+function getPendingOccasionTypeToday(){
+  const t=today();
+  const m=t.getMonth()+1;
+  const d=t.getDate();
+  if(m===12 && d===1) return 'anniversary';
+  if(m===2 && d===8) return 'birthday';
+  if(m===8 && d===26) return 'yujun';
+  if(d===14) return 'valentine';
+  return '';
+}
+
+function isOccasionEffectActive(){
+  return !!document.getElementById('occasion-effect') ||
+    !!document.getElementById('yujun-birthday-fireworks');
+}
+
+function isOccasionEffectPendingToday(){
+  const type=getPendingOccasionTypeToday();
+  if(!type) return false;
+  if(type==='yujun'){
+    return localStorage.getItem(`yujunBirthdayFireworksShown-${today().getFullYear()}`)!=='1';
+  }
+  return localStorage.getItem(`occasionEffectShown-${type}-${localDateKey()}`)!=='1';
+}
+
+function shouldDelayLoveSurpriseForOccasion(){
+  return isOccasionEffectActive() || isOccasionEffectPendingToday();
+}
+
+function releaseQueuedLoveSurpriseAfterOccasion(){
+  setTimeout(()=>{
+    if(!loveSurpriseQueuedForOccasion || shouldDelayLoveSurpriseForOccasion()) return;
+    renderDueLoveSurprise();
+  },0);
+}
+
 function renderDueLoveSurprise(){
+  if(document.querySelector('[data-surprise-overlay="love"]')) return;
   const now = new Date();
   const item = getPendingLoveSurprises().find(v => new Date(v.time) <= now);
-  if(item) showLoveSurprise(item);
+  if(!item){
+    loveSurpriseQueuedForOccasion=false;
+    return;
+  }
+  if(shouldDelayLoveSurpriseForOccasion()){
+    loveSurpriseQueuedForOccasion=true;
+    return;
+  }
+  loveSurpriseQueuedForOccasion=false;
+  showLoveSurprise(item);
 }
 
 function scheduleLoveSurpriseCheck(){
@@ -5107,6 +5160,7 @@ function closeOccasionEffect(){
   if(!overlay) return;
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
+  releaseQueuedLoveSurpriseAfterOccasion();
 }
 function toggleOccasionEffectSound(){
   const overlay=document.getElementById('occasion-effect');
@@ -5158,6 +5212,7 @@ function launchOccasionEffect(type,autoPlay=false){
   const overlay=document.createElement('div');
   overlay.id='occasion-effect';
   overlay.className=`occasion-overlay ${type}`;
+  overlay.dataset.duration=String(config.duration);
   overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="occasion-control sound" onclick="toggleOccasionEffectSound()" aria-label="切換特效音效" title="切換音效">🔊</button><div class="occasion-content"><div class="occasion-symbol">${config.symbol}</div><div class="occasion-kicker">${config.kicker}</div><div class="occasion-title">${config.title}</div><div class="occasion-sub">${config.sub.replace(/\n/g,'<br>')}</div></div><button type="button" class="occasion-control close" onclick="closeOccasionEffect()" aria-label="關閉特效" title="關閉">×</button>`;
   document.body.appendChild(overlay);
 
@@ -5166,7 +5221,7 @@ function launchOccasionEffect(type,autoPlay=false){
   const soundButton=overlay.querySelector('.occasion-control.sound');
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
   let width=0,height=0,dpr=1,frame=0,lastTime=performance.now(),running=true;
-  let audioCtx=null,masterGain=null,soundEnabled=!!AudioContextClass;
+  let audioCtx=null,masterGain=null,soundEnabled=!!AudioContextClass,themeLoopTimer=null;
   const objects=[];
   const particles=[];
   const timers=[];
@@ -5200,7 +5255,10 @@ function launchOccasionEffect(type,autoPlay=false){
     oscillator.connect(gain);gain.connect(masterGain);
     oscillator.start(start);oscillator.stop(start+duration+.04);
   };
+  let themePassCount=0;
   const playTheme=()=>{
+    themePassCount+=1;
+    overlay.dataset.musicPass=String(themePassCount);
     if(type==='birthday'){
       [523,523,587,523,698,659,523,523,587,523,784,698].forEach((note,i)=>tone(note,.24,.045,'triangle',i*.19));
     }else if(type==='valentine'){
@@ -5212,18 +5270,26 @@ function launchOccasionEffect(type,autoPlay=false){
       });
     }
   };
-  let themePlayed=false;
+  const themeLoopDelay=type==='birthday'?2850:(type==='valentine'?3200:3100);
+  const startThemeLoop=()=>{
+    if(themeLoopTimer || !soundEnabled || !audioCtx || audioCtx.state!=='running') return;
+    playTheme();
+    themeLoopTimer=setInterval(playTheme,themeLoopDelay);
+  };
+  const stopThemeLoop=()=>{
+    if(themeLoopTimer){clearInterval(themeLoopTimer);themeLoopTimer=null;}
+  };
   const unlockSound=async()=>{
     if(!audioCtx || !soundEnabled) return;
     try{if(audioCtx.state==='suspended') await audioCtx.resume();}catch(e){}
     updateSoundButton();
-    if(audioCtx.state==='running' && !themePlayed){themePlayed=true;playTheme();}
+    if(audioCtx.state==='running') startThemeLoop();
   };
   overlay._toggleSound=async()=>{
     if(!audioCtx) return;
-    if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.38;themePlayed=false;await unlockSound();}
+    if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.38;await unlockSound();}
     else if(audioCtx.state!=='running'){await unlockSound();}
-    else{soundEnabled=false;masterGain.gain.value=0;}
+    else{soundEnabled=false;masterGain.gain.value=0;stopThemeLoop();}
     updateSoundButton();
   };
   updateSoundButton();
@@ -5311,7 +5377,7 @@ function launchOccasionEffect(type,autoPlay=false){
   }
   const autoClose=setTimeout(closeOccasionEffect,config.duration);
   overlay._cleanup=()=>{
-    running=false;cancelAnimationFrame(frame);clearTimeout(autoClose);timers.forEach(clearTimeout);intervals.forEach(clearInterval);window.removeEventListener('resize',resize);
+    running=false;cancelAnimationFrame(frame);clearTimeout(autoClose);stopThemeLoop();timers.forEach(clearTimeout);intervals.forEach(clearInterval);window.removeEventListener('resize',resize);
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
@@ -5322,6 +5388,7 @@ function closeYujunBirthdayFireworks(){
   if(!overlay) return;
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
+  releaseQueuedLoveSurpriseAfterOccasion();
 }
 function toggleYujunBirthdayFireworksSound(){
   const overlay=document.getElementById('yujun-birthday-fireworks');
@@ -5338,7 +5405,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const overlay=document.createElement('div');
   overlay.id='yujun-birthday-fireworks';
   overlay.className='birthday-fireworks';
-  overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="birthday-fireworks-sound" onclick="toggleYujunBirthdayFireworksSound()" aria-label="切換煙火音效" title="切換音效">🔊</button><div class="birthday-fireworks-finale">聖展♡予君</div><div class="birthday-fireworks-message"><b>予君，生日快樂</b><span>祝妳每天都開開心心 😊</span></div><button type="button" class="birthday-fireworks-close" onclick="closeYujunBirthdayFireworks()" aria-label="關閉煙火" title="關閉">×</button>`;
+  overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="birthday-fireworks-sound" onclick="toggleYujunBirthdayFireworksSound()" aria-label="切換煙火音效" title="切換音效">🔊</button><div class="birthday-fireworks-finale">聖展♡予君</div><div class="birthday-fireworks-message"><div class="birthday-fireworks-crown">♕</div><div class="birthday-fireworks-kicker">8 / 26 · YUJUN'S DAY</div><b>予君，生日快樂</b><span>願妳往後的每一歲，都有聖展陪妳把平凡過成最閃耀的日子</span></div><button type="button" class="birthday-fireworks-close" onclick="closeYujunBirthdayFireworks()" aria-label="關閉煙火" title="關閉">×</button>`;
   document.body.appendChild(overlay);
 
   const canvas=overlay.querySelector('canvas');
@@ -5347,7 +5414,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const finaleMessage=overlay.querySelector('.birthday-fireworks-finale');
   const colors=['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff'];
   let width=0,height=0,dpr=1,frame=0,lastTime=performance.now();
-  let rockets=[],particles=[],running=true,regularLaunches=true,finaleShown=false;
+  let rockets=[],particles=[],stars=[],running=true,regularLaunches=true,finaleShown=false;
   const timers=[];
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
   let audioCtx=null,masterGain=null,noiseBuffer=null,soundEnabled=!!AudioContextClass,chimePlayed=false;
@@ -5425,39 +5492,59 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
     canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;
     ctx.setTransform(dpr,0,0,dpr,0,0);
+    stars=Array.from({length:Math.max(55,Math.round(width*height/7000))},()=>({x:Math.random()*width,y:Math.random()*height,size:.5+Math.random()*1.7,phase:Math.random()*Math.PI*2,speed:.6+Math.random()*1.5}));
   };
-  const explode=(x,y,color)=>{
+  const explode=(x,y,color,grand=false)=>{
     playExplosionSound();
-    const count=54+Math.floor(Math.random()*34);
+    const count=(grand?105:64)+Math.floor(Math.random()*(grand?42:38));
     for(let i=0;i<count;i+=1){
       const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.12;
-      const speed=1.6+Math.random()*4.2;
-      particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.010+Math.random()*.012,color,size:1.2+Math.random()*1.8});
+      const speed=(grand?2.2:1.6)+Math.random()*(grand?5.4:4.4);
+      particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:(grand?.007:.009)+Math.random()*.011,color,size:(grand?1.5:1.2)+Math.random()*2.1});
     }
   };
-  const launch=(isFinal=false)=>{
-    if(!regularLaunches && !isFinal) return;
+  const explodeHeart=(x,y)=>{
+    const count=120;
+    for(let i=0;i<count;i+=1){
+      const t=Math.PI*2*i/count;
+      const hx=16*Math.pow(Math.sin(t),3);
+      const hy=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+      const scale=.28+Math.random()*.035;
+      particles.push({x,y,px:x,py:y,vx:hx*scale,vy:-hy*scale,life:1,decay:.0065+Math.random()*.004,color:i%3===0?'#ffffff':'#ff6f9f',size:1.8+Math.random()*1.8});
+    }
+  };
+  const launch=(isFinal=false,finalRatio=null,heartFinal=false)=>{
+    const grandFinal=Number.isFinite(finalRatio);
+    if(!regularLaunches && !grandFinal) return;
     playLaunchSound();
-    const startX=isFinal?width*.5:width*(.08+Math.random()*.84);
-    const targetX=isFinal?width*.5:width*(.1+Math.random()*.8);
-    const targetY=isFinal?Math.max(118,height*.17):height*(.1+Math.random()*.43);
-    rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/68,vy:(targetY-height-14)/68,color:isFinal?'#ffffff':colors[Math.floor(Math.random()*colors.length)],isFinal});
+    const startX=grandFinal?width*(.22+Math.random()*.56):width*(.06+Math.random()*.88);
+    const targetX=grandFinal?width*finalRatio:width*(.08+Math.random()*.84);
+    const targetY=grandFinal?height*(.14+Math.abs(.5-finalRatio)*.38):height*(.08+Math.random()*.46);
+    const color=heartFinal?'#ff6f9f':(grandFinal?colors[Math.floor(Math.random()*colors.length)]:colors[Math.floor(Math.random()*colors.length)]);
+    rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/68,vy:(targetY-height-14)/68,color,isFinal,grandFinal,heartFinal});
   };
   const draw=(now)=>{
     if(!running) return;
     const step=Math.min(2,(now-lastTime)/16.67||1);lastTime=now;
     ctx.clearRect(0,0,width,height);
+    stars.forEach(star=>{
+      const alpha=.24+.62*((Math.sin(now*.001*star.speed+star.phase)+1)/2);
+      ctx.globalAlpha=alpha;ctx.beginPath();ctx.arc(star.x,star.y,star.size,0,Math.PI*2);ctx.fillStyle='#fff8dc';ctx.fill();ctx.globalAlpha=1;
+    });
     rockets=rockets.filter(rocket=>{
       rocket.px=rocket.x;rocket.py=rocket.y;rocket.x+=rocket.vx*step;rocket.y+=rocket.vy*step;
       ctx.beginPath();ctx.moveTo(rocket.px,rocket.py);ctx.lineTo(rocket.x,rocket.y);ctx.strokeStyle=rocket.color;ctx.lineWidth=2.3;ctx.stroke();
       ctx.beginPath();ctx.arc(rocket.x,rocket.y,2.4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
       if(rocket.y<=rocket.targetY){
-        explode(rocket.x,rocket.y,rocket.color);
+        explode(rocket.x,rocket.y,rocket.color,rocket.grandFinal);
+        if(rocket.heartFinal) explodeHeart(rocket.x,rocket.y);
         if(rocket.isFinal && !finaleShown){
           finaleShown=true;
           finaleMessage?.classList.add('show');
-          playTone(659,784,.3,.06,'sine',0);
-          playTone(784,1047,.42,.07,'sine',.18);
+          playTone(523,659,.34,.06,'sine',0);
+          playTone(659,784,.38,.07,'sine',.13);
+          playTone(784,1047,.48,.08,'sine',.27);
+          playTone(1047,1319,.62,.075,'triangle',.42);
           timers.push(setTimeout(closeYujunBirthdayFireworks,3000));
         }
         return false;
@@ -5474,14 +5561,21 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   };
   resize();
   window.addEventListener('resize',resize);
-  for(let i=0;i<9;i+=1) timers.push(setTimeout(()=>launch(false),180+i*230));
-  const launchTimer=setInterval(()=>{launch(false);if(Math.random()>.38) timers.push(setTimeout(()=>launch(false),150));},620);
+  for(let i=0;i<16;i+=1) timers.push(setTimeout(()=>launch(false),120+i*145));
+  const launchTimer=setInterval(()=>{
+    launch(false);
+    if(Math.random()>.24) timers.push(setTimeout(()=>launch(false),115));
+    if(Math.random()>.68) timers.push(setTimeout(()=>launch(false),235));
+  },480);
+  timers.push(setTimeout(()=>overlay.classList.add('finale-mode'),9300));
   const finaleTimer=setTimeout(()=>{
     regularLaunches=false;
     clearInterval(launchTimer);
-    launch(true);
-  },7600);
-  const autoClose=setTimeout(closeYujunBirthdayFireworks,15000);
+    [.16,.33,.5,.67,.84].forEach((ratio,index)=>{
+      timers.push(setTimeout(()=>launch(index===2,ratio,index===2),index*115));
+    });
+  },10000);
+  const autoClose=setTimeout(closeYujunBirthdayFireworks,18000);
   overlay._cleanup=()=>{
     running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearTimeout(finaleTimer);clearTimeout(autoClose);timers.forEach(clearTimeout);window.removeEventListener('resize',resize);
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});

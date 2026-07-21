@@ -211,13 +211,6 @@ font-family:'Noto Serif TC',serif;
 font-size:28px;font-weight:700;color:var(--rose);
 }
 .countdown-desc{font-size:11px;color:var(--text-muted);margin-top:3px;}
-.countdown-preview{
-margin-top:8px;padding:6px 10px;border:1px solid rgba(232,99,122,.25);border-radius:999px;
-background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;
-cursor:pointer;touch-action:manipulation;transition:transform .18s,background .18s,color .18s;
-}
-.countdown-preview:active{transform:scale(.96);background:var(--pink);color:#fff}
-[data-theme="dark"] .countdown-preview{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
 .birthday-fireworks{
 position:fixed;inset:0;z-index:12000;background:rgba(20,16,28,.9);overflow:hidden;display:flex;align-items:center;justify-content:center;
 animation:birthdayNightIn .7s ease both;
@@ -3398,7 +3391,6 @@ onclick="hideSpecialForToday()">
       <div class="countdown-item">
         <div class="countdown-num" id="bd2Days">—</div>
         <div class="countdown-desc">予君生日 (8/26)</div>
-        <button type="button" class="countdown-preview" onclick="launchYujunBirthdayFireworks(false)">🎆 預覽煙火</button>
       </div>
     </div>
   </div>
@@ -5107,7 +5099,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     if(AudioContextClass){
       audioCtx=new AudioContextClass();
       masterGain=audioCtx.createGain();
-      masterGain.gain.value=.42;
+      masterGain.gain.value=.55;
       masterGain.connect(audioCtx.destination);
       noiseBuffer=audioCtx.createBuffer(1,Math.floor(audioCtx.sampleRate*.2),audioCtx.sampleRate);
       const noise=noiseBuffer.getChannelData(0);
@@ -5164,7 +5156,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   };
   overlay._toggleSound=async()=>{
     if(!audioCtx) return;
-    if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.42;await unlockSound();}
+    if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.55;await unlockSound();}
     else if(audioCtx.state!=='running'){await unlockSound();}
     else{soundEnabled=false;masterGain.gain.value=0;}
     updateSoundButton();
@@ -5271,6 +5263,7 @@ function showPage(id,btn){
   }
 
   if(id==='period') pdRefresh();
+  if(id==='home' && typeof pdSyncHomeBroadcast==='function') pdSyncHomeBroadcast();
   if(id==='album') albumRenderCal();
   if(id==='memories') renderMemories();
   if(id==='fight') fightEnterScreen();
@@ -11384,14 +11377,23 @@ function pdHistoryToArray(val){
 }
 function pdLoad(){
   const {db,ref,onValue}=window._fb;
+  let settingsReady=false;
+  let historyReady=false;
+  const syncHomeWhenReady=()=>{
+    if(settingsReady && historyReady) pdSyncHomeBroadcast();
+  };
   onValue(ref(db,'pdSettings'),snap=>{
     const s=snap.val();
     if(s){pdApplySettings(s);}
     else{pdRefresh();}
+    settingsReady=true;
+    syncHomeWhenReady();
   });
   onValue(ref(db,'pdLogs'),snap=>{pdRenderLogsFromSnap(snap.val());});
   onValue(ref(db,'pdPeriodHistory'),snap=>{
     pdRenderHistory(snap.val());
+    historyReady=true;
+    syncHomeWhenReady();
   });
 }
 function pdRenderHistory(val){

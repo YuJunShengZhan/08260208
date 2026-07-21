@@ -917,25 +917,6 @@ padding:3px 8px;border-radius:20px;
 background:var(--pink-light);margin-left:8px;
 }
 
-.album-cloudinary-tools{
-display:flex;flex-direction:column;gap:8px;margin:8px 0 10px;
-}
-.album-cloudinary-actions{display:flex;gap:8px;flex-wrap:wrap;}
-.album-cloudinary-btn{
-flex:1;min-width:130px;padding:10px;
-background:var(--pink-light);color:var(--rose);
-border:1px solid var(--card-border);border-radius:10px;
-cursor:pointer;font-size:12px;font-family:'Noto Sans TC',sans-serif;
-display:flex;align-items:center;justify-content:center;gap:5px;
-}
-.album-cloudinary-btn.primary{background:var(--pink);color:white;border-color:var(--pink);}
-.album-cloudinary-status{
-font-size:12px;color:var(--text-muted);line-height:1.6;
-background:var(--pink-light);border:1px dashed var(--card-border);
-border-radius:10px;padding:8px 10px;
-}
-
-
 /* ── Memory Puzzle ── */
 .pz-hero{
   background:linear-gradient(135deg,var(--pink-light),rgba(255,255,255,.45));
@@ -3478,13 +3459,6 @@ onclick="hideSpecialForToday()">
       <div class="modal-section">
         <div class="modal-section-title">📷 照片</div>
         <div class="modal-photos-grid" id="modal-photos-grid"></div>
-        <div class="album-cloudinary-tools">
-          <div class="album-cloudinary-actions">
-            <button type="button" class="album-cloudinary-btn primary" onclick="openCloudinarySettings()">☁️ Cloudinary 設定</button>
-            <button type="button" class="album-cloudinary-btn" onclick="migrateAlbumCurrentMonthToCloudinary()">🔁 搬移本月舊照片</button>
-          </div>
-          <div class="album-cloudinary-status" id="cloudinary-status">Cloudinary 尚未檢查</div>
-        </div>
         <div class="photo-upload-options">
           <label style="cursor:pointer;flex:1">
             <input type="file" accept="image/*" capture="environment" multiple onchange="modalUploadPhotos(event)" style="display:none" id="modal-photo-camera">
@@ -4654,6 +4628,41 @@ function requireCloudinarySettings(){
 }
 window.addEventListener('firebaseReady', initCloudinarySettingsSync);
 if(window._fb) initCloudinarySettingsSync();
+
+// 每月第一次開站時，在 Firebase 內建立完整快照；不在前端顯示管理介面。
+const MONTHLY_AUTO_BACKUP_ROOT = 'systemBackups/monthly';
+let monthlyBackupCheckedMonth = '';
+function monthlyBackupKey(date=new Date()){
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+}
+async function runMonthlyAutoBackup(){
+  if(!window._fb) return;
+  const monthKey=monthlyBackupKey();
+  if(monthlyBackupCheckedMonth===monthKey) return;
+  monthlyBackupCheckedMonth=monthKey;
+  const {db,ref,get,set}=window._fb;
+  try{
+    const backupRef=ref(db,`${MONTHLY_AUTO_BACKUP_ROOT}/${monthKey}`);
+    const existing=await get(backupRef);
+    if(existing.exists()) return;
+    const rootSnapshot=await get(ref(db,'/'));
+    const snapshot=rootSnapshot.val() || {};
+    delete snapshot.systemBackups;
+    await set(backupRef,{
+      month:monthKey,
+      createdAt:Date.now(),
+      timezone:'Asia/Taipei',
+      snapshot
+    });
+  }catch(err){
+    if(monthlyBackupCheckedMonth===monthKey) monthlyBackupCheckedMonth='';
+    console.warn('monthly automatic backup failed',err);
+  }
+}
+window.addEventListener('firebaseReady',runMonthlyAutoBackup);
+if(window._fb) runMonthlyAutoBackup();
+setInterval(runMonthlyAutoBackup,6*60*60*1000);
+
 async function uploadBlobToCloudinary(blob, fileName='photo.jpg', subFolder='album'){
   const cfg=getCloudinarySettings();
   if(!cfg) throw new Error('Cloudinary 尚未設定');
@@ -4790,7 +4799,7 @@ async function saveSurprise(){
     flushAlbumPendingWrites();
   }catch(err){
     console.error('發送驚喜失敗', err);
-    alert(err.message || '發送失敗，請確認 Cloudinary 設定是否正確');
+    alert('照片或驚喜上傳失敗，請稍後再試');
   }
 }
 
@@ -6309,7 +6318,7 @@ async function modalUploadPhotos(e) {
   loadingDiv.id = 'upload-loading';
   loadingDiv.style.cssText = 'text-align:center;padding:10px;font-size:13px;color:var(--rose);background:var(--pink-light);border-radius:10px;margin-bottom:8px;';
   loadingDiv.textContent = useCloudinary
-    ? `⏳ 上傳到 Cloudinary 中 (0/${files.length})...`
+    ? `⏳ 正在上傳照片 (0/${files.length})...`
     : `⏳ 正在讀取照片 (0/${files.length})...`;
   uploadArea.insertAdjacentElement('beforebegin', loadingDiv);
 
@@ -6322,7 +6331,7 @@ async function modalUploadPhotos(e) {
       dayData.photos.push(url);
       uploaded++;
       loadingDiv.textContent = useCloudinary
-        ? `⏳ 上傳到 Cloudinary 中 (${uploaded}/${files.length})...`
+        ? `⏳ 正在上傳照片 (${uploaded}/${files.length})...`
         : `⏳ 正在讀取照片 (${uploaded}/${files.length})...`;
       renderModalPhotosEdit(dayData.photos);
     } catch (err) {

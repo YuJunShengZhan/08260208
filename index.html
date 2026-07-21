@@ -991,6 +991,39 @@ font-size:14px;flex-shrink:0;
 }
 .music-btns{display:flex;gap:2px;flex-shrink:0;}
 .music-btn{background:none;border:none;cursor:pointer;font-size:16px;padding:1px;color:var(--pink);}
+.music-library{display:none;position:fixed;bottom:130px;right:14px;z-index:201;width:min(320px,calc(100vw - 28px));max-height:min(560px,calc(100dvh - 170px));overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
+.music-library-head{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:12px 13px;background:var(--pink);color:#fff}
+.music-library-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1;font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.music-library-head-btn{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.36);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+.music-library-head-btn:active{background:rgba(255,255,255,.28)}
+.music-library-scroll{max-height:calc(min(560px,calc(100dvh - 170px)) - 59px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.music-add-form{padding:12px;background:var(--pink-light);border-bottom:1px solid var(--card-border)}
+.music-add-form[hidden],.music-youtube-player[hidden]{display:none!important}
+.music-add-label{display:block;margin-bottom:8px;color:var(--text);font-size:12px;font-weight:700}
+.music-add-input{width:100%;min-height:42px;box-sizing:border-box;margin-top:5px;padding:9px 11px;border:1px solid var(--card-border);border-radius:11px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
+.music-add-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
+.music-add-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.music-add-action{min-height:42px;border:1px solid var(--card-border);border-radius:11px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.music-add-action.primary{border-color:var(--pink);background:var(--pink);color:#fff}
+.music-add-action:disabled{opacity:.6;cursor:wait}
+.music-add-status{min-height:18px;margin-top:6px;color:var(--text-muted);font-size:11px;line-height:1.55}
+.music-add-status.error{color:var(--rose)}
+.music-youtube-player{padding:10px;background:var(--pink-light);border-bottom:1px solid var(--card-border)}
+.music-youtube-frame{width:100%;height:200px;overflow:hidden;border-radius:12px;background:#000}
+.music-youtube-frame iframe{display:block;width:100%!important;height:200px!important;border:0}
+.music-youtube-note{margin-top:7px;color:var(--text-muted);font-size:10px;line-height:1.5;text-align:center}
+.music-library-empty{padding:22px 14px;text-align:center;color:var(--text-muted);font-size:12px;line-height:1.7}
+.music-track{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;border-bottom:1px solid var(--card-border)}
+.music-track-main{min-width:0;min-height:50px;display:flex;align-items:center;gap:9px;padding:10px 12px;border:0;background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
+.music-track.active .music-track-main{background:var(--pink-light);color:var(--pink);font-weight:700}
+.music-track-icon{flex:0 0 auto;font-size:16px}
+.music-track-name{min-width:0;overflow-wrap:anywhere;font-size:13px;line-height:1.45}
+.music-track-source{display:inline-flex;margin-left:5px;padding:2px 5px;border-radius:999px;background:rgba(232,99,122,.12);color:var(--rose);font-size:9px;font-weight:800;vertical-align:middle}
+.music-track-delete{width:42px;border:0;border-left:1px solid var(--card-border);background:transparent;color:var(--text-muted);font-size:17px;cursor:pointer}
+.music-track-delete:active{background:var(--pink-light);color:var(--rose)}
+[data-theme="dark"] .music-library{box-shadow:0 14px 42px rgba(0,0,0,.5)}
+[data-theme="dark"] .music-youtube-frame{border:1px solid rgba(255,255,255,.1)}
+@media(max-width:420px){.music-library{left:14px;right:14px;width:auto}.music-youtube-frame,.music-youtube-frame iframe{height:200px!important}}
 
 /* 相簿同步載入指示器 */
 .album-sync-badge{
@@ -3361,12 +3394,32 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
 </div>
 
 <!-- 音樂庫 -->
-<div id="music-library" style="display:none;position:fixed;bottom:130px;right:14px;z-index:201;background:var(--white);border:1px solid var(--card-border);border-radius:16px;width:240px;max-height:320px;overflow-y:auto;box-shadow:0 4px 24px rgba(232,99,122,0.2);">
-  <div style="position:sticky;top:0;z-index:1;padding:14px 16px;border-radius:16px 16px 0 0;background:var(--pink);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700;color:#fff;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;">
-    🎵 音樂庫
-    <button onclick="toggleMusicLibrary()" style="background:none;border:none;cursor:pointer;font-size:18px;color:rgba(255,255,255,0.85)">✕</button>
+<div id="music-library" class="music-library">
+  <div class="music-library-head">
+    <div class="music-library-title"><span aria-hidden="true">🎵</span><span>音樂庫</span></div>
+    <button type="button" class="music-library-head-btn" onclick="toggleAddMusicForm()" aria-label="新增音樂" title="新增音樂">＋</button>
+    <button type="button" class="music-library-head-btn" onclick="toggleMusicLibrary()" aria-label="關閉音樂庫" title="關閉">×</button>
   </div>
-  <div id="music-library-list"></div>
+  <div class="music-library-scroll">
+    <div id="music-add-form" class="music-add-form" hidden>
+      <label class="music-add-label">歌曲名稱
+        <input id="music-add-name" class="music-add-input" type="text" maxlength="80" autocomplete="off" placeholder="輸入想顯示的歌名">
+      </label>
+      <label class="music-add-label">YouTube 連結
+        <input id="music-add-url" class="music-add-input" type="url" inputmode="url" autocomplete="off" placeholder="https://youtu.be/...">
+      </label>
+      <div class="music-add-actions">
+        <button type="button" class="music-add-action" onclick="toggleAddMusicForm(false)">取消</button>
+        <button type="button" class="music-add-action primary" id="music-add-submit" onclick="saveYouTubeMusic()">加入音樂庫</button>
+      </div>
+      <div id="music-add-status" class="music-add-status" aria-live="polite"></div>
+    </div>
+    <div id="music-youtube-player-wrap" class="music-youtube-player" hidden>
+      <div id="music-youtube-player" class="music-youtube-frame"></div>
+      <div class="music-youtube-note" id="music-youtube-note">YouTube 歌曲會使用官方播放器播放</div>
+    </div>
+    <div id="music-library-list"></div>
+  </div>
 </div>
 <audio id="audio-player"></audio>
 
@@ -7909,6 +7962,7 @@ function showGameHub(){
 function pauseBackgroundMusicForInteractiveGame(){
   const backgroundAudio = document.getElementById('audio-player');
   if(backgroundAudio && !backgroundAudio.paused) backgroundAudio.pause();
+  if(typeof pauseYouTubePlayback==='function') pauseYouTubePlayback();
   document.getElementById('music-disc')?.classList.remove('playing');
   const backgroundPlayButton = document.getElementById('play-btn');
   if(backgroundPlayButton) backgroundPlayButton.textContent = '▶️';
@@ -12181,6 +12235,13 @@ const disc=document.getElementById('music-disc');
 const playBtn=document.getElementById('play-btn');
 const titleEl=document.getElementById('music-title');
 const titleWrap=document.getElementById('music-title-wrap');
+let customYoutubeSongs=[];
+let customMusicSyncStarted=false;
+let youtubeMusicPlayer=null;
+let youtubeMusicReady=false;
+let youtubeMusicApiPromise=null;
+let youtubeMusicRequestedId='';
+let youtubeMusicShouldPlay=false;
 
 function updateMusicTitle(name){
   titleEl.textContent=name;
@@ -12198,64 +12259,325 @@ function setUI(playing){
   disc.classList.toggle('playing',playing);
   playBtn.textContent=playing?'⏸️':'▶️';
 }
+
+function getMusicPlaylist(){
+  return SONGS.concat(customYoutubeSongs);
+}
+function getCurrentMusicSong(){
+  return getMusicPlaylist()[songIdx] || null;
+}
+function extractYouTubeVideoId(value=''){
+  const raw=String(value||'').trim();
+  if(/^[A-Za-z0-9_-]{11}$/.test(raw)) return raw;
+  try{
+    const url=new URL(/^https?:\/\//i.test(raw)?raw:`https://${raw}`);
+    const host=url.hostname.toLowerCase().replace(/^www\./,'').replace(/^m\./,'');
+    let id='';
+    if(host==='youtu.be') id=url.pathname.split('/').filter(Boolean)[0]||'';
+    else if(host==='youtube.com' || host.endsWith('.youtube.com')){
+      if(url.pathname==='/watch') id=url.searchParams.get('v')||'';
+      else{
+        const parts=url.pathname.split('/').filter(Boolean);
+        if(['shorts','embed','live'].includes(parts[0])) id=parts[1]||'';
+      }
+    }
+    return /^[A-Za-z0-9_-]{11}$/.test(id)?id:'';
+  }catch(e){
+    return '';
+  }
+}
+function setMusicAddStatus(message='',isError=false){
+  const status=document.getElementById('music-add-status');
+  if(!status) return;
+  status.textContent=message;
+  status.classList.toggle('error',isError);
+}
+function toggleAddMusicForm(force){
+  const form=document.getElementById('music-add-form');
+  if(!form) return;
+  const opening=typeof force==='boolean'?force:form.hidden;
+  form.hidden=!opening;
+  setMusicAddStatus('');
+  if(opening) setTimeout(()=>document.getElementById('music-add-name')?.focus(),30);
+}
+async function saveYouTubeMusic(){
+  const nameInput=document.getElementById('music-add-name');
+  const urlInput=document.getElementById('music-add-url');
+  const submit=document.getElementById('music-add-submit');
+  const name=(nameInput?.value||'').trim();
+  const url=(urlInput?.value||'').trim();
+  const youtubeId=extractYouTubeVideoId(url);
+  if(!name){setMusicAddStatus('請先輸入歌曲名稱',true);nameInput?.focus();return;}
+  if(!youtubeId){setMusicAddStatus('請貼上有效的 YouTube 影片連結',true);urlInput?.focus();return;}
+  if(customYoutubeSongs.some(song=>song.youtubeId===youtubeId)){
+    setMusicAddStatus('這首 YouTube 歌曲已經在音樂庫裡',true);
+    return;
+  }
+  if(!window._fb){setMusicAddStatus('同步服務尚未連線，請稍後再試',true);return;}
+  submit.disabled=true;
+  setMusicAddStatus('正在同步到音樂庫...');
+  try{
+    const {db,ref,push,set}=window._fb;
+    const itemRef=push(ref(db,'musicLibrary/custom'));
+    await set(itemRef,{name,youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,source:'youtube',createdAt:Date.now()});
+    nameInput.value='';
+    urlInput.value='';
+    toggleAddMusicForm(false);
+  }catch(err){
+    console.error('新增 YouTube 音樂失敗',err);
+    setMusicAddStatus('新增失敗，請檢查網路後再試一次',true);
+  }finally{
+    submit.disabled=false;
+  }
+}
+async function deleteCustomMusic(key){
+  const name=customYoutubeSongs.find(song=>song.key===key)?.name||'這首歌';
+  if(!key || !confirm(`要從音樂庫刪除「${name}」嗎？`)) return;
+  if(!window._fb){alert('同步服務尚未連線，請稍後再試');return;}
+  try{
+    const {db,ref,remove}=window._fb;
+    await remove(ref(db,`musicLibrary/custom/${key}`));
+  }catch(err){
+    console.error('刪除 YouTube 音樂失敗',err);
+    alert('刪除失敗，請檢查網路後再試一次');
+  }
+}
+function initCustomMusicSync(){
+  if(customMusicSyncStarted || !window._fb) return;
+  customMusicSyncStarted=true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'musicLibrary/custom'),snap=>{
+    const current=getCurrentMusicSong();
+    customYoutubeSongs=Object.entries(snap.val()||{})
+      .map(([key,value])=>({
+        key,
+        type:'youtube',
+        name:String(value?.name||'未命名歌曲').slice(0,80),
+        youtubeId:String(value?.youtubeId||''),
+        url:String(value?.url||''),
+        createdAt:Number(value?.createdAt)||0
+      }))
+      .filter(song=>/^[A-Za-z0-9_-]{11}$/.test(song.youtubeId))
+      .sort((a,b)=>a.createdAt-b.createdAt);
+    if(current?.type==='youtube'){
+      const nextIndex=getMusicPlaylist().findIndex(song=>song.type==='youtube' && song.key===current.key);
+      if(nextIndex>=0){
+        songIdx=nextIndex;
+        updateMusicTitle(getCurrentMusicSong().name);
+      }else{
+        pauseYouTubePlayback();
+        songIdx=0;
+        loadSong(songIdx);
+      }
+    }
+    renderMusicLibrary();
+  },err=>{
+    customMusicSyncStarted=false;
+    console.warn('自訂音樂同步失敗',err);
+  });
+}
+function loadYouTubeMusicApi(){
+  if(window.YT?.Player) return Promise.resolve(window.YT);
+  if(youtubeMusicApiPromise) return youtubeMusicApiPromise;
+  youtubeMusicApiPromise=new Promise((resolve,reject)=>{
+    const previousReady=window.onYouTubeIframeAPIReady;
+    let settled=false;
+    const finish=()=>{
+      if(settled) return;
+      settled=true;
+      if(typeof previousReady==='function') previousReady();
+      resolve(window.YT);
+    };
+    window.onYouTubeIframeAPIReady=finish;
+    let script=document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
+    if(!script){
+      script=document.createElement('script');
+      script.src='https://www.youtube.com/iframe_api';
+      script.async=true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener('error',()=>{
+      if(settled) return;
+      settled=true;
+      youtubeMusicApiPromise=null;
+      reject(new Error('YouTube 播放器載入失敗'));
+    },{once:true});
+    setTimeout(()=>{
+      if(!settled && window.YT?.Player) finish();
+      else if(!settled){settled=true;youtubeMusicApiPromise=null;reject(new Error('YouTube 播放器載入逾時'));}
+    },15000);
+  });
+  return youtubeMusicApiPromise;
+}
+function setYouTubeMusicNote(message='YouTube 歌曲會使用官方播放器播放'){
+  const note=document.getElementById('music-youtube-note');
+  if(note) note.textContent=message;
+}
+function pauseYouTubePlayback(){
+  youtubeMusicShouldPlay=false;
+  if(youtubeMusicPlayer && youtubeMusicReady){
+    try{youtubeMusicPlayer.pauseVideo();}catch(e){}
+  }
+  if(getCurrentMusicSong()?.type==='youtube') setUI(false);
+}
+function hideYouTubeMusicPlayer(){
+  const wrap=document.getElementById('music-youtube-player-wrap');
+  if(wrap) wrap.hidden=true;
+}
+async function ensureYouTubeMusicPlayer(song,autoplay=false){
+  if(!song || song.type!=='youtube') return;
+  const wrap=document.getElementById('music-youtube-player-wrap');
+  if(wrap) wrap.hidden=false;
+  youtubeMusicRequestedId=song.youtubeId;
+  youtubeMusicShouldPlay=autoplay;
+  setYouTubeMusicNote('YouTube 歌曲會使用官方播放器播放');
+  try{
+    const YTApi=await loadYouTubeMusicApi();
+    if(!youtubeMusicPlayer){
+      youtubeMusicPlayer=new YTApi.Player('music-youtube-player',{
+        width:'100%',
+        height:'200',
+        videoId:youtubeMusicRequestedId,
+        playerVars:{playsinline:1,rel:0,autoplay:youtubeMusicShouldPlay?1:0},
+        events:{
+          onReady:event=>{
+            youtubeMusicReady=true;
+            const loadedId=event.target.getVideoData?.().video_id||'';
+            if(loadedId!==youtubeMusicRequestedId){
+              if(youtubeMusicShouldPlay) event.target.loadVideoById(youtubeMusicRequestedId);
+              else event.target.cueVideoById(youtubeMusicRequestedId);
+            }else if(youtubeMusicShouldPlay){
+              event.target.playVideo();
+            }
+          },
+          onStateChange:event=>{
+            if(getCurrentMusicSong()?.type!=='youtube') return;
+            if(event.data===YTApi.PlayerState.PLAYING) setUI(true);
+            else if(event.data===YTApi.PlayerState.PAUSED) setUI(false);
+            else if(event.data===YTApi.PlayerState.ENDED){setUI(false);moveMusicSong(1,true);}
+          },
+          onError:()=>{setUI(false);setYouTubeMusicNote('這部影片目前無法在網站內播放，請換一個 YouTube 連結');},
+          onAutoplayBlocked:()=>{setUI(false);setYouTubeMusicNote('瀏覽器阻擋了自動播放，請按播放器內的播放鍵');}
+        }
+      });
+    }else if(youtubeMusicReady){
+      if(autoplay) youtubeMusicPlayer.loadVideoById(song.youtubeId);
+      else youtubeMusicPlayer.cueVideoById(song.youtubeId);
+    }
+  }catch(err){
+    console.error('YouTube 播放器載入失敗',err);
+    setUI(false);
+    setYouTubeMusicNote('YouTube 播放器載入失敗，請檢查網路後再試一次');
+  }
+}
+function isCurrentMusicPlaying(){
+  const song=getCurrentMusicSong();
+  if(song?.type==='youtube'){
+    if(!youtubeMusicPlayer || !youtubeMusicReady) return youtubeMusicShouldPlay;
+    try{return [1,3].includes(youtubeMusicPlayer.getPlayerState());}catch(e){return false;}
+  }
+  return !audio.paused;
+}
+function selectMusicSong(idx,autoplay=false){
+  const playlist=getMusicPlaylist();
+  if(!playlist.length) return;
+  songIdx=(idx+playlist.length)%playlist.length;
+  const song=playlist[songIdx];
+  updateMusicTitle(song.name);
+  if(song.type==='youtube'){
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    setUI(false);
+    const lib=document.getElementById('music-library');
+    if(autoplay && lib) lib.style.display='block';
+    if(autoplay || (lib && getComputedStyle(lib).display!=='none')) ensureYouTubeMusicPlayer(song,autoplay);
+  }else{
+    pauseYouTubePlayback();
+    hideYouTubeMusicPlayer();
+    audio.src=song.file;
+    if(autoplay) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+    else setUI(false);
+  }
+  renderMusicLibrary();
+}
 function loadSong(idx){
-  audio.src=SONGS[idx].file;
-  updateMusicTitle(SONGS[idx].name);
+  selectMusicSong(idx,false);
 }
 function renderMusicLibrary(){
   const list = document.getElementById('music-library-list');
-  list.innerHTML = SONGS.map((s,i) => `
-    <div onclick="playSongAt(${i})" style="padding:10px 14px;cursor:pointer;font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--card-border);transition:background .15s;${i===songIdx?'background:var(--pink-light);font-weight:600;color:var(--pink)':''}">
-      <span style="font-size:16px">${i===songIdx?'🎵':'🎶'}</span>
-      ${s.name}
-    </div>`).join('');
+  if(!list) return;
+  const playlist=getMusicPlaylist();
+  list.innerHTML=playlist.length?playlist.map((song,index)=>{
+    const safeName=escapeHtml(song.name||'未命名歌曲');
+    const custom=song.type==='youtube';
+    return `<div class="music-track${index===songIdx?' active':''}">
+      <button type="button" class="music-track-main" onclick="playSongAt(${index})">
+        <span class="music-track-icon" aria-hidden="true">${index===songIdx?'🎵':'🎶'}</span>
+        <span class="music-track-name">${safeName}${custom?'<span class="music-track-source">YT</span>':''}</span>
+      </button>
+      ${custom?`<button type="button" class="music-track-delete" onclick="event.stopPropagation();deleteCustomMusic('${song.key}')" aria-label="刪除 ${safeName}" title="刪除">×</button>`:''}
+    </div>`;
+  }).join(''):'<div class="music-library-empty">音樂庫目前是空的</div>';
 }
 
 function toggleMusicLibrary(){
   const lib = document.getElementById('music-library');
-  const isHidden = lib.style.display === 'none';
+  const isHidden = getComputedStyle(lib).display === 'none';
   lib.style.display = isHidden ? 'block' : 'none';
-  if(isHidden) renderMusicLibrary();
+  if(isHidden){
+    renderMusicLibrary();
+    const song=getCurrentMusicSong();
+    if(song?.type==='youtube') ensureYouTubeMusicPlayer(song,false);
+  }else if(getCurrentMusicSong()?.type==='youtube'){
+    pauseYouTubePlayback();
+  }
 }
 
 function playSongAt(i){
   if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
-  const wasPlaying = !audio.paused;
-  songIdx = i;
-  audio.src = SONGS[i].file;
-  updateMusicTitle(SONGS[i].name);
-  if(wasPlaying || true) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
-  renderMusicLibrary();
+  selectMusicSong(i,true);
 }
 audio.addEventListener('ended',()=>{
-  songIdx=(songIdx+1)%SONGS.length;
-  audio.src=SONGS[songIdx].file;
-  updateMusicTitle(SONGS[songIdx].name);
-  audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+  moveMusicSong(1,true);
 });
 function togglePlay(){
-  if(audio.paused){
+  const song=getCurrentMusicSong();
+  if(!song) return;
+  if(song.type==='youtube'){
+    if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
+    if(isCurrentMusicPlaying()) pauseYouTubePlayback();
+    else{
+      const lib=document.getElementById('music-library');
+      if(lib) lib.style.display='block';
+      ensureYouTubeMusicPlayer(song,true);
+      renderMusicLibrary();
+    }
+  }else if(audio.paused){
     if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
     audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+  }else{
+    audio.pause();
+    setUI(false);
   }
-  else{audio.pause();setUI(false);}
+}
+function moveMusicSong(delta,autoplay=isCurrentMusicPlaying()){
+  const playlist=getMusicPlaylist();
+  if(!playlist.length) return;
+  selectMusicSong((songIdx+delta+playlist.length)%playlist.length,autoplay);
 }
 function nextSong(){
   if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
-  const wasPlaying=!audio.paused;
-  songIdx=(songIdx+1)%SONGS.length;
-  audio.src=SONGS[songIdx].file;
-  updateMusicTitle(SONGS[songIdx].name);
-  if(wasPlaying) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+  moveMusicSong(1);
 }
 function prevSong(){
   if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
-  const wasPlaying=!audio.paused;
-  songIdx=(songIdx-1+SONGS.length)%SONGS.length;
-  audio.src=SONGS[songIdx].file;
-  updateMusicTitle(SONGS[songIdx].name);
-  if(wasPlaying) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+  moveMusicSong(-1);
 }
+audio.addEventListener('play',()=>{if(getCurrentMusicSong()?.type!=='youtube') setUI(true);});
+audio.addEventListener('pause',()=>{if(getCurrentMusicSong()?.type!=='youtube') setUI(false);});
+window.addEventListener('firebaseReady',initCustomMusicSync);
+if(window._fb) initCustomMusicSync();
 loadSong(songIdx);
 
 const RG_LANES = 4;

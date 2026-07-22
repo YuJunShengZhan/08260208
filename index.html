@@ -228,6 +228,33 @@ animation:birthdayNightIn .7s ease both;
 .birthday-fireworks.finale-mode .birthday-fireworks-message{animation:birthdayWishOut .65s ease forwards}
 .birthday-fireworks-finale{position:absolute;z-index:2;top:max(70px,calc(env(safe-area-inset-top) + 62px));left:16px;right:16px;text-align:center;color:#fff;font-family:'Noto Serif TC',serif;font-size:clamp(28px,8vw,52px);font-weight:800;letter-spacing:0;opacity:0;transform:translateY(-12px) scale(.94);pointer-events:none;text-shadow:0 0 10px rgba(255,255,255,.9),0 0 24px rgba(255,93,143,.9),0 0 44px rgba(96,214,255,.7)}
 .birthday-fireworks-finale.show{animation:birthdayFinaleIn .55s ease forwards}
+.birthday-fireworks-finale.fade{animation:birthdayFinaleOut .55s ease forwards}
+.birthday-fireworks-letter{position:absolute;z-index:3;top:max(76px,calc(env(safe-area-inset-top) + 68px));left:50%;width:min(88%,640px);max-height:54vh;max-height:54dvh;box-sizing:border-box;padding:19px 20px 18px;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid rgba(255,224,148,.54);border-radius:18px;background:linear-gradient(145deg,rgba(30,20,35,.88),rgba(57,27,43,.82));color:#fff;opacity:0;transform:translate(-50%,24px) scale(.96);pointer-events:none;box-shadow:0 22px 70px rgba(0,0,0,.48),inset 0 0 42px rgba(255,151,181,.07);backdrop-filter:blur(12px)}
+.birthday-fireworks-letter.show{pointer-events:auto;animation:birthdayLetterIn .9s cubic-bezier(.22,1,.36,1) forwards}
+.birthday-letter-kicker{color:#ffd878;font-size:10px;font-weight:900;text-align:center;letter-spacing:0}
+.birthday-letter-title{margin:5px 0 11px;color:#fff7e7;font-family:'Noto Serif TC',serif;font-size:24px;font-weight:800;line-height:1.35;text-align:center;text-shadow:0 0 18px rgba(255,156,185,.48)}
+.birthday-fireworks-letter p{margin:0 0 9px;color:rgba(255,249,242,.94);font-size:14px;line-height:1.85;text-align:left;letter-spacing:0;opacity:0;transform:translateY(8px)}
+.birthday-fireworks-letter.show p:nth-of-type(1){animation:birthdayLetterLine .7s .35s ease forwards}
+.birthday-fireworks-letter.show p:nth-of-type(2){animation:birthdayLetterLine .7s .9s ease forwards}
+.birthday-fireworks-letter.show p:nth-of-type(3){animation:birthdayLetterLine .7s 1.45s ease forwards}
+.birthday-letter-sign{margin-top:10px;color:#ffd878;font-family:'Noto Serif TC',serif;font-size:15px;font-weight:800;text-align:right;opacity:0}
+.birthday-fireworks-letter.show .birthday-letter-sign{animation:birthdayLetterLine .7s 2s ease forwards}
+.birthday-final-cake{position:absolute;z-index:4;left:50%;bottom:max(9px,env(safe-area-inset-bottom));width:min(68vw,330px);height:190px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;opacity:0;transform:translate(-50%,125%) scale(.78);pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,0,.4))}
+.birthday-final-cake.show{animation:birthdayCakeRise 1.15s cubic-bezier(.2,1.25,.35,1) forwards}
+.birthday-cake-candles{height:56px;display:flex;align-items:flex-end;justify-content:center;gap:16px;margin-bottom:-2px}
+.birthday-candle{position:relative;width:9px;height:38px;border-radius:4px 4px 1px 1px;background:repeating-linear-gradient(135deg,#fff 0 5px,#62c9be 5px 10px);box-shadow:inset -2px 0 rgba(0,0,0,.1)}
+.birthday-candle:nth-child(2){height:46px;background:repeating-linear-gradient(135deg,#fff 0 5px,#ff7e9c 5px 10px)}
+.birthday-candle:nth-child(3){background:repeating-linear-gradient(135deg,#fff 0 5px,#ffd166 5px 10px)}
+.birthday-flame{position:absolute;left:50%;bottom:calc(100% + 4px);width:13px;height:19px;border-radius:70% 30% 62% 38%;background:linear-gradient(#fff7b1 8%,#ffd04f 48%,#ff7c42);transform:translateX(-50%) rotate(45deg);box-shadow:0 0 10px #ffd166,0 0 24px rgba(255,126,66,.9);animation:birthdayFlame .42s ease-in-out infinite alternate}
+.birthday-cake-tier{position:relative;box-sizing:border-box;border:2px solid rgba(255,255,255,.58);background:linear-gradient(180deg,#fff4d6,#ffcd9f);box-shadow:inset 0 -10px 16px rgba(218,103,104,.12),0 7px 12px rgba(0,0,0,.12)}
+.birthday-cake-tier::before{content:'';position:absolute;left:4%;right:4%;top:-2px;height:20px;border-radius:12px 12px 55% 55%;background:radial-gradient(circle at 10px 3px,#fff 0 9px,transparent 10px) 0 0/30px 18px repeat-x}
+.birthday-cake-top{width:52%;height:43px;border-radius:14px 14px 8px 8px;background:linear-gradient(180deg,#f8fff5,#bde5d0)}
+.birthday-cake-middle{width:74%;height:53px;margin-top:-2px;border-radius:14px 14px 9px 9px;background:linear-gradient(180deg,#fff3f7,#f6a9bc)}
+.birthday-cake-bottom{width:96%;height:64px;margin-top:-2px;display:flex;align-items:center;justify-content:center;border-radius:16px 16px 11px 11px;background:linear-gradient(180deg,#fff4dc,#ffc97e)}
+.birthday-cake-bottom b{position:relative;z-index:2;padding:4px 17px;border-radius:999px;background:#fff8eb;color:#c94b64;font-family:'Noto Serif TC',serif;font-size:18px;letter-spacing:0;box-shadow:0 3px 9px rgba(129,65,49,.15)}
+.birthday-cake-plate{width:100%;height:13px;margin-top:-1px;border-radius:50%;background:linear-gradient(180deg,#fff,#cfe9ff);box-shadow:0 6px 12px rgba(0,0,0,.18)}
+.birthday-cake-spark{position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff,0 0 20px #ffd166;animation:birthdayCakeSpark 1.25s ease-in-out infinite}
+.birthday-cake-spark.s1{left:3%;top:42%;animation-delay:.1s}.birthday-cake-spark.s2{right:5%;top:27%;animation-delay:.55s}.birthday-cake-spark.s3{left:16%;top:10%;animation-delay:.9s}.birthday-cake-spark.s4{right:18%;top:55%;animation-delay:.3s}
 .birthday-fireworks-close{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));right:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:26px;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
 .birthday-fireworks-sound{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));left:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:20px;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
 @keyframes birthdayNightIn{from{opacity:0}to{opacity:1}}
@@ -235,6 +262,14 @@ animation:birthdayNightIn .7s ease both;
 @keyframes birthdayWishOut{to{opacity:0;transform:translateY(18px) scale(.96)}}
 @keyframes birthdayCrown{0%,100%{transform:translateY(3px) scale(.96);filter:brightness(.95)}50%{transform:translateY(-4px) scale(1.05);filter:brightness(1.28)}}
 @keyframes birthdayFinaleIn{from{opacity:0;transform:translateY(-12px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes birthdayFinaleOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-16px) scale(1.04)}}
+@keyframes birthdayLetterIn{from{opacity:0;transform:translate(-50%,24px) scale(.96)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes birthdayLetterLine{to{opacity:1;transform:none}}
+@keyframes birthdayCakeRise{0%{opacity:0;transform:translate(-50%,125%) scale(.78)}70%{opacity:1;transform:translate(-50%,-5%) scale(1.04)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes birthdayFlame{from{transform:translateX(-50%) rotate(40deg) scale(.88)}to{transform:translateX(-50%) rotate(50deg) scale(1.12)}}
+@keyframes birthdayCakeSpark{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.5)}}
+@media(max-width:520px){.birthday-fireworks-letter{top:max(68px,calc(env(safe-area-inset-top) + 60px));width:92%;max-height:51dvh;padding:15px 15px 14px}.birthday-letter-title{font-size:20px}.birthday-fireworks-letter p{font-size:12px;line-height:1.72}.birthday-letter-sign{font-size:13px}.birthday-final-cake{width:min(74vw,280px);height:165px}.birthday-cake-candles{height:46px}.birthday-candle{height:31px}.birthday-candle:nth-child(2){height:38px}.birthday-cake-top{height:34px}.birthday-cake-middle{height:43px}.birthday-cake-bottom{height:52px}.birthday-cake-bottom b{font-size:16px}}
+@media(max-height:560px) and (orientation:landscape){.birthday-fireworks-letter{left:31%;top:max(62px,calc(env(safe-area-inset-top) + 58px));width:56%;max-height:calc(100dvh - 76px);padding:12px 14px}.birthday-letter-title{font-size:18px}.birthday-fireworks-letter p{font-size:11px;line-height:1.6}.birthday-letter-sign{font-size:12px}.birthday-final-cake{left:81%;bottom:5px;width:min(31vw,245px);height:154px}.birthday-cake-candles{height:42px}.birthday-candle{height:29px}.birthday-candle:nth-child(2){height:35px}.birthday-cake-top{height:31px}.birthday-cake-middle{height:39px}.birthday-cake-bottom{height:47px}.birthday-cake-bottom b{font-size:14px}}
 .occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both}
 .occasion-overlay canvas{position:absolute;inset:0;width:100%;height:100%}
 .occasion-overlay.birthday{background:rgba(26,39,67,.94)}
@@ -998,20 +1033,22 @@ font-size:14px;flex-shrink:0;
 .music-library-head-btn:active{background:rgba(255,255,255,.28)}
 .music-library-scroll{max-height:calc(min(560px,calc(100dvh - 170px)) - 59px);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .music-add-form{padding:12px;background:var(--pink-light);border-bottom:1px solid var(--card-border)}
-.music-add-form[hidden],.music-youtube-player[hidden]{display:none!important}
+.music-add-form[hidden]{display:none!important}
 .music-add-label{display:block;margin-bottom:8px;color:var(--text);font-size:12px;font-weight:700}
 .music-add-input{width:100%;min-height:42px;box-sizing:border-box;margin-top:5px;padding:9px 11px;border:1px solid var(--card-border);border-radius:11px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
 .music-add-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
+.music-file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.music-file-picker{width:100%;min-height:48px;box-sizing:border-box;display:flex;align-items:center;gap:9px;margin-top:5px;padding:8px 10px;border:1px dashed rgba(232,99,122,.42);border-radius:12px;background:var(--white);color:var(--text);cursor:pointer}
+.music-file-picker-icon{flex:0 0 auto;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--pink-light);font-size:15px}
+.music-file-picker-text{min-width:0;flex:1;font-size:12px;line-height:1.45;overflow-wrap:anywhere}
+.music-file-picker-text strong{display:block;color:var(--rose);font-size:13px}
+.music-file-limit{margin-top:5px;color:var(--text-muted);font-size:10px;line-height:1.5}
 .music-add-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .music-add-action{min-height:42px;border:1px solid var(--card-border);border-radius:11px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
 .music-add-action.primary{border-color:var(--pink);background:var(--pink);color:#fff}
 .music-add-action:disabled{opacity:.6;cursor:wait}
 .music-add-status{min-height:18px;margin-top:6px;color:var(--text-muted);font-size:11px;line-height:1.55}
 .music-add-status.error{color:var(--rose)}
-.music-youtube-player{padding:10px;background:var(--pink-light);border-bottom:1px solid var(--card-border)}
-.music-youtube-frame{width:100%;height:200px;overflow:hidden;border-radius:12px;background:#000}
-.music-youtube-frame iframe{display:block;width:100%!important;height:200px!important;border:0}
-.music-youtube-note{margin-top:7px;color:var(--text-muted);font-size:10px;line-height:1.5;text-align:center}
 .music-library-empty{padding:22px 14px;text-align:center;color:var(--text-muted);font-size:12px;line-height:1.7}
 .music-track{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;border-bottom:1px solid var(--card-border)}
 .music-track-main{min-width:0;min-height:50px;display:flex;align-items:center;gap:9px;padding:10px 12px;border:0;background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
@@ -1022,8 +1059,7 @@ font-size:14px;flex-shrink:0;
 .music-track-delete{width:42px;border:0;border-left:1px solid var(--card-border);background:transparent;color:var(--text-muted);font-size:17px;cursor:pointer}
 .music-track-delete:active{background:var(--pink-light);color:var(--rose)}
 [data-theme="dark"] .music-library{box-shadow:0 14px 42px rgba(0,0,0,.5)}
-[data-theme="dark"] .music-youtube-frame{border:1px solid rgba(255,255,255,.1)}
-@media(max-width:420px){.music-library{left:14px;right:14px;width:auto}.music-youtube-frame,.music-youtube-frame iframe{height:200px!important}}
+@media(max-width:420px){.music-library{left:14px;right:14px;width:auto}}
 
 /* 相簿同步載入指示器 */
 .album-sync-badge{
@@ -3405,18 +3441,19 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
       <label class="music-add-label">歌曲名稱
         <input id="music-add-name" class="music-add-input" type="text" maxlength="80" autocomplete="off" placeholder="輸入想顯示的歌名">
       </label>
-      <label class="music-add-label">YouTube 連結
-        <input id="music-add-url" class="music-add-input" type="url" inputmode="url" autocomplete="off" placeholder="https://youtu.be/...">
+      <label class="music-add-label">MP3 音樂檔案
+        <input id="music-add-file" class="music-file-input" type="file" accept=".mp3,audio/mpeg" onchange="updateMusicFileLabel()">
+        <span class="music-file-picker">
+          <span class="music-file-picker-icon" aria-hidden="true">🎧</span>
+          <span class="music-file-picker-text" id="music-add-file-label"><strong>選擇 MP3</strong>從手機或電腦挑選音樂</span>
+        </span>
+        <span class="music-file-limit">僅接受 MP3，單首上限 30 MB</span>
       </label>
       <div class="music-add-actions">
         <button type="button" class="music-add-action" onclick="toggleAddMusicForm(false)">取消</button>
-        <button type="button" class="music-add-action primary" id="music-add-submit" onclick="saveYouTubeMusic()">加入音樂庫</button>
+        <button type="button" class="music-add-action primary" id="music-add-submit" onclick="saveMp3Music()">上傳並加入</button>
       </div>
       <div id="music-add-status" class="music-add-status" aria-live="polite"></div>
-    </div>
-    <div id="music-youtube-player-wrap" class="music-youtube-player" hidden>
-      <div id="music-youtube-player" class="music-youtube-frame"></div>
-      <div class="music-youtube-note" id="music-youtube-note">YouTube 歌曲會使用官方播放器播放</div>
     </div>
     <div id="music-library-list"></div>
   </div>
@@ -4819,15 +4856,16 @@ window.addEventListener('firebaseReady',runMonthlyAutoBackup);
 if(window._fb) runMonthlyAutoBackup();
 setInterval(runMonthlyAutoBackup,6*60*60*1000);
 
-async function uploadBlobToCloudinary(blob, fileName='photo.jpg', subFolder='album'){
+async function uploadBlobToCloudinary(blob, fileName='photo.jpg', subFolder='album', resourceType='image', returnData=false){
   const cfg=getCloudinarySettings();
   if(!cfg) throw new Error('Cloudinary 尚未設定');
+  const cloudinaryType=resourceType==='video'?'video':'image';
   const form=new FormData();
   form.append('file', blob, fileName);
   form.append('upload_preset', cfg.uploadPreset);
   const folderParts=[cfg.folder, subFolder].map(cloudinarySafeSegment).filter(Boolean);
   if(folderParts.length) form.append('folder', folderParts.join('/'));
-  const res=await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(cfg.cloudName)}/image/upload`,{
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(cfg.cloudName)}/${cloudinaryType}/upload`,{
     method:'POST',
     body:form
   });
@@ -4837,8 +4875,8 @@ async function uploadBlobToCloudinary(blob, fileName='photo.jpg', subFolder='alb
     const msg=data?.error?.message || `HTTP ${res.status}`;
     throw new Error(`Cloudinary 上傳失敗：${msg}`);
   }
-  if(!data?.secure_url && !data?.url) throw new Error('Cloudinary 沒有回傳圖片網址');
-  return data.secure_url || data.url;
+  if(!data?.secure_url && !data?.url) throw new Error('Cloudinary 沒有回傳檔案網址');
+  return returnData?data:(data.secure_url || data.url);
 }
 async function uploadImageFileToCloudinary(file, fileName, subFolder){
   const blob=await compressToBlob(file, 1280, 0.82);
@@ -5458,16 +5496,40 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const overlay=document.createElement('div');
   overlay.id='yujun-birthday-fireworks';
   overlay.className='birthday-fireworks';
-  overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="birthday-fireworks-sound" onclick="toggleYujunBirthdayFireworksSound()" aria-label="切換煙火音效" title="切換音效">🔊</button><div class="birthday-fireworks-finale">聖展♡予君</div><div class="birthday-fireworks-message"><div class="birthday-fireworks-crown">♕</div><div class="birthday-fireworks-kicker">8 / 26 · YUJUN'S DAY</div><b>予君，生日快樂</b><span>願妳往後的每一歲，都有聖展陪妳把平凡過成最閃耀的日子</span></div><button type="button" class="birthday-fireworks-close" onclick="closeYujunBirthdayFireworks()" aria-label="關閉煙火" title="關閉">×</button>`;
+  overlay.dataset.stage='opening';
+  overlay.innerHTML=`
+    <canvas aria-hidden="true"></canvas>
+    <button type="button" class="birthday-fireworks-sound" onclick="toggleYujunBirthdayFireworksSound()" aria-label="切換煙火音效" title="切換音效">🔊</button>
+    <div class="birthday-fireworks-finale">聖展♡予君</div>
+    <div class="birthday-fireworks-message"><div class="birthday-fireworks-crown">♕</div><div class="birthday-fireworks-kicker">8 / 26 · YUJUN'S DAY</div><b>予君，生日快樂</b><span>願妳往後的每一歲，都有聖展陪妳把平凡過成最閃耀的日子</span></div>
+    <div class="birthday-fireworks-letter" aria-label="給予君的生日信">
+      <div class="birthday-letter-kicker">A LETTER FOR YUJUN</div>
+      <div class="birthday-letter-title">給我最珍貴的予君</div>
+      <p>予君，謝謝妳來到我的生命裡。和妳一起走過的每一天，對我而言都不是理所當然，而是我想好好珍藏的幸運。妳的笑、妳的可愛、妳偶爾的小脾氣，還有妳認真愛人的樣子，都讓平凡的日子有了只屬於我們的光。</p>
+      <p>新的一歲，希望妳永遠可以做最真實、最自在的自己。開心的時候，我想陪妳笑得更大聲；難過的時候，我會陪妳慢慢走；累了就放心靠過來，不用一個人逞強。未來也許不會每天都完美，但我會認真記得妳的感受、珍惜妳的笑容，遇到任何事都一次又一次選擇牽緊妳的手。</p>
+      <p>生日快樂，我最珍貴的予君。願妳所有期待都有回音，所有溫柔都被好好接住，願往後每一歲都比今天更幸福。而我想一直在妳身邊，陪妳把每一個平凡的明天，過成只屬於聖展和予君的浪漫。</p>
+      <div class="birthday-letter-sign">永遠愛妳的聖展</div>
+    </div>
+    <div class="birthday-final-cake" aria-label="予君的生日蛋糕">
+      <i class="birthday-cake-spark s1"></i><i class="birthday-cake-spark s2"></i><i class="birthday-cake-spark s3"></i><i class="birthday-cake-spark s4"></i>
+      <div class="birthday-cake-candles"><i class="birthday-candle"><i class="birthday-flame"></i></i><i class="birthday-candle"><i class="birthday-flame"></i></i><i class="birthday-candle"><i class="birthday-flame"></i></i></div>
+      <div class="birthday-cake-tier birthday-cake-top"></div>
+      <div class="birthday-cake-tier birthday-cake-middle"></div>
+      <div class="birthday-cake-tier birthday-cake-bottom"><b>予君</b></div>
+      <div class="birthday-cake-plate"></div>
+    </div>
+    <button type="button" class="birthday-fireworks-close" onclick="closeYujunBirthdayFireworks()" aria-label="關閉煙火" title="關閉">×</button>`;
   document.body.appendChild(overlay);
 
   const canvas=overlay.querySelector('canvas');
   const ctx=canvas.getContext('2d');
   const soundButton=overlay.querySelector('.birthday-fireworks-sound');
   const finaleMessage=overlay.querySelector('.birthday-fireworks-finale');
+  const letterMessage=overlay.querySelector('.birthday-fireworks-letter');
+  const finalCake=overlay.querySelector('.birthday-final-cake');
   const colors=['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff'];
   let width=0,height=0,dpr=1,frame=0,lastTime=performance.now();
-  let rockets=[],particles=[],stars=[],running=true,regularLaunches=true,finaleShown=false;
+  let rockets=[],particles=[],stars=[],running=true,regularLaunches=true,finaleShown=false,megaShown=false,letterShown=false;
   const timers=[];
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
   let audioCtx=null,masterGain=null,noiseBuffer=null,soundEnabled=!!AudioContextClass,chimePlayed=false;
@@ -5530,6 +5592,17 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       source.connect(filter);filter.connect(gain);gain.connect(masterGain);source.start();
     }
   };
+  const playMegaExplosionSound=()=>{
+    playExplosionSound();
+    playTone(72,28,.75,.12,'sine',0);
+    playTone(144,44,.62,.07,'triangle',.05);
+    timers.push(setTimeout(playExplosionSound,120));
+    timers.push(setTimeout(playExplosionSound,260));
+  };
+  const playLetterTheme=()=>{
+    const notes=[523,659,784,659,698,880,784,1047,880,784,659,784];
+    notes.forEach((note,index)=>playTone(note,note*1.012,.62,index===7 ? .055 : .035,index%3===0?'triangle':'sine',index*.58));
+  };
   overlay._toggleSound=async()=>{
     if(!audioCtx) return;
     if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.55;await unlockSound();}
@@ -5566,15 +5639,34 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       particles.push({x,y,px:x,py:y,vx:hx*scale,vy:-hy*scale,life:1,decay:.0065+Math.random()*.004,color:i%3===0?'#ffffff':'#ff6f9f',size:1.8+Math.random()*1.8});
     }
   };
-  const launch=(isFinal=false,finalRatio=null,heartFinal=false)=>{
-    const grandFinal=Number.isFinite(finalRatio);
-    if(!regularLaunches && !grandFinal) return;
+  const explodeMega=(x,y)=>{
+    playMegaExplosionSound();
+    const palette=['#ffffff','#fff0a6','#ffd166','#ff8fb1','#78ddff','#b9ffdb'];
+    [3.2,6.2,9.4].forEach((baseSpeed,ring)=>{
+      const count=ring===2?150:110;
+      for(let i=0;i<count;i+=1){
+        const angle=Math.PI*2*i/count+(ring%2?Math.PI/count:0);
+        const speed=baseSpeed+Math.random()*(ring===2?2.4:1.6);
+        particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.0048+Math.random()*.0045,color:palette[(i+ring)%palette.length],size:1.8+ring*.45+Math.random()*1.7});
+      }
+    });
+    for(let i=0;i<110;i+=1){
+      const angle=Math.random()*Math.PI*2;
+      const speed=1.2+Math.random()*7;
+      particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed*.75,vy:Math.sin(angle)*speed-1.2,life:1,decay:.0038+Math.random()*.004,color:i%3===0?'#ffffff':'#ffd166',size:1+Math.random()*2.2});
+    }
+    explodeHeart(x,y);
+  };
+  const launch=(finalKind='')=>{
+    const special=finalKind==='title'||finalKind==='mega';
+    if(!regularLaunches && !special) return;
     playLaunchSound();
-    const startX=grandFinal?width*(.22+Math.random()*.56):width*(.06+Math.random()*.88);
-    const targetX=grandFinal?width*finalRatio:width*(.08+Math.random()*.84);
-    const targetY=grandFinal?height*(.14+Math.abs(.5-finalRatio)*.38):height*(.08+Math.random()*.46);
-    const color=heartFinal?'#ff6f9f':(grandFinal?colors[Math.floor(Math.random()*colors.length)]:colors[Math.floor(Math.random()*colors.length)]);
-    rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/68,vy:(targetY-height-14)/68,color,isFinal,grandFinal,heartFinal});
+    const startX=special?width*.5:width*(.06+Math.random()*.88);
+    const targetX=special?width*.5:width*(.08+Math.random()*.84);
+    const targetY=finalKind==='title'?Math.max(86,height*.105):(finalKind==='mega'?height*.39:height*(.08+Math.random()*.46));
+    const color=finalKind==='title'?'#fff6c7':(finalKind==='mega'?'#ffd166':colors[Math.floor(Math.random()*colors.length)]);
+    const travelFrames=finalKind==='title'?62:(finalKind==='mega'?70:68);
+    rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color,finalKind,grandFinal:special});
   };
   const draw=(now)=>{
     if(!running) return;
@@ -5589,16 +5681,35 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       ctx.beginPath();ctx.moveTo(rocket.px,rocket.py);ctx.lineTo(rocket.x,rocket.y);ctx.strokeStyle=rocket.color;ctx.lineWidth=2.3;ctx.stroke();
       ctx.beginPath();ctx.arc(rocket.x,rocket.y,2.4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
       if(rocket.y<=rocket.targetY){
-        explode(rocket.x,rocket.y,rocket.color,rocket.grandFinal);
-        if(rocket.heartFinal) explodeHeart(rocket.x,rocket.y);
-        if(rocket.isFinal && !finaleShown){
+        if(rocket.finalKind==='mega') explodeMega(rocket.x,rocket.y);
+        else explode(rocket.x,rocket.y,rocket.color,rocket.grandFinal);
+        if(rocket.finalKind==='title' && !finaleShown){
           finaleShown=true;
+          overlay.dataset.stage='title';
           finaleMessage?.classList.add('show');
           playTone(523,659,.34,.06,'sine',0);
           playTone(659,784,.38,.07,'sine',.13);
           playTone(784,1047,.48,.08,'sine',.27);
           playTone(1047,1319,.62,.075,'triangle',.42);
-          timers.push(setTimeout(closeYujunBirthdayFireworks,3000));
+          timers.push(setTimeout(()=>launch('mega'),2200));
+        }
+        if(rocket.finalKind==='mega' && !megaShown){
+          megaShown=true;
+          overlay.dataset.stage='mega';
+          timers.push(setTimeout(()=>{
+            if(letterShown) return;
+            letterShown=true;
+            overlay.dataset.stage='letter';
+            finaleMessage?.classList.add('fade');
+            letterMessage?.classList.add('show');
+            playLetterTheme();
+            timers.push(setTimeout(()=>{
+              overlay.dataset.stage='cake';
+              finalCake?.classList.add('show');
+              for(let i=0;i<4;i+=1) timers.push(setTimeout(()=>explode(width*(.22+i*.19),height*.76,colors[(i+1)%colors.length],false),i*180));
+            },2800));
+            timers.push(setTimeout(closeYujunBirthdayFireworks,22000));
+          },850));
         }
         return false;
       }
@@ -5614,21 +5725,19 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   };
   resize();
   window.addEventListener('resize',resize);
-  for(let i=0;i<16;i+=1) timers.push(setTimeout(()=>launch(false),120+i*145));
+  for(let i=0;i<16;i+=1) timers.push(setTimeout(()=>launch(),120+i*145));
   const launchTimer=setInterval(()=>{
-    launch(false);
-    if(Math.random()>.24) timers.push(setTimeout(()=>launch(false),115));
-    if(Math.random()>.68) timers.push(setTimeout(()=>launch(false),235));
+    launch();
+    if(Math.random()>.24) timers.push(setTimeout(()=>launch(),115));
+    if(Math.random()>.68) timers.push(setTimeout(()=>launch(),235));
   },480);
   timers.push(setTimeout(()=>overlay.classList.add('finale-mode'),9300));
   const finaleTimer=setTimeout(()=>{
     regularLaunches=false;
     clearInterval(launchTimer);
-    [.16,.33,.5,.67,.84].forEach((ratio,index)=>{
-      timers.push(setTimeout(()=>launch(index===2,ratio,index===2),index*115));
-    });
+    launch('title');
   },10000);
-  const autoClose=setTimeout(closeYujunBirthdayFireworks,18000);
+  const autoClose=setTimeout(closeYujunBirthdayFireworks,42000);
   overlay._cleanup=()=>{
     running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearTimeout(finaleTimer);clearTimeout(autoClose);timers.forEach(clearTimeout);window.removeEventListener('resize',resize);
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
@@ -7962,7 +8071,6 @@ function showGameHub(){
 function pauseBackgroundMusicForInteractiveGame(){
   const backgroundAudio = document.getElementById('audio-player');
   if(backgroundAudio && !backgroundAudio.paused) backgroundAudio.pause();
-  if(typeof pauseYouTubePlayback==='function') pauseYouTubePlayback();
   document.getElementById('music-disc')?.classList.remove('playing');
   const backgroundPlayButton = document.getElementById('play-btn');
   if(backgroundPlayButton) backgroundPlayButton.textContent = '▶️';
@@ -12235,13 +12343,8 @@ const disc=document.getElementById('music-disc');
 const playBtn=document.getElementById('play-btn');
 const titleEl=document.getElementById('music-title');
 const titleWrap=document.getElementById('music-title-wrap');
-let customYoutubeSongs=[];
+let customMusicSongs=[];
 let customMusicSyncStarted=false;
-let youtubeMusicPlayer=null;
-let youtubeMusicReady=false;
-let youtubeMusicApiPromise=null;
-let youtubeMusicRequestedId='';
-let youtubeMusicShouldPlay=false;
 
 function updateMusicTitle(name){
   titleEl.textContent=name;
@@ -12261,30 +12364,10 @@ function setUI(playing){
 }
 
 function getMusicPlaylist(){
-  return SONGS.concat(customYoutubeSongs);
+  return SONGS.concat(customMusicSongs);
 }
 function getCurrentMusicSong(){
   return getMusicPlaylist()[songIdx] || null;
-}
-function extractYouTubeVideoId(value=''){
-  const raw=String(value||'').trim();
-  if(/^[A-Za-z0-9_-]{11}$/.test(raw)) return raw;
-  try{
-    const url=new URL(/^https?:\/\//i.test(raw)?raw:`https://${raw}`);
-    const host=url.hostname.toLowerCase().replace(/^www\./,'').replace(/^m\./,'');
-    let id='';
-    if(host==='youtu.be') id=url.pathname.split('/').filter(Boolean)[0]||'';
-    else if(host==='youtube.com' || host.endsWith('.youtube.com')){
-      if(url.pathname==='/watch') id=url.searchParams.get('v')||'';
-      else{
-        const parts=url.pathname.split('/').filter(Boolean);
-        if(['shorts','embed','live'].includes(parts[0])) id=parts[1]||'';
-      }
-    }
-    return /^[A-Za-z0-9_-]{11}$/.test(id)?id:'';
-  }catch(e){
-    return '';
-  }
 }
 function setMusicAddStatus(message='',isError=false){
   const status=document.getElementById('music-add-status');
@@ -12300,45 +12383,64 @@ function toggleAddMusicForm(force){
   setMusicAddStatus('');
   if(opening) setTimeout(()=>document.getElementById('music-add-name')?.focus(),30);
 }
-async function saveYouTubeMusic(){
+function updateMusicFileLabel(){
+  const file=document.getElementById('music-add-file')?.files?.[0];
+  const label=document.getElementById('music-add-file-label');
+  if(!label) return;
+  label.innerHTML=file
+    ? `<strong>${escapeHtml(file.name)}</strong>${(file.size/1024/1024).toFixed(1)} MB，準備上傳`
+    : '<strong>選擇 MP3</strong>從手機或電腦挑選音樂';
+}
+async function saveMp3Music(){
   const nameInput=document.getElementById('music-add-name');
-  const urlInput=document.getElementById('music-add-url');
+  const fileInput=document.getElementById('music-add-file');
   const submit=document.getElementById('music-add-submit');
   const name=(nameInput?.value||'').trim();
-  const url=(urlInput?.value||'').trim();
-  const youtubeId=extractYouTubeVideoId(url);
+  const file=fileInput?.files?.[0];
   if(!name){setMusicAddStatus('請先輸入歌曲名稱',true);nameInput?.focus();return;}
-  if(!youtubeId){setMusicAddStatus('請貼上有效的 YouTube 影片連結',true);urlInput?.focus();return;}
-  if(customYoutubeSongs.some(song=>song.youtubeId===youtubeId)){
-    setMusicAddStatus('這首 YouTube 歌曲已經在音樂庫裡',true);
+  if(!file){setMusicAddStatus('請先選擇 MP3 音樂檔案',true);return;}
+  if(!/\.mp3$/i.test(file.name) || !['audio/mpeg','audio/mp3',''].includes(file.type)){
+    setMusicAddStatus('只接受 MP3 格式的音樂檔案',true);
     return;
   }
+  if(file.size>30*1024*1024){setMusicAddStatus('單首 MP3 不可以超過 30 MB',true);return;}
+  if(!getCloudinarySettings()){setMusicAddStatus('音樂雲端尚未連線，請稍後再試',true);return;}
   if(!window._fb){setMusicAddStatus('同步服務尚未連線，請稍後再試',true);return;}
   submit.disabled=true;
-  setMusicAddStatus('正在同步到音樂庫...');
+  setMusicAddStatus('正在上傳 MP3，請不要關閉頁面...');
   try{
     const {db,ref,push,set}=window._fb;
+    const safeFileName=String(file.name||'music.mp3').replace(/[^\w.-]+/g,'-').slice(-100)||'music.mp3';
+    const cloudinary=await uploadBlobToCloudinary(file,safeFileName,'music','video',true);
     const itemRef=push(ref(db,'musicLibrary/custom'));
-    await set(itemRef,{name,youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,source:'youtube',createdAt:Date.now()});
+    await set(itemRef,{
+      name,
+      file:cloudinary.secure_url||cloudinary.url,
+      publicId:cloudinary.public_id||'',
+      source:'mp3',
+      bytes:Number(file.size)||0,
+      createdAt:Date.now()
+    });
     nameInput.value='';
-    urlInput.value='';
+    fileInput.value='';
+    updateMusicFileLabel();
     toggleAddMusicForm(false);
   }catch(err){
-    console.error('新增 YouTube 音樂失敗',err);
-    setMusicAddStatus('新增失敗，請檢查網路後再試一次',true);
+    console.error('新增 MP3 音樂失敗',err);
+    setMusicAddStatus(err?.message||'上傳失敗，請檢查網路後再試一次',true);
   }finally{
     submit.disabled=false;
   }
 }
 async function deleteCustomMusic(key){
-  const name=customYoutubeSongs.find(song=>song.key===key)?.name||'這首歌';
+  const name=customMusicSongs.find(song=>song.key===key)?.name||'這首歌';
   if(!key || !confirm(`要從音樂庫刪除「${name}」嗎？`)) return;
   if(!window._fb){alert('同步服務尚未連線，請稍後再試');return;}
   try{
     const {db,ref,remove}=window._fb;
     await remove(ref(db,`musicLibrary/custom/${key}`));
   }catch(err){
-    console.error('刪除 YouTube 音樂失敗',err);
+    console.error('刪除 MP3 音樂失敗',err);
     alert('刪除失敗，請檢查網路後再試一次');
   }
 }
@@ -12348,24 +12450,24 @@ function initCustomMusicSync(){
   const {db,ref,onValue}=window._fb;
   onValue(ref(db,'musicLibrary/custom'),snap=>{
     const current=getCurrentMusicSong();
-    customYoutubeSongs=Object.entries(snap.val()||{})
+    customMusicSongs=Object.entries(snap.val()||{})
       .map(([key,value])=>({
         key,
-        type:'youtube',
+        custom:true,
         name:String(value?.name||'未命名歌曲').slice(0,80),
-        youtubeId:String(value?.youtubeId||''),
-        url:String(value?.url||''),
+        file:String(value?.file||''),
+        publicId:String(value?.publicId||''),
         createdAt:Number(value?.createdAt)||0
       }))
-      .filter(song=>/^[A-Za-z0-9_-]{11}$/.test(song.youtubeId))
+      .filter(song=>/^https:\/\//i.test(song.file))
       .sort((a,b)=>a.createdAt-b.createdAt);
-    if(current?.type==='youtube'){
-      const nextIndex=getMusicPlaylist().findIndex(song=>song.type==='youtube' && song.key===current.key);
+    if(current?.custom){
+      const nextIndex=getMusicPlaylist().findIndex(song=>song.custom && song.key===current.key);
       if(nextIndex>=0){
         songIdx=nextIndex;
         updateMusicTitle(getCurrentMusicSong().name);
       }else{
-        pauseYouTubePlayback();
+        audio.pause();
         songIdx=0;
         loadSong(songIdx);
       }
@@ -12376,106 +12478,7 @@ function initCustomMusicSync(){
     console.warn('自訂音樂同步失敗',err);
   });
 }
-function loadYouTubeMusicApi(){
-  if(window.YT?.Player) return Promise.resolve(window.YT);
-  if(youtubeMusicApiPromise) return youtubeMusicApiPromise;
-  youtubeMusicApiPromise=new Promise((resolve,reject)=>{
-    const previousReady=window.onYouTubeIframeAPIReady;
-    let settled=false;
-    const finish=()=>{
-      if(settled) return;
-      settled=true;
-      if(typeof previousReady==='function') previousReady();
-      resolve(window.YT);
-    };
-    window.onYouTubeIframeAPIReady=finish;
-    let script=document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
-    if(!script){
-      script=document.createElement('script');
-      script.src='https://www.youtube.com/iframe_api';
-      script.async=true;
-      document.head.appendChild(script);
-    }
-    script.addEventListener('error',()=>{
-      if(settled) return;
-      settled=true;
-      youtubeMusicApiPromise=null;
-      reject(new Error('YouTube 播放器載入失敗'));
-    },{once:true});
-    setTimeout(()=>{
-      if(!settled && window.YT?.Player) finish();
-      else if(!settled){settled=true;youtubeMusicApiPromise=null;reject(new Error('YouTube 播放器載入逾時'));}
-    },15000);
-  });
-  return youtubeMusicApiPromise;
-}
-function setYouTubeMusicNote(message='YouTube 歌曲會使用官方播放器播放'){
-  const note=document.getElementById('music-youtube-note');
-  if(note) note.textContent=message;
-}
-function pauseYouTubePlayback(){
-  youtubeMusicShouldPlay=false;
-  if(youtubeMusicPlayer && youtubeMusicReady){
-    try{youtubeMusicPlayer.pauseVideo();}catch(e){}
-  }
-  if(getCurrentMusicSong()?.type==='youtube') setUI(false);
-}
-function hideYouTubeMusicPlayer(){
-  const wrap=document.getElementById('music-youtube-player-wrap');
-  if(wrap) wrap.hidden=true;
-}
-async function ensureYouTubeMusicPlayer(song,autoplay=false){
-  if(!song || song.type!=='youtube') return;
-  const wrap=document.getElementById('music-youtube-player-wrap');
-  if(wrap) wrap.hidden=false;
-  youtubeMusicRequestedId=song.youtubeId;
-  youtubeMusicShouldPlay=autoplay;
-  setYouTubeMusicNote('YouTube 歌曲會使用官方播放器播放');
-  try{
-    const YTApi=await loadYouTubeMusicApi();
-    if(!youtubeMusicPlayer){
-      youtubeMusicPlayer=new YTApi.Player('music-youtube-player',{
-        width:'100%',
-        height:'200',
-        videoId:youtubeMusicRequestedId,
-        playerVars:{playsinline:1,rel:0,autoplay:youtubeMusicShouldPlay?1:0},
-        events:{
-          onReady:event=>{
-            youtubeMusicReady=true;
-            const loadedId=event.target.getVideoData?.().video_id||'';
-            if(loadedId!==youtubeMusicRequestedId){
-              if(youtubeMusicShouldPlay) event.target.loadVideoById(youtubeMusicRequestedId);
-              else event.target.cueVideoById(youtubeMusicRequestedId);
-            }else if(youtubeMusicShouldPlay){
-              event.target.playVideo();
-            }
-          },
-          onStateChange:event=>{
-            if(getCurrentMusicSong()?.type!=='youtube') return;
-            if(event.data===YTApi.PlayerState.PLAYING) setUI(true);
-            else if(event.data===YTApi.PlayerState.PAUSED) setUI(false);
-            else if(event.data===YTApi.PlayerState.ENDED){setUI(false);moveMusicSong(1,true);}
-          },
-          onError:()=>{setUI(false);setYouTubeMusicNote('這部影片目前無法在網站內播放，請換一個 YouTube 連結');},
-          onAutoplayBlocked:()=>{setUI(false);setYouTubeMusicNote('瀏覽器阻擋了自動播放，請按播放器內的播放鍵');}
-        }
-      });
-    }else if(youtubeMusicReady){
-      if(autoplay) youtubeMusicPlayer.loadVideoById(song.youtubeId);
-      else youtubeMusicPlayer.cueVideoById(song.youtubeId);
-    }
-  }catch(err){
-    console.error('YouTube 播放器載入失敗',err);
-    setUI(false);
-    setYouTubeMusicNote('YouTube 播放器載入失敗，請檢查網路後再試一次');
-  }
-}
 function isCurrentMusicPlaying(){
-  const song=getCurrentMusicSong();
-  if(song?.type==='youtube'){
-    if(!youtubeMusicPlayer || !youtubeMusicReady) return youtubeMusicShouldPlay;
-    try{return [1,3].includes(youtubeMusicPlayer.getPlayerState());}catch(e){return false;}
-  }
   return !audio.paused;
 }
 function selectMusicSong(idx,autoplay=false){
@@ -12484,21 +12487,9 @@ function selectMusicSong(idx,autoplay=false){
   songIdx=(idx+playlist.length)%playlist.length;
   const song=playlist[songIdx];
   updateMusicTitle(song.name);
-  if(song.type==='youtube'){
-    audio.pause();
-    audio.removeAttribute('src');
-    audio.load();
-    setUI(false);
-    const lib=document.getElementById('music-library');
-    if(autoplay && lib) lib.style.display='block';
-    if(autoplay || (lib && getComputedStyle(lib).display!=='none')) ensureYouTubeMusicPlayer(song,autoplay);
-  }else{
-    pauseYouTubePlayback();
-    hideYouTubeMusicPlayer();
-    audio.src=song.file;
-    if(autoplay) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
-    else setUI(false);
-  }
+  audio.src=song.file;
+  if(autoplay) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
+  else setUI(false);
   renderMusicLibrary();
 }
 function loadSong(idx){
@@ -12510,11 +12501,11 @@ function renderMusicLibrary(){
   const playlist=getMusicPlaylist();
   list.innerHTML=playlist.length?playlist.map((song,index)=>{
     const safeName=escapeHtml(song.name||'未命名歌曲');
-    const custom=song.type==='youtube';
+    const custom=!!song.custom;
     return `<div class="music-track${index===songIdx?' active':''}">
       <button type="button" class="music-track-main" onclick="playSongAt(${index})">
         <span class="music-track-icon" aria-hidden="true">${index===songIdx?'🎵':'🎶'}</span>
-        <span class="music-track-name">${safeName}${custom?'<span class="music-track-source">YT</span>':''}</span>
+        <span class="music-track-name">${safeName}${custom?'<span class="music-track-source">MP3</span>':''}</span>
       </button>
       ${custom?`<button type="button" class="music-track-delete" onclick="event.stopPropagation();deleteCustomMusic('${song.key}')" aria-label="刪除 ${safeName}" title="刪除">×</button>`:''}
     </div>`;
@@ -12525,13 +12516,7 @@ function toggleMusicLibrary(){
   const lib = document.getElementById('music-library');
   const isHidden = getComputedStyle(lib).display === 'none';
   lib.style.display = isHidden ? 'block' : 'none';
-  if(isHidden){
-    renderMusicLibrary();
-    const song=getCurrentMusicSong();
-    if(song?.type==='youtube') ensureYouTubeMusicPlayer(song,false);
-  }else if(getCurrentMusicSong()?.type==='youtube'){
-    pauseYouTubePlayback();
-  }
+  if(isHidden) renderMusicLibrary();
 }
 
 function playSongAt(i){
@@ -12544,16 +12529,7 @@ audio.addEventListener('ended',()=>{
 function togglePlay(){
   const song=getCurrentMusicSong();
   if(!song) return;
-  if(song.type==='youtube'){
-    if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
-    if(isCurrentMusicPlaying()) pauseYouTubePlayback();
-    else{
-      const lib=document.getElementById('music-library');
-      if(lib) lib.style.display='block';
-      ensureYouTubeMusicPlayer(song,true);
-      renderMusicLibrary();
-    }
-  }else if(audio.paused){
+  if(audio.paused){
     if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
     audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
   }else{
@@ -12574,8 +12550,8 @@ function prevSong(){
   if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
   moveMusicSong(-1);
 }
-audio.addEventListener('play',()=>{if(getCurrentMusicSong()?.type!=='youtube') setUI(true);});
-audio.addEventListener('pause',()=>{if(getCurrentMusicSong()?.type!=='youtube') setUI(false);});
+audio.addEventListener('play',()=>setUI(true));
+audio.addEventListener('pause',()=>setUI(false));
 window.addEventListener('firebaseReady',initCustomMusicSync);
 if(window._fb) initCustomMusicSync();
 loadSong(songIdx);

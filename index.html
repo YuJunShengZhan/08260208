@@ -4662,7 +4662,8 @@ let surprisePhotoFile=null;
 let loveSurprisesCache = {};
 let loveSurpriseTimer = null;
 let loveSurpriseQueuedForOccasion = false;
-let occasionDismissedThisView = '';
+const occasionDismissedThisView = new Set();
+let queuedOccasionAfterCurrent = '';
 
 function openSurpriseTimePicker(event){
   const input = document.getElementById('surprise-time');
@@ -5173,7 +5174,7 @@ function getPendingOccasionTypeToday(){
   if(m===12 && d===1) return 'anniversary';
   if(m===2 && d===8) return 'birthday';
   if(m===8 && d===26) return 'yujun';
-  if(d===14) return 'valentine';
+  if(getValentineOccasionForDate(t)) return 'valentine';
   return '';
 }
 
@@ -5185,7 +5186,7 @@ function isOccasionEffectActive(){
 function isOccasionEffectPendingToday(){
   const type=getPendingOccasionTypeToday();
   if(!type) return false;
-  if(occasionDismissedThisView===type) return false;
+  if(occasionDismissedThisView.has(type)) return false;
   if(type==='yujun'){
     return localStorage.getItem(`yujunBirthdayFireworksShown-${today().getFullYear()}`)!=='1';
   }
@@ -5201,6 +5202,18 @@ function releaseQueuedLoveSurpriseAfterOccasion(){
     if(!loveSurpriseQueuedForOccasion || shouldDelayLoveSurpriseForOccasion()) return;
     renderDueLoveSurprise();
   },0);
+}
+function releaseQueuedOccasionAfterClose(){
+  const type=queuedOccasionAfterCurrent;
+  if(!type) return false;
+  queuedOccasionAfterCurrent='';
+  setTimeout(()=>{
+    if(type==='valentine') launchValentineEffect(true);
+    setTimeout(()=>{
+      if(!isOccasionEffectActive()) releaseQueuedLoveSurpriseAfterOccasion();
+    },0);
+  },220);
+  return true;
 }
 
 function renderDueLoveSurprise(){
@@ -5356,6 +5369,7 @@ function checkSpecialDay(){
   const t=today();
   const m=t.getMonth()+1;
   const d=t.getDate();
+  const valentineToday=getValentineOccasionForDate(t);
 
   if(m===12&&d===1){
     launchAnniversaryEffect(true);
@@ -5368,11 +5382,13 @@ function checkSpecialDay(){
   }
 
   if(m===8&&d===26){
+    if(valentineToday) queuedOccasionAfterCurrent='valentine';
     launchYujunBirthdayFireworks(true);
+    if(!document.getElementById('yujun-birthday-fireworks')) releaseQueuedOccasionAfterClose();
     return;
   }
 
-  if(getValentineOccasionForDate(t)){
+  if(valentineToday){
     launchValentineEffect(true);
   }
 }
@@ -5422,7 +5438,7 @@ function closeOccasionEffect(){
   if(!overlay) return;
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
-  releaseQueuedLoveSurpriseAfterOccasion();
+  if(!releaseQueuedOccasionAfterClose()) releaseQueuedLoveSurpriseAfterOccasion();
 }
 function requestOccasionEffectClose(){
   const overlay=document.getElementById('yujun-birthday-fireworks') || document.getElementById('occasion-effect');
@@ -5446,7 +5462,7 @@ function resolveOccasionEffectClose(choice){
   if(isAutomatic && choice==='hide' && overlay.dataset.shownKey){
     localStorage.setItem(overlay.dataset.shownKey,'1');
   }
-  if(isAutomatic && type) occasionDismissedThisView=type;
+  if(isAutomatic && type) occasionDismissedThisView.add(type);
   if(yujunOverlay) closeYujunBirthdayFireworks();
   else closeOccasionEffect();
 }
@@ -5684,7 +5700,7 @@ function closeYujunBirthdayFireworks(){
   if(!overlay) return;
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
-  releaseQueuedLoveSurpriseAfterOccasion();
+  if(!releaseQueuedOccasionAfterClose()) releaseQueuedLoveSurpriseAfterOccasion();
 }
 function toggleYujunBirthdayFireworksSound(){
   const overlay=document.getElementById('yujun-birthday-fireworks');

@@ -4406,6 +4406,14 @@ function daysUntilNext(month,day){
   return Math.ceil((next-t)/864e5);
 }
 const START=new Date(2025,11,1);
+const VALENTINE_DAY_NAMES={
+  1:'日記情人節',2:'西洋情人節',3:'白色情人節',4:'黑色情人節',
+  5:'玫瑰情人節',6:'親吻情人節',7:'銀色情人節',8:'綠色情人節',
+  9:'相片情人節',10:'葡萄酒情人節',11:'電影情人節',12:'擁抱情人節'
+};
+function getValentineDayName(month){
+  return VALENTINE_DAY_NAMES[Number(month)]||'情人節';
+}
 function cdEl(id,n){
   document.getElementById(id).innerHTML=
     `${n}<span style="font-size:13px;font-weight:400;color:var(--text-muted);margin-left:2px">天</span>`;
@@ -4426,9 +4434,11 @@ function nextVday(){
   let candidate=new Date(y,m,14);
   if(candidate<=t){m++;if(m>11){m=0;y++;}candidate=new Date(y,m,14);}
   const days=Math.ceil((candidate-t)/864e5);
-  document.getElementById('vdLabel').textContent=`${candidate.getMonth()+1}/14 情人節`;
+  const month=candidate.getMonth()+1;
+  const name=getValentineDayName(month);
+  document.getElementById('vdLabel').textContent=`${month}/14 ${name}`;
   cdEl('vdDays',days);
-  return {label:`${candidate.getMonth()+1}/14 情人節`,days};
+  return {label:`${month}/14 ${name}`,days};
 }
 function localDateKey(){
   const d = new Date();
@@ -5196,6 +5206,78 @@ function checkLoveSurprise(){
   });
 }
 
+const VALENTINE_COPY_OPENINGS=[
+  '能和你一起走到今天，是我最想珍惜的幸運。',
+  '這個世界很大，但我最想回去的地方一直都是你身邊。',
+  '我最喜歡的浪漫，不是盛大的安排，而是每天醒來都還能和你說話。',
+  '謝謝你走進我的生活，讓許多普通時刻都有了值得收藏的名字。',
+  '愛不是永遠不吵架，而是每一次不開心之後，我們還願意走回彼此身邊。',
+  '不管今天是哪一種情人節，我想慶祝的始終都是我們。',
+  '有你在的日子，就算沒有特別安排，也會讓我覺得今天很好。',
+  '我想把每一次牽手、每一次擁抱，和每一次笑到停不下來都好好記住。',
+  '每次看見你，我還是會想起當初喜歡上你的那份心動。',
+  '我們也許都不完美，卻一直在學著用更適合彼此的方式相愛。',
+  '你讓我知道，被理解、被惦記和被放在心上，原來可以這麼幸福。',
+  '喜歡你不是某一天的限定活動，而是我每天都在做的選擇。',
+  '我很慶幸在人來人往的世界裡，最後能和你成為我們。',
+  '和你分享生活裡的小事，是我到現在依然很期待的事。',
+  '我想要的未來沒有多複雜，只希望重要的日子和平凡的日子都有你。',
+  '無論日子過得熱鬧或安靜，只要你在身旁，我就覺得很踏實。',
+  '謝謝你願意看見我的脆弱，也願意珍惜我努力愛你的樣子。',
+  '我們一起經過的每一段路，都讓我更確定下一段還想和你並肩。',
+  '你不只是我喜歡的人，也是我遇到事情時第一個想分享的人。',
+  '今天的浪漫不只是一句情人節快樂，而是我仍然很認真地愛著你。'
+];
+const VALENTINE_COPY_ENDINGS=[
+  '往後也請讓我繼續牽著你的手，把每個普通日子過成只屬於我們的紀念日。',
+  '希望我們一直有話可說、有擁抱可以依靠，也一直記得最初靠近彼此的理由。',
+  '願我們在未來的每一次選擇裡，都還是願意把對方放進自己的答案。',
+  '我會繼續認真聽你說、陪你走，也把藏在心裡的喜歡一次又一次告訴你。',
+  '今天想再說一次：遇見你真好，而我想和你把這份好一直延續下去。'
+];
+const SHENGZHAN_BIRTHDAY_COPY_OPENINGS=[
+  '聖展，生日快樂。謝謝你把溫柔和真心放進我們共同生活的每一天。',
+  '又陪你走到新的一歲，是一件值得我好好珍惜的事。',
+  '今天不只是你的生日，也是我再次慶幸世界上有你的日子。',
+  '謝謝你一直努力成為更好的自己，也努力照顧我們之間的感情。',
+  '你可能不常說自己的辛苦，但你的認真和付出，我都有好好看見。',
+  '和你一起經過的日子，讓我知道可靠與溫柔可以同時存在一個人身上。',
+  '生日這一天，希望你先把所有責任放旁邊，好好接受大家對你的喜歡。',
+  '你為生活努力的樣子很帥，願意為愛改變和溝通的樣子更值得被珍惜。',
+  '謝謝你在我需要的時候陪著我，也在我鬧脾氣的時候沒有輕易離開。',
+  '每一年替你慶祝生日，都像在替我們又收藏了一段新的共同時光。',
+  '你值得的不只是一個快樂的生日，而是很多個安心、自在又閃亮的日子。',
+  '今天想把平常來不及說完的感謝，都放進這一句生日快樂裡送給你。',
+  '因為有你，許多原本普通的風景和日常，都變成了我捨不得忘記的回憶。',
+  '希望你知道，你的存在本身就很重要，不需要一直證明自己才值得被愛。',
+  '謝謝你願意和我分享快樂、承擔難過，也一起想像很久以後的我們。',
+  '看著你一步一步走到今天，我真的很為你感到驕傲。',
+  '你總是想把好的留給身邊的人，今天也請記得把最好的祝福留一份給自己。',
+  '聖展，願今天所有燭光、笑聲和祝福，都能讓你感受到自己被深深在乎。',
+  '能參與你的新一歲，是我今年收到的一份很珍貴的禮物。',
+  '不論過了幾個生日，我都希望你回頭時，會看見我仍然站在你身旁。'
+];
+const SHENGZHAN_BIRTHDAY_COPY_ENDINGS=[
+  '新的一歲，願你喜歡的事慢慢靠近，想完成的目標都有踏實而漂亮的結果。',
+  '願你累的時候有人接住、開心的時候有人分享，而我會努力一直成為那個人。',
+  '希望你健康、自在、常常大笑，也永遠保有去追逐喜歡事物的勇氣。',
+  '未來不管晴天或雨天，都希望我們繼續站在同一邊，把難題一起變成回憶。',
+  '生日快樂，願你被世界溫柔對待，也願我們還能一起慶祝往後很多很多年。'
+];
+const VALENTINE_OCCASION_MESSAGES=VALENTINE_COPY_OPENINGS.flatMap(opening=>VALENTINE_COPY_ENDINGS.map(ending=>`${opening}\n${ending}`));
+const SHENGZHAN_BIRTHDAY_OCCASION_MESSAGES=SHENGZHAN_BIRTHDAY_COPY_OPENINGS.flatMap(opening=>SHENGZHAN_BIRTHDAY_COPY_ENDINGS.map(ending=>`${opening}\n${ending}`));
+const occasionCopyLastIndex={};
+function pickOccasionMessage(type,messages){
+  if(!Array.isArray(messages)||!messages.length) return '';
+  let index=Math.floor(Math.random()*messages.length);
+  const last=occasionCopyLastIndex[type];
+  if(messages.length>1 && index===last){
+    index=(index+1+Math.floor(Math.random()*(messages.length-1)))%messages.length;
+  }
+  occasionCopyLastIndex[type]=index;
+  return messages[index];
+}
+
 // ── Special Day ──
 function checkSpecialDay(){
   const t=today();
@@ -5311,18 +5393,22 @@ function launchAnniversaryEffect(autoPlay=false){
 function launchOccasionEffect(type,autoPlay=false){
   const now=today();
   const anniversaryNumber=Math.max(1,now.getFullYear()-START.getFullYear());
+  const valentineMonth=now.getMonth()+1;
+  const valentineDayName=getValentineDayName(valentineMonth);
+  const birthdayCopy=type==='birthday'?pickOccasionMessage('shengzhan-birthday',SHENGZHAN_BIRTHDAY_OCCASION_MESSAGES):'';
+  const valentineCopy=type==='valentine'?pickOccasionMessage(`valentine-${valentineMonth}`,VALENTINE_OCCASION_MESSAGES):'';
   const configs={
     birthday:{
       kicker:'2 / 8 · HAPPY BIRTHDAY',
       title:'聖展，生日快樂',
-      sub:'願新的一歲，喜歡的事都靠近你，\n每一天都有值得大笑的理由。',
+      sub:birthdayCopy,
       symbol:'🎂',duration:12000,
       colors:['#ffd166','#ff6b8a','#64d8cb','#7aa7ff','#c59cff','#ffffff']
     },
     valentine:{
-      kicker:`${now.getMonth()+1} / 14 · LOVE DAY`,
-      title:'情人節快樂',
-      sub:'聖展♡予君\n今天也要把喜歡，認真地說給彼此聽。',
+      kicker:`${valentineMonth} / 14 · LOVE DAY`,
+      title:`${valentineDayName}快樂`,
+      sub:`聖展♡予君\n${valentineCopy}`,
       symbol:'<span class="occasion-envelope"></span>',duration:12500,
       colors:['#ff7f9a','#ffb0bd','#ffd1d8','#fff0f2','#f05f7f']
     },

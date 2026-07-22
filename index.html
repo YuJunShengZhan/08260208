@@ -230,6 +230,15 @@ animation:birthdayNightIn .7s ease both;
 .birthday-fireworks-finale.show{animation:birthdayFinaleIn .55s ease forwards}
 .birthday-fireworks-finale.fade{animation:birthdayFinaleOut .55s ease forwards}
 .birthday-fireworks-letter{position:absolute;z-index:3;top:max(70px,calc(env(safe-area-inset-top) + 62px));bottom:max(10px,env(safe-area-inset-bottom));left:50%;width:min(94%,760px);box-sizing:border-box;display:flex;flex-direction:column;padding:clamp(10px,1.9dvh,19px) clamp(12px,2.5vw,20px);overflow:hidden;border:1px solid rgba(255,224,148,.54);border-radius:18px;background:linear-gradient(145deg,rgba(30,20,35,.88),rgba(57,27,43,.82));color:#fff;opacity:0;transform:translate(-50%,24px) scale(.96);pointer-events:none;box-shadow:0 22px 70px rgba(0,0,0,.48),inset 0 0 42px rgba(255,151,181,.07);backdrop-filter:blur(12px)}
+.birthday-fireworks-letter::before{content:'';position:absolute;z-index:0;inset:7px;border:1px dashed rgba(255,216,120,.3);border-radius:12px;pointer-events:none}
+.birthday-fireworks-letter>:not(.birthday-letter-deco){position:relative;z-index:1}
+.birthday-letter-deco{--deco-color:#ffd878;position:absolute;z-index:0;display:block;width:24px;height:24px;background:var(--deco-color);opacity:.66;pointer-events:none;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--deco-color) 58%,transparent));-webkit-mask:var(--deco-icon) center/contain no-repeat;mask:var(--deco-icon) center/contain no-repeat;animation:birthdayLetterDecoGlow 2.8s ease-in-out infinite}
+.birthday-letter-deco.party-top{--deco-icon:url('assets/birthday-party-popper.svg');top:12px;left:13px;transform:rotate(-15deg)}
+.birthday-letter-deco.gift-top{--deco-icon:url('assets/birthday-gift.svg');--deco-color:#ff98b7;top:13px;right:14px;transform:rotate(8deg);animation-delay:.45s}
+.birthday-letter-deco.spark-left{--deco-icon:url('assets/birthday-sparkles.svg');--deco-color:#8edaf2;top:38%;left:4px;width:20px;height:20px;animation-delay:.9s}
+.birthday-letter-deco.heart-right{--deco-icon:url('assets/birthday-heart.svg');--deco-color:#ff8fab;top:47%;right:5px;width:20px;height:20px;animation-delay:1.35s}
+.birthday-letter-deco.cake-bottom{--deco-icon:url('assets/birthday-cake-slice.svg');bottom:12px;left:13px;width:26px;height:26px;transform:rotate(-7deg);animation-delay:1.8s}
+.birthday-letter-deco.party-bottom{--deco-icon:url('assets/birthday-party-popper.svg');--deco-color:#8edaf2;right:13px;bottom:12px;width:25px;height:25px;transform:scaleX(-1) rotate(-15deg);animation-delay:2.25s}
 .birthday-fireworks-letter.show{pointer-events:auto;animation:birthdayLetterIn .9s cubic-bezier(.22,1,.36,1) forwards}
 .birthday-letter-kicker{color:#ffd878;font-size:clamp(8px,1.15dvh,10px);font-weight:900;text-align:center;letter-spacing:0}
 .birthday-letter-title{margin:clamp(2px,.6dvh,5px) 0 clamp(5px,1.15dvh,11px);color:#fff7e7;font-family:'Noto Serif TC',serif;font-size:clamp(17px,2.9dvh,24px);font-weight:800;line-height:1.25;text-align:center;text-shadow:0 0 18px rgba(255,156,185,.48)}
@@ -285,11 +294,12 @@ animation:birthdayNightIn .7s ease both;
 @keyframes birthdayLetterIn{from{opacity:0;transform:translate(-50%,24px) scale(.96)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
 @keyframes birthdayLetterLine{to{opacity:1;transform:none}}
 @keyframes birthdayLetterPhotoCycle{0%,19%{opacity:1}20%,100%{opacity:0}}
+@keyframes birthdayLetterDecoGlow{0%,100%{opacity:.48}50%{opacity:.86}}
 @keyframes birthdayCakeRise{0%{opacity:0;transform:translate(-50%,125%) scale(.78)}70%{opacity:1;transform:translate(-50%,-5%) scale(1.04)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
 @keyframes birthdayCakeLeave{from{opacity:1;transform:translate(-50%,0) scale(1)}to{opacity:0;transform:translate(-50%,48px) scale(.86)}}
 @keyframes birthdayFlame{from{transform:translateX(-50%) rotate(40deg) scale(.88)}to{transform:translateX(-50%) rotate(50deg) scale(1.12)}}
 @keyframes birthdayCakeSpark{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.5)}}
-@media(max-width:520px){.birthday-fireworks-letter{top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:max(7px,env(safe-area-inset-bottom));width:96%}.birthday-final-cake{width:min(74vw,280px);height:165px}.birthday-cake-candles{height:46px}.birthday-candle{height:31px}.birthday-candle:nth-child(2){height:38px}.birthday-cake-top{height:34px}.birthday-cake-middle{height:43px}.birthday-cake-bottom{height:52px}.birthday-cake-bottom b{font-size:16px}}
+@media(max-width:520px){.birthday-fireworks-letter{top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:max(7px,env(safe-area-inset-bottom));width:96%}.birthday-letter-deco{width:19px;height:19px;opacity:.58}.birthday-letter-deco.party-top{top:9px;left:9px}.birthday-letter-deco.gift-top{top:9px;right:9px}.birthday-letter-deco.spark-left{left:2px;width:17px;height:17px}.birthday-letter-deco.heart-right{right:2px;width:17px;height:17px}.birthday-letter-deco.cake-bottom{bottom:8px;left:9px;width:21px;height:21px}.birthday-letter-deco.party-bottom{right:9px;bottom:8px;width:21px;height:21px}.birthday-final-cake{width:min(74vw,280px);height:165px}.birthday-cake-candles{height:46px}.birthday-candle{height:31px}.birthday-candle:nth-child(2){height:38px}.birthday-cake-top{height:34px}.birthday-cake-middle{height:43px}.birthday-cake-bottom{height:52px}.birthday-cake-bottom b{font-size:16px}}
 @media(max-height:620px){.birthday-fireworks-letter p{font-size:9.5px;line-height:1.42}.birthday-letter-photo-frame{min-height:72px}.birthday-letter-title{font-size:16px}.birthday-letter-sign{font-size:10.5px}}
 @media(max-height:560px) and (orientation:landscape){.birthday-fireworks-letter{left:31%;top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:6px;width:58%;padding:8px 12px}.birthday-letter-title{font-size:15px}.birthday-fireworks-letter p{font-size:9px;line-height:1.36;margin-bottom:3px}.birthday-letter-sign{font-size:10px}.birthday-letter-photo-frame{min-height:64px;margin-top:4px}.birthday-final-cake{left:81%;bottom:5px;width:min(31vw,245px);height:154px}.birthday-cake-candles{height:42px}.birthday-candle{height:29px}.birthday-candle:nth-child(2){height:35px}.birthday-cake-top{height:31px}.birthday-cake-middle{height:39px}.birthday-cake-bottom{height:47px}.birthday-cake-bottom b{font-size:14px}}
 .occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both}
@@ -5745,6 +5755,12 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     <div class="birthday-fireworks-finale">聖展♡予君</div>
     <div class="birthday-fireworks-message"><div class="birthday-fireworks-bow" aria-hidden="true">🎀</div><div class="birthday-fireworks-kicker">8 / 26 · YUJUN'S DAY</div><b>予君，生日快樂</b><span>${escapeHtml(yearlyBirthdayCopy).replace(/\n/g,'<br>')}</span></div>
     <div class="birthday-fireworks-letter" aria-label="給予君的生日信">
+      <i class="birthday-letter-deco party-top" aria-hidden="true"></i>
+      <i class="birthday-letter-deco gift-top" aria-hidden="true"></i>
+      <i class="birthday-letter-deco spark-left" aria-hidden="true"></i>
+      <i class="birthday-letter-deco heart-right" aria-hidden="true"></i>
+      <i class="birthday-letter-deco cake-bottom" aria-hidden="true"></i>
+      <i class="birthday-letter-deco party-bottom" aria-hidden="true"></i>
       <div class="birthday-letter-kicker">A LETTER FOR YUJUN</div>
       <div class="birthday-letter-title">我最愛的予君</div>
       <p>予君，謝謝妳來到我的生命裡。和妳一起走過的每一天，對我而言都不是理所當然，而是我想好好珍藏的幸運。妳的笑容、妳的可愛、妳偶爾的小脾氣，都讓平凡的日子，變成只屬於我們的珍貴時光。</p>
@@ -5781,7 +5797,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   let rockets=[],particles=[],stars=[],running=true,regularLaunches=true,finaleShown=false,megaShown=false,letterTriggered=false,letterShown=false;
   const timers=[];
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
-  let audioCtx=null,masterGain=null,noiseBuffer=null,soundEnabled=!!AudioContextClass,chimePlayed=false;
+  let audioCtx=null,masterGain=null,noiseBuffer=null,soundEnabled=!!AudioContextClass,chimePlayed=false,letterMusicTimer=null,letterMusicStarted=false;
   try{
     if(AudioContextClass){
       audioCtx=new AudioContextClass();
@@ -5851,8 +5867,21 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     timers.push(setTimeout(playExplosionSound,260));
   };
   const playLetterTheme=()=>{
-    const notes=[523,659,784,659,698,880,784,1047,880,784,659,784];
-    notes.forEach((note,index)=>playTone(note,note*1.012,.62,index===7 ? .055 : .035,index%3===0?'triangle':'sine',index*.58));
+    const beat=.32;
+    const melody=[659,784,880,784,698,880,1047,880,784,988,1175,988,880,784,659,784];
+    const bass=[262,349,392,262];
+    melody.forEach((note,index)=>playTone(note,note*1.006,.27,index%4===0?.035:.026,index%4===0?'triangle':'sine',index*beat));
+    bass.forEach((note,index)=>{
+      const delay=index*beat*4;
+      playTone(note,note*1.004,1.05,.022,'triangle',delay);
+      playTone(note*1.5,note*1.506,.82,.014,'sine',delay+.04);
+    });
+  };
+  const startLetterMusic=()=>{
+    if(letterMusicStarted) return;
+    letterMusicStarted=true;
+    playLetterTheme();
+    letterMusicTimer=setInterval(playLetterTheme,5120);
   };
   overlay._toggleSound=async()=>{
     if(!audioCtx) return;
@@ -5989,7 +6018,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
           timers.push(setTimeout(()=>{
             overlay.dataset.stage='letter';
             letterMessage?.classList.add('show');
-            playLetterTheme();
+            startLetterMusic();
           },1350));
         }
         return false;
@@ -6019,7 +6048,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     launch('title');
   },10000);
   overlay._cleanup=()=>{
-    running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearTimeout(finaleTimer);timers.forEach(clearTimeout);window.removeEventListener('resize',resize);
+    running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearInterval(letterMusicTimer);clearTimeout(finaleTimer);timers.forEach(clearTimeout);window.removeEventListener('resize',resize);
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);

@@ -5311,7 +5311,7 @@ function pickOccasionMessage(type,messages){
 function pickYearlyOccasionMessage(year,messages){
   if(!Array.isArray(messages)||!messages.length) return '';
   const cycle=((Number(year)-2026)%messages.length+messages.length)%messages.length;
-  return messages[(cycle*37+11)%messages.length];
+  return messages[(cycle*37+74)%messages.length];
 }
 
 // ── Special Day ──

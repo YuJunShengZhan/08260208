@@ -229,17 +229,20 @@ animation:birthdayNightIn .7s ease both;
 .birthday-fireworks-finale{position:absolute;z-index:2;top:max(70px,calc(env(safe-area-inset-top) + 62px));left:16px;right:16px;text-align:center;color:#fff;font-family:'Noto Serif TC',serif;font-size:clamp(28px,8vw,52px);font-weight:800;letter-spacing:0;opacity:0;transform:translateY(-12px) scale(.94);pointer-events:none;text-shadow:0 0 10px rgba(255,255,255,.9),0 0 24px rgba(255,93,143,.9),0 0 44px rgba(96,214,255,.7)}
 .birthday-fireworks-finale.show{animation:birthdayFinaleIn .55s ease forwards}
 .birthday-fireworks-finale.fade{animation:birthdayFinaleOut .55s ease forwards}
-.birthday-fireworks-letter{position:absolute;z-index:3;top:max(70px,calc(env(safe-area-inset-top) + 62px));left:50%;width:min(94%,760px);max-height:calc(100vh - 88px);max-height:calc(100dvh - 88px);box-sizing:border-box;padding:19px 20px 18px;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid rgba(255,224,148,.54);border-radius:18px;background:linear-gradient(145deg,rgba(30,20,35,.88),rgba(57,27,43,.82));color:#fff;opacity:0;transform:translate(-50%,24px) scale(.96);pointer-events:none;box-shadow:0 22px 70px rgba(0,0,0,.48),inset 0 0 42px rgba(255,151,181,.07);backdrop-filter:blur(12px)}
+.birthday-fireworks-letter{position:absolute;z-index:3;top:max(70px,calc(env(safe-area-inset-top) + 62px));bottom:max(10px,env(safe-area-inset-bottom));left:50%;width:min(94%,760px);box-sizing:border-box;display:flex;flex-direction:column;padding:clamp(10px,1.9dvh,19px) clamp(12px,2.5vw,20px);overflow:hidden;border:1px solid rgba(255,224,148,.54);border-radius:18px;background:linear-gradient(145deg,rgba(30,20,35,.88),rgba(57,27,43,.82));color:#fff;opacity:0;transform:translate(-50%,24px) scale(.96);pointer-events:none;box-shadow:0 22px 70px rgba(0,0,0,.48),inset 0 0 42px rgba(255,151,181,.07);backdrop-filter:blur(12px)}
 .birthday-fireworks-letter.show{pointer-events:auto;animation:birthdayLetterIn .9s cubic-bezier(.22,1,.36,1) forwards}
-.birthday-letter-kicker{color:#ffd878;font-size:10px;font-weight:900;text-align:center;letter-spacing:0}
-.birthday-letter-title{margin:5px 0 11px;color:#fff7e7;font-family:'Noto Serif TC',serif;font-size:24px;font-weight:800;line-height:1.35;text-align:center;text-shadow:0 0 18px rgba(255,156,185,.48)}
-.birthday-fireworks-letter p{margin:0 0 9px;color:rgba(255,249,242,.94);font-size:14px;line-height:1.85;text-align:left;letter-spacing:0;opacity:0;transform:translateY(8px)}
+.birthday-letter-kicker{color:#ffd878;font-size:clamp(8px,1.15dvh,10px);font-weight:900;text-align:center;letter-spacing:0}
+.birthday-letter-title{margin:clamp(2px,.6dvh,5px) 0 clamp(5px,1.15dvh,11px);color:#fff7e7;font-family:'Noto Serif TC',serif;font-size:clamp(17px,2.9dvh,24px);font-weight:800;line-height:1.25;text-align:center;text-shadow:0 0 18px rgba(255,156,185,.48)}
+.birthday-fireworks-letter p{margin:0 0 clamp(4px,.9dvh,9px);color:rgba(255,249,242,.94);font-size:clamp(10px,1.58dvh,14px);line-height:1.55;text-align:left;letter-spacing:0;opacity:0;transform:translateY(8px)}
 .birthday-fireworks-letter.show p:nth-of-type(1){animation:birthdayLetterLine .7s .35s ease forwards}
 .birthday-fireworks-letter.show p:nth-of-type(2){animation:birthdayLetterLine .7s .9s ease forwards}
 .birthday-fireworks-letter.show p:nth-of-type(3){animation:birthdayLetterLine .7s 1.45s ease forwards}
-.birthday-letter-sign{margin-top:10px;color:#ffd878;font-family:'Noto Serif TC',serif;font-size:15px;font-weight:800;text-align:right;opacity:0}
+.birthday-letter-sign{margin-top:clamp(2px,.6dvh,7px);color:#ffd878;font-family:'Noto Serif TC',serif;font-size:clamp(11px,1.75dvh,15px);font-weight:800;text-align:right;opacity:0}
 .birthday-letter-sign-heart{display:inline-block;margin-left:3px;color:#ff8fab;font-size:.82em;animation:birthdayCakeSpark 1.3s ease-in-out infinite}
 .birthday-fireworks-letter.show .birthday-letter-sign{animation:birthdayLetterLine .7s 2s ease forwards}
+.birthday-letter-photo-frame{flex:1 1 180px;min-height:82px;margin-top:clamp(5px,1dvh,10px);display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0;transform:translateY(8px)}
+.birthday-letter-photo{display:block;width:auto;max-width:100%;height:100%;max-height:100%;border-radius:12px;object-fit:contain;box-shadow:0 9px 26px rgba(0,0,0,.34)}
+.birthday-fireworks-letter.show .birthday-letter-photo-frame{animation:birthdayLetterLine .7s 2.3s ease forwards}
 .birthday-final-cake{position:absolute;z-index:4;left:50%;bottom:max(9px,env(safe-area-inset-bottom));width:min(68vw,330px);height:190px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0;border:0;background:none;color:inherit;font:inherit;opacity:0;transform:translate(-50%,125%) scale(.78);pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,0,.4))}
 .birthday-final-cake.show{pointer-events:auto;cursor:pointer;animation:birthdayCakeRise 1.15s cubic-bezier(.2,1.25,.35,1) forwards}
 .birthday-final-cake.letter-open{pointer-events:none;animation:birthdayCakeLeave .55s ease forwards}
@@ -274,8 +277,9 @@ animation:birthdayNightIn .7s ease both;
 @keyframes birthdayCakeLeave{from{opacity:1;transform:translate(-50%,0) scale(1)}to{opacity:0;transform:translate(-50%,48px) scale(.86)}}
 @keyframes birthdayFlame{from{transform:translateX(-50%) rotate(40deg) scale(.88)}to{transform:translateX(-50%) rotate(50deg) scale(1.12)}}
 @keyframes birthdayCakeSpark{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.5)}}
-@media(max-width:520px){.birthday-fireworks-letter{top:max(62px,calc(env(safe-area-inset-top) + 56px));width:95%;max-height:calc(100dvh - 76px);padding:15px 15px 14px}.birthday-letter-title{font-size:20px}.birthday-fireworks-letter p{font-size:12px;line-height:1.72}.birthday-letter-sign{font-size:13px}.birthday-final-cake{width:min(74vw,280px);height:165px}.birthday-cake-candles{height:46px}.birthday-candle{height:31px}.birthday-candle:nth-child(2){height:38px}.birthday-cake-top{height:34px}.birthday-cake-middle{height:43px}.birthday-cake-bottom{height:52px}.birthday-cake-bottom b{font-size:16px}}
-@media(max-height:560px) and (orientation:landscape){.birthday-fireworks-letter{left:31%;top:max(62px,calc(env(safe-area-inset-top) + 58px));width:56%;max-height:calc(100dvh - 76px);padding:12px 14px}.birthday-letter-title{font-size:18px}.birthday-fireworks-letter p{font-size:11px;line-height:1.6}.birthday-letter-sign{font-size:12px}.birthday-final-cake{left:81%;bottom:5px;width:min(31vw,245px);height:154px}.birthday-cake-candles{height:42px}.birthday-candle{height:29px}.birthday-candle:nth-child(2){height:35px}.birthday-cake-top{height:31px}.birthday-cake-middle{height:39px}.birthday-cake-bottom{height:47px}.birthday-cake-bottom b{font-size:14px}}
+@media(max-width:520px){.birthday-fireworks-letter{top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:max(7px,env(safe-area-inset-bottom));width:96%}.birthday-final-cake{width:min(74vw,280px);height:165px}.birthday-cake-candles{height:46px}.birthday-candle{height:31px}.birthday-candle:nth-child(2){height:38px}.birthday-cake-top{height:34px}.birthday-cake-middle{height:43px}.birthday-cake-bottom{height:52px}.birthday-cake-bottom b{font-size:16px}}
+@media(max-height:620px){.birthday-fireworks-letter p{font-size:9.5px;line-height:1.42}.birthday-letter-photo-frame{min-height:72px}.birthday-letter-title{font-size:16px}.birthday-letter-sign{font-size:10.5px}}
+@media(max-height:560px) and (orientation:landscape){.birthday-fireworks-letter{left:31%;top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:6px;width:58%;padding:8px 12px}.birthday-letter-title{font-size:15px}.birthday-fireworks-letter p{font-size:9px;line-height:1.36;margin-bottom:3px}.birthday-letter-sign{font-size:10px}.birthday-letter-photo-frame{min-height:64px;margin-top:4px}.birthday-final-cake{left:81%;bottom:5px;width:min(31vw,245px);height:154px}.birthday-cake-candles{height:42px}.birthday-candle{height:29px}.birthday-candle:nth-child(2){height:35px}.birthday-cake-top{height:31px}.birthday-cake-middle{height:39px}.birthday-cake-bottom{height:47px}.birthday-cake-bottom b{font-size:14px}}
 .occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both}
 .occasion-overlay canvas{position:absolute;inset:0;width:100%;height:100%}
 .occasion-overlay.birthday{background:rgba(26,39,67,.94)}
@@ -4515,9 +4519,9 @@ function updateHomeCountdownBroadcast(items){
   if(!box) return;
   const upcoming=(items||[])
     .filter(Boolean)
-    .filter(item=>Number.isFinite(item.days) && item.days>=1 && item.days<=10)
+    .filter(item=>Number.isFinite(item.days) && (item.kind==='period' || (item.days>=1 && item.days<=10)))
     .sort((a,b)=>a.days-b.days || a.label.localeCompare(b.label,'zh-TW'));
-  const signature=upcoming.map(item=>`${item.label}:${item.days}`).join('|');
+  const signature=upcoming.map(item=>`${item.label}:${item.days}:${item.message||''}`).join('|');
   if(signature===homeBroadcastSignature && ((upcoming.length && !box.hidden) || (!upcoming.length && box.hidden))) return;
   stopHomeCountdownBroadcast();
   homeBroadcastItems=upcoming;
@@ -5681,6 +5685,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       <p>新的一歲，希望妳永遠可以做最真實、最自在的自己。開心的時候，我想陪妳一起笑；難過的時候，我會陪妳慢慢走；累了就放心靠過來，不用一個人逞強。未來也許不會每天都完美，但我會認真記得妳的感受、珍惜妳的笑容，遇到任何事都一次又一次選擇牽緊妳的手。</p>
       <p>生日快樂，我最愛的予君。願妳所有期待都有回音，所有溫柔都被好好接住，願往後每一歲都比今天更幸福。而我會一直在妳身邊，陪妳把每一個平凡的明天，過成只屬於我們的浪漫。</p>
       <div class="birthday-letter-sign">最愛妳的聖展 <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
+      <div class="birthday-letter-photo-frame"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-04.jpg" alt="7月4日一起在海邊的回憶"></div>
     </div>
     <button type="button" class="birthday-final-cake" onclick="openYujunBirthdayLetter()" aria-label="點擊生日蛋糕，打開給予君的生日信" aria-expanded="false">
       <i class="birthday-cake-spark s1"></i><i class="birthday-cake-spark s2"></i><i class="birthday-cake-spark s3"></i><i class="birthday-cake-spark s4"></i>
@@ -12201,7 +12206,7 @@ function pdGetSeedCycles(){
     const ovulate = new Date(pStart.getTime() + Math.max(0, cycle - 14) * 864e5);
     const fertileStart = new Date(ovulate.getTime() - 5 * 864e5);
     const fertileEnd = new Date(ovulate.getTime() + 864e5);
-    return {pStart,pEnd,estimatedEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:item.start,completed:item.completed===true,isOpen};
+    return {pStart,pEnd,estimatedEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:item.start,completed:item.completed===true,isOpen,isForecast:false};
   }).filter(Boolean);
   if(cycles.length) return cycles;
   if(!pdSettings.start) return [];
@@ -12215,7 +12220,7 @@ function pdGetSeedCycles(){
   const now = today();
   const estimatedEnd = new Date(base.getTime()+(dur-1)*864e5);
   const pEnd = hasSavedEnd ? savedEnd : (isOpen && now.getTime()>=base.getTime() ? now : estimatedEnd);
-  return [{pStart:base,pEnd,estimatedEnd,ovulate:new Date(base.getTime()+Math.max(0,cycle-14)*864e5),fertileStart:new Date(base.getTime()+Math.max(0,cycle-14)*864e5-5*864e5),fertileEnd:new Date(base.getTime()+Math.max(0,cycle-14)*864e5+864e5),cycle,dur,sourceStart:pdSettings.start,completed:pdSettings.completed===true,isOpen}];
+  return [{pStart:base,pEnd,estimatedEnd,ovulate:new Date(base.getTime()+Math.max(0,cycle-14)*864e5),fertileStart:new Date(base.getTime()+Math.max(0,cycle-14)*864e5-5*864e5),fertileEnd:new Date(base.getTime()+Math.max(0,cycle-14)*864e5+864e5),cycle,dur,sourceStart:pdSettings.start,completed:pdSettings.completed===true,isOpen,isForecast:false}];
 }
 function pdExpandForecast(count=14){
   const seeds = pdGetSeedCycles();
@@ -12231,7 +12236,7 @@ function pdExpandForecast(count=14){
     const ovulate = new Date(pStart.getTime()+Math.max(0,cycle-14)*864e5);
     const fertileStart = new Date(ovulate.getTime()-5*864e5);
     const fertileEnd = new Date(ovulate.getTime()+864e5);
-    seeds.push({pStart,pEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:last.sourceStart});
+    seeds.push({pStart,pEnd,estimatedEnd:pEnd,ovulate,fertileStart,fertileEnd,cycle,dur,sourceStart:last.sourceStart,isOpen:false,isForecast:true});
   }
   return seeds;
 }
@@ -12239,19 +12244,37 @@ function pdGetCycles(count){
   return pdExpandForecast(count);
 }
 window.pdGetHomeBroadcastItem=function(){
-  if(pdSettings.start){
-    const current=today();
-    const nextCycle=pdGetCycles(12).find(cycle=>cycle?.pStart?.getTime()>current.getTime());
-    if(nextCycle){
-      const daysTo=Math.ceil((nextCycle.pStart.getTime()-current.getTime())/864e5);
-      if(daysTo>=1 && daysTo<=7){
-        return {
-          label:'月經預測',
-          days:daysTo,
-          message:`♡ 月經預測：預計還有 ${daysTo} 天，記得提前準備 ♡`
-        };
-      }
-    }
+  if(!pdSettings.start) return null;
+  const current=today();
+  const seeds=pdGetSeedCycles();
+  const latest=seeds[seeds.length-1];
+  if(!latest) return null;
+  const predictedStart=new Date(latest.pStart.getTime()+(Number(latest.cycle)||Number(pdSettings.cycle)||28)*864e5);
+  const daysTo=Math.round((predictedStart.getTime()-current.getTime())/864e5);
+  if(daysTo>=1 && daysTo<=7){
+    return {
+      kind:'period',
+      label:'月經預測',
+      days:daysTo,
+      message:`♡ 月經預測：預計還有 ${daysTo} 天，記得提前準備 ♡`
+    };
+  }
+  if(daysTo===0){
+    return {
+      kind:'period',
+      label:'月經預測',
+      days:0,
+      message:'♡ 月經預測：今天可能開始，如果還沒來也沒關係，記得留意身體狀況 ♡'
+    };
+  }
+  if(daysTo<0){
+    const delayedDays=Math.abs(daysTo);
+    return {
+      kind:'period',
+      label:'月經預測',
+      days:daysTo,
+      message:`♡ 月經預測：較預測日延後 ${delayedDays} 天，如果還沒來也沒關係，記得留意身體狀況 ♡`
+    };
   }
   return null;
 };
@@ -12284,7 +12307,17 @@ function pdRefresh(){
   let bannerEmoji='🌿',bannerTitle='安全期',bannerSub='';
   for(const c of cycles){
     const pStartMs=c.pStart.getTime(),pEndMs=c.pEnd.getTime(),tMs=t.getTime();
-    if(tMs>=pStartMs&&tMs<=pEndMs){const day=Math.floor((tMs-pStartMs)/864e5)+1;bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，月曆淡紅色是預估，結束時請按「設定月經結束日」確認`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;break;}
+    if(tMs>=pStartMs&&tMs<=pEndMs){
+      const day=Math.floor((tMs-pStartMs)/864e5)+1;
+      if(c.isForecast){
+        bannerEmoji='😮';
+        bannerTitle=day===1?'預計今天來':'可能延後';
+        bannerSub=day===1?'這是系統預測，實際開始後再按下方按鈕記錄':`比預測開始日晚 ${day-1} 天，實際開始後再按下方按鈕記錄`;
+      }else{
+        bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，月曆淡紅色是預估，結束時請按「設定月經結束日」確認`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;
+      }
+      break;
+    }
     if(tMs===c.ovulate.getTime()){bannerEmoji='🥚';bannerTitle='排卵日';bannerSub='今天是排卵日，易孕期！';break;}
     if(tMs>=c.fertileStart.getTime()&&tMs<=c.fertileEnd.getTime()){bannerEmoji='🌺';bannerTitle='易孕期';bannerSub=`距離排卵日還有 ${Math.ceil((c.ovulate.getTime()-tMs)/864e5)} 天`;break;}
     if(tMs<c.pStart.getTime()){const daysTo=Math.ceil((c.pStart.getTime()-tMs)/864e5);if(daysTo<=7){bannerEmoji='😮';bannerTitle='快來了';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}else{bannerEmoji='🌿';bannerTitle='安全期';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}break;}
@@ -12302,10 +12335,11 @@ function pdRefresh(){
     if(shown>=3) break;shown++;
     const daysTo=Math.ceil((c.pStart.getTime()-t.getTime())/864e5);
     const isNow=t.getTime()>=c.pStart.getTime()&&t.getTime()<=c.pEnd.getTime();
+    const statusText=c.isForecast?(daysTo===0?'預計今天':daysTo<0?'預測中':'還有 '+daysTo+' 天'):(isNow?'進行中':daysTo<=0?'今天':'還有 '+daysTo+' 天');
     upHTML+=`<div style="border-left:3px solid var(--pink);padding:10px 12px;margin-bottom:10px;border-radius:0 10px 10px 0;background:var(--pink-light)">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <span style="font-size:13px;font-weight:500;color:var(--rose)">🩸 ${fmt(c.pStart)} ～ ${c.isOpen?`預估 ${fmt(c.estimatedEnd||c.pEnd)}`:fmt(c.pEnd)}</span>
-        <span style="font-size:11px;background:${isNow?'var(--pink)':'var(--white)'};color:${isNow?'white':'var(--text-muted)'};padding:2px 8px;border-radius:20px;border:1px solid var(--card-border)">${isNow?'進行中':daysTo<=0?'今天':'還有 '+daysTo+' 天'}</span>
+        <span style="font-size:11px;background:${isNow&&!c.isForecast?'var(--pink)':'var(--white)'};color:${isNow&&!c.isForecast?'white':'var(--text-muted)'};padding:2px 8px;border-radius:20px;border:1px solid var(--card-border)">${statusText}</span>
       </div>
       <div style="font-size:12px;color:var(--text-muted)">🥚 排卵日 ${fmt(c.ovulate)} &nbsp;·&nbsp; 🌺 易孕期 ${fmt(c.fertileStart)}～${fmt(c.fertileEnd)}</div>
     </div>`;

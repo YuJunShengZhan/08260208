@@ -12699,7 +12699,7 @@ async function uploadMp3ToFirebase(file,name){
   }
 }
 async function resolveMusicSongSource(song){
-  if(/^https:\/\//i.test(song?.file||'')) return song.file;
+  if(String(song?.file||'').trim()) return song.file;
   if(song?.storage!==MUSIC_FIREBASE_STORAGE || !song.fileId) throw new Error('這首音樂沒有可用的檔案');
   const cached=musicSourceCache.get(song.fileId);
   if(cached) return await cached;

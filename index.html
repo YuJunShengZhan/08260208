@@ -264,7 +264,11 @@ animation:birthdayNightIn .7s ease both;
 .birthday-cake-spark{position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff,0 0 20px #ffd166;animation:birthdayCakeSpark 1.25s ease-in-out infinite}
 .birthday-cake-spark.s1{left:3%;top:42%;animation-delay:.1s}.birthday-cake-spark.s2{right:5%;top:27%;animation-delay:.55s}.birthday-cake-spark.s3{left:16%;top:10%;animation-delay:.9s}.birthday-cake-spark.s4{right:18%;top:55%;animation-delay:.3s}
 .birthday-fireworks-close{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));right:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:26px;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
-.birthday-fireworks-sound{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));left:14px;width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.42);color:#fff;font-size:20px;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
+.birthday-fireworks-sound{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));left:14px;display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid rgba(255,255,255,.48);border-radius:50%;background:rgba(28,20,34,.42);color:#fff;line-height:1;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 24px rgba(0,0,0,.2);backdrop-filter:blur(12px);transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.birthday-fireworks-sound img,.occasion-control.sound img{display:block;width:23px;height:23px;filter:brightness(0) invert(1) drop-shadow(0 1px 4px rgba(0,0,0,.28));pointer-events:none}
+.birthday-fireworks-sound[data-muted="true"],.occasion-control.sound[data-muted="true"]{border-color:rgba(255,255,255,.3);background:rgba(16,13,21,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.15);opacity:.82}
+.birthday-fireworks-sound:active,.occasion-control.sound:active{transform:scale(.92)}
+@media (hover:hover){.birthday-fireworks-sound:hover,.occasion-control.sound:hover{border-color:rgba(255,255,255,.72);background:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 10px 28px rgba(0,0,0,.26)}}
 @keyframes birthdayNightIn{from{opacity:0}to{opacity:1}}
 @keyframes birthdayWishIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes birthdayWishOut{to{opacity:0;transform:translateY(18px) scale(.96)}}
@@ -298,7 +302,7 @@ animation:birthdayNightIn .7s ease both;
 .occasion-anniversary-mark::before,.occasion-anniversary-mark::after{content:'';position:absolute;inset:5px 18px;border:1px solid rgba(255,211,110,.8);border-radius:50%;animation:occasionRing 2.2s ease-out infinite}
 .occasion-anniversary-mark::after{animation-delay:1.1s}
 .occasion-control{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.32);color:#fff;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
-.occasion-control.sound{left:14px;font-size:20px}.occasion-control.close{right:14px;font-size:26px}
+.occasion-control.sound{left:14px;display:grid;place-items:center;padding:0;border-color:rgba(255,255,255,.48);background:rgba(28,20,34,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 24px rgba(0,0,0,.2);backdrop-filter:blur(12px);transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease}.occasion-control.close{right:14px;font-size:26px}
 .occasion-exit-confirm{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(13,10,18,.62);backdrop-filter:blur(8px);animation:occasionFadeIn .25s ease both}
 .occasion-exit-panel{width:min(100%,390px);box-sizing:border-box;padding:22px 18px 18px;border:1px solid rgba(255,255,255,.32);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(255,235,241,.96));color:#5e3b45;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.4)}
 .occasion-exit-icon{font-size:36px;line-height:1}
@@ -5526,7 +5530,7 @@ function launchOccasionEffect(type,autoPlay=false){
   overlay.dataset.autoPlay=autoPlay?'true':'false';
   overlay.dataset.occasionType=type;
   overlay.dataset.shownKey=shownKey;
-  overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="occasion-control sound" onclick="toggleOccasionEffectSound()" aria-label="切換特效音效" title="切換音效">🔊</button><div class="occasion-content"><div class="occasion-symbol">${config.symbol}</div><div class="occasion-kicker">${config.kicker}</div><div class="occasion-title">${config.title}</div><div class="occasion-sub">${config.sub.replace(/\n/g,'<br>')}</div></div><button type="button" class="occasion-control close" onclick="requestOccasionEffectClose()" aria-label="關閉特效" title="關閉">×</button>`;
+  overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="occasion-control sound" onclick="toggleOccasionEffectSound()" aria-label="關閉特效音效" title="關閉音效"><img src="assets/volume-2.svg" alt=""></button><div class="occasion-content"><div class="occasion-symbol">${config.symbol}</div><div class="occasion-kicker">${config.kicker}</div><div class="occasion-title">${config.title}</div><div class="occasion-sub">${config.sub.replace(/\n/g,'<br>')}</div></div><button type="button" class="occasion-control close" onclick="requestOccasionEffectClose()" aria-label="關閉特效" title="關閉">×</button>`;
   document.body.appendChild(overlay);
 
   const canvas=overlay.querySelector('canvas');
@@ -5550,8 +5554,10 @@ function launchOccasionEffect(type,autoPlay=false){
   }catch(e){audioCtx=null;masterGain=null;soundEnabled=false;}
   const updateSoundButton=()=>{
     soundButton.hidden=!audioCtx;
-    soundButton.textContent=soundEnabled?'🔊':'🔇';
+    soundButton.innerHTML=`<img src="assets/${soundEnabled?'volume-2':'volume-off'}.svg" alt="">`;
+    soundButton.dataset.muted=String(!soundEnabled);
     soundButton.setAttribute('aria-label',soundEnabled?'關閉特效音效':'開啟特效音效');
+    soundButton.title=soundEnabled?'關閉音效':'開啟音效';
     overlay.dataset.sound=!soundEnabled?'off':(audioCtx?.state==='running'?'on':'waiting');
   };
   const tone=(frequency,duration=.25,volume=.05,typeName='sine',delay=0,endFrequency=frequency)=>{
@@ -5727,7 +5733,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   overlay.dataset.shownKey=shownKey;
   overlay.innerHTML=`
     <canvas aria-hidden="true"></canvas>
-    <button type="button" class="birthday-fireworks-sound" onclick="toggleYujunBirthdayFireworksSound()" aria-label="切換煙火音效" title="切換音效">🔊</button>
+    <button type="button" class="birthday-fireworks-sound" onclick="toggleYujunBirthdayFireworksSound()" aria-label="關閉煙火音效" title="關閉音效"><img src="assets/volume-2.svg" alt=""></button>
     <div class="birthday-fireworks-finale">聖展♡予君</div>
     <div class="birthday-fireworks-message"><div class="birthday-fireworks-bow" aria-hidden="true">🎀</div><div class="birthday-fireworks-kicker">8 / 26 · YUJUN'S DAY</div><b>予君，生日快樂</b><span>${escapeHtml(yearlyBirthdayCopy).replace(/\n/g,'<br>')}</span></div>
     <div class="birthday-fireworks-letter" aria-label="給予君的生日信">
@@ -5776,8 +5782,10 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const updateSoundButton=()=>{
     if(!soundButton) return;
     soundButton.hidden=!audioCtx;
-    soundButton.textContent=soundEnabled?'🔊':'🔇';
+    soundButton.innerHTML=`<img src="assets/${soundEnabled?'volume-2':'volume-off'}.svg" alt="">`;
+    soundButton.dataset.muted=String(!soundEnabled);
     soundButton.setAttribute('aria-label',soundEnabled?'關閉煙火音效':'開啟煙火音效');
+    soundButton.title=soundEnabled?'關閉音效':'開啟音效';
     overlay.dataset.sound=!soundEnabled?'off':(audioCtx?.state==='running'?'on':'waiting');
   };
   const playTone=(frequency,endFrequency,duration,volume=.05,type='sine',delay=0)=>{

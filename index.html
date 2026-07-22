@@ -4419,6 +4419,39 @@ const VALENTINE_DAY_NAMES={
 function getValentineDayName(month){
   return VALENTINE_DAY_NAMES[Number(month)]||'情人節';
 }
+function getQixiDate(year){
+  const formatter=new Intl.DateTimeFormat('zh-TW-u-ca-chinese',{month:'numeric',day:'numeric'});
+  const start=new Date(Number(year),6,15);
+  const end=new Date(Number(year),8,15);
+  for(let date=new Date(start);date<=end;date.setDate(date.getDate()+1)){
+    const parts=formatter.formatToParts(date);
+    const monthText=parts.find(part=>part.type==='month')?.value||'';
+    const dayText=parts.find(part=>part.type==='day')?.value||'';
+    const lunarMonth=Number(monthText.replace(/\D/g,''));
+    const lunarDay=Number(dayText.replace(/\D/g,''));
+    if(lunarMonth===7 && lunarDay===7 && !monthText.includes('閏')) return new Date(date);
+  }
+  return null;
+}
+function getValentineDaysForYear(year){
+  const dates=Object.entries(VALENTINE_DAY_NAMES).map(([month,name])=>({
+    date:new Date(Number(year),Number(month)-1,14),name
+  }));
+  dates.push({date:new Date(Number(year),4,20),name:'網路情人節'});
+  const qixi=getQixiDate(year);
+  if(qixi) dates.push({date:qixi,name:'七夕情人節'});
+  return dates.sort((a,b)=>a.date-b.date);
+}
+function getValentineOccasionForDate(date){
+  const target=new Date(date.getFullYear(),date.getMonth(),date.getDate()).getTime();
+  return getValentineDaysForYear(date.getFullYear()).find(item=>item.date.getTime()===target)||null;
+}
+function getNextValentineOccasion(date=today()){
+  const target=new Date(date.getFullYear(),date.getMonth(),date.getDate()).getTime();
+  return [date.getFullYear(),date.getFullYear()+1]
+    .flatMap(getValentineDaysForYear)
+    .find(item=>item.date.getTime()>target)||null;
+}
 function cdEl(id,n){
   document.getElementById(id).innerHTML=
     `${n}<span style="font-size:13px;font-weight:400;color:var(--text-muted);margin-left:2px">天</span>`;
@@ -4435,15 +4468,15 @@ function nextAnniv(){
 }
 function nextVday(){
   const t=today();
-  let m=t.getMonth(),y=t.getFullYear();
-  let candidate=new Date(y,m,14);
-  if(candidate<=t){m++;if(m>11){m=0;y++;}candidate=new Date(y,m,14);}
-  const days=Math.ceil((candidate-t)/864e5);
-  const month=candidate.getMonth()+1;
-  const name=getValentineDayName(month);
-  document.getElementById('vdLabel').textContent=`${month}/14 ${name}`;
+  const occasion=getNextValentineOccasion(t);
+  if(!occasion) return {label:'情人節',days:365};
+  const days=Math.ceil((occasion.date-t)/864e5);
+  const month=occasion.date.getMonth()+1;
+  const day=occasion.date.getDate();
+  const name=occasion.name;
+  document.getElementById('vdLabel').textContent=`${month}/${day} ${name}`;
   cdEl('vdDays',days);
-  return {label:`${month}/14 ${name}`,days};
+  return {label:`${month}/${day} ${name}`,days};
 }
 function localDateKey(){
   const d = new Date();
@@ -5339,7 +5372,7 @@ function checkSpecialDay(){
     return;
   }
 
-  if(d===14){
+  if(getValentineOccasionForDate(t)){
     launchValentineEffect(true);
   }
 }
@@ -5433,8 +5466,11 @@ function launchAnniversaryEffect(autoPlay=false){
 function launchOccasionEffect(type,autoPlay=false){
   const now=today();
   const anniversaryNumber=Math.max(1,now.getFullYear()-START.getFullYear());
-  const valentineMonth=now.getMonth()+1;
-  const valentineDayName=getValentineDayName(valentineMonth);
+  const valentineOccasion=getValentineOccasionForDate(now)||getNextValentineOccasion(now);
+  const valentineDate=valentineOccasion?.date||new Date(now.getFullYear(),now.getMonth(),14);
+  const valentineMonth=valentineDate.getMonth()+1;
+  const valentineDay=valentineDate.getDate();
+  const valentineDayName=valentineOccasion?.name||getValentineDayName(valentineMonth);
   const birthdayCopy=type==='birthday'?pickOccasionMessage('shengzhan-birthday',SHENGZHAN_BIRTHDAY_OCCASION_MESSAGES):'';
   const valentineCopy=type==='valentine'?pickOccasionMessage(`valentine-${valentineMonth}`,VALENTINE_OCCASION_MESSAGES):'';
   const configs={
@@ -5446,7 +5482,7 @@ function launchOccasionEffect(type,autoPlay=false){
       colors:['#ffd166','#ff6b8a','#64d8cb','#7aa7ff','#c59cff','#ffffff']
     },
     valentine:{
-      kicker:`${valentineMonth} / 14 · LOVE DAY`,
+      kicker:`${valentineMonth} / ${valentineDay} · LOVE DAY`,
       title:`${valentineDayName}快樂`,
       sub:`聖展♡予君\n${valentineCopy}`,
       symbol:'<span class="occasion-envelope"></span>',duration:12500,
@@ -12580,6 +12616,96 @@ const titleEl=document.getElementById('music-title');
 const titleWrap=document.getElementById('music-title-wrap');
 let customMusicSongs=[];
 let customMusicSyncStarted=false;
+const MUSIC_FIREBASE_STORAGE='firebase-rtdb-chunks-v1';
+const MUSIC_CHUNK_BYTES=192*1024;
+const musicSourceCache=new Map();
+let musicSourceLoadToken=0;
+
+function musicBytesToBase64(bytes){
+  let binary='';
+  const batchSize=0x8000;
+  for(let i=0;i<bytes.length;i+=batchSize){
+    binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+batchSize,bytes.length)));
+  }
+  return btoa(binary);
+}
+function musicBase64ToBytes(value){
+  const binary=atob(String(value||''));
+  const bytes=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i+=1) bytes[i]=binary.charCodeAt(i);
+  return bytes;
+}
+async function uploadMp3ToFirebase(file,name){
+  const {db,ref,push,set,remove}=window._fb;
+  const itemRef=push(ref(db,'musicLibrary/custom'));
+  const fileId=itemRef.key;
+  const fileRef=ref(db,`musicLibrary/files/${fileId}`);
+  const safeFileName=String(file.name||'music.mp3').replace(/[^\w.-]+/g,'-').slice(-100)||'music.mp3';
+  const bytes=new Uint8Array(await file.arrayBuffer());
+  const chunkCount=Math.ceil(bytes.length/MUSIC_CHUNK_BYTES);
+  const meta={
+    fileName:safeFileName,
+    mime:'audio/mpeg',
+    bytes:bytes.length,
+    chunkBytes:MUSIC_CHUNK_BYTES,
+    chunkCount,
+    createdAt:Date.now()
+  };
+  try{
+    await set(ref(db,`musicLibrary/files/${fileId}/meta`),{...meta,complete:false});
+    const concurrentWrites=4;
+    for(let start=0;start<chunkCount;start+=concurrentWrites){
+      const writes=[];
+      for(let index=start;index<Math.min(start+concurrentWrites,chunkCount);index+=1){
+        const chunk=bytes.subarray(index*MUSIC_CHUNK_BYTES,Math.min((index+1)*MUSIC_CHUNK_BYTES,bytes.length));
+        const chunkKey=String(index).padStart(4,'0');
+        writes.push(set(ref(db,`musicLibrary/files/${fileId}/chunks/${chunkKey}`),musicBytesToBase64(chunk)));
+      }
+      await Promise.all(writes);
+      const completed=Math.min(start+concurrentWrites,chunkCount);
+      setMusicAddStatus(`正在同步 MP3 ${Math.round(completed/chunkCount*100)}%，請不要關閉頁面...`);
+    }
+    await set(ref(db,`musicLibrary/files/${fileId}/meta`),{...meta,complete:true});
+    await set(itemRef,{
+      name,
+      storage:MUSIC_FIREBASE_STORAGE,
+      fileId,
+      chunkCount,
+      mime:'audio/mpeg',
+      source:'mp3',
+      bytes:bytes.length,
+      createdAt:Date.now()
+    });
+    return fileId;
+  }catch(err){
+    await Promise.allSettled([remove(itemRef),remove(fileRef)]);
+    throw err;
+  }
+}
+async function resolveMusicSongSource(song){
+  if(/^https:\/\//i.test(song?.file||'')) return song.file;
+  if(song?.storage!==MUSIC_FIREBASE_STORAGE || !song.fileId) throw new Error('這首音樂沒有可用的檔案');
+  const cached=musicSourceCache.get(song.fileId);
+  if(cached) return await cached;
+  if(!window._fb) throw new Error('同步服務尚未連線');
+  const loader=(async()=>{
+    const {db,ref,get}=window._fb;
+    const snap=await get(ref(db,`musicLibrary/files/${song.fileId}/chunks`));
+    const entries=Object.entries(snap.val()||{}).sort(([a],[b])=>a.localeCompare(b));
+    if(!entries.length || (song.chunkCount && entries.length!==song.chunkCount)) throw new Error('MP3 檔案尚未同步完整');
+    const parts=entries.map(([,value])=>musicBase64ToBytes(value));
+    return URL.createObjectURL(new Blob(parts,{type:song.mime||'audio/mpeg'}));
+  })();
+  musicSourceCache.set(song.fileId,loader);
+  try{
+    const objectUrl=await loader;
+    musicSourceCache.set(song.fileId,objectUrl);
+    return objectUrl;
+  }catch(err){
+    musicSourceCache.delete(song.fileId);
+    throw err;
+  }
+}
 
 function updateMusicTitle(name){
   titleEl.textContent=name;
@@ -12639,23 +12765,11 @@ async function saveMp3Music(){
     return;
   }
   if(file.size>30*1024*1024){setMusicAddStatus('單首 MP3 不可以超過 30 MB',true);return;}
-  if(!getCloudinarySettings()){setMusicAddStatus('音樂雲端尚未連線，請稍後再試',true);return;}
   if(!window._fb){setMusicAddStatus('同步服務尚未連線，請稍後再試',true);return;}
   submit.disabled=true;
-  setMusicAddStatus('正在上傳 MP3，請不要關閉頁面...');
+  setMusicAddStatus('正在準備 MP3，請不要關閉頁面...');
   try{
-    const {db,ref,push,set}=window._fb;
-    const safeFileName=String(file.name||'music.mp3').replace(/[^\w.-]+/g,'-').slice(-100)||'music.mp3';
-    const cloudinary=await uploadBlobToCloudinary(file,safeFileName,'music','video',true);
-    const itemRef=push(ref(db,'musicLibrary/custom'));
-    await set(itemRef,{
-      name,
-      file:cloudinary.secure_url||cloudinary.url,
-      publicId:cloudinary.public_id||'',
-      source:'mp3',
-      bytes:Number(file.size)||0,
-      createdAt:Date.now()
-    });
+    await uploadMp3ToFirebase(file,name);
     nameInput.value='';
     fileInput.value='';
     updateMusicFileLabel();
@@ -12668,12 +12782,18 @@ async function saveMp3Music(){
   }
 }
 async function deleteCustomMusic(key){
-  const name=customMusicSongs.find(song=>song.key===key)?.name||'這首歌';
+  const song=customMusicSongs.find(item=>item.key===key);
+  const name=song?.name||'這首歌';
   if(!key || !confirm(`要從音樂庫刪除「${name}」嗎？`)) return;
   if(!window._fb){alert('同步服務尚未連線，請稍後再試');return;}
   try{
-    const {db,ref,remove}=window._fb;
-    await remove(ref(db,`musicLibrary/custom/${key}`));
+    const {db,ref,update}=window._fb;
+    const changes={[`musicLibrary/custom/${key}`]:null};
+    if(song?.storage===MUSIC_FIREBASE_STORAGE && song.fileId) changes[`musicLibrary/files/${song.fileId}`]=null;
+    await update(ref(db),changes);
+    const cached=musicSourceCache.get(song?.fileId);
+    if(typeof cached==='string') URL.revokeObjectURL(cached);
+    if(song?.fileId) musicSourceCache.delete(song.fileId);
   }catch(err){
     console.error('刪除 MP3 音樂失敗',err);
     alert('刪除失敗，請檢查網路後再試一次');
@@ -12692,9 +12812,14 @@ function initCustomMusicSync(){
         name:String(value?.name||'未命名歌曲').slice(0,80),
         file:String(value?.file||''),
         publicId:String(value?.publicId||''),
+        storage:String(value?.storage||''),
+        fileId:String(value?.fileId||''),
+        chunkCount:Number(value?.chunkCount)||0,
+        mime:String(value?.mime||'audio/mpeg'),
+        bytes:Number(value?.bytes)||0,
         createdAt:Number(value?.createdAt)||0
       }))
-      .filter(song=>/^https:\/\//i.test(song.file))
+      .filter(song=>/^https:\/\//i.test(song.file) || (song.storage===MUSIC_FIREBASE_STORAGE && song.fileId && song.chunkCount>0))
       .sort((a,b)=>a.createdAt-b.createdAt);
     if(current?.custom){
       const nextIndex=getMusicPlaylist().findIndex(song=>song.custom && song.key===current.key);
@@ -12716,16 +12841,36 @@ function initCustomMusicSync(){
 function isCurrentMusicPlaying(){
   return !audio.paused;
 }
-function selectMusicSong(idx,autoplay=false){
+async function selectMusicSong(idx,autoplay=false){
   const playlist=getMusicPlaylist();
   if(!playlist.length) return;
   songIdx=(idx+playlist.length)%playlist.length;
   const song=playlist[songIdx];
-  updateMusicTitle(song.name);
-  audio.src=song.file;
-  if(autoplay) audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
-  else setUI(false);
+  const loadToken=++musicSourceLoadToken;
+  const isFirebaseMusic=song.storage===MUSIC_FIREBASE_STORAGE;
+  if(isFirebaseMusic){
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    updateMusicTitle(`${song.name}（載入中...）`);
+  }else{
+    updateMusicTitle(song.name);
+  }
+  setUI(false);
   renderMusicLibrary();
+  try{
+    const source=await resolveMusicSongSource(song);
+    if(loadToken!==musicSourceLoadToken) return;
+    audio.src=source;
+    updateMusicTitle(song.name);
+    if(autoplay) await audio.play();
+  }catch(err){
+    if(loadToken!==musicSourceLoadToken) return;
+    console.error('音樂載入失敗',err);
+    updateMusicTitle(song.name);
+    setUI(false);
+    alert(err?.message||'音樂載入失敗，請稍後再試');
+  }
 }
 function loadSong(idx){
   selectMusicSong(idx,false);
@@ -12766,6 +12911,7 @@ function togglePlay(){
   if(!song) return;
   if(audio.paused){
     if(typeof rgPauseForExternalPlay==='function') rgPauseForExternalPlay();
+    if(!audio.getAttribute('src')){selectMusicSong(songIdx,true);return;}
     audio.play().then(()=>setUI(true)).catch(()=>setUI(false));
   }else{
     audio.pause();

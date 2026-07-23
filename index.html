@@ -284,6 +284,7 @@ animation:birthdayNightIn .7s ease both;
 .birthday-fireworks-sound img,.occasion-control.sound img{display:block;width:23px;height:23px;filter:brightness(0) invert(1) drop-shadow(0 1px 4px rgba(0,0,0,.28));pointer-events:none}
 .birthday-fireworks-sound[data-muted="true"],.occasion-control.sound[data-muted="true"]{border-color:rgba(255,255,255,.3);background:rgba(16,13,21,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 16px rgba(0,0,0,.15);opacity:.82}
 .birthday-fireworks-sound:active,.occasion-control.sound:active{transform:scale(.92)}
+.birthday-fireworks[data-sound="waiting"] .birthday-fireworks-sound,.occasion-overlay[data-sound="waiting"] .occasion-control.sound{animation:occasionSoundWaiting 1.25s ease-in-out infinite}
 @media (hover:hover){.birthday-fireworks-sound:hover,.occasion-control.sound:hover{border-color:rgba(255,255,255,.72);background:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 10px 28px rgba(0,0,0,.26)}}
 @keyframes birthdayNightIn{from{opacity:0}to{opacity:1}}
 @keyframes birthdayWishIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
@@ -337,6 +338,7 @@ animation:birthdayNightIn .7s ease both;
 .occasion-lock-error{min-height:20px;margin-top:7px;color:var(--rose);font-size:12px;font-weight:700}.occasion-lock-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:5px}.occasion-lock-actions button{min-height:43px;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--rose);font:800 14px/1 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-lock-actions .confirm{border-color:var(--pink);background:var(--pink);color:#fff}
 [data-theme="dark"] .occasion-lock{background:rgba(8,5,7,.72)}[data-theme="dark"] .occasion-lock-panel{box-shadow:0 18px 55px rgba(0,0,0,.55)}
 @keyframes occasionFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes occasionSoundWaiting{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 0 0 rgba(255,216,120,.42),0 8px 24px rgba(0,0,0,.2)}50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 0 0 8px rgba(255,216,120,0),0 10px 28px rgba(0,0,0,.26)}}
 @keyframes occasionCakeBounce{0%,100%{transform:translateY(2px) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
 @keyframes occasionEnvelope{0%,100%{transform:translateY(3px)}50%{transform:translateY(-7px)}}
 @keyframes occasionEnvelopeFlap{0%,20%,100%{transform:rotateX(0)}45%,75%{transform:rotateX(150deg)}}
@@ -5566,7 +5568,7 @@ function launchOccasionEffect(type,autoPlay=false){
     if(AudioContextClass){
       audioCtx=new AudioContextClass();
       masterGain=audioCtx.createGain();
-      masterGain.gain.value=.38;
+      masterGain.gain.value=.66;
       masterGain.connect(audioCtx.destination);
     }
   }catch(e){audioCtx=null;masterGain=null;soundEnabled=false;}
@@ -5618,20 +5620,27 @@ function launchOccasionEffect(type,autoPlay=false){
   };
   const unlockSound=async()=>{
     if(!audioCtx || !soundEnabled) return;
-    try{if(audioCtx.state==='suspended') await audioCtx.resume();}catch(e){}
+    try{if(audioCtx.state!=='running' && audioCtx.state!=='closed') await audioCtx.resume();}catch(e){}
     updateSoundButton();
     if(audioCtx.state==='running') startThemeLoop();
   };
   overlay._toggleSound=async()=>{
     if(!audioCtx) return;
-    if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.38;await unlockSound();}
-    else if(audioCtx.state!=='running'){await unlockSound();}
-    else{soundEnabled=false;masterGain.gain.value=0;stopThemeLoop();}
+    if(soundEnabled && audioCtx.state==='running'){
+      soundEnabled=false;masterGain.gain.value=0;stopThemeLoop();
+    }else{
+      soundEnabled=true;masterGain.gain.value=.66;await unlockSound();
+    }
     updateSoundButton();
+  };
+  const unlockOnInteraction=async event=>{
+    if(event.target.closest('.occasion-control.sound')) return;
+    await unlockSound();
+    if(audioCtx?.state==='running') overlay.removeEventListener('pointerdown',unlockOnInteraction);
   };
   updateSoundButton();
   unlockSound();
-  overlay.addEventListener('pointerdown',unlockSound,{once:true});
+  overlay.addEventListener('pointerdown',unlockOnInteraction);
 
   const resize=()=>{
     dpr=Math.min(window.devicePixelRatio||1,2);
@@ -5713,7 +5722,7 @@ function launchOccasionEffect(type,autoPlay=false){
     intervals.push(setInterval(()=>makeBurst(undefined,undefined,true),760));
   }
   overlay._cleanup=()=>{
-    running=false;cancelAnimationFrame(frame);stopThemeLoop();timers.forEach(clearTimeout);intervals.forEach(clearInterval);window.removeEventListener('resize',resize);
+    running=false;cancelAnimationFrame(frame);stopThemeLoop();timers.forEach(clearTimeout);intervals.forEach(clearInterval);overlay.removeEventListener('pointerdown',unlockOnInteraction);window.removeEventListener('resize',resize);
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
@@ -5841,7 +5850,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   };
   const unlockSound=async()=>{
     if(!audioCtx || !soundEnabled) return;
-    try{if(audioCtx.state==='suspended') await audioCtx.resume();}catch(e){}
+    try{if(audioCtx.state!=='running' && audioCtx.state!=='closed') await audioCtx.resume();}catch(e){}
     updateSoundButton();
     if(audioCtx.state==='running') playCelebrationChime();
   };
@@ -5877,22 +5886,34 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       playTone(note*1.5,note*1.506,.82,.014,'sine',delay+.04);
     });
   };
-  const startLetterMusic=()=>{
-    if(letterMusicStarted) return;
+  const startLetterMusic=(restart=false)=>{
+    if(letterMusicStarted && !restart) return;
     letterMusicStarted=true;
+    clearInterval(letterMusicTimer);
     playLetterTheme();
     letterMusicTimer=setInterval(playLetterTheme,5120);
   };
   overlay._toggleSound=async()=>{
     if(!audioCtx) return;
-    if(!soundEnabled){soundEnabled=true;masterGain.gain.value=.82;await unlockSound();}
-    else if(audioCtx.state!=='running'){await unlockSound();}
-    else{soundEnabled=false;masterGain.gain.value=0;}
+    if(soundEnabled && audioCtx.state==='running'){
+      soundEnabled=false;masterGain.gain.value=0;
+    }else{
+      soundEnabled=true;masterGain.gain.value=.82;await unlockSound();
+      if(audioCtx.state==='running' && letterMusicStarted) startLetterMusic(true);
+    }
     updateSoundButton();
+  };
+  const unlockOnInteraction=async event=>{
+    if(event.target.closest('.birthday-fireworks-sound')) return;
+    await unlockSound();
+    if(audioCtx?.state==='running'){
+      if(letterMusicStarted) startLetterMusic(true);
+      overlay.removeEventListener('pointerdown',unlockOnInteraction);
+    }
   };
   updateSoundButton();
   unlockSound();
-  overlay.addEventListener('pointerdown',unlockSound,{once:true});
+  overlay.addEventListener('pointerdown',unlockOnInteraction);
   const resize=()=>{
     dpr=Math.min(window.devicePixelRatio||1,2);
     width=window.innerWidth;height=window.innerHeight;
@@ -5920,6 +5941,14 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       particles.push({x,y,px:x,py:y,vx:hx*scale,vy:-hy*scale,life:1,decay:.0065+Math.random()*.004,color:i%3===0?'#ffffff':'#ff6f9f',size:1.8+Math.random()*1.8});
     }
   };
+  const addGoldenRain=(count=140)=>{
+    const rainColors=['#ffffff','#fff1a8','#ffd166','#ff9fbd','#78ddff'];
+    for(let i=0;i<count;i+=1){
+      const x=Math.random()*width;
+      const y=-20-Math.random()*height*.7;
+      particles.push({x,y,px:x,py:y,vx:(Math.random()-.5)*1.25,vy:1.2+Math.random()*3.1,life:1,decay:.0024+Math.random()*.0032,color:rainColors[i%rainColors.length],size:.8+Math.random()*2.2});
+    }
+  };
   const explodeGrandHeart=(x,y)=>{
     playMegaExplosionSound();
     const baseScale=Math.max(.2,Math.min(.48,Math.min(width*.42,height*.34)/760));
@@ -5938,6 +5967,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       const speed=1.2+Math.random()*5.8;
       particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-.8,life:1,decay:.004+Math.random()*.004,color:i%2?'#ffd166':'#ffffff',size:1+Math.random()*2});
     }
+    addGoldenRain(120);
   };
   const explodeMega=(x,y)=>{
     playMegaExplosionSound();
@@ -5956,6 +5986,9 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed*.75,vy:Math.sin(angle)*speed-1.2,life:1,decay:.0038+Math.random()*.004,color:i%3===0?'#ffffff':'#ffd166',size:1+Math.random()*2.2});
     }
     explodeHeart(x,y);
+    explodeHeart(width*.23,y+height*.08);
+    explodeHeart(width*.77,y+height*.08);
+    addGoldenRain(190);
   };
   const launch=(finalKind='')=>{
     const special=finalKind==='title'||finalKind==='mega'||finalKind==='heart';
@@ -5967,6 +6000,20 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     const color=finalKind==='title'?'#fff6c7':(finalKind==='mega'?'#ffd166':(finalKind==='heart'?'#ff7ea6':colors[Math.floor(Math.random()*colors.length)]));
     const travelFrames=finalKind==='title'?62:(finalKind==='mega'?70:(finalKind==='heart'?66:68));
     rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color,finalKind,grandFinal:special});
+  };
+  const launchFan=(count=7)=>{
+    const fanColors=['#ffd166','#ff8fb1','#78ddff','#ffffff','#b9ffdb'];
+    for(let i=0;i<count;i+=1){
+      timers.push(setTimeout(()=>{
+        if(!regularLaunches) return;
+        playLaunchSound();
+        const startX=width*.5;
+        const targetX=width*(.1+.8*(i/Math.max(1,count-1)));
+        const targetY=height*(.16+Math.abs(i-(count-1)/2)*.035);
+        const travelFrames=62+Math.abs(i-(count-1)/2)*2;
+        rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color:fanColors[i%fanColors.length],finalKind:'',grandFinal:true});
+      },i*82));
+    }
   };
   overlay._openLetter=async()=>{
     if(letterTriggered || !finalCake?.classList.contains('show')) return;
@@ -6001,6 +6048,8 @@ function launchYujunBirthdayFireworks(autoPlay=false){
           playTone(659,784,.38,.07,'sine',.13);
           playTone(784,1047,.48,.08,'sine',.27);
           playTone(1047,1319,.62,.075,'triangle',.42);
+          timers.push(setTimeout(()=>explodeHeart(width*.2,height*.28),420));
+          timers.push(setTimeout(()=>explodeHeart(width*.8,height*.28),620));
           timers.push(setTimeout(()=>launch('mega'),2200));
         }
         if(rocket.finalKind==='mega' && !megaShown){
@@ -6010,7 +6059,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
             overlay.dataset.stage='cake';
             finaleMessage?.classList.add('fade');
             finalCake?.classList.add('show');
-            for(let i=0;i<4;i+=1) timers.push(setTimeout(()=>explode(width*(.22+i*.19),height*.76,colors[(i+1)%colors.length],false),i*180));
+            for(let i=0;i<6;i+=1) timers.push(setTimeout(()=>explode(width*(.12+i*.152),height*(.68+(i%2)*.1),colors[(i+1)%colors.length],false),i*145));
           },850));
         }
         if(rocket.finalKind==='heart' && !letterShown){
@@ -6035,12 +6084,14 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   };
   resize();
   window.addEventListener('resize',resize);
-  for(let i=0;i<16;i+=1) timers.push(setTimeout(()=>launch(),120+i*145));
+  for(let i=0;i<24;i+=1) timers.push(setTimeout(()=>launch(),100+i*112));
+  timers.push(setTimeout(()=>launchFan(7),2600));
+  timers.push(setTimeout(()=>launchFan(9),6100));
   const launchTimer=setInterval(()=>{
     launch();
     if(Math.random()>.24) timers.push(setTimeout(()=>launch(),115));
     if(Math.random()>.68) timers.push(setTimeout(()=>launch(),235));
-  },480);
+  },390);
   timers.push(setTimeout(()=>overlay.classList.add('finale-mode'),9300));
   const finaleTimer=setTimeout(()=>{
     regularLaunches=false;
@@ -6048,7 +6099,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     launch('title');
   },10000);
   overlay._cleanup=()=>{
-    running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearInterval(letterMusicTimer);clearTimeout(finaleTimer);timers.forEach(clearTimeout);window.removeEventListener('resize',resize);
+    running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearInterval(letterMusicTimer);clearTimeout(finaleTimer);timers.forEach(clearTimeout);overlay.removeEventListener('pointerdown',unlockOnInteraction);window.removeEventListener('resize',resize);
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);

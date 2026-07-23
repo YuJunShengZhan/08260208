@@ -380,25 +380,42 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-anniversary-mark::after{animation-delay:1.1s}
 .occasion-control{position:absolute;z-index:3;top:max(14px,env(safe-area-inset-top));width:44px;height:44px;border:1px solid rgba(255,255,255,.42);border-radius:50%;background:rgba(0,0,0,.32);color:#fff;line-height:1;cursor:pointer;backdrop-filter:blur(8px)}
 .occasion-control.sound{left:14px;display:grid;place-items:center;padding:0;border-color:rgba(255,255,255,.48);background:rgba(28,20,34,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 24px rgba(0,0,0,.2);backdrop-filter:blur(12px);transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease}.occasion-control.close{right:14px;font-size:26px}
-.birthday-video-letter-layer{position:absolute;inset:0;z-index:24;display:grid;place-items:center;padding:max(64px,calc(env(safe-area-inset-top) + 54px)) 16px max(18px,env(safe-area-inset-bottom));box-sizing:border-box;background:rgba(18,13,22,.62);backdrop-filter:blur(4px);animation:birthdayVideoLayerIn .45s ease both}
-.birthday-video-envelope-scene{position:relative;width:min(88vw,420px);height:min(78dvh,690px);min-height:440px;filter:drop-shadow(0 28px 42px rgba(0,0,0,.5));animation:birthdayVideoEnvelopeIn .75s cubic-bezier(.16,1,.3,1) both}
-.birthday-video-paper{position:absolute;z-index:2;left:6%;right:6%;top:0;bottom:74px;display:flex;flex-direction:column;box-sizing:border-box;padding:17px 14px 28px;border:1px solid rgba(219,169,106,.7);border-radius:14px 14px 8px 8px;background:linear-gradient(160deg,#fffdf7,#fff4e8);color:#9f3f5a;box-shadow:inset 0 0 28px rgba(232,99,122,.06),0 12px 32px rgba(0,0,0,.2);overflow:hidden}
-.birthday-video-paper::before{content:'';position:absolute;inset:7px;border:1px dashed rgba(207,150,82,.42);border-radius:9px;pointer-events:none}
+.birthday-video-letter-layer{position:absolute;inset:0;z-index:24;display:grid;place-items:center;padding:max(64px,calc(env(safe-area-inset-top) + 54px)) 16px max(18px,env(safe-area-inset-bottom));box-sizing:border-box;background:rgba(18,13,22,.72);animation:birthdayVideoLayerIn .45s ease both}
+.birthday-video-envelope-scene{position:relative;width:min(88vw,420px);height:min(78dvh,690px);min-height:440px;animation:birthdayVideoEnvelopeIn .75s cubic-bezier(.16,1,.3,1) both}
+.birthday-video-paper{position:absolute;z-index:3;left:6%;right:6%;top:0;bottom:62px;display:flex;flex-direction:column;box-sizing:border-box;padding:19px 14px 24px;border:1px solid rgba(217,164,94,.72);border-radius:16px 16px 10px 10px;background:linear-gradient(160deg,#fffefa,#fff5e9);color:#9f3f5a;box-shadow:inset 0 0 0 5px rgba(255,255,255,.48),inset 0 0 28px rgba(232,99,122,.07),0 14px 36px rgba(0,0,0,.3);overflow:hidden}
+.birthday-video-paper::before{content:'';position:absolute;inset:8px;border:1px dashed rgba(207,150,82,.45);border-radius:9px;pointer-events:none}
+.birthday-video-paper::after{content:'SPECIAL DELIVERY';position:absolute;z-index:3;left:19px;top:13px;color:rgba(193,74,100,.58);font-size:7px;font-weight:900;letter-spacing:0}
 .birthday-video-kicker{position:relative;z-index:2;color:#d39c3e;font-size:9px;font-weight:900;text-align:center}
 .birthday-video-title{position:relative;z-index:2;margin:3px 0 10px;color:#c94b64;font-family:'Noto Serif TC',serif;font-size:clamp(18px,5vw,24px);font-weight:800;line-height:1.35;text-align:center}
-.birthday-video-frame{position:relative;z-index:2;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(201,75,100,.24);border-radius:10px;background:#171118;box-shadow:0 9px 24px rgba(69,31,49,.24)}
+.birthday-video-stamp{position:absolute;z-index:4;right:17px;top:12px;width:39px;height:39px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid rgba(201,75,100,.48);border-radius:50%;color:#c94b64;font-family:'Noto Sans TC',sans-serif;line-height:1;transform:rotate(8deg)}
+.birthday-video-stamp b{font-size:10px}.birthday-video-stamp span{margin-top:3px;font-size:5px;font-weight:900}
+.birthday-video-postmark{position:absolute;z-index:3;right:51px;top:20px;width:31px;display:grid;gap:3px;transform:rotate(8deg)}
+.birthday-video-postmark i{height:1px;background:rgba(201,75,100,.36)}
+.birthday-video-frame{position:relative;z-index:2;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid rgba(201,75,100,.3);border-radius:11px;background:#171118;box-shadow:0 9px 24px rgba(69,31,49,.23),0 0 0 4px rgba(255,255,255,.62)}
 .birthday-video-frame video{display:block;width:100%;height:100%;object-fit:contain;background:#171118}
 .birthday-video-progress{position:absolute;z-index:3;left:10px;right:10px;bottom:9px;height:3px;border-radius:999px;background:rgba(255,255,255,.28);overflow:hidden}
 .birthday-video-progress i{display:block;width:var(--video-progress,0%);height:100%;border-radius:inherit;background:linear-gradient(90deg,#ffd166,#ff7e9c);transition:width .16s linear}
 .birthday-video-play{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);min-width:142px;padding:12px 16px;border:1px solid rgba(255,255,255,.62);border-radius:999px;background:rgba(201,75,100,.9);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.35)}
 .birthday-video-play[hidden]{display:none}
-.birthday-video-envelope-back{position:absolute;z-index:1;left:0;right:0;bottom:0;height:132px;border:1px solid rgba(255,219,173,.62);border-radius:14px;background:#a93f64}
-.birthday-video-envelope-front{position:absolute;z-index:4;left:0;right:0;bottom:0;height:118px;border-radius:0 0 14px 14px;background:linear-gradient(145deg,#d85b7d,#c4496c);clip-path:polygon(0 0,50% 57%,100% 0,100% 100%,0 100%);box-shadow:inset 0 -20px 30px rgba(90,22,48,.15)}
-.birthday-video-envelope-fold{position:absolute;z-index:3;left:0;right:0;bottom:58px;height:76px;background:#ed91aa;clip-path:polygon(0 0,100% 0,50% 100%)}
-.birthday-video-envelope-seal{position:absolute;z-index:5;left:50%;bottom:38px;width:42px;height:42px;display:grid;place-items:center;border:2px solid rgba(255,255,255,.72);border-radius:50%;background:#b63e61;color:#fff;font-size:22px;transform:translateX(-50%);box-shadow:0 5px 14px rgba(70,17,38,.25)}
+.birthday-video-envelope-back{position:absolute;z-index:1;left:0;right:0;bottom:0;height:116px;border:1px solid rgba(221,170,101,.72);border-radius:17px;background:repeating-linear-gradient(135deg,#f7b2c3 0 12px,#ffe8ee 12px 24px);box-shadow:0 20px 34px rgba(0,0,0,.3)}
+.birthday-video-envelope-fold{position:absolute;z-index:2;left:1px;right:1px;bottom:50px;height:88px;background:linear-gradient(160deg,#f7c0ce,#e97d9b);clip-path:polygon(0 100%,50% 0,100% 100%);filter:drop-shadow(0 -2px 0 rgba(255,231,190,.72))}
+.birthday-video-envelope-front{position:absolute;z-index:5;left:0;right:0;bottom:0;height:92px;overflow:hidden;border:1px solid rgba(221,170,101,.76);border-radius:0 0 17px 17px;background:linear-gradient(180deg,#fff1f4,#f5cad5);box-shadow:inset 0 -13px 20px rgba(190,74,106,.08)}
+.birthday-video-envelope-front::before,.birthday-video-envelope-front::after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,#f6b3c4,#dd6c8c)}
+.birthday-video-envelope-front::before{clip-path:polygon(0 0,54% 57%,0 100%)}
+.birthday-video-envelope-front::after{clip-path:polygon(100% 0,46% 57%,100% 100%)}
+.birthday-video-envelope-label{position:absolute;z-index:6;left:50%;bottom:14px;min-width:100px;padding:5px 12px;border:1px solid rgba(208,153,87,.52);border-radius:999px;background:rgba(255,250,243,.9);color:#bd4a69;font-size:8px;font-weight:900;text-align:center;transform:translateX(-50%);box-shadow:0 3px 10px rgba(96,36,55,.1)}
+.birthday-video-envelope-seal{position:absolute;z-index:7;left:50%;bottom:49px;width:38px;height:38px;display:grid;place-items:center;border:2px solid rgba(255,246,221,.9);border-radius:50%;background:linear-gradient(145deg,#cf4c70,#a92f54);color:#fff;font-size:20px;transform:translateX(-50%);box-shadow:0 5px 14px rgba(70,17,38,.3),inset 0 0 0 3px rgba(255,255,255,.12)}
+.birthday-video-deco{position:absolute;z-index:8;width:30px;height:30px;display:grid;place-items:center;background:none;color:var(--deco,#ffd166);font-family:Georgia,'Times New Roman',serif;font-size:29px;font-style:normal;font-weight:700;line-height:1;opacity:.96;pointer-events:none;filter:drop-shadow(0 2px 7px rgba(0,0,0,.34)) drop-shadow(0 0 8px currentColor);animation:birthdayVideoDeco 1.8s ease-in-out infinite alternate}
+.birthday-video-deco::before{content:var(--deco-symbol,'✦')}
+.birthday-video-deco.d1{--deco-symbol:'✦';--deco:#ffd166;left:-5px;top:13%;transform:rotate(-16deg)}
+.birthday-video-deco.d2{--deco-symbol:'♥';--deco:#ff83a5;right:-4px;top:16%;transform:rotate(9deg);animation-delay:.35s}
+.birthday-video-deco.d3{--deco-symbol:'✧';--deco:#8edaf2;left:-7px;top:42%;font-size:25px;animation-delay:.7s}
+.birthday-video-deco.d4{--deco-symbol:'♡';--deco:#ff91ad;right:-7px;top:46%;font-size:26px;animation-delay:1.05s}
+.birthday-video-deco.d5{--deco-symbol:'✦';--deco:#ffe08a;left:6px;bottom:7px;width:20px;height:20px;font-size:19px;animation-delay:1.4s}
+.birthday-video-deco.d6{--deco-symbol:'♥';--deco:#ff9ab5;right:7px;bottom:8px;width:20px;height:20px;font-size:18px;animation-delay:1.65s}
 .birthday-video-letter-layer.finished{animation:birthdayVideoLayerOut .55s ease forwards}
 .birthday-video-letter-layer.finished .birthday-video-envelope-scene{animation:birthdayVideoEnvelopeOut .55s ease forwards}
-@media(max-height:620px){.birthday-video-letter-layer{padding:10px 60px}.birthday-video-envelope-scene{width:min(62vw,470px);height:calc(100dvh - 20px);min-height:0}.birthday-video-paper{left:5%;right:5%;bottom:52px;padding:10px 10px 18px}.birthday-video-title{margin:1px 0 5px;font-size:15px}.birthday-video-envelope-back{height:92px}.birthday-video-envelope-front{height:80px}.birthday-video-envelope-fold{bottom:39px;height:55px}.birthday-video-envelope-seal{bottom:23px;width:34px;height:34px;font-size:18px}}
+@media(max-height:620px){.birthday-video-letter-layer{padding:10px 60px}.birthday-video-envelope-scene{width:min(62vw,470px);height:calc(100dvh - 20px);min-height:0}.birthday-video-paper{left:5%;right:5%;bottom:48px;padding:10px 10px 16px}.birthday-video-paper::after{top:8px}.birthday-video-stamp{right:12px;top:7px;width:31px;height:31px}.birthday-video-postmark{right:40px;top:13px}.birthday-video-title{margin:1px 0 5px;font-size:15px}.birthday-video-envelope-back{height:82px}.birthday-video-envelope-front{height:68px}.birthday-video-envelope-fold{bottom:34px;height:54px}.birthday-video-envelope-seal{bottom:34px;width:30px;height:30px;font-size:16px}.birthday-video-envelope-label{bottom:7px;padding:3px 10px}.birthday-video-deco.d5,.birthday-video-deco.d6{display:none}}
 .occasion-exit-confirm{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(13,10,18,.62);backdrop-filter:blur(8px);animation:occasionFadeIn .25s ease both}
 .occasion-exit-panel{width:min(100%,390px);box-sizing:border-box;padding:22px 18px 18px;border:1px solid rgba(255,255,255,.32);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(255,235,241,.96));color:#5e3b45;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.4)}
 .occasion-exit-icon{font-size:36px;line-height:1}
@@ -419,6 +436,7 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 @keyframes birthdayVideoEnvelopeIn{from{opacity:0;transform:translateY(44px) scale(.88)}to{opacity:1;transform:none}}
 @keyframes birthdayVideoLayerOut{to{opacity:0}}
 @keyframes birthdayVideoEnvelopeOut{to{transform:translateY(54px) scale(.9)}}
+@keyframes birthdayVideoDeco{from{opacity:.58;margin-top:4px}to{opacity:1;margin-top:-3px}}
 @keyframes occasionSoundWaiting{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 0 0 rgba(255,216,120,.42),0 8px 24px rgba(0,0,0,.2)}50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 0 0 8px rgba(255,216,120,0),0 10px 28px rgba(0,0,0,.26)}}
 @keyframes occasionCakeBounce{0%,100%{transform:translateY(2px) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
 @keyframes occasionEnvelope{0%,100%{transform:translateY(3px)}50%{transform:translateY(-7px)}}
@@ -5948,7 +5966,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const envelopeCaption=overlay.querySelector('.birthday-envelope-caption');
   const letterMessage=overlay.querySelector('.birthday-fireworks-letter');
   const finalCake=overlay.querySelector('.birthday-final-cake');
-  const colors=['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff'];
+  const colors=['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff','#f7b5ff','#82ffe0'];
   let width=0,height=0,dpr=1,frame=0,lastTime=performance.now(),frameAverage=16.67,lastPerformanceTune=performance.now();
   let rockets=[],particles=[],stars=[],running=true,regularLaunches=true,finaleShown=false,megaShown=false,letterTriggered=false,letterShown=false;
   let adaptiveParticleCap=effectProfile.maxParticles;
@@ -5959,7 +5977,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     if(AudioContextClass){
       audioCtx=new AudioContextClass();
       masterGain=audioCtx.createGain();
-      masterGain.gain.value=.82;
+      masterGain.gain.value=.96;
       masterGain.connect(audioCtx.destination);
       noiseBuffer=audioCtx.createBuffer(1,Math.floor(audioCtx.sampleRate*.2),audioCtx.sampleRate);
       const noise=noiseBuffer.getChannelData(0);
@@ -6002,24 +6020,24 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     updateSoundButton();
     if(audioCtx.state==='running') playCelebrationChime();
   };
-  const playLaunchSound=()=>playTone(190+Math.random()*80,620+Math.random()*170,.48,.03,'sine');
+  const playLaunchSound=()=>playTone(190+Math.random()*80,620+Math.random()*170,.5,.042,'sine');
   const playExplosionSound=()=>{
     if(!soundEnabled || !audioCtx || audioCtx.state!=='running' || !masterGain) return;
-    playTone(85,38,.34,.09,'sine');
+    playTone(85,38,.38,.125,'sine');
     if(noiseBuffer){
       const source=audioCtx.createBufferSource();
       const filter=audioCtx.createBiquadFilter();
       const gain=audioCtx.createGain();
       source.buffer=noiseBuffer;filter.type='lowpass';filter.frequency.value=1100+Math.random()*900;
-      gain.gain.setValueAtTime(.11,audioCtx.currentTime);
+      gain.gain.setValueAtTime(.16,audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.2);
       source.connect(filter);filter.connect(gain);gain.connect(masterGain);source.start();
     }
   };
   const playMegaExplosionSound=()=>{
     playExplosionSound();
-    playTone(72,28,.75,.17,'sine',0);
-    playTone(144,44,.62,.105,'triangle',.05);
+    playTone(72,28,.82,.22,'sine',0);
+    playTone(144,44,.68,.14,'triangle',.05);
     timers.push(setTimeout(playExplosionSound,120));
     timers.push(setTimeout(playExplosionSound,260));
   };
@@ -6060,8 +6078,16 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     layer.setAttribute('aria-label','給予君的生日影片信');
     layer.innerHTML=`
       <div class="birthday-video-envelope-scene">
+        <i class="birthday-video-deco d1" aria-hidden="true"></i>
+        <i class="birthday-video-deco d2" aria-hidden="true"></i>
+        <i class="birthday-video-deco d3" aria-hidden="true"></i>
+        <i class="birthday-video-deco d4" aria-hidden="true"></i>
+        <i class="birthday-video-deco d5" aria-hidden="true"></i>
+        <i class="birthday-video-deco d6" aria-hidden="true"></i>
         <div class="birthday-video-envelope-back"></div>
         <div class="birthday-video-paper">
+          <div class="birthday-video-stamp"><b>8·26</b><span>LOVE MAIL</span></div>
+          <div class="birthday-video-postmark" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="birthday-video-kicker">ONE MORE THING FOR YUJUN</div>
           <div class="birthday-video-title">還有一段回憶想讓妳看見</div>
           <div class="birthday-video-frame">
@@ -6072,6 +6098,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
         </div>
         <div class="birthday-video-envelope-fold"></div>
         <div class="birthday-video-envelope-front"></div>
+        <div class="birthday-video-envelope-label">FOR YUJUN · 8/26</div>
         <div class="birthday-video-envelope-seal" aria-hidden="true">♡</div>
       </div>`;
     overlay.appendChild(layer);
@@ -6119,7 +6146,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     if(soundEnabled && audioCtx.state==='running'){
       soundEnabled=false;masterGain.gain.value=0;
     }else{
-      soundEnabled=true;masterGain.gain.value=.82;await unlockSound();
+      soundEnabled=true;masterGain.gain.value=.96;await unlockSound();
       if(audioCtx.state==='running' && letterMusicStarted) startLetterMusic(true);
     }
     updateSoundButton();
@@ -6149,13 +6176,72 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     const overflow=particles.length-adaptiveParticleCap;
     if(overflow>0) particles.splice(0,overflow);
   };
+  const partnerColor=color=>{
+    const pairs={
+      '#ff5d8f':'#ffd166','#ffd166':'#ffffff','#60d6ff':'#f7b5ff',
+      '#8cff98':'#60d6ff','#c99cff':'#ff8fb1','#ff8c42':'#fff0a6',
+      '#ffffff':'#82ffe0','#f7b5ff':'#ffd166','#82ffe0':'#ffffff'
+    };
+    return pairs[color]||'#ffffff';
+  };
   const explode=(x,y,color,grand=false)=>{
     playExplosionSound();
     const count=scaledParticleCount((grand?105:64)+Math.floor(Math.random()*(grand?42:38)),grand?42:28);
     for(let i=0;i<count;i+=1){
       const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.12;
       const speed=(grand?2.2:1.6)+Math.random()*(grand?5.4:4.4);
-      particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:(grand?.007:.009)+Math.random()*.011,color,size:(grand?1.5:1.2)+Math.random()*2.1});
+      particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:(grand?.007:.009)+Math.random()*.011,color:i%8===0?partnerColor(color):color,size:(grand?1.5:1.2)+Math.random()*2.1,twinkle:i%7===0});
+    }
+    enforceParticleBudget();
+  };
+  const explodeDoubleBloom=(x,y,color)=>{
+    playExplosionSound();
+    const outer=partnerColor(color);
+    [2.7,5.35].forEach((baseSpeed,ring)=>{
+      const count=scaledParticleCount(ring?92:62,ring?48:34);
+      for(let i=0;i<count;i+=1){
+        const angle=Math.PI*2*i/count+(ring?Math.PI/count:0);
+        const speed=baseSpeed+Math.random()*(ring?1.45:.9);
+        particles.push({
+          x,y,px:x,py:y,
+          vx:Math.cos(angle)*speed,
+          vy:Math.sin(angle)*speed,
+          life:1,
+          decay:(ring?.0065:.008)+Math.random()*.0045,
+          color:ring?(i%6===0?'#ffffff':outer):color,
+          size:1.15+ring*.45+Math.random()*1.45,
+          twinkle:i%6===0
+        });
+      }
+    });
+    enforceParticleBudget();
+  };
+  const explodeGoldenWillow=(x,y)=>{
+    playExplosionSound();
+    const willowColors=['#fff8c7','#ffd166','#ffb45d','#ffffff'];
+    const count=scaledParticleCount(112,58);
+    for(let i=0;i<count;i+=1){
+      const angle=Math.PI*2*i/count+(Math.random()-.5)*.08;
+      const speed=1.7+Math.random()*5.3;
+      particles.push({
+        x,y,px:x,py:y,
+        vx:Math.cos(angle)*speed*.82,
+        vy:Math.sin(angle)*speed-.35,
+        life:1,
+        decay:.0038+Math.random()*.0032,
+        color:willowColors[i%willowColors.length],
+        size:1.25+Math.random()*2,
+        gravity:.075,
+        drag:.989,
+        dragY:.997,
+        twinkle:i%5===0
+      });
+    }
+    const crownCount=scaledParticleCount(34,22);
+    for(let i=0;i<crownCount;i+=1){
+      const angle=Math.random()*Math.PI*2;
+      const speed=.8+Math.random()*2.5;
+      particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.008+Math.random()*.005,color:i%3?'#ffd166':'#ffffff',size:1+Math.random()*1.6,twinkle:true});
     }
     enforceParticleBudget();
   };
@@ -6166,7 +6252,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       const hx=16*Math.pow(Math.sin(t),3);
       const hy=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
       const scale=.28+Math.random()*.035;
-      particles.push({x,y,px:x,py:y,vx:hx*scale,vy:-hy*scale,life:1,decay:.0065+Math.random()*.004,color:i%3===0?'#ffffff':'#ff6f9f',size:1.8+Math.random()*1.8});
+      particles.push({x,y,px:x,py:y,vx:hx*scale,vy:-hy*scale,life:1,decay:.0065+Math.random()*.004,color:i%3===0?'#ffffff':'#ff6f9f',size:1.8+Math.random()*1.8,twinkle:i%7===0});
     }
     enforceParticleBudget();
   };
@@ -6176,7 +6262,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     for(let i=0;i<count;i+=1){
       const x=Math.random()*width;
       const y=-20-Math.random()*height*.7;
-      particles.push({x,y,px:x,py:y,vx:(Math.random()-.5)*1.25,vy:1.2+Math.random()*3.1,life:1,decay:.0024+Math.random()*.0032,color:rainColors[i%rainColors.length],size:.8+Math.random()*2.2});
+      particles.push({x,y,px:x,py:y,vx:(Math.random()-.5)*1.25,vy:1.2+Math.random()*3.1,life:1,decay:.0024+Math.random()*.0032,color:rainColors[i%rainColors.length],size:.8+Math.random()*2.2,twinkle:i%8===0});
     }
     enforceParticleBudget();
   };
@@ -6229,12 +6315,14 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     const special=finalKind==='title'||finalKind==='mega'||finalKind==='heart';
     if(!regularLaunches && !special) return;
     playLaunchSound();
+    const burstRoll=Math.random();
+    const burstStyle=special?'':(burstRoll<.27?'willow':(burstRoll<.58?'double':'peony'));
     const startX=special?width*.5:width*(.06+Math.random()*.88);
     const targetX=special?width*.5:width*(.08+Math.random()*.84);
     const targetY=finalKind==='title'?Math.max(86,height*.105):(finalKind==='mega'?height*.39:(finalKind==='heart'?height*.32:height*(.08+Math.random()*.46)));
     const color=finalKind==='title'?'#fff6c7':(finalKind==='mega'?'#ffd166':(finalKind==='heart'?'#ff7ea6':colors[Math.floor(Math.random()*colors.length)]));
     const travelFrames=finalKind==='title'?62:(finalKind==='mega'?70:(finalKind==='heart'?66:68));
-    rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color,finalKind,grandFinal:special});
+    rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color,finalKind,grandFinal:special,burstStyle});
   };
   const launchFan=(count=7)=>{
     count=Math.max(5,Math.round(count*(.72+effectProfile.particleScale*.28)));
@@ -6247,7 +6335,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
         const targetX=width*(.1+.8*(i/Math.max(1,count-1)));
         const targetY=height*(.16+Math.abs(i-(count-1)/2)*.035);
         const travelFrames=62+Math.abs(i-(count-1)/2)*2;
-        rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color:fanColors[i%fanColors.length],finalKind:'',grandFinal:true});
+        rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color:fanColors[i%fanColors.length],finalKind:'',grandFinal:true,burstStyle:i%3===0?'willow':'double'});
       },i*82));
     }
   };
@@ -6329,10 +6417,12 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     }
     enforceParticleBudget();
     ctx.clearRect(0,0,width,height);
+    ctx.globalCompositeOperation='source-over';
     stars.forEach(star=>{
       const alpha=.24+.62*((Math.sin(now*.001*star.speed+star.phase)+1)/2);
       ctx.globalAlpha=alpha;ctx.beginPath();ctx.arc(star.x,star.y,star.size,0,Math.PI*2);ctx.fillStyle='#fff8dc';ctx.fill();ctx.globalAlpha=1;
     });
+    ctx.globalCompositeOperation='lighter';
     let rocketWrite=0;
     for(let rocketIndex=0;rocketIndex<rockets.length;rocketIndex+=1){
       const rocket=rockets[rocketIndex];
@@ -6342,6 +6432,8 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       if(rocket.y<=rocket.targetY){
         if(rocket.finalKind==='heart') explodeGrandHeart(rocket.x,rocket.y);
         else if(rocket.finalKind==='mega') explodeMega(rocket.x,rocket.y);
+        else if(rocket.burstStyle==='willow') explodeGoldenWillow(rocket.x,rocket.y);
+        else if(rocket.burstStyle==='double') explodeDoubleBloom(rocket.x,rocket.y,rocket.color);
         else explode(rocket.x,rocket.y,rocket.color,rocket.grandFinal);
         if(rocket.finalKind==='title' && !finaleShown){
           finaleShown=true;
@@ -6391,29 +6483,38 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     let particleWrite=0;
     for(let particleIndex=0;particleIndex<particles.length;particleIndex+=1){
       const p=particles[particleIndex];
-      p.px=p.x;p.py=p.y;p.x+=p.vx*step;p.y+=p.vy*step;p.vx*=Math.pow(.985,step);p.vy=(p.vy+.045*step)*Math.pow(.994,step);p.life-=p.decay*step;
+      p.px=p.x;p.py=p.y;p.x+=p.vx*step;p.y+=p.vy*step;p.vx*=Math.pow(p.drag||.985,step);p.vy=(p.vy+(p.gravity||.045)*step)*Math.pow(p.dragY||.994,step);p.life-=p.decay*step;
       if(p.life<=0) continue;
       ctx.globalAlpha=Math.max(0,p.life);ctx.beginPath();ctx.moveTo(p.px,p.py);ctx.lineTo(p.x,p.y);ctx.strokeStyle=p.color;ctx.lineWidth=p.size;ctx.stroke();ctx.globalAlpha=1;
+      if(p.twinkle && p.life>.24 && Math.sin(now*.02+particleIndex*1.7)>.84){
+        ctx.globalAlpha=Math.min(1,p.life+.18);ctx.beginPath();ctx.arc(p.x,p.y,Math.max(1.2,p.size*.9),0,Math.PI*2);ctx.fillStyle='#fffde8';ctx.fill();ctx.globalAlpha=1;
+      }
       particles[particleWrite]=p;
       particleWrite+=1;
     }
     particles.length=particleWrite;
+    ctx.globalCompositeOperation='source-over';
     frame=requestAnimationFrame(draw);
   };
   overlay._effectStats=()=>({quality:effectProfile.name,dpr,particles:particles.length,particleCap:adaptiveParticleCap,rockets:rockets.length,frameMs:Number(frameAverage.toFixed(1))});
   resize();
   window.addEventListener('resize',resize);
-  const openingLaunchCount=Math.max(14,Math.round(24*effectProfile.particleScale));
-  const openingLaunchGap=Math.round(112/Math.max(.72,effectProfile.particleScale));
+  const openingLaunchCount=Math.max(18,Math.round(28*effectProfile.particleScale));
+  const openingLaunchGap=Math.round(96/Math.max(.72,effectProfile.particleScale));
   for(let i=0;i<openingLaunchCount;i+=1) timers.push(setTimeout(()=>launch(),100+i*openingLaunchGap));
-  timers.push(setTimeout(()=>launchFan(7),2600));
-  timers.push(setTimeout(()=>launchFan(9),6100));
+  timers.push(setTimeout(()=>launchFan(9),2450));
+  timers.push(setTimeout(()=>launchFan(11),5900));
+  timers.push(setTimeout(()=>{
+    for(let i=0;i<5;i+=1) timers.push(setTimeout(()=>launch(),i*105));
+  },7600));
+  const launchCadence=Math.max(360,Math.round(effectProfile.launchInterval*.88));
+  overlay.dataset.launchCadence=String(launchCadence);
   const launchTimer=setInterval(()=>{
     launch();
     const reduced=effectProfile.particleScale<.85;
-    if(Math.random()>(reduced?.5:.24)) timers.push(setTimeout(()=>launch(),125));
-    if(Math.random()>(reduced?.84:.68)) timers.push(setTimeout(()=>launch(),255));
-  },effectProfile.launchInterval);
+    if(Math.random()>(reduced?.43:.2)) timers.push(setTimeout(()=>launch(),118));
+    if(Math.random()>(reduced?.78:.6)) timers.push(setTimeout(()=>launch(),238));
+  },launchCadence);
   timers.push(setTimeout(()=>overlay.classList.add('finale-mode'),9300));
   const finaleTimer=setTimeout(()=>{
     regularLaunches=false;

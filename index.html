@@ -214,36 +214,6 @@ font-size:28px;font-weight:700;color:var(--rose);
 .countdown-preview{margin-top:8px;padding:6px 10px;border:1px solid rgba(232,99,122,.25);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer;touch-action:manipulation;transition:transform .18s,background .18s,color .18s}
 .countdown-preview:active{transform:scale(.96);background:var(--pink);color:#fff}
 [data-theme="dark"] .countdown-preview{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
-.countdown-action-row{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px}
-.countdown-action-row .countdown-preview{margin-top:0}
-.birthday-wish-trigger{border-color:rgba(47,154,104,.28);color:#27885c}
-.birthday-wish-trigger.has-choice{background:#e9f7ef;border-color:rgba(47,154,104,.3);color:#247850}
-[data-theme="dark"] .birthday-wish-trigger,[data-theme="dark"] .birthday-wish-trigger.has-choice{background:#20352c;border-color:rgba(111,214,158,.3);color:#9fe0bc}
-.birthday-wish-overlay{position:fixed;z-index:13020;inset:0;display:none;place-items:center;padding:18px;background:rgba(24,15,22,.68);backdrop-filter:blur(10px)}
-.birthday-wish-overlay.show{display:grid;animation:birthdayWishOverlayIn .28s ease both}
-.birthday-wish-panel{position:relative;width:min(100%,430px);box-sizing:border-box;padding:24px 18px 18px;border:1px solid rgba(232,99,122,.24);border-radius:20px;background:var(--white);color:var(--text);box-shadow:0 24px 70px rgba(72,31,44,.32);animation:birthdayWishPanelIn .42s cubic-bezier(.2,1.1,.32,1) both}
-.birthday-wish-close{position:absolute;top:12px;right:12px;width:36px;height:36px;display:grid;place-items:center;padding:0;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:22px;line-height:1;cursor:pointer}
-.birthday-wish-kicker{color:#2f9a68;font-size:10px;font-weight:900;text-align:center}
-.birthday-wish-title{margin:5px 36px 7px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:24px;line-height:1.35;text-align:center}
-.birthday-wish-lead{margin:0 12px 17px;color:var(--text-muted);font-size:13px;line-height:1.7;text-align:center}
-.birthday-wish-options{display:grid;gap:9px}
-.birthday-wish-option{width:100%;min-height:66px;display:grid;grid-template-columns:40px 1fr 22px;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--card-border);border-radius:15px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer;transition:transform .18s,border-color .18s,background .18s,box-shadow .18s}
-.birthday-wish-option:active{transform:scale(.98)}
-.birthday-wish-option.selected{border-color:#2f9a68;background:#ebf8f1;box-shadow:0 0 0 2px rgba(47,154,104,.1)}
-.birthday-wish-option-mark{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:var(--white);color:var(--rose);font-size:11px;font-weight:900;box-shadow:0 4px 12px rgba(201,75,100,.1)}
-.birthday-wish-option-copy b{display:block;font-size:14px;line-height:1.5}
-.birthday-wish-option-copy span{display:block;margin-top:2px;color:var(--text-muted);font-size:11px;line-height:1.5}
-.birthday-wish-option-check{color:#2f9a68;font-size:19px;font-weight:900;opacity:0;transform:scale(.55);transition:opacity .18s,transform .18s}
-.birthday-wish-option.selected .birthday-wish-option-check{opacity:1;transform:scale(1)}
-.birthday-wish-status{min-height:38px;margin-top:12px;padding:9px 11px;border-radius:12px;background:rgba(47,154,104,.1);color:#25734f;font-size:12px;line-height:1.65;text-align:center}
-.birthday-wish-status:empty{display:none}
-[data-theme="dark"] .birthday-wish-panel{background:#28191f;border-color:rgba(255,154,174,.26)}
-[data-theme="dark"] .birthday-wish-option{background:#332028;border-color:rgba(255,158,178,.2)}
-[data-theme="dark"] .birthday-wish-option.selected{background:#20352c;border-color:rgba(111,214,158,.36)}
-[data-theme="dark"] .birthday-wish-option-mark{background:#402731}
-[data-theme="dark"] .birthday-wish-status{background:rgba(111,214,158,.12);color:#a8e5c3}
-@keyframes birthdayWishOverlayIn{from{opacity:0}to{opacity:1}}
-@keyframes birthdayWishPanelIn{from{opacity:0;transform:translateY(20px) scale(.94)}to{opacity:1;transform:none}}
 .birthday-fireworks{
 position:fixed;inset:0;z-index:12000;background:rgba(20,16,28,.9);overflow:hidden;display:flex;align-items:center;justify-content:center;
 animation:birthdayNightIn .7s ease both;
@@ -279,8 +249,10 @@ animation:birthdayNightIn .7s ease both;
 .birthday-cake-stage-copy i{display:block;margin-top:8px;color:#ffdce6;font-size:clamp(12px,3.5vw,17px);font-style:normal;font-weight:700}
 .birthday-fireworks[data-stage="cake"] .birthday-cake-stage-copy{animation:birthdayCakeCopyIn .75s ease forwards}
 .birthday-fireworks[data-stage="heart"] .birthday-cake-stage-copy{animation:birthdayCakeCopyOut .45s ease forwards}
-.birthday-letter-reveal{position:absolute;z-index:6;top:50%;left:50%;width:min(82vw,330px);height:270px;opacity:0;transform:translate(-50%,-42%) scale(.7);pointer-events:none;perspective:900px}
+.birthday-letter-reveal{--letter-pull:0px;position:absolute;z-index:6;top:50%;left:50%;width:min(82vw,330px);height:270px;opacity:0;transform:translate(-50%,-42%) scale(.7);pointer-events:none;perspective:900px;touch-action:none}
 .birthday-letter-reveal.show{animation:birthdayEnvelopeArrive .65s cubic-bezier(.2,1.25,.35,1) forwards}
+.birthday-letter-reveal.awaiting-pull{pointer-events:auto;cursor:grab}
+.birthday-letter-reveal.dragging{cursor:grabbing}
 .birthday-envelope-shell{position:absolute;left:50%;top:50%;width:280px;height:174px;transform:translate(-50%,-50%);filter:drop-shadow(0 24px 35px rgba(0,0,0,.45));transform-style:preserve-3d}
 .birthday-envelope-back{position:absolute;z-index:1;inset:0;border:1px solid rgba(255,225,166,.75);border-radius:12px;background:#a93f64;box-shadow:inset 0 0 30px rgba(79,18,46,.28)}
 .birthday-envelope-card{position:absolute;z-index:2;left:8%;right:8%;bottom:12px;height:142px;box-sizing:border-box;padding:19px 14px;border:1px solid rgba(201,75,100,.28);border-radius:9px;background:#fff9f2;color:#9f3f5a;text-align:center;transform:translateY(0) scale(.94);transition:transform .85s cubic-bezier(.2,1,.3,1),box-shadow .7s ease}
@@ -290,12 +262,14 @@ animation:birthdayNightIn .7s ease both;
 .birthday-envelope-front{position:absolute;z-index:4;left:0;right:0;bottom:0;height:116px;border-radius:0 0 12px 12px;background:#d55f7f;clip-path:polygon(0 0,50% 54%,100% 0,100% 100%,0 100%);box-shadow:inset 0 -18px 32px rgba(112,29,60,.14)}
 .birthday-envelope-flap{position:absolute;z-index:5;left:0;right:0;top:0;height:110px;border-radius:12px 12px 4px 4px;background:#ef91aa;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:50% 0;backface-visibility:hidden;transition:transform .75s cubic-bezier(.3,.8,.25,1)}
 .birthday-envelope-seal{position:absolute;z-index:6;left:50%;top:58px;width:42px;height:42px;display:grid;place-items:center;border:2px solid rgba(255,255,255,.7);border-radius:50%;background:#c94b64;color:#fff;font-size:21px;transform:translateX(-50%);box-shadow:0 5px 14px rgba(91,22,51,.25);transition:opacity .25s ease,transform .45s ease}
-.birthday-envelope-caption{position:absolute;left:0;right:0;bottom:0;color:#fff5d1;font-family:'Noto Serif TC',serif;font-size:17px;font-weight:800;text-align:center;text-shadow:0 3px 16px rgba(0,0,0,.85)}
+.birthday-envelope-caption{position:absolute;left:0;right:0;bottom:0;color:#fff5d1;font-family:'Noto Serif TC',serif;font-size:17px;font-weight:800;text-align:center;text-shadow:0 3px 16px rgba(0,0,0,.85);transition:opacity .25s ease}
+.birthday-letter-reveal.awaiting-pull .birthday-envelope-caption::before{content:'↑';display:inline-block;margin-right:7px;color:#ff9fba;font-family:'Noto Sans TC',sans-serif;font-size:22px;animation:birthdayEnvelopePullHint .8s ease-in-out infinite alternate}
 .birthday-letter-reveal.open .birthday-envelope-flap{transform:rotateX(178deg)}
 .birthday-letter-reveal.open .birthday-envelope-seal{opacity:0;transform:translateX(-50%) scale(.25)}
-.birthday-letter-reveal.open .birthday-envelope-card{transform:translateY(-94px) scale(1);box-shadow:0 18px 36px rgba(0,0,0,.28)}
+.birthday-letter-reveal.open .birthday-envelope-card{transform:translateY(calc(-94px - var(--letter-pull))) scale(1);box-shadow:0 18px 36px rgba(0,0,0,.28)}
+.birthday-letter-reveal.dragging .birthday-envelope-card{transition:none}
 .birthday-letter-reveal.release{animation:birthdayEnvelopeRelease .72s ease forwards}
-.birthday-letter-reveal.release .birthday-envelope-card{transform:translateY(-138px) scale(1.55)}
+.birthday-letter-reveal.release .birthday-envelope-card{transform:translateY(-220px) scale(1.35)}
 .birthday-fireworks-letter{position:absolute;z-index:3;top:max(70px,calc(env(safe-area-inset-top) + 62px));bottom:max(10px,env(safe-area-inset-bottom));left:50%;width:min(94%,760px);box-sizing:border-box;display:flex;flex-direction:column;padding:clamp(10px,1.9dvh,19px) clamp(12px,2.5vw,20px);overflow:hidden;border:1px solid rgba(255,224,148,.54);border-radius:18px;background:linear-gradient(145deg,rgba(30,20,35,.88),rgba(57,27,43,.82));color:#fff;opacity:0;transform:translate(-50%,24px) scale(.96);pointer-events:none;box-shadow:0 22px 70px rgba(0,0,0,.48),inset 0 0 42px rgba(255,151,181,.07);backdrop-filter:blur(12px)}
 .birthday-fireworks-letter::before{content:'';position:absolute;z-index:0;inset:7px;border:1px dashed rgba(255,216,120,.3);border-radius:12px;pointer-events:none}
 .birthday-fireworks-letter>:not(.birthday-letter-deco){position:relative;z-index:1}
@@ -370,6 +344,7 @@ animation:birthdayNightIn .7s ease both;
 @keyframes birthdayCakeCopyOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-12px) scale(1.03)}}
 @keyframes birthdayEnvelopeArrive{from{opacity:0;transform:translate(-50%,-30%) scale(.55) rotate(-5deg)}to{opacity:1;transform:translate(-50%,-42%) scale(1) rotate(0)}}
 @keyframes birthdayEnvelopeRelease{0%{opacity:1;transform:translate(-50%,-42%) scale(1)}70%{opacity:1;transform:translate(-50%,-48%) scale(1.08)}100%{opacity:0;transform:translate(-50%,-54%) scale(1.22)}}
+@keyframes birthdayEnvelopePullHint{from{transform:translateY(4px)}to{transform:translateY(-5px)}}
 @keyframes birthdayLetterIn{from{opacity:0;transform:translate(-50%,84px) scale(.42) rotateX(-16deg)}to{opacity:1;transform:translate(-50%,0) scale(1) rotateX(0)}}
 @keyframes birthdayLetterLine{to{opacity:1;transform:none}}
 @keyframes birthdayLetterPhotoCycle{0%,19%{opacity:1}20%,100%{opacity:0}}
@@ -3644,39 +3619,9 @@ onclick="hideSpecialForToday()">
       <div class="countdown-item">
         <div class="countdown-num" id="bd2Days">—</div>
         <div class="countdown-desc">予君生日 (8/26)</div>
-        <div class="countdown-action-row">
-          <button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">🎆 預覽特效</button>
-          <button type="button" class="countdown-preview birthday-wish-trigger" id="birthday-wish-trigger" onclick="openBirthdayWish()">♡ 生日心願</button>
-        </div>
+        <button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">🎆 預覽特效</button>
       </div>
     </div>
-  </div>
-
-  <div class="birthday-wish-overlay" id="birthday-wish-overlay" aria-hidden="true" onclick="closeBirthdayWish(event)">
-    <section class="birthday-wish-panel" role="dialog" aria-modal="true" aria-labelledby="birthday-wish-title" onclick="event.stopPropagation()">
-      <button type="button" class="birthday-wish-close" onclick="closeBirthdayWish()" aria-label="關閉生日心願">×</button>
-      <div class="birthday-wish-kicker">A LITTLE BIRTHDAY WISH</div>
-      <h2 class="birthday-wish-title" id="birthday-wish-title">今年，哪一種日常最讓妳心動？</h2>
-      <p class="birthday-wish-lead">不要想太久，憑第一個感覺選一個就好。</p>
-      <div class="birthday-wish-options">
-        <button type="button" class="birthday-wish-option" data-wish="everyday" onclick="chooseBirthdayWish('everyday')">
-          <span class="birthday-wish-option-mark">01</span>
-          <span class="birthday-wish-option-copy"><b>每天都能看見的小小陪伴</b><span>低調、貼近生活，卻會一直待在身邊。</span></span>
-          <span class="birthday-wish-option-check">✓</span>
-        </button>
-        <button type="button" class="birthday-wish-option" data-wish="glow" onclick="chooseBirthdayWish('glow')">
-          <span class="birthday-wish-option-mark">02</span>
-          <span class="birthday-wish-option-copy"><b>讓下一次出門多一點新鮮感</b><span>換一種模樣，也替心情換一種顏色。</span></span>
-          <span class="birthday-wish-option-check">✓</span>
-        </button>
-        <button type="button" class="birthday-wish-option" data-wish="world" onclick="chooseBirthdayWish('world')">
-          <span class="birthday-wish-option-mark">03</span>
-          <span class="birthday-wish-option-copy"><b>隨時躲進只屬於自己的小世界</b><span>把喜歡的聲音留近一點，安靜也很自在。</span></span>
-          <span class="birthday-wish-option-check">✓</span>
-        </button>
-      </div>
-      <div class="birthday-wish-status" id="birthday-wish-status"></div>
-    </section>
   </div>
 
   <div class="card">
@@ -4516,117 +4461,6 @@ window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-// ── 予君生日心願（選項以暗示呈現，Firebase 跨裝置同步）──
-const BIRTHDAY_WISH_OPTIONS={
-  everyday:{label:'每天都能看見的小小陪伴',gift:'phone-case'},
-  glow:{label:'讓下一次出門多一點新鮮感',gift:'outfit'},
-  world:{label:'隨時躲進只屬於自己的小世界',gift:'headphones'}
-};
-let birthdayWishChoice='';
-let birthdayWishSyncYear=0;
-let birthdayWishSyncStarted=false;
-let birthdayWishBodyOverflow='';
-function birthdayWishYear(){
-  const now=new Date();
-  const thisBirthday=new Date(now.getFullYear(),7,26);
-  return now>thisBirthday ? now.getFullYear()+1 : now.getFullYear();
-}
-function birthdayWishPath(){
-  return `birthdayWishes/yujun/${birthdayWishYear()}`;
-}
-function birthdayWishLocalKey(){
-  return `birthdayWishYujun_${birthdayWishYear()}`;
-}
-function renderBirthdayWish(){
-  document.querySelectorAll('.birthday-wish-option').forEach(button=>{
-    const selected=button.dataset.wish===birthdayWishChoice;
-    button.classList.toggle('selected',selected);
-    button.setAttribute('aria-pressed',selected?'true':'false');
-  });
-  const trigger=document.getElementById('birthday-wish-trigger');
-  if(trigger){
-    trigger.classList.toggle('has-choice',!!birthdayWishChoice);
-    trigger.innerHTML=birthdayWishChoice?'✓ 心願已收好':'♡ 生日心願';
-  }
-  const status=document.getElementById('birthday-wish-status');
-  if(status){
-    status.textContent=birthdayWishChoice
-      ? `今年的小心願已經收好：${BIRTHDAY_WISH_OPTIONS[birthdayWishChoice]?.label||''}。想換一個，直接重新選就可以。`
-      : '';
-  }
-}
-function loadBirthdayWishLocal(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(birthdayWishLocalKey())||'null');
-    birthdayWishChoice=BIRTHDAY_WISH_OPTIONS[saved?.choice] ? saved.choice : '';
-  }catch{
-    birthdayWishChoice='';
-  }
-  renderBirthdayWish();
-}
-function initBirthdayWishSync(){
-  const year=birthdayWishYear();
-  if(birthdayWishSyncStarted && birthdayWishSyncYear===year) return;
-  loadBirthdayWishLocal();
-  if(!window._fb) return;
-  birthdayWishSyncStarted=true;
-  birthdayWishSyncYear=year;
-  const {db,ref,onValue}=window._fb;
-  onValue(ref(db,birthdayWishPath()),snap=>{
-    const value=snap.val()||{};
-    birthdayWishChoice=BIRTHDAY_WISH_OPTIONS[value.choice] ? value.choice : '';
-    if(birthdayWishChoice) localStorage.setItem(birthdayWishLocalKey(),JSON.stringify(value));
-    renderBirthdayWish();
-  },err=>{
-    console.warn('birthday wish sync failed',err);
-    birthdayWishSyncStarted=false;
-  });
-}
-function openBirthdayWish(){
-  initBirthdayWishSync();
-  const overlay=document.getElementById('birthday-wish-overlay');
-  if(!overlay) return;
-  birthdayWishBodyOverflow=document.body.style.overflow;
-  document.body.style.overflow='hidden';
-  overlay.classList.add('show');
-  overlay.setAttribute('aria-hidden','false');
-  renderBirthdayWish();
-  setTimeout(()=>overlay.querySelector('.birthday-wish-close')?.focus(),0);
-}
-function closeBirthdayWish(event){
-  if(event && event.target!==document.getElementById('birthday-wish-overlay')) return;
-  const overlay=document.getElementById('birthday-wish-overlay');
-  if(!overlay) return;
-  overlay.classList.remove('show');
-  overlay.setAttribute('aria-hidden','true');
-  document.body.style.overflow=birthdayWishBodyOverflow;
-}
-async function chooseBirthdayWish(choice){
-  if(!BIRTHDAY_WISH_OPTIONS[choice]) return;
-  birthdayWishChoice=choice;
-  const payload={
-    choice,
-    gift:BIRTHDAY_WISH_OPTIONS[choice].gift,
-    year:birthdayWishYear(),
-    updatedAt:Date.now()
-  };
-  localStorage.setItem(birthdayWishLocalKey(),JSON.stringify(payload));
-  renderBirthdayWish();
-  const status=document.getElementById('birthday-wish-status');
-  if(status) status.textContent='正在替妳把這個小心願收好...';
-  try{
-    if(!window._fb) throw new Error('Firebase 尚未連線');
-    const {db,ref,set}=window._fb;
-    await set(ref(db,birthdayWishPath()),payload);
-    if(status) status.textContent='收到，這個小心願已悄悄放進今年的生日裡。';
-  }catch(err){
-    console.warn('birthday wish save failed',err);
-    if(status) status.textContent='已先收在這台裝置，連線恢復後可以再點一次同步。';
-  }
-}
-window.addEventListener('firebaseReady',initBirthdayWishSync);
-if(window._fb) initBirthdayWishSync(); else loadBirthdayWishLocal();
-
 // ── Dark mode ──
 function toggleDark(){
   const html=document.documentElement;
@@ -5992,7 +5826,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     </div>
     <div class="birthday-fireworks-message"><div class="birthday-fireworks-bow" aria-hidden="true">🎀</div><div class="birthday-fireworks-kicker">8 / 26 · YUJUN'S DAY</div><b>予君，生日快樂</b><span>${escapeHtml(yearlyBirthdayCopy).replace(/\n/g,'<br>')}</span></div>
     <div class="birthday-cake-stage-copy"><span>MAKE A WISH</span><b>予君，這個願望我陪妳一起許</b><i>願妳往後的每一天，都有期待也有偏愛</i></div>
-    <div class="birthday-letter-reveal" aria-hidden="true">
+    <div class="birthday-letter-reveal" role="button" tabindex="-1" aria-label="向上滑動，抽出生日信" aria-hidden="true">
       <div class="birthday-envelope-shell">
         <div class="birthday-envelope-back"></div>
         <div class="birthday-envelope-card"><span>給我最愛的予君</span><b>8 / 26 · ONLY FOR YOU</b><i></i></div>
@@ -6039,6 +5873,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const soundButton=overlay.querySelector('.birthday-fireworks-sound');
   const finaleMessage=overlay.querySelector('.birthday-fireworks-finale');
   const letterReveal=overlay.querySelector('.birthday-letter-reveal');
+  const envelopeCaption=overlay.querySelector('.birthday-envelope-caption');
   const letterMessage=overlay.querySelector('.birthday-fireworks-letter');
   const finalCake=overlay.querySelector('.birthday-final-cake');
   const colors=['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff'];
@@ -6264,6 +6099,59 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     await unlockSound();
     launch('heart');
   };
+  let letterPullPointer=null;
+  let letterPullStartY=0;
+  let letterPullDistance=0;
+  const resetLetterPull=()=>{
+    letterPullDistance=0;
+    letterReveal?.style.setProperty('--letter-pull','0px');
+    letterReveal?.classList.remove('dragging');
+  };
+  const finishLetterPull=()=>{
+    if(!letterReveal?.classList.contains('awaiting-pull')) return;
+    letterReveal.classList.remove('awaiting-pull','dragging');
+    letterReveal.setAttribute('tabindex','-1');
+    letterReveal.setAttribute('aria-hidden','true');
+    letterReveal.style.setProperty('--letter-pull','126px');
+    if(envelopeCaption) envelopeCaption.textContent='';
+    letterReveal.classList.add('release');
+    playTone(988,1480,.58,.055,'triangle',0);
+    playTone(1175,1760,.7,.045,'sine',.15);
+    timers.push(setTimeout(()=>{
+      overlay.dataset.stage='letter';
+      letterMessage?.classList.add('show');
+      startLetterMusic();
+    },680));
+  };
+  const endLetterPull=event=>{
+    if(letterPullPointer===null || (event.pointerId!==undefined && event.pointerId!==letterPullPointer)) return;
+    const completed=letterPullDistance>=74;
+    letterPullPointer=null;
+    if(completed) finishLetterPull();
+    else resetLetterPull();
+  };
+  letterReveal?.addEventListener('pointerdown',event=>{
+    if(!letterReveal.classList.contains('awaiting-pull')) return;
+    letterPullPointer=event.pointerId;
+    letterPullStartY=event.clientY;
+    letterPullDistance=0;
+    letterReveal.classList.add('dragging');
+    letterReveal.setPointerCapture?.(event.pointerId);
+    event.preventDefault();
+  });
+  letterReveal?.addEventListener('pointermove',event=>{
+    if(letterPullPointer===null || event.pointerId!==letterPullPointer) return;
+    letterPullDistance=Math.max(0,Math.min(126,letterPullStartY-event.clientY));
+    letterReveal.style.setProperty('--letter-pull',`${letterPullDistance}px`);
+    event.preventDefault();
+  });
+  letterReveal?.addEventListener('pointerup',endLetterPull);
+  letterReveal?.addEventListener('pointercancel',endLetterPull);
+  letterReveal?.addEventListener('keydown',event=>{
+    if(!letterReveal.classList.contains('awaiting-pull') || !['Enter',' '].includes(event.key)) return;
+    event.preventDefault();
+    finishLetterPull();
+  });
   const draw=(now)=>{
     if(!running) return;
     const step=Math.min(2,(now-lastTime)/16.67||1);lastTime=now;
@@ -6307,19 +6195,17 @@ function launchYujunBirthdayFireworks(autoPlay=false){
         if(rocket.finalKind==='heart' && !letterShown){
           letterShown=true;
           letterReveal?.classList.add('show');
+          letterReveal?.setAttribute('aria-hidden','false');
           playTone(659,988,.52,.055,'triangle',0);
           playTone(784,1175,.58,.05,'sine',.18);
           timers.push(setTimeout(()=>{
             letterReveal?.classList.add('open');
+            letterReveal?.classList.add('awaiting-pull');
+            letterReveal?.setAttribute('tabindex','0');
+            if(envelopeCaption) envelopeCaption.textContent='向上滑動，親手抽出這封信';
             playTone(880,1320,.62,.055,'triangle',0);
             playTone(1047,1568,.72,.045,'sine',.16);
           },620));
-          timers.push(setTimeout(()=>letterReveal?.classList.add('release'),1780));
-          timers.push(setTimeout(()=>{
-            overlay.dataset.stage='letter';
-            letterMessage?.classList.add('show');
-            startLetterMusic();
-          },2200));
         }
         return false;
       }

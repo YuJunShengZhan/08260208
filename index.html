@@ -216,9 +216,14 @@ font-size:28px;font-weight:700;color:var(--rose);
 [data-theme="dark"] .countdown-preview{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
 .birthday-fireworks{
 position:fixed;inset:0;z-index:12000;background:rgba(20,16,28,.9);overflow:hidden;display:flex;align-items:center;justify-content:center;
-animation:birthdayNightIn .7s ease both;
+animation:birthdayNightIn .7s ease both;contain:layout paint style;isolation:isolate;
 }
-.birthday-fireworks canvas{position:absolute;inset:0;width:100%;height:100%}
+.birthday-fireworks canvas{position:absolute;inset:0;width:100%;height:100%;transform:translateZ(0)}
+body.occasion-effect-running .line-dog,
+body.occasion-effect-running .line-dog *,
+body.occasion-effect-running .line-dog-heart,
+body.occasion-effect-running .home-countdown-broadcast::after,
+body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-state:paused!important}
 .birthday-fireworks-message{position:relative;z-index:2;width:min(92%,720px);text-align:center;color:#fff;padding:24px;pointer-events:none;text-shadow:0 3px 18px rgba(0,0,0,.9);animation:birthdayWishIn .9s .55s ease both}
 .birthday-fireworks-message::after{content:'';position:absolute;left:50%;bottom:-18px;width:min(280px,70vw);height:1px;transform:translateX(-50%);background:rgba(255,211,110,.72);box-shadow:0 0 16px rgba(255,211,110,.9)}
 .birthday-fireworks-kicker{margin-bottom:10px;color:#ffd36e;font-size:11px;font-weight:900;letter-spacing:0}
@@ -356,8 +361,8 @@ animation:birthdayNightIn .7s ease both;
 @media(max-width:520px){.birthday-fireworks-letter{top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:max(7px,env(safe-area-inset-bottom));width:96%}.birthday-finale-heart-scene{margin-top:clamp(14px,3.8vh,30px)}.birthday-finale-bottom{margin-bottom:4px}.birthday-finale-stage{height:36px;margin-top:9px}.birthday-cake-stage-copy{top:max(75px,calc(env(safe-area-inset-top) + 64px))}.birthday-letter-reveal{width:92vw;height:242px}.birthday-envelope-shell{width:250px;height:155px}.birthday-envelope-card{height:128px;padding-top:15px}.birthday-envelope-card span{font-size:21px}.birthday-envelope-front{height:103px}.birthday-envelope-flap{height:99px}.birthday-envelope-seal{top:51px;width:38px;height:38px}.birthday-envelope-caption{font-size:15px}.birthday-letter-deco{width:19px;height:19px;opacity:.58}.birthday-letter-deco.party-top{top:9px;left:9px}.birthday-letter-deco.gift-top{top:9px;right:9px}.birthday-letter-deco.spark-left{left:2px;width:17px;height:17px}.birthday-letter-deco.heart-right{right:2px;width:17px;height:17px}.birthday-letter-deco.cake-bottom{bottom:8px;left:9px;width:21px;height:21px}.birthday-letter-deco.party-bottom{right:9px;bottom:8px;width:21px;height:21px}.birthday-final-cake{width:min(78vw,294px);height:175px}.birthday-cake-candles{height:46px}.birthday-candle{height:31px}.birthday-candle:nth-child(2){height:38px}.birthday-cake-top{height:38px}.birthday-cake-middle{height:45px}.birthday-cake-bottom{height:54px}.birthday-cake-bottom b{font-size:16px}}
 @media(max-height:620px){.birthday-fireworks-letter p{font-size:9.5px;line-height:1.42}.birthday-letter-photo-frame{min-height:72px}.birthday-letter-title{font-size:16px}.birthday-letter-sign{font-size:10.5px}}
 @media(max-height:560px) and (orientation:landscape){.birthday-fireworks-letter{left:31%;top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:6px;width:58%;padding:8px 12px}.birthday-letter-title{font-size:15px}.birthday-fireworks-letter p{font-size:9px;line-height:1.36;margin-bottom:3px}.birthday-letter-sign{font-size:10px}.birthday-letter-photo-frame{min-height:64px;margin-top:4px}.birthday-final-cake{left:81%;bottom:5px;width:min(31vw,245px);height:154px}.birthday-cake-candles{height:42px}.birthday-candle{height:29px}.birthday-candle:nth-child(2){height:35px}.birthday-cake-top{height:31px}.birthday-cake-middle{height:39px}.birthday-cake-bottom{height:47px}.birthday-cake-bottom b{font-size:14px}}
-.occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both}
-.occasion-overlay canvas{position:absolute;inset:0;width:100%;height:100%}
+.occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both;contain:layout paint style;isolation:isolate}
+.occasion-overlay canvas{position:absolute;inset:0;width:100%;height:100%;transform:translateZ(0)}
 .occasion-overlay.birthday{background:rgba(26,39,67,.94)}
 .occasion-overlay.valentine{background:rgba(77,29,49,.94)}
 .occasion-overlay.anniversary{background:rgba(24,15,25,.96)}
@@ -5510,11 +5515,30 @@ function unlockOccasionPreview(){
   else if(type==='yujun') launchYujunBirthdayFireworks(false);
 }
 
+function getOccasionEffectPerformanceProfile(){
+  const coarse=window.matchMedia?.('(pointer:coarse)')?.matches===true;
+  const mobile=coarse || Math.min(window.innerWidth,window.innerHeight)<=760;
+  const cores=Number(navigator.hardwareConcurrency)||4;
+  const memory=Number(navigator.deviceMemory)||0;
+  const constrained=cores<=4 || (memory>0 && memory<=4);
+  if(mobile && constrained){
+    return {name:'mobile-lite',dprCap:1.1,particleScale:.54,starScale:.58,maxParticles:820,launchInterval:560};
+  }
+  if(mobile){
+    return {name:'mobile',dprCap:1.3,particleScale:.7,starScale:.75,maxParticles:1180,launchInterval:480};
+  }
+  if(constrained){
+    return {name:'desktop-lite',dprCap:1.35,particleScale:.76,starScale:.82,maxParticles:1500,launchInterval:460};
+  }
+  return {name:'desktop',dprCap:1.55,particleScale:1,starScale:1,maxParticles:2200,launchInterval:390};
+}
+
 function closeOccasionEffect(){
   const overlay=document.getElementById('occasion-effect');
   if(!overlay) return;
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
+  document.body.classList.remove('occasion-effect-running');
   if(!releaseQueuedOccasionAfterClose()) releaseQueuedLoveSurpriseAfterOccasion();
 }
 function requestOccasionEffectClose(){
@@ -5603,7 +5627,10 @@ function launchOccasionEffect(type,autoPlay=false){
   overlay.dataset.autoPlay=autoPlay?'true':'false';
   overlay.dataset.occasionType=type;
   overlay.dataset.shownKey=shownKey;
+  const effectProfile=getOccasionEffectPerformanceProfile();
+  overlay.dataset.effectQuality=effectProfile.name;
   overlay.innerHTML=`<canvas aria-hidden="true"></canvas><button type="button" class="occasion-control sound" onclick="toggleOccasionEffectSound()" aria-label="關閉特效音效" title="關閉音效"><img src="assets/volume-2.svg" alt=""></button><div class="occasion-content"><div class="occasion-symbol">${config.symbol}</div><div class="occasion-kicker">${config.kicker}</div><div class="occasion-title">${config.title}</div><div class="occasion-sub">${config.sub.replace(/\n/g,'<br>')}</div></div><button type="button" class="occasion-control close" onclick="requestOccasionEffectClose()" aria-label="關閉特效" title="關閉">×</button>`;
+  document.body.classList.add('occasion-effect-running');
   document.body.appendChild(overlay);
 
   const canvas=overlay.querySelector('canvas');
@@ -5696,7 +5723,7 @@ function launchOccasionEffect(type,autoPlay=false){
   overlay.addEventListener('pointerdown',unlockOnInteraction);
 
   const resize=()=>{
-    dpr=Math.min(window.devicePixelRatio||1,2);
+    dpr=Math.min(window.devicePixelRatio||1,effectProfile.dprCap);
     width=window.innerWidth;height=window.innerHeight;
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
     canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;
@@ -5705,7 +5732,7 @@ function launchOccasionEffect(type,autoPlay=false){
   const randomColor=()=>config.colors[Math.floor(Math.random()*config.colors.length)];
   const makeBurst=(x=width*(.12+Math.random()*.76),y=height*(.1+Math.random()*.55),large=false)=>{
     const color=randomColor();
-    const count=(large?72:42)+Math.floor(Math.random()*24);
+    const count=Math.max(24,Math.round(((large?72:42)+Math.floor(Math.random()*24))*effectProfile.particleScale));
     for(let i=0;i<count;i+=1){
       const angle=Math.PI*2*i/count+(Math.random()-.5)*.08;
       const speed=(large?2.2:1.2)+Math.random()*(large?4.8:3.2);
@@ -5776,6 +5803,7 @@ function launchOccasionEffect(type,autoPlay=false){
   }
   overlay._cleanup=()=>{
     running=false;cancelAnimationFrame(frame);stopThemeLoop();timers.forEach(clearTimeout);intervals.forEach(clearInterval);overlay.removeEventListener('pointerdown',unlockOnInteraction);window.removeEventListener('resize',resize);
+    document.body.classList.remove('occasion-effect-running');
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
@@ -5786,6 +5814,7 @@ function closeYujunBirthdayFireworks(){
   if(!overlay) return;
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
+  document.body.classList.remove('occasion-effect-running');
   if(!releaseQueuedOccasionAfterClose()) releaseQueuedLoveSurpriseAfterOccasion();
 }
 function toggleYujunBirthdayFireworksSound(){
@@ -5811,6 +5840,8 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   overlay.dataset.autoPlay=autoPlay?'true':'false';
   overlay.dataset.occasionType='yujun';
   overlay.dataset.shownKey=shownKey;
+  const effectProfile=getOccasionEffectPerformanceProfile();
+  overlay.dataset.effectQuality=effectProfile.name;
   overlay.innerHTML=`
     <canvas aria-hidden="true"></canvas>
     <button type="button" class="birthday-fireworks-sound" onclick="toggleYujunBirthdayFireworksSound()" aria-label="關閉煙火音效" title="關閉音效"><img src="assets/volume-2.svg" alt=""></button>
@@ -5866,6 +5897,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       <div class="birthday-cake-plate"></div>
     </button>
     <button type="button" class="birthday-fireworks-close" onclick="requestOccasionEffectClose()" aria-label="關閉煙火" title="關閉">×</button>`;
+  document.body.classList.add('occasion-effect-running');
   document.body.appendChild(overlay);
 
   const canvas=overlay.querySelector('canvas');
@@ -5877,8 +5909,9 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   const letterMessage=overlay.querySelector('.birthday-fireworks-letter');
   const finalCake=overlay.querySelector('.birthday-final-cake');
   const colors=['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff'];
-  let width=0,height=0,dpr=1,frame=0,lastTime=performance.now();
+  let width=0,height=0,dpr=1,frame=0,lastTime=performance.now(),frameAverage=16.67,lastPerformanceTune=performance.now();
   let rockets=[],particles=[],stars=[],running=true,regularLaunches=true,finaleShown=false,megaShown=false,letterTriggered=false,letterShown=false;
+  let adaptiveParticleCap=effectProfile.maxParticles;
   const timers=[];
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
   let audioCtx=null,masterGain=null,noiseBuffer=null,soundEnabled=!!AudioContextClass,chimePlayed=false,letterMusicTimer=null,letterMusicStarted=false;
@@ -5990,24 +6023,31 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   unlockSound();
   overlay.addEventListener('pointerdown',unlockOnInteraction);
   const resize=()=>{
-    dpr=Math.min(window.devicePixelRatio||1,2);
+    dpr=Math.min(window.devicePixelRatio||1,effectProfile.dprCap);
     width=window.innerWidth;height=window.innerHeight;
     canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
     canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    stars=Array.from({length:Math.max(55,Math.round(width*height/7000))},()=>({x:Math.random()*width,y:Math.random()*height,size:.5+Math.random()*1.7,phase:Math.random()*Math.PI*2,speed:.6+Math.random()*1.5}));
+    const starCount=Math.max(34,Math.round(Math.max(55,width*height/7000)*effectProfile.starScale));
+    stars=Array.from({length:starCount},()=>({x:Math.random()*width,y:Math.random()*height,size:.5+Math.random()*1.7,phase:Math.random()*Math.PI*2,speed:.6+Math.random()*1.5}));
+  };
+  const scaledParticleCount=(base,minimum=18)=>Math.max(minimum,Math.round(base*effectProfile.particleScale));
+  const enforceParticleBudget=()=>{
+    const overflow=particles.length-adaptiveParticleCap;
+    if(overflow>0) particles.splice(0,overflow);
   };
   const explode=(x,y,color,grand=false)=>{
     playExplosionSound();
-    const count=(grand?105:64)+Math.floor(Math.random()*(grand?42:38));
+    const count=scaledParticleCount((grand?105:64)+Math.floor(Math.random()*(grand?42:38)),grand?42:28);
     for(let i=0;i<count;i+=1){
       const angle=(Math.PI*2*i/count)+(Math.random()-.5)*.12;
       const speed=(grand?2.2:1.6)+Math.random()*(grand?5.4:4.4);
       particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:(grand?.007:.009)+Math.random()*.011,color,size:(grand?1.5:1.2)+Math.random()*2.1});
     }
+    enforceParticleBudget();
   };
   const explodeHeart=(x,y)=>{
-    const count=120;
+    const count=scaledParticleCount(120,72);
     for(let i=0;i<count;i+=1){
       const t=Math.PI*2*i/count;
       const hx=16*Math.pow(Math.sin(t),3);
@@ -6015,20 +6055,23 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       const scale=.28+Math.random()*.035;
       particles.push({x,y,px:x,py:y,vx:hx*scale,vy:-hy*scale,life:1,decay:.0065+Math.random()*.004,color:i%3===0?'#ffffff':'#ff6f9f',size:1.8+Math.random()*1.8});
     }
+    enforceParticleBudget();
   };
   const addGoldenRain=(count=140)=>{
+    count=scaledParticleCount(count,52);
     const rainColors=['#ffffff','#fff1a8','#ffd166','#ff9fbd','#78ddff'];
     for(let i=0;i<count;i+=1){
       const x=Math.random()*width;
       const y=-20-Math.random()*height*.7;
       particles.push({x,y,px:x,py:y,vx:(Math.random()-.5)*1.25,vy:1.2+Math.random()*3.1,life:1,decay:.0024+Math.random()*.0032,color:rainColors[i%rainColors.length],size:.8+Math.random()*2.2});
     }
+    enforceParticleBudget();
   };
   const explodeGrandHeart=(x,y)=>{
     playMegaExplosionSound();
     const baseScale=Math.max(.2,Math.min(.48,Math.min(width*.42,height*.34)/760));
     [baseScale*.82,baseScale*1.08].forEach((scale,layer)=>{
-      const count=220;
+      const count=scaledParticleCount(220,126);
       for(let i=0;i<count;i+=1){
         const t=Math.PI*2*i/count;
         const hx=16*Math.pow(Math.sin(t),3);
@@ -6037,25 +6080,28 @@ function launchYujunBirthdayFireworks(autoPlay=false){
         particles.push({x,y,px:x,py:y,vx:hx*scale*jitter,vy:-hy*scale*jitter,life:1,decay:.0037+Math.random()*.0024,color:layer===0?(i%4===0?'#ffffff':'#ff719d'):(i%3===0?'#fff2a8':'#ffb0c8'),size:1.8+layer*.7+Math.random()*1.8});
       }
     });
-    for(let i=0;i<120;i+=1){
+    const grandSparkCount=scaledParticleCount(120,68);
+    for(let i=0;i<grandSparkCount;i+=1){
       const angle=Math.random()*Math.PI*2;
       const speed=1.2+Math.random()*5.8;
       particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-.8,life:1,decay:.004+Math.random()*.004,color:i%2?'#ffd166':'#ffffff',size:1+Math.random()*2});
     }
     addGoldenRain(120);
+    enforceParticleBudget();
   };
   const explodeMega=(x,y)=>{
     playMegaExplosionSound();
     const palette=['#ffffff','#fff0a6','#ffd166','#ff8fb1','#78ddff','#b9ffdb'];
     [3.2,6.2,9.4].forEach((baseSpeed,ring)=>{
-      const count=ring===2?150:110;
+      const count=scaledParticleCount(ring===2?150:110,ring===2?86:64);
       for(let i=0;i<count;i+=1){
         const angle=Math.PI*2*i/count+(ring%2?Math.PI/count:0);
         const speed=baseSpeed+Math.random()*(ring===2?2.4:1.6);
         particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,decay:.0048+Math.random()*.0045,color:palette[(i+ring)%palette.length],size:1.8+ring*.45+Math.random()*1.7});
       }
     });
-    for(let i=0;i<110;i+=1){
+    const megaSparkCount=scaledParticleCount(110,64);
+    for(let i=0;i<megaSparkCount;i+=1){
       const angle=Math.random()*Math.PI*2;
       const speed=1.2+Math.random()*7;
       particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed*.75,vy:Math.sin(angle)*speed-1.2,life:1,decay:.0038+Math.random()*.004,color:i%3===0?'#ffffff':'#ffd166',size:1+Math.random()*2.2});
@@ -6064,6 +6110,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     explodeHeart(width*.23,y+height*.08);
     explodeHeart(width*.77,y+height*.08);
     addGoldenRain(190);
+    enforceParticleBudget();
   };
   const launch=(finalKind='')=>{
     const special=finalKind==='title'||finalKind==='mega'||finalKind==='heart';
@@ -6077,6 +6124,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
     rockets.push({x:startX,y:height+14,px:startX,py:height+14,targetX,targetY,vx:(targetX-startX)/travelFrames,vy:(targetY-height-14)/travelFrames,color,finalKind,grandFinal:special});
   };
   const launchFan=(count=7)=>{
+    count=Math.max(5,Math.round(count*(.72+effectProfile.particleScale*.28)));
     const fanColors=['#ffd166','#ff8fb1','#78ddff','#ffffff','#b9ffdb'];
     for(let i=0;i<count;i+=1){
       timers.push(setTimeout(()=>{
@@ -6154,13 +6202,27 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   });
   const draw=(now)=>{
     if(!running) return;
-    const step=Math.min(2,(now-lastTime)/16.67||1);lastTime=now;
+    const frameDelta=Math.min(50,Math.max(1,now-lastTime||16.67));
+    const step=Math.min(2,frameDelta/16.67);
+    lastTime=now;
+    frameAverage=frameAverage*.92+frameDelta*.08;
+    if(now-lastPerformanceTune>1000){
+      const minimumCap=Math.round(effectProfile.maxParticles*.58);
+      if(frameAverage>23.5) adaptiveParticleCap=Math.max(minimumCap,Math.round(adaptiveParticleCap*.84));
+      else if(frameAverage<18.5 && adaptiveParticleCap<effectProfile.maxParticles) adaptiveParticleCap=Math.min(effectProfile.maxParticles,adaptiveParticleCap+60);
+      overlay.dataset.frameMs=frameAverage.toFixed(1);
+      overlay.dataset.particleCap=String(adaptiveParticleCap);
+      lastPerformanceTune=now;
+    }
+    enforceParticleBudget();
     ctx.clearRect(0,0,width,height);
     stars.forEach(star=>{
       const alpha=.24+.62*((Math.sin(now*.001*star.speed+star.phase)+1)/2);
       ctx.globalAlpha=alpha;ctx.beginPath();ctx.arc(star.x,star.y,star.size,0,Math.PI*2);ctx.fillStyle='#fff8dc';ctx.fill();ctx.globalAlpha=1;
     });
-    rockets=rockets.filter(rocket=>{
+    let rocketWrite=0;
+    for(let rocketIndex=0;rocketIndex<rockets.length;rocketIndex+=1){
+      const rocket=rockets[rocketIndex];
       rocket.px=rocket.x;rocket.py=rocket.y;rocket.x+=rocket.vx*step;rocket.y+=rocket.vy*step;
       ctx.beginPath();ctx.moveTo(rocket.px,rocket.py);ctx.lineTo(rocket.x,rocket.y);ctx.strokeStyle=rocket.color;ctx.lineWidth=2.3;ctx.stroke();
       ctx.beginPath();ctx.arc(rocket.x,rocket.y,2.4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
@@ -6207,28 +6269,38 @@ function launchYujunBirthdayFireworks(autoPlay=false){
             playTone(1047,1568,.72,.045,'sine',.16);
           },620));
         }
-        return false;
+        continue;
       }
-      return true;
-    });
-    particles=particles.filter(p=>{
+      rockets[rocketWrite]=rocket;
+      rocketWrite+=1;
+    }
+    rockets.length=rocketWrite;
+    let particleWrite=0;
+    for(let particleIndex=0;particleIndex<particles.length;particleIndex+=1){
+      const p=particles[particleIndex];
       p.px=p.x;p.py=p.y;p.x+=p.vx*step;p.y+=p.vy*step;p.vx*=Math.pow(.985,step);p.vy=(p.vy+.045*step)*Math.pow(.994,step);p.life-=p.decay*step;
-      if(p.life<=0) return false;
+      if(p.life<=0) continue;
       ctx.globalAlpha=Math.max(0,p.life);ctx.beginPath();ctx.moveTo(p.px,p.py);ctx.lineTo(p.x,p.y);ctx.strokeStyle=p.color;ctx.lineWidth=p.size;ctx.stroke();ctx.globalAlpha=1;
-      return true;
-    });
+      particles[particleWrite]=p;
+      particleWrite+=1;
+    }
+    particles.length=particleWrite;
     frame=requestAnimationFrame(draw);
   };
+  overlay._effectStats=()=>({quality:effectProfile.name,dpr,particles:particles.length,particleCap:adaptiveParticleCap,rockets:rockets.length,frameMs:Number(frameAverage.toFixed(1))});
   resize();
   window.addEventListener('resize',resize);
-  for(let i=0;i<24;i+=1) timers.push(setTimeout(()=>launch(),100+i*112));
+  const openingLaunchCount=Math.max(14,Math.round(24*effectProfile.particleScale));
+  const openingLaunchGap=Math.round(112/Math.max(.72,effectProfile.particleScale));
+  for(let i=0;i<openingLaunchCount;i+=1) timers.push(setTimeout(()=>launch(),100+i*openingLaunchGap));
   timers.push(setTimeout(()=>launchFan(7),2600));
   timers.push(setTimeout(()=>launchFan(9),6100));
   const launchTimer=setInterval(()=>{
     launch();
-    if(Math.random()>.24) timers.push(setTimeout(()=>launch(),115));
-    if(Math.random()>.68) timers.push(setTimeout(()=>launch(),235));
-  },390);
+    const reduced=effectProfile.particleScale<.85;
+    if(Math.random()>(reduced?.5:.24)) timers.push(setTimeout(()=>launch(),125));
+    if(Math.random()>(reduced?.84:.68)) timers.push(setTimeout(()=>launch(),255));
+  },effectProfile.launchInterval);
   timers.push(setTimeout(()=>overlay.classList.add('finale-mode'),9300));
   const finaleTimer=setTimeout(()=>{
     regularLaunches=false;
@@ -6237,6 +6309,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
   },10000);
   overlay._cleanup=()=>{
     running=false;cancelAnimationFrame(frame);clearInterval(launchTimer);clearInterval(letterMusicTimer);clearTimeout(finaleTimer);timers.forEach(clearTimeout);overlay.removeEventListener('pointerdown',unlockOnInteraction);window.removeEventListener('resize',resize);
+    document.body.classList.remove('occasion-effect-running');
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);

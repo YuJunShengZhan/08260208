@@ -5866,7 +5866,9 @@ function openYujunBirthdayLetter(){
 function launchYujunBirthdayFireworks(autoPlay=false){
   const year=today().getFullYear();
   const shownKey=`yujunBirthdayFireworksShown-${year}`;
-  const yearlyBirthdayCopy=pickYearlyOccasionMessage(year,YUJUN_BIRTHDAY_OCCASION_MESSAGES);
+  const yearlyBirthdayCopy=year===2026
+    ? '希望妳繼續做最真實的自己，因為我就是喜歡這樣的妳。\n生日快樂，予君寶包 !'
+    : pickYearlyOccasionMessage(year,YUJUN_BIRTHDAY_OCCASION_MESSAGES);
   if(autoPlay && localStorage.getItem(shownKey)==='1') return;
   closeOccasionEffect();
   closeYujunBirthdayFireworks();
@@ -5894,7 +5896,7 @@ function launchYujunBirthdayFireworks(autoPlay=false){
       </div>
     </div>
     <div class="birthday-fireworks-message"><div class="birthday-fireworks-bow" aria-hidden="true">🎀</div><div class="birthday-fireworks-kicker">8 / 26 · YUJUN'S DAY</div><b>予君，生日快樂</b><span>${escapeHtml(yearlyBirthdayCopy).replace(/\n/g,'<br>')}</span></div>
-    <div class="birthday-cake-stage-copy"><span>MAKE A WISH</span><b>予君，這個願望我陪妳一起許</b><i>願妳往後的每一天，都有期待也有偏愛</i></div>
+    <div class="birthday-cake-stage-copy"><span>MAKE A WISH</span><b>予君，這個願望我陪妳一起許</b><i>祝妳願望都會實現，一天比一天更幸福</i></div>
     <div class="birthday-letter-reveal" role="button" tabindex="-1" aria-label="向上滑動，抽出生日信" aria-hidden="true">
       <div class="birthday-envelope-shell">
         <div class="birthday-envelope-back"></div>

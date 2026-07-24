@@ -27,6 +27,9 @@
 --pd-banner-fertile:#fce8ec;
 --pd-banner-soon:#fce8ec;
 --pd-banner-safe:#f1f8e9;
+--pd-estimated-bg:#eee9fb;
+--pd-estimated-text:#6849a7;
+--pd-estimated-border:#9276ca;
 }
 
 input[type="date"] {
@@ -52,6 +55,9 @@ input[type="date"] {
 --pd-banner-fertile:#321722;
 --pd-banner-soon:#321722;
 --pd-banner-safe:#192a1d;
+--pd-estimated-bg:#302746;
+--pd-estimated-text:#d8c6ff;
+--pd-estimated-border:#9a80cf;
 }
 
 body{
@@ -439,6 +445,12 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-archive-empty .occasion-lock-panel::before{left:19px;top:17px}.occasion-archive-empty .occasion-lock-panel::after{right:19px;bottom:17px;font-size:20px}
 .occasion-archive-mark{width:66px;height:66px;margin:0 auto 13px;display:grid;place-items:center;border:1px solid rgba(232,99,122,.28);border-radius:50%;background:var(--white);color:var(--pink);font:700 30px/1 Georgia,serif;box-shadow:0 8px 24px rgba(201,75,100,.13),inset 0 0 0 7px rgba(232,99,122,.06)}
 .occasion-archive-empty .occasion-lock-actions{display:block;margin-top:17px}.occasion-archive-empty .occasion-lock-actions button{width:100%;background:var(--pink);border-color:var(--pink);color:#fff}
+.occasion-history .occasion-lock-panel{width:min(100%,430px);max-height:min(680px,calc(100dvh - 38px));display:flex;flex-direction:column;padding:0;overflow:hidden;text-align:left}
+.occasion-history-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 13px;border-bottom:1px solid var(--card-border)}
+.occasion-history-head .occasion-lock-title{font-size:20px}.occasion-history-close{flex:0 0 auto;width:36px;height:36px;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:20px;line-height:1;cursor:pointer}
+.occasion-history-list{display:grid;gap:8px;min-height:0;padding:13px 14px 16px;overflow-y:auto}
+.occasion-history-item{width:100%;display:grid;grid-template-columns:74px minmax(0,1fr);align-items:center;gap:10px;padding:12px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);text-align:left;cursor:pointer}
+.occasion-history-item:active{border-color:var(--pink);background:var(--pink-soft)}.occasion-history-date{color:var(--rose);font-size:11px;font-weight:800}.occasion-history-copy{min-width:0}.occasion-history-copy strong{display:block;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:14px;line-height:1.4;overflow-wrap:anywhere}.occasion-history-copy span{display:block;margin-top:3px;color:var(--text-muted);font-size:10px;line-height:1.45;overflow-wrap:anywhere}
 @keyframes occasionFadeIn{from{opacity:0}to{opacity:1}}
 @keyframes birthdayVideoLayerIn{from{opacity:0}to{opacity:1}}
 @keyframes birthdayVideoEnvelopeIn{from{opacity:0;transform:translateY(44px) scale(.88)}to{opacity:1;transform:none}}
@@ -683,7 +695,7 @@ textarea.album-video-input{min-height:74px;resize:vertical;line-height:1.55}
 .album-video-viewer-close{position:absolute;z-index:2;right:9px;top:9px;width:38px;height:38px;border:1px solid rgba(255,255,255,.4);border-radius:50%;background:rgba(15,11,14,.64);color:#fff;font-size:18px;cursor:pointer}
 [data-theme="dark"] .album-media-tab.active{box-shadow:0 3px 12px rgba(0,0,0,.28)}[data-theme="dark"] .album-video-upload-panel,[data-theme="dark"] .album-video-card{box-shadow:0 7px 22px rgba(0,0,0,.24)}
 @media(min-width:560px){.album-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:360px){.album-video-form-grid{grid-template-columns:1fr}.album-video-field.full{grid-column:auto}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
+@media(max-width:520px){.album-video-form-grid{grid-template-columns:1fr}.album-video-field.full{grid-column:auto}#album-video-date-input{min-width:0;max-width:100%;display:block;-webkit-appearance:none;appearance:none}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
 .cal-day-header{
 font-size:11px;color:var(--text-muted);text-align:center;padding:4px 0;
 }
@@ -3699,22 +3711,22 @@ onclick="hideSpecialForToday()">
       <div class="countdown-item">
         <div class="countdown-num" id="annivDays">—</div>
         <div class="countdown-desc" id="annivLabel">下個週年紀念日</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="playPreviousOccasionEffect('anniversary')">上期特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('anniversary')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('anniversary')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('anniversary')">預覽特效</button></div>
       </div>
       <div class="countdown-item">
         <div class="countdown-num" id="vdDays">—</div>
         <div class="countdown-desc" id="vdLabel">下個情人節</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="playPreviousOccasionEffect('valentine')">上期特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('valentine')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('valentine')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('valentine')">預覽特效</button></div>
       </div>
       <div class="countdown-item">
         <div class="countdown-num" id="bd1Days">—</div>
         <div class="countdown-desc">聖展生日 (2/8)</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="playPreviousOccasionEffect('shengzhan')">上期特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('shengzhan')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('shengzhan')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('shengzhan')">預覽特效</button></div>
       </div>
       <div class="countdown-item">
         <div class="countdown-num" id="bd2Days">—</div>
         <div class="countdown-desc">予君生日 (8/26)</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="playPreviousOccasionEffect('yujun')">上期特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('yujun')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">預覽特效</button></div>
       </div>
     </div>
   </div>
@@ -3799,11 +3811,11 @@ onclick="hideSpecialForToday()">
     </div>
     <form class="album-video-upload-panel" id="album-video-upload-panel" onsubmit="albumVideoSubmit(event)" hidden>
       <div class="album-video-form-grid">
-        <label class="album-video-field">影片名稱
-          <input class="album-video-input" id="album-video-title-input" maxlength="60" placeholder="替這段回憶取個名字">
-        </label>
         <label class="album-video-field">日期
           <input class="album-video-input" id="album-video-date-input" type="date">
+        </label>
+        <label class="album-video-field">影片名稱
+          <input class="album-video-input" id="album-video-title-input" maxlength="60" placeholder="替這段回憶取個名字">
         </label>
         <label class="album-video-field full">影片檔案
           <input class="album-video-file-input" id="album-video-file-input" type="file" accept="video/*" onchange="albumVideoFileChanged(event)">
@@ -4465,7 +4477,7 @@ onclick="hideSpecialForToday()">
     <div id="pd-cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center"></div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--text-muted)">
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pink);margin-right:4px"></span>已確認</span>
-      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ffe8ee;border:1px dashed var(--pink);margin-right:4px;box-sizing:border-box"></span>預估</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pd-estimated-bg);border:1px dashed var(--pd-estimated-border);margin-right:4px;box-sizing:border-box"></span>預估</span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff9800;margin-right:4px"></span>排卵日</span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fce8ec;border:1px solid var(--pink-soft);margin-right:4px"></span>易孕期</span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e3f2fd;border:1px solid #90caf9;margin-right:4px"></span>安全期</span>
@@ -5610,7 +5622,11 @@ const OCCASION_EFFECT_ARCHIVE_KEY='occasionEffectArchive-v1';
 function getOccasionEffectArchive(){
   try{
     const value=JSON.parse(localStorage.getItem(OCCASION_EFFECT_ARCHIVE_KEY)||'{}');
-    return value && typeof value==='object' ? value : {};
+    if(!value || typeof value!=='object') return {};
+    return Object.fromEntries(Object.entries(value).map(([type,entries])=>{
+      const list=(Array.isArray(entries)?entries:[entries]).filter(item=>item&&typeof item==='object');
+      return [type,list.sort((a,b)=>(Number(b.savedAt)||0)-(Number(a.savedAt)||0))];
+    }));
   }catch(e){
     return {};
   }
@@ -5619,7 +5635,22 @@ function saveOccasionEffectArchive(type,snapshot){
   if(!type || !snapshot) return;
   try{
     const archive=getOccasionEffectArchive();
-    archive[type]={...snapshot,savedAt:Date.now()};
+    const entry={...snapshot,savedAt:Date.now()};
+    const identity=[
+      String(entry.effectType||''),
+      String(entry.displayDate||''),
+      String(entry.year||''),
+      String(entry.config?.title||'')
+    ].join('|');
+    const entries=Array.isArray(archive[type])?archive[type]:[];
+    const duplicateIndex=entries.findIndex(item=>[
+      String(item.effectType||''),
+      String(item.displayDate||''),
+      String(item.year||''),
+      String(item.config?.title||'')
+    ].join('|')===identity);
+    if(duplicateIndex>=0) entries.splice(duplicateIndex,1);
+    archive[type]=[entry,...entries];
     localStorage.setItem(OCCASION_EFFECT_ARCHIVE_KEY,JSON.stringify(archive));
   }catch(e){}
 }
@@ -5647,9 +5678,8 @@ function showOccasionArchiveEmpty(type){
   document.addEventListener('keydown',closeOnEscape);
   setTimeout(()=>notice.querySelector('button')?.focus(),30);
 }
-function playPreviousOccasionEffect(type){
+function playOccasionEffectSnapshot(snapshot,type){
   closeOccasionArchiveNotice();
-  const snapshot=getOccasionEffectArchive()[type];
   if(!snapshot){
     showOccasionArchiveEmpty(type);
     return;
@@ -5663,6 +5693,53 @@ function playPreviousOccasionEffect(type){
     return;
   }
   showOccasionArchiveEmpty(type);
+}
+function playOccasionEffectHistory(type,index){
+  const snapshot=getOccasionEffectArchive()[type]?.[Number(index)];
+  closeOccasionArchiveNotice();
+  playOccasionEffectSnapshot(snapshot,type);
+}
+function showOccasionEffectHistory(type){
+  closeOccasionArchiveNotice();
+  const entries=getOccasionEffectArchive()[type]||[];
+  if(!entries.length){
+    showOccasionArchiveEmpty(type);
+    return;
+  }
+  const labels={anniversary:'週年紀念日',valentine:'情人節',shengzhan:'聖展生日',yujun:'予君生日'};
+  const notice=document.createElement('div');
+  notice.id='occasion-archive-notice';
+  notice.className='occasion-lock occasion-history';
+  notice.setAttribute('role','dialog');
+  notice.setAttribute('aria-modal','true');
+  notice.setAttribute('aria-labelledby','occasion-history-title');
+  notice.innerHTML=`<div class="occasion-lock-panel"><div class="occasion-history-head"><div><div class="occasion-lock-title" id="occasion-history-title">${labels[type]||'紀念日'}歷史特效</div><div class="occasion-lock-sub">選一個曾經正式顯示過的特效重播</div></div><button type="button" class="occasion-history-close" aria-label="關閉">×</button></div><div class="occasion-history-list"></div></div>`;
+  const list=notice.querySelector('.occasion-history-list');
+  entries.forEach((entry,index)=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='occasion-history-item';
+    const title=entry.effectType==='yujun'?'予君，生日快樂':String(entry.config?.title||labels[type]||'紀念日特效');
+    const detail=entry.effectType==='yujun'
+      ? String(entry.yearlyBirthdayCopy||'生日煙火與生日信')
+      : String(entry.config?.kicker||entry.config?.sub||'');
+    button.innerHTML=`<span class="occasion-history-date">${escapeHtml(String(entry.displayDate||entry.year||'曾經顯示'))}</span><span class="occasion-history-copy"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail.replace(/\n/g,'　')).slice(0,90)}</span></span>`;
+    button.addEventListener('click',()=>playOccasionEffectHistory(type,index));
+    list.appendChild(button);
+  });
+  notice.querySelector('.occasion-history-close').addEventListener('click',closeOccasionArchiveNotice);
+  notice.addEventListener('click',event=>{if(event.target===notice) closeOccasionArchiveNotice();});
+  document.body.appendChild(notice);
+  const closeOnEscape=event=>{
+    if(event.key!=='Escape') return;
+    closeOccasionArchiveNotice();
+    document.removeEventListener('keydown',closeOnEscape);
+  };
+  document.addEventListener('keydown',closeOnEscape);
+  setTimeout(()=>notice.querySelector('.occasion-history-item')?.focus(),30);
+}
+function playPreviousOccasionEffect(type){
+  showOccasionEffectHistory(type);
 }
 
 function previewOccasionEffect(type){
@@ -7851,6 +7928,12 @@ function albumVideoSetStatus(text='',isError=false){
   status.textContent=text;
   status.classList.toggle('error',isError);
 }
+function albumVideoLooksLikeVideo(file){
+  if(!file) return false;
+  const type=String(file.type||'').toLowerCase();
+  const name=String(file.name||'').toLowerCase();
+  return type.startsWith('video/') || /\.(mp4|mov|m4v|webm|3gp|3gpp|avi|mpeg|mpg)$/i.test(name);
+}
 function albumVideoFileChanged(event){
   const file=event.target.files?.[0];
   const copy=document.getElementById('album-video-file-copy');
@@ -7858,16 +7941,16 @@ function albumVideoFileChanged(event){
     copy.innerHTML='<strong>選擇影片</strong>從手機或電腦挑選';
     return;
   }
-  if(!String(file.type||'').startsWith('video/')){
+  if(!albumVideoLooksLikeVideo(file)){
     event.target.value='';
     copy.innerHTML='<strong>選擇影片</strong>從手機或電腦挑選';
-    albumVideoSetStatus('請選擇影片檔案',true);
+    albumVideoSetStatus('請選擇 MP4、MOV、M4V 或 WebM 影片',true);
     return;
   }
   if(file.size>ALBUM_VIDEO_MAX_BYTES){
     event.target.value='';
     copy.innerHTML='<strong>選擇影片</strong>從手機或電腦挑選';
-    albumVideoSetStatus('影片需小於 100 MB',true);
+    albumVideoSetStatus('影片超過 100 MB，請先剪短或降低畫質',true);
     return;
   }
   const size=(file.size/1024/1024).toFixed(1);
@@ -7902,15 +7985,21 @@ function uploadAlbumVideoToCloudinary(file,onProgress){
     if(folderParts.length) form.append('folder',folderParts.join('/'));
     const xhr=new XMLHttpRequest();
     xhr.open('POST',`https://api.cloudinary.com/v1_1/${encodeURIComponent(cfg.cloudName)}/video/upload`);
+    xhr.timeout=5*60*1000;
     xhr.upload.onprogress=event=>{
       if(event.lengthComputable && typeof onProgress==='function') onProgress(Math.round(event.loaded/event.total*100));
     };
     xhr.onerror=()=>reject(new Error('影片上傳失敗，請確認網路後再試'));
+    xhr.ontimeout=()=>reject(new Error('影片上傳逾時，請確認網路後再試'));
     xhr.onload=()=>{
       let data=null;
       try{data=JSON.parse(xhr.responseText||'{}');}catch(e){}
       if(xhr.status<200 || xhr.status>=300){
-        reject(new Error(data?.error?.message||`影片上傳失敗（${xhr.status}）`));
+        const cloudinaryMessage=String(data?.error?.message||'');
+        const message=/upload preset not found/i.test(cloudinaryMessage)
+          ? '影片儲存設定已失效，請更新 Cloudinary upload preset'
+          : cloudinaryMessage||`影片上傳失敗（${xhr.status}）`;
+        reject(new Error(message));
         return;
       }
       if(!data?.secure_url && !data?.url){
@@ -7927,8 +8016,8 @@ async function albumVideoSubmit(event){
   if(albumVideoUploading) return;
   const file=document.getElementById('album-video-file-input').files?.[0];
   if(!file){albumVideoSetStatus('請先選擇影片',true);return;}
-  if(!String(file.type||'').startsWith('video/')){albumVideoSetStatus('請選擇影片檔案',true);return;}
-  if(file.size>ALBUM_VIDEO_MAX_BYTES){albumVideoSetStatus('影片需小於 100 MB',true);return;}
+  if(!albumVideoLooksLikeVideo(file)){albumVideoSetStatus('請選擇 MP4、MOV、M4V 或 WebM 影片',true);return;}
+  if(file.size>ALBUM_VIDEO_MAX_BYTES){albumVideoSetStatus('影片超過 100 MB，請先剪短或降低畫質',true);return;}
   if(!hasCloudinarySettings()){albumVideoSetStatus('影片儲存空間尚未連線',true);return;}
   albumVideoUploading=true;
   const submit=document.getElementById('album-video-submit-btn');
@@ -13428,7 +13517,7 @@ function pdRefresh(){
         <span style="font-size:13px;font-weight:500;color:var(--rose)">🩸 原預測開始日 ${fmt(pendingPrediction.predictedStart)}</span>
         <span style="flex:0 0 auto;font-size:11px;background:var(--pink);color:white;padding:2px 8px;border-radius:20px">${pendingLabel}</span>
       </div>
-      <div style="font-size:12px;color:var(--text-muted)">尚未記錄實際開始日，系統會每天自動更新推遲天數。</div>
+      <div style="font-size:12px;color:var(--text-muted)">尚未記錄實際開始日</div>
     </div>`;
     shown=1;
   }
@@ -13464,7 +13553,7 @@ function pdRenderCal(){
     const date=new Date(y,m,d);
     const type=pdDayType(date,cycles);
     const isToday=date.getTime()===t.getTime();
-    const colors={period:'background:var(--pink);color:white;', 'period-estimated':'background:#ffe8ee;color:var(--rose);border:1px dashed var(--pink);', ovulate:'background:#ff9800;color:white;',fertile:'background:#fce8ec;color:var(--rose);border:1px solid var(--pink-soft);',safe:'background:#e3f2fd;color:#1565c0;'};
+    const colors={period:'background:var(--pink);color:white;', 'period-estimated':'background:var(--pd-estimated-bg);color:var(--pd-estimated-text);border:1px dashed var(--pd-estimated-border);', ovulate:'background:#ff9800;color:white;',fertile:'background:#fce8ec;color:var(--rose);border:1px solid var(--pink-soft);',safe:'background:#e3f2fd;color:#1565c0;'};
     html+=`<div style="padding:5px 2px;border-radius:8px;font-size:13px;${colors[type]||''}${isToday?'outline:2px solid var(--pink);outline-offset:1px;font-weight:700;':''}">${d}</div>`;
   }
   document.getElementById('pd-cal-grid').innerHTML=html;

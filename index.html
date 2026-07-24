@@ -643,6 +643,47 @@ font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text);font-weight:7
 .album-cal-grid{
 display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 }
+.album-media-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;margin-bottom:12px;padding:3px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light)}
+.album-media-tab{min-height:40px;border:0;border-radius:6px;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
+.album-media-tab.active{background:var(--white);color:var(--rose);box-shadow:0 3px 12px rgba(201,75,100,.1)}
+.album-media-section[hidden]{display:none!important}
+.album-video-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.album-video-heading{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:800;color:var(--pink)}
+.album-video-add{min-height:38px;padding:8px 13px;border:1px solid var(--pink);border-radius:7px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer}
+.album-video-upload-panel{margin-bottom:14px;padding:14px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 7px 22px rgba(201,75,100,.08)}
+.album-video-upload-panel[hidden]{display:none!important}
+.album-video-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.album-video-field{display:block;min-width:0;color:var(--text-muted);font-size:11px;font-weight:700}
+.album-video-field.full{grid-column:1/-1}
+.album-video-input{width:100%;min-height:42px;box-sizing:border-box;margin-top:5px;padding:9px 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
+textarea.album-video-input{min-height:74px;resize:vertical;line-height:1.55}
+.album-video-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.11)}
+.album-video-file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.album-video-file-picker{min-height:58px;box-sizing:border-box;display:flex;align-items:center;gap:10px;margin-top:5px;padding:9px 11px;border:1px dashed rgba(232,99,122,.5);border-radius:7px;background:var(--pink-light);color:var(--text);cursor:pointer}
+.album-video-file-icon{flex:0 0 auto;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:var(--white);color:var(--rose);font-size:18px}
+.album-video-file-copy{min-width:0;font-size:12px;line-height:1.45;overflow-wrap:anywhere}.album-video-file-copy strong{display:block;color:var(--rose);font-size:13px}
+.album-video-upload-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}
+.album-video-action{min-height:42px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.album-video-action.primary{border-color:var(--pink);background:var(--pink);color:#fff}.album-video-action:disabled{opacity:.58;cursor:wait}
+.album-video-status{min-height:18px;margin-top:8px;color:var(--text-muted);font-size:11px;line-height:1.5}.album-video-status.error{color:var(--rose)}
+.album-video-progress{height:5px;margin-top:6px;overflow:hidden;border-radius:999px;background:var(--pink-light)}.album-video-progress[hidden]{display:none}.album-video-progress i{display:block;width:var(--video-upload-progress,0%);height:100%;border-radius:inherit;background:var(--pink);transition:width .2s ease}
+.album-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.album-video-card{min-width:0;overflow:hidden;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 6px 18px rgba(201,75,100,.08)}
+.album-video-thumb{position:relative;width:100%;aspect-ratio:9/12;display:block;overflow:hidden;padding:0;border:0;background:#1b1518;cursor:pointer}
+.album-video-thumb img,.album-video-thumb video{width:100%;height:100%;display:block;object-fit:cover}
+.album-video-play-mark{position:absolute;left:50%;top:50%;width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.75);border-radius:50%;background:rgba(20,14,18,.58);color:#fff;font-size:18px;line-height:1;transform:translate(-50%,-50%);box-shadow:0 5px 18px rgba(0,0,0,.3);backdrop-filter:blur(3px)}
+.album-video-duration{position:absolute;right:6px;bottom:6px;padding:3px 6px;border-radius:5px;background:rgba(20,14,18,.68);color:#fff;font-size:9px;font-weight:800}
+.album-video-info{position:relative;padding:9px 38px 10px 10px}
+.album-video-title{color:var(--text);font-size:13px;font-weight:800;line-height:1.4;overflow-wrap:anywhere}.album-video-date{margin-top:3px;color:var(--text-muted);font-size:10px}.album-video-note{display:-webkit-box;margin-top:5px;overflow:hidden;color:var(--text-muted);font-size:11px;line-height:1.45;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.album-video-delete{position:absolute;right:6px;top:6px;width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--text-muted);font-size:15px;cursor:pointer}.album-video-delete:active{background:var(--pink-light);color:var(--rose)}
+.album-video-empty{grid-column:1/-1;padding:44px 18px;text-align:center;color:var(--text-muted);font-size:13px}.album-video-empty b{display:block;margin-bottom:8px;color:var(--pink);font-family:'Noto Serif TC',serif;font-size:18px}
+.album-video-viewer{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(12,9,11,.88);backdrop-filter:blur(5px)}
+.album-video-viewer-panel{position:relative;width:min(100%,620px);max-height:calc(100dvh - 28px);overflow-y:auto;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:#171216;color:#fff;box-shadow:0 24px 75px rgba(0,0,0,.55)}
+.album-video-viewer video{display:block;width:100%;max-height:72dvh;background:#000;object-fit:contain}.album-video-viewer-copy{padding:13px 48px 15px 14px}.album-video-viewer-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:800}.album-video-viewer-date{margin-top:4px;color:rgba(255,255,255,.58);font-size:11px}.album-video-viewer-note{margin-top:8px;color:rgba(255,255,255,.8);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.album-video-viewer-close{position:absolute;z-index:2;right:9px;top:9px;width:38px;height:38px;border:1px solid rgba(255,255,255,.4);border-radius:50%;background:rgba(15,11,14,.64);color:#fff;font-size:18px;cursor:pointer}
+[data-theme="dark"] .album-media-tab.active{box-shadow:0 3px 12px rgba(0,0,0,.28)}[data-theme="dark"] .album-video-upload-panel,[data-theme="dark"] .album-video-card{box-shadow:0 7px 22px rgba(0,0,0,.24)}
+@media(min-width:560px){.album-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:360px){.album-video-form-grid{grid-template-columns:1fr}.album-video-field.full{grid-column:auto}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
 .cal-day-header{
 font-size:11px;color:var(--text-muted);text-align:center;padding:4px 0;
 }
@@ -3716,6 +3757,11 @@ onclick="hideSpecialForToday()">
 <!-- ALBUM -->
 
 <div id="page-album" class="page">
+  <div class="album-media-tabs" role="tablist" aria-label="相簿內容">
+    <button type="button" class="album-media-tab active" id="album-photo-tab" role="tab" aria-selected="true" aria-controls="album-photo-section" onclick="albumSwitchMedia('photos',this)">照片</button>
+    <button type="button" class="album-media-tab" id="album-video-tab" role="tab" aria-selected="false" aria-controls="album-video-section" onclick="albumSwitchMedia('videos',this)">影片</button>
+  </div>
+  <section class="album-media-section" id="album-photo-section" role="tabpanel" aria-labelledby="album-photo-tab">
   <div class="card">
     <div class="album-cal-header">
       <button class="album-cal-nav" onclick="albumCalPrev()">‹</button>
@@ -3745,6 +3791,42 @@ onclick="hideSpecialForToday()">
       <span id="album-love-count"></span>
     </div>
   </div>
+  </section>
+  <section class="album-media-section" id="album-video-section" role="tabpanel" aria-labelledby="album-video-tab" hidden>
+    <div class="album-video-toolbar">
+      <div class="album-video-heading">影片回憶</div>
+      <button type="button" class="album-video-add" id="album-video-add-btn" onclick="albumVideoToggleUpload()">＋ 新增影片</button>
+    </div>
+    <form class="album-video-upload-panel" id="album-video-upload-panel" onsubmit="albumVideoSubmit(event)" hidden>
+      <div class="album-video-form-grid">
+        <label class="album-video-field">影片名稱
+          <input class="album-video-input" id="album-video-title-input" maxlength="60" placeholder="替這段回憶取個名字">
+        </label>
+        <label class="album-video-field">日期
+          <input class="album-video-input" id="album-video-date-input" type="date">
+        </label>
+        <label class="album-video-field full">影片檔案
+          <input class="album-video-file-input" id="album-video-file-input" type="file" accept="video/*" onchange="albumVideoFileChanged(event)">
+          <span class="album-video-file-picker">
+            <span class="album-video-file-icon">▶</span>
+            <span class="album-video-file-copy" id="album-video-file-copy"><strong>選擇影片</strong>從手機或電腦挑選</span>
+          </span>
+        </label>
+        <label class="album-video-field full">想記住的話
+          <textarea class="album-video-input" id="album-video-note-input" maxlength="500" placeholder="這段影片發生了什麼？"></textarea>
+        </label>
+      </div>
+      <div class="album-video-upload-actions">
+        <button type="button" class="album-video-action" onclick="albumVideoResetUpload(true)">取消</button>
+        <button type="submit" class="album-video-action primary" id="album-video-submit-btn">上傳影片</button>
+      </div>
+      <div class="album-video-status" id="album-video-status" aria-live="polite"></div>
+      <div class="album-video-progress" id="album-video-progress" hidden><i></i></div>
+    </form>
+    <div class="album-video-grid" id="album-video-grid">
+      <div class="album-video-empty"><b>還沒有影片</b>第一段影片會出現在這裡</div>
+    </div>
+  </section>
 </div>
 
 <!-- Day Modal -->
@@ -6662,7 +6744,10 @@ function showPage(id,btn){
   }else{
     stopHomeCountdownBroadcast();
   }
-  if(id==='album') albumRenderCal();
+  if(id==='album'){
+    if(albumActiveMedia==='videos') renderAlbumVideos();
+    else albumRenderCal();
+  }
   if(id==='memories') renderMemories();
   if(id==='fight') fightEnterScreen();
   if(isGamePage){
@@ -7598,6 +7683,313 @@ let albumLoadedMonths=new Set();
 let albumStatsData={};
 let albumStatsReady=false;
 let albumStatsBackfillStarted=false;
+let albumActiveMedia='photos';
+let albumVideosData={};
+let albumVideosSyncStarted=false;
+let albumVideoUploading=false;
+const ALBUM_VIDEO_MAX_BYTES=100*1024*1024;
+
+function albumSwitchMedia(type,button){
+  const next=type==='videos'?'videos':'photos';
+  albumActiveMedia=next;
+  document.getElementById('album-photo-section').hidden=next!=='photos';
+  document.getElementById('album-video-section').hidden=next!=='videos';
+  document.querySelectorAll('.album-media-tab').forEach(tab=>{
+    const active=tab===button || tab.id===`album-${next==='photos'?'photo':'video'}-tab`;
+    tab.classList.toggle('active',active);
+    tab.setAttribute('aria-selected',active?'true':'false');
+  });
+  if(next==='photos') albumRenderCal();
+  else renderAlbumVideos();
+}
+function albumVideoNormalize(value,key=''){
+  const url=String(value?.url||'').trim();
+  if(!url) return null;
+  return {
+    id:key,
+    url,
+    poster:String(value?.poster||'').trim(),
+    title:String(value?.title||'影片回憶').trim().slice(0,60)||'影片回憶',
+    date:String(value?.date||'').slice(0,10),
+    note:String(value?.note||'').slice(0,500),
+    duration:Number(value?.duration)||0,
+    width:Number(value?.width)||0,
+    height:Number(value?.height)||0,
+    publicId:String(value?.publicId||''),
+    createdAt:Number(value?.createdAt)||0
+  };
+}
+function albumVideoInitFirebase(){
+  if(albumVideosSyncStarted || !window._fb) return;
+  albumVideosSyncStarted=true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'albumVideos'),snap=>{
+    albumVideosData={};
+    Object.entries(snap.val()||{}).forEach(([key,value])=>{
+      const item=albumVideoNormalize(value,key);
+      if(item) albumVideosData[key]=item;
+    });
+    renderAlbumVideos();
+  },err=>{
+    console.warn('影片專區同步失敗',err);
+    albumVideosSyncStarted=false;
+    const grid=document.getElementById('album-video-grid');
+    if(grid) grid.innerHTML='<div class="album-video-empty"><b>同步失敗</b>請稍後重新開啟影片專區</div>';
+  });
+}
+function albumVideoFormatDuration(seconds){
+  const total=Math.max(0,Math.round(Number(seconds)||0));
+  const minutes=Math.floor(total/60);
+  return `${minutes}:${String(total%60).padStart(2,'0')}`;
+}
+function albumVideoPosterFromUrl(url){
+  const value=String(url||'');
+  if(!value.includes('/video/upload/')) return '';
+  return value
+    .replace('/video/upload/','/video/upload/so_0,q_auto,f_jpg/')
+    .replace(/\.[a-z0-9]+(?=([?#]|$))/i,'.jpg');
+}
+function renderAlbumVideos(){
+  const grid=document.getElementById('album-video-grid');
+  if(!grid) return;
+  const items=Object.values(albumVideosData)
+    .filter(Boolean)
+    .sort((a,b)=>(b.date||'').localeCompare(a.date||'') || b.createdAt-a.createdAt);
+  if(!items.length){
+    grid.innerHTML='<div class="album-video-empty"><b>還沒有影片</b>第一段影片會出現在這裡</div>';
+    return;
+  }
+  grid.innerHTML=items.map(item=>{
+    const encodedId=encodeURIComponent(item.id);
+    const safeUrl=escapeHtml(item.url);
+    const safePoster=escapeHtml(item.poster||albumVideoPosterFromUrl(item.url));
+    const preview=safePoster
+      ? `<img src="${safePoster}" data-video-url="${safeUrl}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="albumVideoPosterFailed(this)">`
+      : `<video src="${safeUrl}" muted playsinline preload="metadata"></video>`;
+    return `<article class="album-video-card">
+      <button type="button" class="album-video-thumb" onclick="openAlbumVideo('${encodedId}')" aria-label="播放 ${escapeHtml(item.title)}">
+        ${preview}<span class="album-video-play-mark" aria-hidden="true">▶</span>
+        ${item.duration?`<span class="album-video-duration">${albumVideoFormatDuration(item.duration)}</span>`:''}
+      </button>
+      <div class="album-video-info">
+        <div class="album-video-title">${escapeHtml(item.title)}</div>
+        <div class="album-video-date">${escapeHtml(item.date||'未設定日期')}</div>
+        ${item.note?`<div class="album-video-note">${escapeHtml(item.note)}</div>`:''}
+        <button type="button" class="album-video-delete" onclick="deleteAlbumVideo('${encodedId}')" aria-label="刪除 ${escapeHtml(item.title)}" title="刪除">✕</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+function albumVideoPosterFailed(img){
+  const video=document.createElement('video');
+  video.src=img.dataset.videoUrl||'';
+  video.muted=true;
+  video.playsInline=true;
+  video.preload='metadata';
+  img.replaceWith(video);
+}
+function openAlbumVideo(encodedId){
+  const id=decodeURIComponent(encodedId||'');
+  const item=albumVideosData[id];
+  if(!item) return;
+  closeAlbumVideo();
+  const overlay=document.createElement('div');
+  overlay.id='album-video-viewer';
+  overlay.className='album-video-viewer';
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-modal','true');
+  overlay.setAttribute('aria-label',item.title);
+  const poster=item.poster||albumVideoPosterFromUrl(item.url);
+  overlay.innerHTML=`<div class="album-video-viewer-panel">
+    <button type="button" class="album-video-viewer-close" onclick="closeAlbumVideo()" aria-label="關閉影片">✕</button>
+    <video src="${escapeHtml(item.url)}" ${poster?`poster="${escapeHtml(poster)}"`:''} controls playsinline preload="metadata"></video>
+    <div class="album-video-viewer-copy">
+      <div class="album-video-viewer-title">${escapeHtml(item.title)}</div>
+      <div class="album-video-viewer-date">${escapeHtml(item.date||'未設定日期')}</div>
+      ${item.note?`<div class="album-video-viewer-note">${escapeHtml(item.note)}</div>`:''}
+    </div>
+  </div>`;
+  overlay.addEventListener('click',event=>{if(event.target===overlay) closeAlbumVideo();});
+  const closeOnEscape=event=>{if(event.key==='Escape') closeAlbumVideo();};
+  overlay._closeOnEscape=closeOnEscape;
+  overlay._previousOverflow=document.body.style.overflow;
+  const backgroundAudio=document.getElementById('audio-player');
+  overlay._resumeMusic=!!(backgroundAudio && !backgroundAudio.paused);
+  backgroundAudio?.pause();
+  document.addEventListener('keydown',closeOnEscape);
+  document.body.appendChild(overlay);
+  document.body.style.overflow='hidden';
+  const video=overlay.querySelector('video');
+  video.play().catch(()=>{});
+}
+function closeAlbumVideo(){
+  const overlay=document.getElementById('album-video-viewer');
+  if(!overlay) return;
+  overlay.querySelector('video')?.pause();
+  if(overlay._closeOnEscape) document.removeEventListener('keydown',overlay._closeOnEscape);
+  const shouldResumeMusic=overlay._resumeMusic===true;
+  const previousOverflow=overlay._previousOverflow||'';
+  overlay.remove();
+  document.body.style.overflow=previousOverflow;
+  if(shouldResumeMusic) document.getElementById('audio-player')?.play().catch(()=>{});
+}
+function albumVideoToggleUpload(){
+  if(albumVideoUploading) return;
+  const panel=document.getElementById('album-video-upload-panel');
+  const opening=panel.hidden;
+  panel.hidden=!opening;
+  document.getElementById('album-video-add-btn').textContent=opening?'收起':'＋ 新增影片';
+  if(opening){
+    const dateInput=document.getElementById('album-video-date-input');
+    if(!dateInput.value) dateInput.value=pdDateString();
+    setTimeout(()=>document.getElementById('album-video-title-input')?.focus(),30);
+  }
+}
+function albumVideoSetStatus(text='',isError=false){
+  const status=document.getElementById('album-video-status');
+  if(!status) return;
+  status.textContent=text;
+  status.classList.toggle('error',isError);
+}
+function albumVideoFileChanged(event){
+  const file=event.target.files?.[0];
+  const copy=document.getElementById('album-video-file-copy');
+  if(!file){
+    copy.innerHTML='<strong>選擇影片</strong>從手機或電腦挑選';
+    return;
+  }
+  if(!String(file.type||'').startsWith('video/')){
+    event.target.value='';
+    copy.innerHTML='<strong>選擇影片</strong>從手機或電腦挑選';
+    albumVideoSetStatus('請選擇影片檔案',true);
+    return;
+  }
+  if(file.size>ALBUM_VIDEO_MAX_BYTES){
+    event.target.value='';
+    copy.innerHTML='<strong>選擇影片</strong>從手機或電腦挑選';
+    albumVideoSetStatus('影片需小於 100 MB',true);
+    return;
+  }
+  const size=(file.size/1024/1024).toFixed(1);
+  copy.innerHTML=`<strong>${escapeHtml(file.name)}</strong>${size} MB`;
+  const title=document.getElementById('album-video-title-input');
+  if(!title.value.trim()) title.value=String(file.name||'影片回憶').replace(/\.[^.]+$/,'').slice(0,60);
+  albumVideoSetStatus('');
+}
+function albumVideoResetUpload(closePanel=false){
+  if(albumVideoUploading) return;
+  document.getElementById('album-video-title-input').value='';
+  document.getElementById('album-video-note-input').value='';
+  document.getElementById('album-video-file-input').value='';
+  document.getElementById('album-video-file-copy').innerHTML='<strong>選擇影片</strong>從手機或電腦挑選';
+  document.getElementById('album-video-date-input').value=pdDateString();
+  document.getElementById('album-video-progress').hidden=true;
+  document.getElementById('album-video-progress').style.setProperty('--video-upload-progress','0%');
+  albumVideoSetStatus('');
+  if(closePanel){
+    document.getElementById('album-video-upload-panel').hidden=true;
+    document.getElementById('album-video-add-btn').textContent='＋ 新增影片';
+  }
+}
+function uploadAlbumVideoToCloudinary(file,onProgress){
+  const cfg=getCloudinarySettings();
+  if(!cfg) return Promise.reject(new Error('影片儲存空間尚未連線'));
+  return new Promise((resolve,reject)=>{
+    const form=new FormData();
+    form.append('file',file,file.name||'video.mp4');
+    form.append('upload_preset',cfg.uploadPreset);
+    const folderParts=[cfg.folder,'videos'].map(cloudinarySafeSegment).filter(Boolean);
+    if(folderParts.length) form.append('folder',folderParts.join('/'));
+    const xhr=new XMLHttpRequest();
+    xhr.open('POST',`https://api.cloudinary.com/v1_1/${encodeURIComponent(cfg.cloudName)}/video/upload`);
+    xhr.upload.onprogress=event=>{
+      if(event.lengthComputable && typeof onProgress==='function') onProgress(Math.round(event.loaded/event.total*100));
+    };
+    xhr.onerror=()=>reject(new Error('影片上傳失敗，請確認網路後再試'));
+    xhr.onload=()=>{
+      let data=null;
+      try{data=JSON.parse(xhr.responseText||'{}');}catch(e){}
+      if(xhr.status<200 || xhr.status>=300){
+        reject(new Error(data?.error?.message||`影片上傳失敗（${xhr.status}）`));
+        return;
+      }
+      if(!data?.secure_url && !data?.url){
+        reject(new Error('影片上傳完成，但沒有取得播放網址'));
+        return;
+      }
+      resolve(data);
+    };
+    xhr.send(form);
+  });
+}
+async function albumVideoSubmit(event){
+  event.preventDefault();
+  if(albumVideoUploading) return;
+  const file=document.getElementById('album-video-file-input').files?.[0];
+  if(!file){albumVideoSetStatus('請先選擇影片',true);return;}
+  if(!String(file.type||'').startsWith('video/')){albumVideoSetStatus('請選擇影片檔案',true);return;}
+  if(file.size>ALBUM_VIDEO_MAX_BYTES){albumVideoSetStatus('影片需小於 100 MB',true);return;}
+  if(!hasCloudinarySettings()){albumVideoSetStatus('影片儲存空間尚未連線',true);return;}
+  albumVideoUploading=true;
+  const submit=document.getElementById('album-video-submit-btn');
+  const progress=document.getElementById('album-video-progress');
+  submit.disabled=true;
+  progress.hidden=false;
+  progress.style.setProperty('--video-upload-progress','0%');
+  albumVideoSetStatus('正在上傳影片 0%');
+  try{
+    const data=await uploadAlbumVideoToCloudinary(file,percent=>{
+      progress.style.setProperty('--video-upload-progress',`${percent}%`);
+      albumVideoSetStatus(`正在上傳影片 ${percent}%`);
+    });
+    const url=data.secure_url||data.url;
+    const id=`video_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+    const record={
+      url,
+      poster:albumVideoPosterFromUrl(url),
+      title:(document.getElementById('album-video-title-input').value.trim()||String(file.name||'影片回憶').replace(/\.[^.]+$/,'')).slice(0,60),
+      date:document.getElementById('album-video-date-input').value||pdDateString(),
+      note:document.getElementById('album-video-note-input').value.trim().slice(0,500),
+      duration:Number(data.duration)||0,
+      width:Number(data.width)||0,
+      height:Number(data.height)||0,
+      publicId:String(data.public_id||''),
+      createdAt:Date.now()
+    };
+    albumVideosData[id]=albumVideoNormalize(record,id);
+    renderAlbumVideos();
+    if(window._fb){
+      const {db,ref,set}=window._fb;
+      try{await set(ref(db,`albumVideos/${id}`),record);}
+      catch(err){queueFirebaseWrite(`albumVideos/${id}`,record);}
+    }else{
+      queueFirebaseWrite(`albumVideos/${id}`,record);
+    }
+    progress.style.setProperty('--video-upload-progress','100%');
+    albumVideoSetStatus(window._fb?'影片已上傳並同步':'影片已上傳，等待同步');
+    setTimeout(()=>albumVideoResetUpload(true),1100);
+  }catch(err){
+    console.error('影片上傳失敗',err);
+    albumVideoSetStatus(err?.message||'影片上傳失敗，請稍後再試',true);
+  }finally{
+    albumVideoUploading=false;
+    submit.disabled=false;
+  }
+}
+async function deleteAlbumVideo(encodedId){
+  const id=decodeURIComponent(encodedId||'');
+  const item=albumVideosData[id];
+  if(!item || !confirm(`刪除「${item.title}」？`)) return;
+  delete albumVideosData[id];
+  renderAlbumVideos();
+  if(window._fb){
+    const {db,ref,remove}=window._fb;
+    try{await remove(ref(db,`albumVideos/${id}`));}
+    catch(err){queueFirebaseWrite(`albumVideos/${id}`,null);}
+  }else{
+    queueFirebaseWrite(`albumVideos/${id}`,null);
+  }
+}
 
 
 function albumHasDayContent(dayData){
@@ -7705,6 +8097,7 @@ function albumLoadMonth(y=albumYear,m=albumMonth){
 }
 function albumInitFirebase(){
   albumInitStats();
+  albumVideoInitFirebase();
   albumLoadMonth(albumYear, albumMonth);
   flushAlbumPendingWrites();
 }
@@ -12999,7 +13392,7 @@ function pdRefresh(){
       bannerSub='目前還沒有記錄經期開始，實際來了再按下方按鈕記錄';
     }else{
       bannerTitle=`經期推遲第 ${pendingPrediction.delayedDays} 天`;
-      bannerSub='系統會持續計算到實際經期開始；來了之後按下方按鈕記錄即可';
+      bannerSub='';
     }
   }else{
     for(const c of cycles){

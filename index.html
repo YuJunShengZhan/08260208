@@ -661,7 +661,12 @@ display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 .album-media-section[hidden]{display:none!important}
 .album-video-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
 .album-video-heading{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:800;color:var(--pink)}
+.album-video-toolbar-actions{display:flex;align-items:center;gap:7px}
 .album-video-add{min-height:38px;padding:8px 13px;border:1px solid var(--pink);border-radius:7px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer}
+.album-video-filter{min-height:38px;padding:8px 12px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer}.album-video-filter.active{border-color:var(--pink);background:var(--pink-light)}
+.album-video-filter-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end;gap:8px;margin-bottom:12px;padding:11px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 7px 22px rgba(201,75,100,.08)}
+.album-video-filter-panel[hidden]{display:none!important}.album-video-filter-field{min-width:0;color:var(--text-muted);font-size:11px;font-weight:700}.album-video-filter-select{width:100%;min-height:40px;margin-top:5px;padding:8px 9px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:12px;outline:none}.album-video-filter-select:focus{border-color:var(--pink)}.album-video-filter-select:disabled{opacity:.55}
+.album-video-filter-clear{min-width:48px;min-height:40px;padding:8px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer}
 .album-video-upload-panel{margin-bottom:14px;padding:14px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 7px 22px rgba(201,75,100,.08)}
 .album-video-upload-panel[hidden]{display:none!important}
 .album-video-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
@@ -696,6 +701,7 @@ textarea.album-video-input{min-height:74px;resize:vertical;line-height:1.55}
 [data-theme="dark"] .album-media-tab.active{box-shadow:0 3px 12px rgba(0,0,0,.28)}[data-theme="dark"] .album-video-upload-panel,[data-theme="dark"] .album-video-card{box-shadow:0 7px 22px rgba(0,0,0,.24)}
 @media(min-width:560px){.album-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:520px){.album-video-form-grid{grid-template-columns:1fr}.album-video-field.full{grid-column:auto}#album-video-date-input{min-width:0;max-width:100%;display:block;-webkit-appearance:none;appearance:none}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
+@media(max-width:350px){.album-video-filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.album-video-filter-clear{grid-column:1/-1}}
 .cal-day-header{
 font-size:11px;color:var(--text-muted);text-align:center;padding:4px 0;
 }
@@ -3807,7 +3813,19 @@ onclick="hideSpecialForToday()">
   <section class="album-media-section" id="album-video-section" role="tabpanel" aria-labelledby="album-video-tab" hidden>
     <div class="album-video-toolbar">
       <div class="album-video-heading">影片回憶</div>
-      <button type="button" class="album-video-add" id="album-video-add-btn" onclick="albumVideoToggleUpload()">＋ 新增影片</button>
+      <div class="album-video-toolbar-actions">
+        <button type="button" class="album-video-filter" id="album-video-filter-btn" onclick="albumVideoToggleFilter()" aria-expanded="false">篩選</button>
+        <button type="button" class="album-video-add" id="album-video-add-btn" onclick="albumVideoToggleUpload()">＋ 新增影片</button>
+      </div>
+    </div>
+    <div class="album-video-filter-panel" id="album-video-filter-panel" hidden>
+      <label class="album-video-filter-field">年份
+        <select class="album-video-filter-select" id="album-video-filter-year" onchange="albumVideoFilterChanged()"></select>
+      </label>
+      <label class="album-video-filter-field">月份
+        <select class="album-video-filter-select" id="album-video-filter-month" onchange="albumVideoFilterChanged()"></select>
+      </label>
+      <button type="button" class="album-video-filter-clear" onclick="albumVideoClearFilter()">清除</button>
     </div>
     <form class="album-video-upload-panel" id="album-video-upload-panel" onsubmit="albumVideoSubmit(event)" hidden>
       <div class="album-video-form-grid">
@@ -7764,6 +7782,8 @@ let albumActiveMedia='photos';
 let albumVideosData={};
 let albumVideosSyncStarted=false;
 let albumVideoUploading=false;
+let albumVideoFilterYear='';
+let albumVideoFilterMonth='';
 const ALBUM_VIDEO_MAX_BYTES=100*1024*1024;
 
 function albumSwitchMedia(type,button){
@@ -7826,14 +7846,70 @@ function albumVideoPosterFromUrl(url){
     .replace('/video/upload/','/video/upload/so_0,q_auto,f_jpg/')
     .replace(/\.[a-z0-9]+(?=([?#]|$))/i,'.jpg');
 }
+function albumVideoRefreshFilterOptions(items){
+  const yearSelect=document.getElementById('album-video-filter-year');
+  const monthSelect=document.getElementById('album-video-filter-month');
+  const button=document.getElementById('album-video-filter-btn');
+  if(!yearSelect || !monthSelect || !button) return;
+  const years=[...new Set(items.map(item=>String(item.date||'').slice(0,4)).filter(year=>/^\d{4}$/.test(year)))]
+    .sort((a,b)=>b.localeCompare(a));
+  if(albumVideoFilterYear && !years.includes(albumVideoFilterYear)){
+    albumVideoFilterYear='';
+    albumVideoFilterMonth='';
+  }
+  yearSelect.innerHTML='<option value="">全部年份</option>'+years.map(year=>`<option value="${year}"${year===albumVideoFilterYear?' selected':''}>${year} 年</option>`).join('');
+  yearSelect.value=albumVideoFilterYear;
+  const months=albumVideoFilterYear
+    ? [...new Set(items.filter(item=>String(item.date||'').startsWith(`${albumVideoFilterYear}-`)).map(item=>String(item.date||'').slice(5,7)).filter(month=>/^\d{2}$/.test(month)))].sort((a,b)=>b.localeCompare(a))
+    : [];
+  if(albumVideoFilterMonth && !months.includes(albumVideoFilterMonth)) albumVideoFilterMonth='';
+  monthSelect.disabled=!albumVideoFilterYear;
+  monthSelect.innerHTML='<option value="">全年</option>'+months.map(month=>`<option value="${month}"${month===albumVideoFilterMonth?' selected':''}>${Number(month)} 月</option>`).join('');
+  monthSelect.value=albumVideoFilterMonth;
+  const active=!!albumVideoFilterYear;
+  button.classList.toggle('active',active);
+  button.textContent=active
+    ? `${albumVideoFilterYear} 年${albumVideoFilterMonth?` / ${Number(albumVideoFilterMonth)} 月`:''}`
+    : '篩選';
+}
+function albumVideoToggleFilter(){
+  const panel=document.getElementById('album-video-filter-panel');
+  const button=document.getElementById('album-video-filter-btn');
+  if(!panel || !button) return;
+  const opening=panel.hidden;
+  panel.hidden=!opening;
+  button.setAttribute('aria-expanded',opening?'true':'false');
+  if(opening) albumVideoRefreshFilterOptions(Object.values(albumVideosData).filter(Boolean));
+}
+function albumVideoFilterChanged(){
+  const yearSelect=document.getElementById('album-video-filter-year');
+  const monthSelect=document.getElementById('album-video-filter-month');
+  albumVideoFilterYear=String(yearSelect?.value||'');
+  albumVideoFilterMonth=albumVideoFilterYear?String(monthSelect?.value||''):'';
+  renderAlbumVideos();
+}
+function albumVideoClearFilter(){
+  albumVideoFilterYear='';
+  albumVideoFilterMonth='';
+  renderAlbumVideos();
+}
 function renderAlbumVideos(){
   const grid=document.getElementById('album-video-grid');
   if(!grid) return;
-  const items=Object.values(albumVideosData)
+  const allItems=Object.values(albumVideosData)
     .filter(Boolean)
     .sort((a,b)=>(b.date||'').localeCompare(a.date||'') || b.createdAt-a.createdAt);
+  albumVideoRefreshFilterOptions(allItems);
+  const items=allItems.filter(item=>{
+    const date=String(item.date||'');
+    if(albumVideoFilterYear && !date.startsWith(`${albumVideoFilterYear}-`)) return false;
+    if(albumVideoFilterMonth && date.slice(5,7)!==albumVideoFilterMonth) return false;
+    return true;
+  });
   if(!items.length){
-    grid.innerHTML='<div class="album-video-empty"><b>還沒有影片</b>第一段影片會出現在這裡</div>';
+    grid.innerHTML=allItems.length
+      ? '<div class="album-video-empty"><b>這個月份沒有影片</b>可以重新選擇其他年月</div>'
+      : '<div class="album-video-empty"><b>還沒有影片</b>第一段影片會出現在這裡</div>';
     return;
   }
   grid.innerHTML=items.map(item=>{

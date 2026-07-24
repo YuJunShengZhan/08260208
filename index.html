@@ -696,8 +696,9 @@ textarea.album-video-input{min-height:74px;resize:vertical;line-height:1.55}
 .album-video-empty{grid-column:1/-1;padding:44px 18px;text-align:center;color:var(--text-muted);font-size:13px}.album-video-empty b{display:block;margin-bottom:8px;color:var(--pink);font-family:'Noto Serif TC',serif;font-size:18px}
 .album-video-viewer{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(12,9,11,.88);backdrop-filter:blur(5px)}
 .album-video-viewer-panel{position:relative;width:min(100%,620px);max-height:calc(100dvh - 28px);overflow-y:auto;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:#171216;color:#fff;box-shadow:0 24px 75px rgba(0,0,0,.55)}
-.album-video-viewer video{display:block;width:100%;max-height:72dvh;background:#000;object-fit:contain}.album-video-viewer-copy{padding:13px 48px 15px 14px}.album-video-viewer-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:800}.album-video-viewer-date{margin-top:4px;color:rgba(255,255,255,.58);font-size:11px}.album-video-viewer-note{margin-top:8px;color:rgba(255,255,255,.8);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
-.album-video-viewer-close{position:absolute;z-index:2;right:9px;top:9px;width:38px;height:38px;border:1px solid rgba(255,255,255,.4);border-radius:50%;background:rgba(15,11,14,.64);color:#fff;font-size:18px;cursor:pointer}
+.album-video-viewer-topbar{min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 9px 7px 14px;border-bottom:1px solid rgba(255,255,255,.12);background:#21191f}.album-video-viewer-topbar span{min-width:0;overflow:hidden;color:rgba(255,255,255,.76);font-size:12px;font-weight:800;white-space:nowrap;text-overflow:ellipsis}.album-video-viewer-controls{display:flex;align-items:center;gap:7px}
+.album-video-viewer video{display:block;width:100%;max-height:72dvh;background:#000;object-fit:contain}.album-video-viewer-copy{padding:13px 14px 15px}.album-video-viewer-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:800}.album-video-viewer-date{margin-top:4px;color:rgba(255,255,255,.58);font-size:11px}.album-video-viewer-note{margin-top:8px;color:rgba(255,255,255,.8);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.album-video-viewer-sound,.album-video-viewer-close{position:static;flex:0 0 auto;width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(15,11,14,.5);color:#fff;cursor:pointer}.album-video-viewer-sound img{width:18px;height:18px;filter:brightness(0) invert(1)}.album-video-viewer-close{font-size:18px}
 [data-theme="dark"] .album-media-tab.active{box-shadow:0 3px 12px rgba(0,0,0,.28)}[data-theme="dark"] .album-video-upload-panel,[data-theme="dark"] .album-video-card{box-shadow:0 7px 22px rgba(0,0,0,.24)}
 @media(min-width:560px){.album-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:520px){.album-video-form-grid{grid-template-columns:1fr}.album-video-field.full{grid-column:auto}#album-video-date-input{min-width:0;max-width:100%;display:block;-webkit-appearance:none;appearance:none}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
@@ -7954,7 +7955,13 @@ function openAlbumVideo(encodedId){
   overlay.setAttribute('aria-label',item.title);
   const poster=item.poster||albumVideoPosterFromUrl(item.url);
   overlay.innerHTML=`<div class="album-video-viewer-panel">
-    <button type="button" class="album-video-viewer-close" onclick="closeAlbumVideo()" aria-label="關閉影片">✕</button>
+    <div class="album-video-viewer-topbar">
+      <span>${escapeHtml(item.title)}</span>
+      <div class="album-video-viewer-controls">
+        <button type="button" class="album-video-viewer-sound" onclick="toggleAlbumVideoMute(this)" aria-label="將影片靜音" title="靜音"><img src="assets/volume-2.svg" alt=""></button>
+        <button type="button" class="album-video-viewer-close" onclick="closeAlbumVideo()" aria-label="關閉影片" title="關閉">✕</button>
+      </div>
+    </div>
     <video src="${escapeHtml(item.url)}" ${poster?`poster="${escapeHtml(poster)}"`:''} controls playsinline preload="metadata"></video>
     <div class="album-video-viewer-copy">
       <div class="album-video-viewer-title">${escapeHtml(item.title)}</div>
@@ -7974,6 +7981,14 @@ function openAlbumVideo(encodedId){
   document.body.style.overflow='hidden';
   const video=overlay.querySelector('video');
   video.play().catch(()=>{});
+}
+function toggleAlbumVideoMute(button){
+  const video=document.querySelector('#album-video-viewer video');
+  if(!video || !button) return;
+  video.muted=!video.muted;
+  button.innerHTML=`<img src="assets/${video.muted?'volume-off':'volume-2'}.svg" alt="">`;
+  button.setAttribute('aria-label',video.muted?'開啟影片聲音':'將影片靜音');
+  button.title=video.muted?'開啟聲音':'靜音';
 }
 function closeAlbumVideo(){
   const overlay=document.getElementById('album-video-viewer');

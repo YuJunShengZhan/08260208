@@ -8046,8 +8046,6 @@ function albumVideoFileChanged(event){
   }
   const size=(file.size/1024/1024).toFixed(1);
   copy.innerHTML=`<strong>${escapeHtml(file.name)}</strong>${size} MB`;
-  const title=document.getElementById('album-video-title-input');
-  if(!title.value.trim()) title.value=String(file.name||'影片回憶').replace(/\.[^.]+$/,'').slice(0,60);
   albumVideoSetStatus('');
 }
 function albumVideoResetUpload(closePanel=false){
@@ -8127,7 +8125,7 @@ async function albumVideoSubmit(event){
     const record={
       url,
       poster:albumVideoPosterFromUrl(url),
-      title:(document.getElementById('album-video-title-input').value.trim()||String(file.name||'影片回憶').replace(/\.[^.]+$/,'')).slice(0,60),
+      title:(document.getElementById('album-video-title-input').value.trim()||'影片回憶').slice(0,60),
       date:document.getElementById('album-video-date-input').value||pdDateString(),
       note:document.getElementById('album-video-note-input').value.trim().slice(0,500),
       duration:Number(data.duration)||0,

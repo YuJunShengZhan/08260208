@@ -690,10 +690,11 @@ textarea.album-video-input{min-height:74px;resize:vertical;line-height:1.55}
 .album-video-thumb img,.album-video-thumb video{width:100%;height:100%;display:block;object-fit:cover}
 .album-video-play-mark{position:absolute;left:50%;top:50%;width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.75);border-radius:50%;background:rgba(20,14,18,.58);color:#fff;font-size:18px;line-height:1;transform:translate(-50%,-50%);box-shadow:0 5px 18px rgba(0,0,0,.3);backdrop-filter:blur(3px)}
 .album-video-duration{position:absolute;right:6px;bottom:6px;padding:3px 6px;border-radius:5px;background:rgba(20,14,18,.68);color:#fff;font-size:9px;font-weight:800}
-.album-video-info{position:relative;padding:9px 38px 10px 10px}
+.album-video-info{position:relative;padding:9px 68px 10px 10px}
 .album-video-title{color:var(--text);font-size:13px;font-weight:800;line-height:1.4;overflow-wrap:anywhere}.album-video-date{margin-top:3px;color:var(--text-muted);font-size:10px}.album-video-note{display:-webkit-box;margin-top:5px;overflow:hidden;color:var(--text-muted);font-size:11px;line-height:1.45;-webkit-box-orient:vertical;-webkit-line-clamp:2}
-.album-video-delete{position:absolute;right:6px;top:6px;width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--text-muted);font-size:15px;cursor:pointer}.album-video-delete:active{background:var(--pink-light);color:var(--rose)}
+.album-video-card-actions{position:absolute;right:5px;top:5px;display:flex;align-items:center;gap:2px}.album-video-edit,.album-video-delete{width:28px;height:28px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--text-muted);font-size:15px;cursor:pointer}.album-video-edit:active,.album-video-delete:active{background:var(--pink-light);color:var(--rose)}
 .album-video-empty{grid-column:1/-1;padding:44px 18px;text-align:center;color:var(--text-muted);font-size:13px}.album-video-empty b{display:block;margin-bottom:8px;color:var(--pink);font-family:'Noto Serif TC',serif;font-size:18px}
+.album-video-editor{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(24,15,20,.7);backdrop-filter:blur(6px)}.album-video-editor-panel{width:min(100%,460px);max-height:calc(100dvh - 28px);overflow-y:auto;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 22px 65px rgba(25,10,16,.35)}.album-video-editor-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 15px 11px;border-bottom:1px solid var(--card-border)}.album-video-editor-title{font-family:'Noto Serif TC',serif;font-size:19px;font-weight:800;color:var(--rose)}.album-video-editor-close{flex:0 0 auto;width:36px;height:36px;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:18px;cursor:pointer}.album-video-editor-body{padding:14px}.album-video-editor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.album-video-editor-grid .full{grid-column:1/-1}.album-video-editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.album-video-editor-actions button{min-height:43px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer}.album-video-editor-actions .save{border-color:var(--pink);background:var(--pink);color:#fff}.album-video-editor-actions button:disabled{opacity:.58;cursor:wait}.album-video-editor-status{min-height:18px;margin-top:7px;color:var(--rose);font-size:11px}
 .album-video-viewer{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(12,9,11,.88);backdrop-filter:blur(5px)}
 .album-video-viewer-panel{position:relative;width:min(100%,620px);max-height:calc(100dvh - 28px);overflow-y:auto;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:#171216;color:#fff;box-shadow:0 24px 75px rgba(0,0,0,.55)}
 .album-video-viewer-topbar{min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 9px 7px 14px;border-bottom:1px solid rgba(255,255,255,.12);background:#21191f}.album-video-viewer-topbar span{min-width:0;overflow:hidden;color:rgba(255,255,255,.76);font-size:12px;font-weight:800;white-space:nowrap;text-overflow:ellipsis}.album-video-viewer-controls{display:flex;align-items:center;gap:7px}
@@ -701,7 +702,7 @@ textarea.album-video-input{min-height:74px;resize:vertical;line-height:1.55}
 .album-video-viewer-sound,.album-video-viewer-close{position:static;flex:0 0 auto;width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(15,11,14,.5);color:#fff;cursor:pointer}.album-video-viewer-sound img{width:18px;height:18px;filter:brightness(0) invert(1)}.album-video-viewer-close{font-size:18px}
 [data-theme="dark"] .album-media-tab.active{box-shadow:0 3px 12px rgba(0,0,0,.28)}[data-theme="dark"] .album-video-upload-panel,[data-theme="dark"] .album-video-card{box-shadow:0 7px 22px rgba(0,0,0,.24)}
 @media(min-width:560px){.album-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:520px){.album-video-form-grid{grid-template-columns:1fr}.album-video-field.full{grid-column:auto}#album-video-date-input{min-width:0;max-width:100%;display:block;-webkit-appearance:none;appearance:none}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
+@media(max-width:520px){.album-video-form-grid,.album-video-editor-grid{grid-template-columns:1fr}.album-video-field.full,.album-video-editor-grid .full{grid-column:auto}#album-video-date-input{min-width:0;max-width:100%;display:block;-webkit-appearance:none;appearance:none}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
 @media(max-width:350px){.album-video-filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.album-video-filter-clear{grid-column:1/-1}}
 .cal-day-header{
 font-size:11px;color:var(--text-muted);text-align:center;padding:4px 0;
@@ -7929,7 +7930,10 @@ function renderAlbumVideos(){
         <div class="album-video-title">${escapeHtml(item.title)}</div>
         <div class="album-video-date">${escapeHtml(item.date||'未設定日期')}</div>
         ${item.note?`<div class="album-video-note">${escapeHtml(item.note)}</div>`:''}
-        <button type="button" class="album-video-delete" onclick="deleteAlbumVideo('${encodedId}')" aria-label="刪除 ${escapeHtml(item.title)}" title="刪除">✕</button>
+        <div class="album-video-card-actions">
+          <button type="button" class="album-video-edit" onclick="openAlbumVideoEdit('${encodedId}')" aria-label="編輯 ${escapeHtml(item.title)}" title="編輯">✎</button>
+          <button type="button" class="album-video-delete" onclick="deleteAlbumVideo('${encodedId}')" aria-label="刪除 ${escapeHtml(item.title)}" title="刪除">✕</button>
+        </div>
       </div>
     </article>`;
   }).join('');
@@ -7941,6 +7945,96 @@ function albumVideoPosterFailed(img){
   video.playsInline=true;
   video.preload='metadata';
   img.replaceWith(video);
+}
+function openAlbumVideoEdit(encodedId){
+  const id=decodeURIComponent(encodedId||'');
+  const item=albumVideosData[id];
+  if(!item) return;
+  closeAlbumVideoEdit();
+  const overlay=document.createElement('div');
+  overlay.id='album-video-editor';
+  overlay.className='album-video-editor';
+  overlay.dataset.videoId=id;
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-modal','true');
+  overlay.setAttribute('aria-labelledby','album-video-editor-title');
+  overlay.innerHTML=`<div class="album-video-editor-panel">
+    <div class="album-video-editor-head">
+      <div class="album-video-editor-title" id="album-video-editor-title">編輯影片</div>
+      <button type="button" class="album-video-editor-close" onclick="closeAlbumVideoEdit()" aria-label="關閉編輯">✕</button>
+    </div>
+    <div class="album-video-editor-body">
+      <div class="album-video-editor-grid">
+        <label class="album-video-field">日期
+          <input class="album-video-input" id="album-video-edit-date" type="date">
+        </label>
+        <label class="album-video-field">影片名稱
+          <input class="album-video-input" id="album-video-edit-title" maxlength="60" placeholder="替這段回憶取個名字">
+        </label>
+        <label class="album-video-field full">想記住的話
+          <textarea class="album-video-input" id="album-video-edit-note" maxlength="500" placeholder="這段影片發生了什麼？"></textarea>
+        </label>
+      </div>
+      <div class="album-video-editor-actions">
+        <button type="button" onclick="closeAlbumVideoEdit()">取消</button>
+        <button type="button" class="save" id="album-video-edit-save" onclick="saveAlbumVideoEdit()">儲存修改</button>
+      </div>
+      <div class="album-video-editor-status" id="album-video-editor-status" aria-live="polite"></div>
+    </div>
+  </div>`;
+  overlay.querySelector('#album-video-edit-date').value=item.date||'';
+  overlay.querySelector('#album-video-edit-title').value=item.title==='影片回憶'?'':item.title;
+  overlay.querySelector('#album-video-edit-note').value=item.note||'';
+  overlay.addEventListener('click',event=>{if(event.target===overlay) closeAlbumVideoEdit();});
+  const closeOnEscape=event=>{if(event.key==='Escape') closeAlbumVideoEdit();};
+  overlay._closeOnEscape=closeOnEscape;
+  overlay._previousOverflow=document.body.style.overflow;
+  document.addEventListener('keydown',closeOnEscape);
+  document.body.appendChild(overlay);
+  document.body.style.overflow='hidden';
+  setTimeout(()=>overlay.querySelector('#album-video-edit-title')?.focus(),30);
+}
+function closeAlbumVideoEdit(){
+  const overlay=document.getElementById('album-video-editor');
+  if(!overlay) return;
+  if(overlay._closeOnEscape) document.removeEventListener('keydown',overlay._closeOnEscape);
+  const previousOverflow=overlay._previousOverflow||'';
+  overlay.remove();
+  document.body.style.overflow=previousOverflow;
+}
+async function saveAlbumVideoEdit(){
+  const overlay=document.getElementById('album-video-editor');
+  if(!overlay) return;
+  const id=overlay.dataset.videoId||'';
+  const item=albumVideosData[id];
+  if(!item){closeAlbumVideoEdit();return;}
+  const button=overlay.querySelector('#album-video-edit-save');
+  const status=overlay.querySelector('#album-video-editor-status');
+  const patch={
+    title:(overlay.querySelector('#album-video-edit-title').value.trim()||'影片回憶').slice(0,60),
+    date:String(overlay.querySelector('#album-video-edit-date').value||'').slice(0,10),
+    note:overlay.querySelector('#album-video-edit-note').value.trim().slice(0,500),
+    updatedAt:Date.now()
+  };
+  button.disabled=true;
+  status.textContent='正在儲存';
+  albumVideosData[id]={...item,...patch};
+  renderAlbumVideos();
+  try{
+    if(window._fb){
+      const {db,ref,update}=window._fb;
+      await update(ref(db,`albumVideos/${id}`),patch);
+    }else{
+      Object.entries(patch).forEach(([key,value])=>queueFirebaseWrite(`albumVideos/${id}/${key}`,value));
+    }
+    status.textContent=window._fb?'修改已同步':'修改已儲存，等待同步';
+    setTimeout(closeAlbumVideoEdit,350);
+  }catch(err){
+    console.warn('影片修改同步失敗',err);
+    Object.entries(patch).forEach(([key,value])=>queueFirebaseWrite(`albumVideos/${id}/${key}`,value));
+    status.textContent='修改已儲存，等待同步';
+    setTimeout(closeAlbumVideoEdit,650);
+  }
 }
 function openAlbumVideo(encodedId){
   const id=decodeURIComponent(encodedId||'');

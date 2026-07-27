@@ -94,11 +94,11 @@ display:inline-block;
 animation:pulse 1.4s ease-in-out infinite;
 }
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
-.header-dogs-stage{position:absolute;left:8px;right:8px;bottom:0;height:31px;z-index:1;pointer-events:none;user-select:none}
-.line-dog{position:absolute;bottom:1px;width:34px;height:29px;filter:drop-shadow(0 2px 2px rgba(91,54,45,.16));will-change:left,right,transform}
-.line-dog.white{left:2px;animation:lineDogLeftTrip 10s ease-in-out infinite}
-.line-dog.brown{right:2px;animation:lineDogRightTrip 10s ease-in-out infinite}
-.line-dog-body{position:absolute;left:8px;top:16px;width:19px;height:11px;border:1.5px solid #6f5750;border-radius:48% 52% 42% 45%;background:#fffdfb;animation:lineDogStep .3s ease-in-out infinite alternate}
+.header-dogs-stage{position:absolute;left:8px;right:8px;bottom:0;height:31px;z-index:1;pointer-events:none;user-select:none;--dog-trip-right:calc(50vw - 47px);--dog-trip-left:calc(-50vw + 47px)}
+.line-dog{position:absolute;bottom:1px;width:34px;height:29px;filter:drop-shadow(0 2px 2px rgba(91,54,45,.16));will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
+.line-dog.white{left:2px;animation:lineDogLeftTrip 12s linear infinite}
+.line-dog.brown{right:2px;animation:lineDogRightTrip 12s linear infinite}
+.line-dog-body{position:absolute;left:8px;top:16px;width:19px;height:11px;border:1.5px solid #6f5750;border-radius:48% 52% 42% 45%;background:#fffdfb;animation:lineDogStep .42s ease-in-out infinite alternate}
 .line-dog.brown .line-dog-body,.line-dog.brown .line-dog-head{background:#c99062;border-color:#654536}
 .line-dog-head{position:absolute;z-index:3;left:7px;top:1px;width:21px;height:19px;border:1.5px solid #6f5750;border-radius:48% 48% 52% 52%;background:#fffdfb}
 .line-dog-ear{position:absolute;z-index:-1;top:2px;width:8px;height:12px;border:1.5px solid #6f5750;background:inherit}
@@ -110,18 +110,18 @@ animation:pulse 1.4s ease-in-out infinite;
 .line-dog-nose{position:absolute;left:50%;top:10px;width:4px;height:3px;border-radius:50%;background:#493732;transform:translateX(-50%)}
 .line-dog-mouth{position:absolute;left:50%;top:13px;width:6px;height:3px;border-bottom:1px solid #493732;border-radius:0 0 50% 50%;transform:translateX(-50%)}
 .line-dog-paw{position:absolute;z-index:2;top:24px;width:6px;height:5px;border:1.5px solid #6f5750;border-top:0;border-radius:0 0 5px 5px;background:#fffdfb}
-.line-dog-paw.left{left:9px;animation:lineDogPawA .3s ease-in-out infinite alternate}.line-dog-paw.right{right:8px;animation:lineDogPawB .3s ease-in-out infinite alternate}
+.line-dog-paw.left{left:9px;animation:lineDogPawA .42s ease-in-out infinite alternate}.line-dog-paw.right{right:8px;animation:lineDogPawB .42s ease-in-out infinite alternate}
 .line-dog.brown .line-dog-paw{background:#c99062;border-color:#654536}
-.line-dog-tail{position:absolute;z-index:0;top:15px;width:10px;height:8px;border:1.5px solid #6f5750;border-bottom:0;border-radius:80% 80% 0 0;animation:lineDogTail .3s ease-in-out infinite alternate}
+.line-dog-tail{position:absolute;z-index:0;top:15px;width:10px;height:8px;border:1.5px solid #6f5750;border-bottom:0;border-radius:80% 80% 0 0;animation:lineDogTail .42s ease-in-out infinite alternate}
 .line-dog.white .line-dog-tail{left:2px;transform-origin:100% 80%}.line-dog.brown .line-dog-tail{right:1px;border-color:#654536;transform-origin:0 80%}
-.line-dog-heart{position:absolute;z-index:5;left:50%;bottom:18px;color:#ef5f7d;font-size:16px;line-height:1;opacity:0;transform:translateX(-50%) scale(.5);animation:lineDogHeart 10s ease-in-out infinite;filter:drop-shadow(0 1px 2px rgba(232,99,122,.3))}
-@keyframes lineDogLeftTrip{0%,18%,100%{left:2px;transform:translateY(0) rotate(0)}38%,58%{left:calc(50% - 37px);transform:translateY(-1px) rotate(5deg)}78%{left:2px;transform:translateY(0) rotate(0)}}
-@keyframes lineDogRightTrip{0%,18%,100%{right:2px;transform:translateY(0) rotate(0)}38%,58%{right:calc(50% - 37px);transform:translateY(-1px) rotate(-5deg)}78%{right:2px;transform:translateY(0) rotate(0)}}
+.line-dog-heart{position:absolute;z-index:5;left:50%;bottom:18px;color:#ef5f7d;font-size:16px;line-height:1;opacity:0;transform:translate3d(-50%,0,0) scale(.5);animation:lineDogHeart 12s ease-in-out infinite;filter:drop-shadow(0 1px 2px rgba(232,99,122,.3));will-change:transform,opacity}
+@keyframes lineDogLeftTrip{0%,16%,84%,100%{transform:translate3d(0,0,0) rotate(0)}40%,60%{transform:translate3d(var(--dog-trip-right),-1px,0) rotate(5deg)}}
+@keyframes lineDogRightTrip{0%,16%,84%,100%{transform:translate3d(0,0,0) rotate(0)}40%,60%{transform:translate3d(var(--dog-trip-left),-1px,0) rotate(-5deg)}}
 @keyframes lineDogStep{from{transform:translateY(1px)}to{transform:translateY(-1px)}}
 @keyframes lineDogPawA{from{transform:translateY(-1px)}to{transform:translateY(1px)}}
 @keyframes lineDogPawB{from{transform:translateY(1px)}to{transform:translateY(-1px)}}
 @keyframes lineDogTail{from{transform:rotate(-12deg)}to{transform:rotate(18deg)}}
-@keyframes lineDogHeart{0%,35%,63%,100%{opacity:0;transform:translateX(-50%) translateY(2px) scale(.5)}42%,56%{opacity:1;transform:translateX(-50%) translateY(-4px) scale(1.05)}}
+@keyframes lineDogHeart{0%,37%,63%,100%{opacity:0;transform:translate3d(-50%,2px,0) scale(.5)}43%,57%{opacity:1;transform:translate3d(-50%,-4px,0) scale(1.05)}}
 
 .dark-toggle{
 position:absolute;

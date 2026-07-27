@@ -4979,6 +4979,7 @@ const CLOUDINARY_SETTINGS_DB_PATH = 'appSettings/cloudinary';
 const ALBUM_PENDING_WRITES_KEY = 'love_album_pending_writes_v1';
 const ALBUM_MONTH_CACHE_PREFIX = 'love_album_month_cache_v1_';
 const ALBUM_MONTH_CACHE_INDEX_KEY = 'love_album_month_cache_index_v1';
+const ALBUM_STATS_CACHE_KEY = 'love_album_stats_cache_v1';
 
 // 想要「完全不用設定視窗」的話，可以把你的 Cloudinary 資料直接填在這裡。
 // 注意：只填 unsigned upload preset，不要放 API Secret。
@@ -5266,6 +5267,21 @@ function writeAlbumMonthCache(monthId,source){
     localStorage.setItem(ALBUM_MONTH_CACHE_INDEX_KEY,JSON.stringify(index.slice(0,4)));
   }catch(err){
     console.warn('相簿月份快取寫入失敗',err);
+  }
+}
+function readAlbumStatsCache(){
+  try{
+    const value=JSON.parse(localStorage.getItem(ALBUM_STATS_CACHE_KEY)||'{}');
+    return value && typeof value==='object' ? value : {};
+  }catch{
+    return {};
+  }
+}
+function writeAlbumStatsCache(value){
+  try{
+    localStorage.setItem(ALBUM_STATS_CACHE_KEY,JSON.stringify(value||{}));
+  }catch(err){
+    console.warn('相簿統計快取寫入失敗',err);
   }
 }
 async function flushAlbumPendingWrites(){
@@ -7824,7 +7840,7 @@ let currentDayKey='';
 let modalEditMode=false;
 let albumFirebaseData={};
 let albumLoadedMonths=new Set();
-let albumStatsData={};
+let albumStatsData=readAlbumStatsCache();
 let albumStatsReady=false;
 let albumStatsBackfillStarted=false;
 let albumActiveMedia='photos';
@@ -8370,10 +8386,11 @@ async function albumBackfillStatsFromAlbumData(){
 function albumInitStats(){
   if(!window._fb) return;
   const {db,ref,onValue}=window._fb;
-  albumSetBadge('☁️ 同步月曆中...');
+  albumSetBadge(Object.keys(albumStatsData).length?'⚡ 已顯示快取，背景同步中...':'☁️ 同步月曆中...');
   onValue(ref(db,'albumStats'),snap=>{
     albumStatsData=snap.val() || {};
     albumStatsReady=true;
+    writeAlbumStatsCache(albumStatsData);
     albumRenderCal();
     renderMemoriesCharts();
     renderMemoriesTotalStats();
@@ -8493,6 +8510,7 @@ function albumSaveStatsLocal(key, dayData){
   const stat=albumBuildDayStats(dayData);
   if(stat) albumStatsData[key]=stat;
   else delete albumStatsData[key];
+  writeAlbumStatsCache(albumStatsData);
   renderMemoriesCharts();
   renderMemoriesTotalStats();
   return stat;

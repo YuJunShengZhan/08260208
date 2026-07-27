@@ -4977,6 +4977,8 @@ async function previewSurprisePhoto(e){
 const CLOUDINARY_SETTINGS_KEY = 'love_cloudinary_settings_v1';
 const CLOUDINARY_SETTINGS_DB_PATH = 'appSettings/cloudinary';
 const ALBUM_PENDING_WRITES_KEY = 'love_album_pending_writes_v1';
+const ALBUM_MONTH_CACHE_PREFIX = 'love_album_month_cache_v1_';
+const ALBUM_MONTH_CACHE_INDEX_KEY = 'love_album_month_cache_index_v1';
 
 // 想要「完全不用設定視窗」的話，可以把你的 Cloudinary 資料直接填在這裡。
 // 注意：只填 unsigned upload preset，不要放 API Secret。
@@ -5161,8 +5163,21 @@ async function runMonthlyAutoBackup(){
     console.warn('monthly automatic backup failed',err);
   }
 }
-window.addEventListener('firebaseReady',runMonthlyAutoBackup);
-if(window._fb) runMonthlyAutoBackup();
+let monthlyBackupScheduleTimer=0;
+function scheduleMonthlyAutoBackup(){
+  if(monthlyBackupScheduleTimer) return;
+  const run=()=>{
+    monthlyBackupScheduleTimer=0;
+    runMonthlyAutoBackup();
+  };
+  if('requestIdleCallback' in window){
+    monthlyBackupScheduleTimer=requestIdleCallback(run,{timeout:15000});
+  }else{
+    monthlyBackupScheduleTimer=setTimeout(run,10000);
+  }
+}
+window.addEventListener('firebaseReady',scheduleMonthlyAutoBackup);
+if(window._fb) scheduleMonthlyAutoBackup();
 setInterval(runMonthlyAutoBackup,6*60*60*1000);
 
 async function uploadBlobToCloudinary(blob, fileName='photo.jpg', subFolder='album', resourceType='image', returnData=false){
@@ -5221,6 +5236,37 @@ function queueFirebaseWrite(path, value){
   const rows=getAlbumPendingWrites().filter(item=>item.path!==path);
   rows.push({path, value, createdAt:Date.now()});
   setAlbumPendingWrites(rows);
+}
+function readAlbumMonthCache(monthId){
+  try{
+    const payload=JSON.parse(localStorage.getItem(ALBUM_MONTH_CACHE_PREFIX+monthId)||'null');
+    return payload && payload.days && typeof payload.days==='object' ? payload.days : null;
+  }catch{
+    return null;
+  }
+}
+function writeAlbumMonthCache(monthId,source){
+  if(!monthId) return;
+  try{
+    const days={};
+    Object.entries(source||{}).forEach(([key,value])=>{
+      if(!key.startsWith(monthId) || !value) return;
+      // 快取網址與文字；大型舊版 base64 照片仍從 Firebase 或待同步資料載入。
+      const photos=(Array.isArray(value.photos)?value.photos:[])
+        .map(src=>String(src||''))
+        .filter(src=>/^https?:\/\//i.test(src));
+      const schedule=Array.isArray(value.schedule)?value.schedule:[];
+      const note=String(value.note||'');
+      if(photos.length || schedule.length || note.trim()) days[key]={photos,schedule,note};
+    });
+    localStorage.setItem(ALBUM_MONTH_CACHE_PREFIX+monthId,JSON.stringify({cachedAt:Date.now(),days}));
+    const oldIndex=JSON.parse(localStorage.getItem(ALBUM_MONTH_CACHE_INDEX_KEY)||'[]');
+    const index=[monthId,...(Array.isArray(oldIndex)?oldIndex:[]).filter(id=>id!==monthId)];
+    index.slice(4).forEach(id=>localStorage.removeItem(ALBUM_MONTH_CACHE_PREFIX+id));
+    localStorage.setItem(ALBUM_MONTH_CACHE_INDEX_KEY,JSON.stringify(index.slice(0,4)));
+  }catch(err){
+    console.warn('相簿月份快取寫入失敗',err);
+  }
 }
 async function flushAlbumPendingWrites(){
   if(!window._fb) return;
@@ -7250,7 +7296,6 @@ function fightRender(forceEditor=false){
   fightRenderMoodEditor();
   fightFillEditor(forceEditor);
   fightRenderNextStep();
-  fightRenderSoupCard();
   fightRenderHistory();
 }
 function fightBothMessagesReady(){
@@ -7749,7 +7794,9 @@ async function fightResetCurrent(){
   fightRender();
 }
 window.addEventListener('firebaseReady', fightInitFirebase);
-window.addEventListener('albumDataReady', ()=>fightRenderSoupCard(true));
+window.addEventListener('albumDataReady', ()=>{
+  if(fightSoupPageOpen) fightRenderSoupCard(true);
+});
 if(window._fb) fightInitFirebase();
 
 let gameTabsNudged=false;
@@ -7784,6 +7831,7 @@ let albumActiveMedia='photos';
 let albumVideosData={};
 let albumVideosSyncStarted=false;
 let albumVideoUploading=false;
+let albumPhotoUploading=false;
 let albumVideoFilterYear='';
 let albumVideoFilterMonth='';
 const ALBUM_VIDEO_MAX_BYTES=100*1024*1024;
@@ -8338,9 +8386,20 @@ function albumMonthId(y,m){
   return `${y}-${String(m+1).padStart(2,'0')}`;
 }
 function albumLoadMonth(y=albumYear,m=albumMonth){
-  if(!window._fb) return;
   const monthId=albumMonthId(y,m);
-  if(albumLoadedMonths.has(monthId)) return;
+  const cacheMarker=`cache:${monthId}`;
+  if(!albumLoadedMonths.has(cacheMarker)){
+    albumLoadedMonths.add(cacheMarker);
+    const cachedMonth=readAlbumMonthCache(monthId);
+    if(cachedMonth){
+      Object.keys(albumFirebaseData).forEach(key=>{
+        if(key.startsWith(monthId)) delete albumFirebaseData[key];
+      });
+      Object.assign(albumFirebaseData,cachedMonth);
+      albumSetBadge('⚡ 已顯示快取，背景同步中...');
+    }
+  }
+  if(!window._fb || albumLoadedMonths.has(monthId)) return;
   albumLoadedMonths.add(monthId);
   const {db,ref,onValue,query,orderByKey,startAt,endAt}=window._fb;
   const monthQuery=query(
@@ -8356,6 +8415,15 @@ function albumLoadMonth(y=albumYear,m=albumMonth){
       if(key.startsWith(monthId)) delete albumFirebaseData[key];
     });
     Object.assign(albumFirebaseData,monthData);
+    // Firebase 尚未補同步時，保留這台裝置剛新增的照片，避免遠端舊快照把月曆畫面蓋回去。
+    getAlbumPendingWrites().forEach(item=>{
+      const match=String(item?.path||'').match(/^albumData\/(\d{4}-\d{2}-\d{2})$/);
+      const key=match?.[1];
+      if(!key || !key.startsWith(monthId)) return;
+      if(item.value==null) delete albumFirebaseData[key];
+      else albumFirebaseData[key]=JSON.parse(JSON.stringify(item.value));
+    });
+    writeAlbumMonthCache(monthId,albumFirebaseData);
     window.dispatchEvent(new CustomEvent('albumDataReady'));
     albumSetBadge('☁️ 已同步');
     if(typeof rgSetCover === 'function' && rgInitDone) rgSetCover();
@@ -8365,6 +8433,10 @@ function albumLoadMonth(y=albumYear,m=albumMonth){
       const dayData=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
       if(!modalEditMode) applyModalMode(dayData);
     }
+  },err=>{
+    console.warn('相簿月份同步失敗',err);
+    albumLoadedMonths.delete(monthId);
+    albumSetBadge('⚠️ 同步失敗，稍後會重試');
   });
 }
 function albumInitFirebase(){
@@ -8386,6 +8458,7 @@ async function albumSaveDay(key,dayData){
   if(!key) return false;
   const cleanData=JSON.parse(JSON.stringify(dayData || {photos:[],schedule:[],note:''}));
   albumFirebaseData[key]=cleanData;
+  writeAlbumMonthCache(key.slice(0,7),albumFirebaseData);
   const stat=albumSaveStatsLocal(key, cleanData);
   albumRenderCal();
   renderMemories();
@@ -8396,11 +8469,13 @@ async function albumSaveDay(key,dayData){
     albumSetBadge(`📦 待同步 ${getAlbumPendingWrites().length} 筆`);
     return false;
   }
-  const {db,ref,set}=window._fb;
+  const {db,ref,update}=window._fb;
   albumSetBadge('💾 儲存中...');
   try{
-    await set(ref(db,`albumData/${key}`), cleanData);
-    await set(ref(db,`albumStats/${key}`), stat);
+    await update(ref(db),{
+      [`albumData/${key}`]:cleanData,
+      [`albumStats/${key}`]:stat
+    });
     albumSetBadge('☁️ 已同步');
     flushAlbumPendingWrites();
     return true;
@@ -8495,13 +8570,10 @@ function applyModalMode(dayData){
   }
 }
 
-function toggleModalEditMode(){
+async function toggleModalEditMode(){
   const dayData=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
   if(modalEditMode){
-    saveDayDataSilent();
-    modalEditMode=false;
-    const updated=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
-    applyModalMode(updated);
+    await saveDayData();
   } else {
     modalEditMode=true;applyModalMode(dayData);
   }
@@ -8597,11 +8669,11 @@ function compressToBlob(file, maxSize=1280, quality=0.82) {
     img.src = objectUrl;
   });
 }
-async function albumUploadPhotoToStorage(file, index){
+async function albumUploadPhotoToStorage(file, index, dayKey=currentDayKey){
   if(hasCloudinarySettings()){
     try{
       const safeName = String(file.name || `photo-${index}.jpg`).replace(/[^\w.-]+/g,'-').slice(-80) || 'photo.jpg';
-      return await uploadImageFileToCloudinary(file, `${currentDayKey}-${Date.now()}-${index}-${safeName}`, `album/${currentDayKey || albumMonthId(albumYear, albumMonth)}`);
+      return await uploadImageFileToCloudinary(file, `${dayKey}-${Date.now()}-${index}-${safeName}`, `album/${dayKey || albumMonthId(albumYear, albumMonth)}`);
     }catch(err){
       console.warn('Cloudinary 相簿照片上傳失敗，改用壓縮照片資料', err);
     }
@@ -8609,12 +8681,17 @@ async function albumUploadPhotoToStorage(file, index){
   return await compressToBase64(file, 1280, 0.82);
 }
 async function modalUploadPhotos(e) {
+  if(albumPhotoUploading){
+    e.target.value='';
+    return;
+  }
   const files = Array.from(e.target.files || []);
   if (!files.length) return;
+  const targetDayKey=currentDayKey;
+  if(!targetDayKey) return;
   const useCloudinary = hasCloudinarySettings();
-
-  const dayData = JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey] || { photos: [], schedule: [], note: '' }));
-  if (!Array.isArray(dayData.photos)) dayData.photos = [];
+  albumPhotoUploading=true;
+  e.target.disabled=true;
 
   const uploadArea = document.querySelector('.photo-upload-options');
   document.getElementById('upload-loading')?.remove();
@@ -8628,35 +8705,40 @@ async function modalUploadPhotos(e) {
 
   let uploaded = 0;
   let failed = 0;
-  for (const file of files) {
-    if(!file.type || !file.type.startsWith('image/')){ failed++; continue; }
-    try {
-      const url = await albumUploadPhotoToStorage(file, uploaded);
-      dayData.photos.push(url);
-      uploaded++;
-      loadingDiv.textContent = useCloudinary
-        ? `⏳ 正在上傳照片 (${uploaded}/${files.length})...`
-        : `⏳ 正在讀取照片 (${uploaded}/${files.length})...`;
-      renderModalPhotosEdit(dayData.photos);
-    } catch (err) {
-      failed++;
-      console.error(useCloudinary ? 'Cloudinary 上傳失敗' : '照片讀取失敗', err);
-      loadingDiv.textContent = `⚠️ 有照片處理失敗：${err.message || '請換一張照片試試'}`;
-      break;
+  try{
+    for (const file of files) {
+      if(!file.type || !file.type.startsWith('image/')){ failed++; continue; }
+      try {
+        const url = await albumUploadPhotoToStorage(file, uploaded, targetDayKey);
+        // 每完成一張就合併最新資料並儲存，避免多批上傳、切日期或同步回傳時互相覆蓋。
+        const latest = JSON.parse(JSON.stringify(albumFirebaseData[targetDayKey] || { photos: [], schedule: [], note: '' }));
+        if(!Array.isArray(latest.photos)) latest.photos=[];
+        if(!latest.photos.includes(url)) latest.photos.push(url);
+        uploaded++;
+        await albumSaveDay(targetDayKey,latest);
+        loadingDiv.textContent = useCloudinary
+          ? `⏳ 正在上傳照片 (${uploaded}/${files.length})...`
+          : `⏳ 正在讀取照片 (${uploaded}/${files.length})...`;
+        if(currentDayKey===targetDayKey && modalEditMode) renderModalPhotosEdit(latest.photos);
+      } catch (err) {
+        failed++;
+        console.error(useCloudinary ? 'Cloudinary 上傳失敗' : '照片讀取失敗', err);
+        loadingDiv.textContent = `⚠️ 有照片處理失敗：${err.message || '請換一張照片試試'}`;
+      }
     }
+    if(uploaded){
+      loadingDiv.textContent = failed
+        ? `⚠️ 已新增 ${uploaded} 張，${failed} 張失敗`
+        : '✅ 照片已新增並儲存！';
+      setTimeout(() => loadingDiv.remove(), 1800);
+    }else if(!failed){
+      loadingDiv.remove();
+    }
+  }finally{
+    albumPhotoUploading=false;
+    e.target.disabled=false;
+    e.target.value='';
   }
-
-  if(uploaded){
-    await albumSaveDay(currentDayKey, dayData);
-    loadingDiv.textContent = failed
-      ? `⚠️ 已新增 ${uploaded} 張，${failed} 張失敗`
-      : '✅ 照片已新增！';
-    setTimeout(() => loadingDiv.remove(), 1800);
-  }else if(!failed){
-    loadingDiv.remove();
-  }
-
-  e.target.value = '';
 }
 async function migrateAlbumCurrentMonthToCloudinary(){
   if(!requireCloudinarySettings()) return;
@@ -8742,16 +8824,24 @@ function deleteScheduleItem(i){
   renderModalScheduleEdit(dayData.schedule);
 }
 function saveDayDataSilent(){
-  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''}));
+  const key=currentDayKey;
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
   dayData.note=document.getElementById('modal-note').value;
-  albumSaveDay(currentDayKey,dayData);
+  return albumSaveDay(key,dayData);
 }
-function saveDayData(){
-  saveDayDataSilent();
+async function saveDayData(){
+  if(albumPhotoUploading){
+    albumSetBadge('⏳ 照片上傳完成後會自動儲存');
+    return;
+  }
+  const key=currentDayKey;
+  const note=document.getElementById('modal-note').value;
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
+  dayData.note=note;
+  await albumSaveDay(key,dayData);
+  if(currentDayKey!==key) return;
   modalEditMode=false;
-  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''}));
-  dayData.note=document.getElementById('modal-note').value;
-  applyModalMode(dayData);
+  applyModalMode(albumFirebaseData[key]||dayData);
 }
 function closeDayModal(e){if(e.target===document.getElementById('day-modal-bg')) closeDayModalDirect();}
 function closeDayModalDirect(){
@@ -9185,6 +9275,7 @@ function drawMemoriesChart(months, meetData, loveData){
 
 // ── 生成拼貼圖 ──
 let collageSelectedPhotos = [];
+let collageGenerationId = 0;
 
 function openCollagePicker(photos){
   const perPage = Number(document.getElementById('collage-size-select')?.value || 6);
@@ -9435,6 +9526,53 @@ function drawCollageMemoryBackground(ctx, W, H, theme){
   });
 }
 
+function collageLoadImageElement(src, useCors=false, timeoutMs=15000){
+  return new Promise(resolve=>{
+    const img=new Image();
+    let settled=false;
+    const finish=value=>{
+      if(settled) return;
+      settled=true;
+      clearTimeout(timer);
+      img.onload=null;
+      img.onerror=null;
+      resolve(value);
+    };
+    const timer=setTimeout(()=>finish(null),timeoutMs);
+    if(useCors) img.crossOrigin='anonymous';
+    img.onload=()=>finish(img);
+    img.onerror=()=>finish(null);
+    img.src=src;
+    if(img.complete && img.naturalWidth) finish(img);
+  });
+}
+
+async function collageLoadImage(src){
+  const value=String(src||'');
+  if(!value) return null;
+  if(!/^https?:\/\//i.test(value)) return collageLoadImageElement(value,false);
+
+  // 先用 fetch 轉成同源 blob，避免遠端照片讓 canvas 無法匯出。
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),15000);
+  try{
+    const response=await fetch(value,{mode:'cors',cache:'force-cache',signal:controller.signal});
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    const blob=await response.blob();
+    const objectUrl=URL.createObjectURL(blob);
+    try{
+      return await collageLoadImageElement(objectUrl,false);
+    }finally{
+      URL.revokeObjectURL(objectUrl);
+    }
+  }catch(err){
+    // CDN 暫時不接受 fetch 時，仍再嘗試標準跨網域圖片載入。
+    return collageLoadImageElement(value,true);
+  }finally{
+    clearTimeout(timeout);
+  }
+}
+
 async function generateCollage(selectedPhotos=null) {
   const mk = `${memoriesYear}-${String(memoriesMonth + 1).padStart(2, '0')}`;
   const photos = [];
@@ -9458,24 +9596,22 @@ async function generateCollage(selectedPhotos=null) {
   const perPage = Number(document.getElementById('collage-size-select')?.value || 6);
   const pages = [];
   for(let i=0;i<photos.length;i+=perPage) pages.push(photos.slice(i,i+perPage));
+  const generationId=++collageGenerationId;
 
   const resultEl = document.getElementById('collage-result');
+  if(!resultEl) return;
   resultEl.innerHTML = `
     <div style="text-align:center;padding:20px;background:var(--pink-light);border-radius:12px;color:var(--text-muted)">
       ✨ 正在製作 ${pages.length} 頁本月回憶錄...
     </div>`;
 
-  const images = await Promise.all(photos.map(p=>new Promise(r=>{
-    const img=new Image();
-    img.onload=()=>r(img);
-    img.onerror=()=>r(null);
-    img.src=p.src;
-  })));
+  const images = await Promise.all(photos.map(p=>collageLoadImage(p.src)));
+  if(generationId!==collageGenerationId) return;
 
   const batchTheme = createCollageMemoryTheme(mk, photos, perPage);
 
   const makePage = (page, pageIndex)=>{
-    const CELL=260, GAP=10, PAD=24, HEADER=128, FOOTER=104;
+    const CELL=260, GAP=10, PAD=24, HEADER=128, FOOTER=72;
     const isSix = perPage===6;
 
     const cols = isSix ? 2 : 3;
@@ -9506,13 +9642,11 @@ async function generateCollage(selectedPhotos=null) {
     ctx.fillText('林聖展 ♡ 蘇予君',W/2,PAD+72);
 
     page.forEach((p,i)=>{
-      const img=images[photos.indexOf(p)];
-      if(!img)return;
-
       const col=i%cols;
       const row=Math.floor(i/cols);
       const x=PAD+col*(CELL+GAP);
       const y=PAD+HEADER+row*(CELL+GAP);
+      const img=images[pageIndex*perPage+i];
 
       ctx.save();
       ctx.shadowColor='rgba(90,45,65,.2)';
@@ -9522,6 +9656,19 @@ async function generateCollage(selectedPhotos=null) {
       roundRect(ctx,x-4,y-4,CELL+8,CELL+8,18);
       ctx.fill();
       ctx.restore();
+
+      if(!img){
+        ctx.save();
+        ctx.fillStyle='rgba(255,255,255,.5)';
+        roundRect(ctx,x,y,CELL,CELL,14);
+        ctx.fill();
+        ctx.fillStyle=batchTheme.ink;
+        ctx.font='15px "Noto Sans TC",sans-serif';
+        ctx.textAlign='center';
+        ctx.fillText('照片暫時無法載入',x+CELL/2,y+CELL/2);
+        ctx.restore();
+        return;
+      }
 
       ctx.save();
       roundRect(ctx,x,y,CELL,CELL,14);
@@ -9543,9 +9690,9 @@ async function generateCollage(selectedPhotos=null) {
     });
 
     const noteX = PAD;
-    const noteY = H - FOOTER + 18;
+    const noteY = H - FOOTER + 12;
     const noteW = W - PAD * 2;
-    const noteH = FOOTER - 36;
+    const noteH = FOOTER - 24;
     ctx.save();
     ctx.fillStyle='rgba(255,255,255,.58)';
     roundRect(ctx,noteX,noteY,noteW,noteH,20);
@@ -9555,32 +9702,41 @@ async function generateCollage(selectedPhotos=null) {
     ctx.textAlign='center';
     ctx.font='bold 16px "Noto Serif TC",serif';
     ctx.fillStyle=batchTheme.ink;
-    ctx.fillText(`${page.length} 個珍貴瞬間`,W/2,noteY+27);
-
-    ctx.font='14px "Noto Sans TC",sans-serif';
-    ctx.fillStyle=batchTheme.accent;
-    ctx.fillText(batchTheme.line,W/2,noteY+53);
+    ctx.fillText(`${page.length} 個珍貴瞬間`,W/2,noteY+noteH/2+6);
 
     return canvas.toDataURL('image/jpeg',.92);
   };
 
-  const results=pages.map((p,i)=>makePage(p,i));
-
-  resultEl.innerHTML=`
-    <div id="collage-preview-wrap" style="position:relative">
-      <button onclick="this.closest('#collage-preview-wrap')?.remove();document.getElementById('collage-result').innerHTML=''"
-      class="collage-close-btn">✕</button>
-      <div id="collage-preview-box" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px">
-      ${results.map((u,i)=>`
-        <div style="min-width:100%;scroll-snap-align:start">
-          <img src="${u}" style="width:100%;border-radius:16px;display:block">
-          <a href="${u}" download="回憶_${memoriesYear}${memoriesMonth+1}_${i+1}.jpg"
-          style="display:block;text-align:center;margin-top:10px;padding:10px;background:var(--pink-light);border-radius:12px;color:var(--rose);text-decoration:none">
-          💾 下載第 ${i+1} 頁
-          </a>
-        </div>`).join('')}
-      </div>
-    </div>`;
+  try{
+    const results=pages.map((p,i)=>makePage(p,i));
+    if(generationId!==collageGenerationId) return;
+    // 同步資料可能在製作途中重畫回憶頁，因此完成時重新取得目前畫面上的結果容器。
+    const liveResultEl=document.getElementById('collage-result');
+    if(!liveResultEl) return;
+    liveResultEl.innerHTML=`
+      <div id="collage-preview-wrap" style="position:relative">
+        <button onclick="this.closest('#collage-preview-wrap')?.remove();document.getElementById('collage-result').innerHTML=''"
+        class="collage-close-btn">✕</button>
+        <div id="collage-preview-box" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px">
+        ${results.map((u,i)=>`
+          <div style="min-width:100%;scroll-snap-align:start">
+            <img src="${u}" style="width:100%;border-radius:16px;display:block">
+            <a href="${u}" download="回憶_${memoriesYear}${memoriesMonth+1}_${i+1}.jpg"
+            style="display:block;text-align:center;margin-top:10px;padding:10px;background:var(--pink-light);border-radius:12px;color:var(--rose);text-decoration:none">
+            💾 下載第 ${i+1} 頁
+            </a>
+          </div>`).join('')}
+        </div>
+      </div>`;
+  }catch(err){
+    console.error('回憶錄生成失敗',err);
+    const liveResultEl=document.getElementById('collage-result');
+    if(liveResultEl) liveResultEl.innerHTML=`
+      <div style="padding:16px;text-align:center;background:var(--pink-light);border-radius:12px;color:var(--rose)">
+        照片剛剛沒有完整載入，請再試一次。
+        <button type="button" onclick="generateCollage(collageSelectedPhotos)" style="display:block;width:100%;margin-top:10px;padding:10px;border:0;border-radius:10px;background:var(--pink);color:#fff">重新生成</button>
+      </div>`;
+  }
 }
 
 // 圓角矩形輔助

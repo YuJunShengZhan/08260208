@@ -4977,9 +4977,6 @@ async function previewSurprisePhoto(e){
 const CLOUDINARY_SETTINGS_KEY = 'love_cloudinary_settings_v1';
 const CLOUDINARY_SETTINGS_DB_PATH = 'appSettings/cloudinary';
 const ALBUM_PENDING_WRITES_KEY = 'love_album_pending_writes_v1';
-const ALBUM_MONTH_CACHE_PREFIX = 'love_album_month_cache_v1_';
-const ALBUM_MONTH_CACHE_INDEX_KEY = 'love_album_month_cache_index_v1';
-const ALBUM_STATS_CACHE_KEY = 'love_album_stats_cache_v1';
 
 // 想要「完全不用設定視窗」的話，可以把你的 Cloudinary 資料直接填在這裡。
 // 注意：只填 unsigned upload preset，不要放 API Secret。
@@ -5164,21 +5161,8 @@ async function runMonthlyAutoBackup(){
     console.warn('monthly automatic backup failed',err);
   }
 }
-let monthlyBackupScheduleTimer=0;
-function scheduleMonthlyAutoBackup(){
-  if(monthlyBackupScheduleTimer) return;
-  const run=()=>{
-    monthlyBackupScheduleTimer=0;
-    runMonthlyAutoBackup();
-  };
-  if('requestIdleCallback' in window){
-    monthlyBackupScheduleTimer=requestIdleCallback(run,{timeout:15000});
-  }else{
-    monthlyBackupScheduleTimer=setTimeout(run,10000);
-  }
-}
-window.addEventListener('firebaseReady',scheduleMonthlyAutoBackup);
-if(window._fb) scheduleMonthlyAutoBackup();
+window.addEventListener('firebaseReady',runMonthlyAutoBackup);
+if(window._fb) runMonthlyAutoBackup();
 setInterval(runMonthlyAutoBackup,6*60*60*1000);
 
 async function uploadBlobToCloudinary(blob, fileName='photo.jpg', subFolder='album', resourceType='image', returnData=false){
@@ -5237,52 +5221,6 @@ function queueFirebaseWrite(path, value){
   const rows=getAlbumPendingWrites().filter(item=>item.path!==path);
   rows.push({path, value, createdAt:Date.now()});
   setAlbumPendingWrites(rows);
-}
-function readAlbumMonthCache(monthId){
-  try{
-    const payload=JSON.parse(localStorage.getItem(ALBUM_MONTH_CACHE_PREFIX+monthId)||'null');
-    return payload && payload.days && typeof payload.days==='object' ? payload.days : null;
-  }catch{
-    return null;
-  }
-}
-function writeAlbumMonthCache(monthId,source){
-  if(!monthId) return;
-  try{
-    const days={};
-    Object.entries(source||{}).forEach(([key,value])=>{
-      if(!key.startsWith(monthId) || !value) return;
-      // 快取網址與文字；大型舊版 base64 照片仍從 Firebase 或待同步資料載入。
-      const photos=(Array.isArray(value.photos)?value.photos:[])
-        .map(src=>String(src||''))
-        .filter(src=>/^https?:\/\//i.test(src));
-      const schedule=Array.isArray(value.schedule)?value.schedule:[];
-      const note=String(value.note||'');
-      if(photos.length || schedule.length || note.trim()) days[key]={photos,schedule,note};
-    });
-    localStorage.setItem(ALBUM_MONTH_CACHE_PREFIX+monthId,JSON.stringify({cachedAt:Date.now(),days}));
-    const oldIndex=JSON.parse(localStorage.getItem(ALBUM_MONTH_CACHE_INDEX_KEY)||'[]');
-    const index=[monthId,...(Array.isArray(oldIndex)?oldIndex:[]).filter(id=>id!==monthId)];
-    index.slice(4).forEach(id=>localStorage.removeItem(ALBUM_MONTH_CACHE_PREFIX+id));
-    localStorage.setItem(ALBUM_MONTH_CACHE_INDEX_KEY,JSON.stringify(index.slice(0,4)));
-  }catch(err){
-    console.warn('相簿月份快取寫入失敗',err);
-  }
-}
-function readAlbumStatsCache(){
-  try{
-    const value=JSON.parse(localStorage.getItem(ALBUM_STATS_CACHE_KEY)||'{}');
-    return value && typeof value==='object' ? value : {};
-  }catch{
-    return {};
-  }
-}
-function writeAlbumStatsCache(value){
-  try{
-    localStorage.setItem(ALBUM_STATS_CACHE_KEY,JSON.stringify(value||{}));
-  }catch(err){
-    console.warn('相簿統計快取寫入失敗',err);
-  }
 }
 async function flushAlbumPendingWrites(){
   if(!window._fb) return;
@@ -7312,6 +7250,7 @@ function fightRender(forceEditor=false){
   fightRenderMoodEditor();
   fightFillEditor(forceEditor);
   fightRenderNextStep();
+  fightRenderSoupCard();
   fightRenderHistory();
 }
 function fightBothMessagesReady(){
@@ -7810,9 +7749,7 @@ async function fightResetCurrent(){
   fightRender();
 }
 window.addEventListener('firebaseReady', fightInitFirebase);
-window.addEventListener('albumDataReady', ()=>{
-  if(fightSoupPageOpen) fightRenderSoupCard(true);
-});
+window.addEventListener('albumDataReady', ()=>fightRenderSoupCard(true));
 if(window._fb) fightInitFirebase();
 
 let gameTabsNudged=false;
@@ -7840,7 +7777,7 @@ let currentDayKey='';
 let modalEditMode=false;
 let albumFirebaseData={};
 let albumLoadedMonths=new Set();
-let albumStatsData=readAlbumStatsCache();
+let albumStatsData={};
 let albumStatsReady=false;
 let albumStatsBackfillStarted=false;
 let albumActiveMedia='photos';
@@ -7848,8 +7785,6 @@ let albumVideosData={};
 let albumVideosSyncStarted=false;
 let albumVideoUploading=false;
 let albumPhotoUploading=false;
-let albumDayUnsubscribe=null;
-let albumDaySubscriptionKey='';
 let albumVideoFilterYear='';
 let albumVideoFilterMonth='';
 const ALBUM_VIDEO_MAX_BYTES=100*1024*1024;
@@ -8386,19 +8321,12 @@ async function albumBackfillStatsFromAlbumData(){
 function albumInitStats(){
   if(!window._fb) return;
   const {db,ref,onValue}=window._fb;
-  albumSetBadge(Object.keys(albumStatsData).length?'⚡ 已顯示快取，背景同步中...':'☁️ 同步月曆中...');
   onValue(ref(db,'albumStats'),snap=>{
     albumStatsData=snap.val() || {};
     albumStatsReady=true;
-    writeAlbumStatsCache(albumStatsData);
-    albumRenderCal();
     renderMemoriesCharts();
     renderMemoriesTotalStats();
-    albumSetBadge('☁️ 已同步');
     if(!Object.keys(albumStatsData).length) albumBackfillStatsFromAlbumData();
-  },err=>{
-    console.warn('相簿月曆統計同步失敗',err);
-    albumSetBadge('⚠️ 月曆同步失敗，稍後會重試');
   });
 }
 
@@ -8410,23 +8338,10 @@ function albumSetBadge(text){
 function albumMonthId(y,m){
   return `${y}-${String(m+1).padStart(2,'0')}`;
 }
-function albumApplyCachedMonth(monthId){
-  const cacheMarker=`cache:${monthId}`;
-  if(albumLoadedMonths.has(cacheMarker)) return false;
-  albumLoadedMonths.add(cacheMarker);
-  const cachedMonth=readAlbumMonthCache(monthId);
-  if(!cachedMonth) return false;
-  Object.keys(albumFirebaseData).forEach(key=>{
-    if(key.startsWith(monthId)) delete albumFirebaseData[key];
-  });
-  Object.assign(albumFirebaseData,cachedMonth);
-  albumSetBadge('⚡ 已顯示快取，背景同步中...');
-  return true;
-}
 function albumLoadMonth(y=albumYear,m=albumMonth){
+  if(!window._fb) return;
   const monthId=albumMonthId(y,m);
-  albumApplyCachedMonth(monthId);
-  if(!window._fb || albumLoadedMonths.has(monthId)) return;
+  if(albumLoadedMonths.has(monthId)) return;
   albumLoadedMonths.add(monthId);
   const {db,ref,onValue,query,orderByKey,startAt,endAt}=window._fb;
   const monthQuery=query(
@@ -8435,22 +8350,13 @@ function albumLoadMonth(y=albumYear,m=albumMonth){
     startAt(`${monthId}-01`),
     endAt(`${monthId}-31\uf8ff`)
   );
-  albumSetBadge('☁️ 同步本月照片中...');
+  albumSetBadge('☁️ 同步中...');
   onValue(monthQuery,snap=>{
     const monthData=snap.val()||{};
     Object.keys(albumFirebaseData).forEach(key=>{
       if(key.startsWith(monthId)) delete albumFirebaseData[key];
     });
     Object.assign(albumFirebaseData,monthData);
-    // Firebase 尚未補同步時，保留這台裝置剛新增的照片，避免遠端舊快照把月曆畫面蓋回去。
-    getAlbumPendingWrites().forEach(item=>{
-      const match=String(item?.path||'').match(/^albumData\/(\d{4}-\d{2}-\d{2})$/);
-      const key=match?.[1];
-      if(!key || !key.startsWith(monthId)) return;
-      if(item.value==null) delete albumFirebaseData[key];
-      else albumFirebaseData[key]=JSON.parse(JSON.stringify(item.value));
-    });
-    writeAlbumMonthCache(monthId,albumFirebaseData);
     window.dispatchEvent(new CustomEvent('albumDataReady'));
     albumSetBadge('☁️ 已同步');
     if(typeof rgSetCover === 'function' && rgInitDone) rgSetCover();
@@ -8460,49 +8366,12 @@ function albumLoadMonth(y=albumYear,m=albumMonth){
       const dayData=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
       if(!modalEditMode) applyModalMode(dayData);
     }
-  },err=>{
-    console.warn('相簿月份同步失敗',err);
-    albumLoadedMonths.delete(monthId);
-    albumSetBadge('⚠️ 同步失敗，稍後會重試');
-  });
-}
-function albumStopDaySubscription(){
-  if(typeof albumDayUnsubscribe==='function') albumDayUnsubscribe();
-  albumDayUnsubscribe=null;
-  albumDaySubscriptionKey='';
-}
-function albumSubscribeDay(key){
-  albumStopDaySubscription();
-  if(!window._fb || !key) return;
-  const {db,ref,onValue}=window._fb;
-  albumDaySubscriptionKey=key;
-  const editBtn=document.getElementById('modal-edit-btn');
-  if(editBtn) editBtn.disabled=true;
-  albumSetBadge('☁️ 同步這一天...');
-  const enableTimer=setTimeout(()=>{
-    if(albumDaySubscriptionKey===key && editBtn) editBtn.disabled=false;
-  },5000);
-  albumDayUnsubscribe=onValue(ref(db,`albumData/${key}`),snap=>{
-    clearTimeout(enableTimer);
-    let value=snap.val() || {photos:[],schedule:[],note:''};
-    const pending=getAlbumPendingWrites().find(item=>item.path===`albumData/${key}`);
-    if(pending) value=pending.value || {photos:[],schedule:[],note:''};
-    albumFirebaseData[key]=JSON.parse(JSON.stringify(value));
-    writeAlbumMonthCache(key.slice(0,7),albumFirebaseData);
-    albumRenderCal();
-    if(currentDayKey===key && !modalEditMode) applyModalMode(albumFirebaseData[key]);
-    if(editBtn) editBtn.disabled=false;
-    albumSetBadge('☁️ 已同步');
-  },err=>{
-    clearTimeout(enableTimer);
-    console.warn('相簿日期同步失敗',err);
-    if(editBtn) editBtn.disabled=false;
-    albumSetBadge('⚠️ 這一天同步失敗，稍後再試');
   });
 }
 function albumInitFirebase(){
   albumInitStats();
   albumVideoInitFirebase();
+  albumLoadMonth(albumYear, albumMonth);
   flushAlbumPendingWrites();
 }
 
@@ -8510,7 +8379,6 @@ function albumSaveStatsLocal(key, dayData){
   const stat=albumBuildDayStats(dayData);
   if(stat) albumStatsData[key]=stat;
   else delete albumStatsData[key];
-  writeAlbumStatsCache(albumStatsData);
   renderMemoriesCharts();
   renderMemoriesTotalStats();
   return stat;
@@ -8519,10 +8387,9 @@ async function albumSaveDay(key,dayData){
   if(!key) return false;
   const cleanData=JSON.parse(JSON.stringify(dayData || {photos:[],schedule:[],note:''}));
   albumFirebaseData[key]=cleanData;
-  writeAlbumMonthCache(key.slice(0,7),albumFirebaseData);
   const stat=albumSaveStatsLocal(key, cleanData);
   albumRenderCal();
-  if(document.getElementById('page-memories')?.classList.contains('active')) renderMemories();
+  renderMemories();
 
   if(!window._fb){
     queueFirebaseWrite(`albumData/${key}`, cleanData);
@@ -8551,7 +8418,7 @@ async function albumSaveDay(key,dayData){
 
 function albumRenderCal(){
   const y=albumYear,m=albumMonth;
-  albumApplyCachedMonth(albumMonthId(y,m));
+  albumLoadMonth(y,m);
   document.getElementById('album-cal-title').textContent=`${y} 年 ${m+1} 月`;
   const firstDay=new Date(y,m,1).getDay();
   const daysInMonth=new Date(y,m+1,0).getDate();
@@ -8561,8 +8428,7 @@ function albumRenderCal(){
   for(let d=1;d<=daysInMonth;d++){
     const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const dayData=albumFirebaseData[key];
-    const stat=albumGetDayStats(key);
-    const hasData=albumHasDayContent(dayData)||Number(stat.meet)>0||Number(stat.photos)>0;
+    const hasData=dayData&&((dayData.photos&&dayData.photos.length)||(dayData.note&&dayData.note.trim()));
     const isToday=new Date(y,m,d).getTime()===t.getTime();
     html+=`<div class="cal-day${isToday?' today':''}${hasData?' has-data':''}" onclick="openDayModal('${key}',${d})">${d}</div>`;
   }
@@ -8572,22 +8438,33 @@ function albumRenderCal(){
   let outCount = 0;
   for(let d=1;d<=daysInMonth;d++){
     const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    if(Number(albumGetDayStats(key).meet)>0) outCount++;
+    const dd=albumFirebaseData[key];
+    if(dd&&((dd.photos&&dd.photos.length)||(dd.note&&dd.note.trim()))) outCount++;
   }
   const countEl=document.getElementById('album-month-count');
   if(countEl){ countEl.textContent = outCount ? `🗓 這個月一起出去了 ${outCount} 天 💕` : '這個月還沒有出遊記錄 🥺'; countEl.style.fontSize='12px'; }
-  
+
   // 統計本月愛愛次數（行程備注裡有「愛愛」或「做愛」關鍵字就算一次）
   let loveCount = 0;
 const keywords = ['愛愛','做愛','房間','開房間','開房間','超市','操死','幹死','qtime','Qtime'];
 
 for (let d = 1; d <= daysInMonth; d++) {
   const key = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  if(Number(albumGetDayStats(key).love)>0) loveCount++;
+  const dd = albumFirebaseData[key];
+
+  // 支援單一物件或陣列
+  const entries = Array.isArray(dd) ? dd : (dd ? [dd] : []);
+
+  // 只要這一天有任何一筆 note 含關鍵字，就算一次
+  const hasKeyword = entries.some(entry =>
+    entry.note && keywords.some(kw => entry.note.includes(kw))
+  );
+
+  if (hasKeyword) loveCount++;
 }
   const loveEl=document.getElementById('album-love-count');
   if(loveEl){ loveEl.textContent = loveCount ? `💕 這個月愛愛了 ${loveCount} 次` : '這個月沒有愛愛 🥲'; }
-  
+
 }
 function albumCalPrev(){albumMonth--;if(albumMonth<0){albumMonth=11;albumYear--;}albumRenderCal();}
 function albumCalNext(){albumMonth++;if(albumMonth>11){albumMonth=0;albumYear++;}albumRenderCal();}
@@ -8601,7 +8478,6 @@ function openDayModal(key,day){
   applyModalMode(dayData);
   document.getElementById('day-modal-bg').classList.remove('hidden');
   document.body.style.overflow='hidden';
-  albumSubscribeDay(key);
 }
 
 function applyModalMode(dayData){
@@ -8609,13 +8485,13 @@ function applyModalMode(dayData){
   const viewContent=document.getElementById('modal-view-content');
   const editContent=document.getElementById('modal-edit-content');
   if(modalEditMode){
-    editBtn.hidden=true;editBtn.classList.remove('editing');
+    editBtn.hidden=true;editBtn.style.display='none';editBtn.classList.remove('editing');
     viewContent.classList.add('hidden');editContent.classList.remove('hidden');
     renderModalPhotosEdit(dayData.photos||[]);
     document.getElementById('modal-note').value=dayData.note||'';
     updateCloudinaryUiStatus();
   } else {
-    editBtn.hidden=false;editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
+    editBtn.hidden=false;editBtn.style.display='';editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
     viewContent.classList.remove('hidden');editContent.classList.add('hidden');
     renderViewPhotos(dayData.photos||[]);
     renderViewNote(dayData.note||'');
@@ -8897,7 +8773,6 @@ async function saveDayData(){
 }
 function closeDayModal(e){if(e.target===document.getElementById('day-modal-bg')) closeDayModalDirect();}
 function closeDayModalDirect(){
-  albumStopDaySubscription();
   document.getElementById('day-modal-bg').classList.add('hidden');
   document.body.style.overflow='';
   if(typeof pzAfterMemoryModalClosed==='function') pzAfterMemoryModalClosed();

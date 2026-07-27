@@ -3630,7 +3630,7 @@ html[data-theme="dark"] body #pz-picker-modal .pz-photo-thumb{
   <div class="music-disc" id="music-disc" onclick="toggleMusicLibrary()" style="cursor:pointer" title="點我開啟音樂庫">🎵</div>
   <div class="music-info">
     <div class="music-title-wrap" id="music-title-wrap">
-      <span class="music-title" id="music-title">載入中...</span>
+      <span class="music-title" id="music-title">點一下播放</span>
     </div>
   </div>
   <div class="music-btns">
@@ -6995,7 +6995,6 @@ let fightSoupPageOpen = false;
 let fightSoupReturnFlow = false;
 let fightSoupPhotoSrc = '';
 let fightSoupTextIndex = -1;
-let fightSoupAlbumData = {};
 let fightSoupAlbumSubscriptionStarted = false;
 let fightSoupAlbumHasLoaded = false;
 let fightEditorKeepLocal = false;
@@ -7440,8 +7439,7 @@ function fightRenderNextStep(){
 function fightCollectAlbumPhotos(){
   const photos=[];
   const seen=new Set();
-  const allDays=Object.assign({}, albumFirebaseData || {}, fightSoupAlbumData || {});
-  Object.entries(allDays).forEach(([date, dayData])=>{
+  Object.entries(albumFirebaseData || {}).forEach(([date, dayData])=>{
     const list=Array.isArray(dayData?.photos) ? dayData.photos : [];
     list.forEach(src=>{
       const clean=typeof src==='string' ? src.trim() : '';
@@ -7453,20 +7451,14 @@ function fightCollectAlbumPhotos(){
   });
   return photos;
 }
-async function fightLoadSoupAlbumPhotos(){
+function fightLoadSoupAlbumPhotos(){
   if(fightSoupAlbumSubscriptionStarted || !window._fb) return;
   fightSoupAlbumSubscriptionStarted = true;
-  const {db,ref,onValue}=window._fb;
-  onValue(ref(db,'albumData'),snap=>{
-    const firstLoad=!fightSoupAlbumHasLoaded;
-    fightSoupAlbumData=snap.val() || {};
+  albumLoadMonth();
+  if(albumAllDataReady){
     fightSoupAlbumHasLoaded=true;
-    if(firstLoad) fightSoupPhotoSrc='';
     fightRenderSoupCard(false);
-  },err=>{
-    fightSoupAlbumSubscriptionStarted=false;
-    console.warn('fight soup album sync failed', err);
-  });
+  }
 }
 function fightBuildSoupText(){
   if(fightSoupTextIndex < 0 || !FIGHT_SOUP_TEXTS[fightSoupTextIndex]){
@@ -7776,7 +7768,8 @@ let albumMonth=new Date().getMonth();
 let currentDayKey='';
 let modalEditMode=false;
 let albumFirebaseData={};
-let albumLoadedMonths=new Set();
+let albumAllDataSyncStarted=false;
+let albumAllDataReady=false;
 let albumStatsData={};
 let albumStatsReady=false;
 let albumStatsBackfillStarted=false;
@@ -8299,13 +8292,12 @@ function albumSaveDayStats(key, dayData){
 }
 async function albumBackfillStatsFromAlbumData(){
   if(albumStatsBackfillStarted || !window._fb) return;
+  if(!albumAllDataReady) return;
   albumStatsBackfillStarted=true;
-  const {db,ref,get,update}=window._fb;
+  const {db,ref,update}=window._fb;
   try{
-    const snap=await get(ref(db,'albumData'));
-    const all=snap.val() || {};
     const stats={};
-    Object.entries(all).forEach(([key,dayData])=>{
+    Object.entries(albumFirebaseData).forEach(([key,dayData])=>{
       const stat=albumBuildDayStats(dayData);
       if(stat) stats[key]=stat;
     });
@@ -8338,34 +8330,32 @@ function albumSetBadge(text){
 function albumMonthId(y,m){
   return `${y}-${String(m+1).padStart(2,'0')}`;
 }
-function albumLoadMonth(y=albumYear,m=albumMonth){
+function albumLoadMonth(){
   if(!window._fb) return;
-  const monthId=albumMonthId(y,m);
-  if(albumLoadedMonths.has(monthId)) return;
-  albumLoadedMonths.add(monthId);
-  const {db,ref,onValue,query,orderByKey,startAt,endAt}=window._fb;
-  const monthQuery=query(
-    ref(db,'albumData'),
-    orderByKey(),
-    startAt(`${monthId}-01`),
-    endAt(`${monthId}-31\uf8ff`)
-  );
+  if(albumAllDataSyncStarted) return;
+  albumAllDataSyncStarted=true;
+  const {db,ref,onValue}=window._fb;
   albumSetBadge('☁️ 同步中...');
-  onValue(monthQuery,snap=>{
-    const monthData=snap.val()||{};
-    Object.keys(albumFirebaseData).forEach(key=>{
-      if(key.startsWith(monthId)) delete albumFirebaseData[key];
-    });
-    Object.assign(albumFirebaseData,monthData);
-    window.dispatchEvent(new CustomEvent('albumDataReady'));
+  onValue(ref(db,'albumData'),snap=>{
+    albumFirebaseData=snap.val()||{};
+    albumAllDataReady=true;
     albumSetBadge('☁️ 已同步');
     if(typeof rgSetCover === 'function' && rgInitDone) rgSetCover();
     albumRenderCal();
     renderMemories();
+    if(albumStatsReady && !Object.keys(albumStatsData).length) albumBackfillStatsFromAlbumData();
+    if(!fightSoupAlbumHasLoaded) fightSoupPhotoSrc='';
+    fightSoupAlbumHasLoaded=true;
+    window.dispatchEvent(new CustomEvent('albumDataReady'));
     if(!document.getElementById('day-modal-bg').classList.contains('hidden') && currentDayKey){
       const dayData=albumFirebaseData[currentDayKey]||{photos:[],schedule:[],note:''};
       if(!modalEditMode) applyModalMode(dayData);
     }
+  },err=>{
+    albumAllDataSyncStarted=false;
+    albumAllDataReady=false;
+    albumSetBadge('☁️ 同步失敗，切換頁面後重試');
+    console.warn('album sync failed',err);
   });
 }
 function albumInitFirebase(){
@@ -14358,6 +14348,7 @@ audio.addEventListener('play',()=>setUI(true));
 audio.addEventListener('pause',()=>setUI(false));
 window.addEventListener('firebaseReady',initCustomMusicSync);
 if(window._fb) initCustomMusicSync();
+renderMusicLibrary();
 loadSong(songIdx);
 
 const RG_LANES = 4;

@@ -225,6 +225,13 @@ font-size:28px;font-weight:700;color:var(--rose);
 .surprise-history-btn{padding:7px 11px;border:1px solid rgba(232,99,122,.22);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;transition:transform .18s,background .18s,color .18s}
 .surprise-history-btn:active{transform:scale(.96);background:var(--pink);color:#fff}
 [data-theme="dark"] .surprise-history-btn{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
+.surprise-history-overlay{position:fixed;inset:0;z-index:11500;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(49,28,36,.52);backdrop-filter:blur(7px)}
+.surprise-history-dialog{width:min(520px,100%);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:22px;background:var(--white);box-shadow:0 24px 70px rgba(70,30,45,.3);animation:popIn .28s cubic-bezier(.2,1,.35,1)}
+.surprise-history-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 17px 13px;border-bottom:1px solid var(--card-border)}
+.surprise-history-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--rose)}
+.surprise-history-close{width:36px;height:36px;display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:18px;cursor:pointer}
+.surprise-history-list{display:flex;flex-direction:column;gap:10px;min-height:120px;padding:14px 15px 18px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+[data-theme="dark"] .surprise-history-overlay{background:rgba(8,5,7,.7)}
 .birthday-fireworks{
 position:fixed;inset:0;z-index:12000;background:rgba(20,16,28,.9);overflow:hidden;display:flex;align-items:center;justify-content:center;
 animation:birthdayNightIn .7s ease both;contain:layout paint style;isolation:isolate;
@@ -309,12 +316,13 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .birthday-letter-photo-frame{position:relative;flex:1 1 180px;min-height:82px;margin-top:clamp(5px,1dvh,10px);overflow:hidden;opacity:0;transform:translateY(8px)}
 .birthday-letter-photo-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;will-change:opacity}
 .birthday-letter-photo{display:block;width:auto;max-width:100%;height:100%;max-height:100%;border-radius:12px;object-fit:contain;box-shadow:0 9px 26px rgba(0,0,0,.34)}
-.birthday-fireworks-letter.show .birthday-letter-photo-slide{animation:birthdayLetterPhotoCycle 15s ease-in-out infinite}
+.birthday-fireworks-letter.show .birthday-letter-photo-slide{animation:birthdayLetterPhotoCycle 18s ease-in-out infinite}
 .birthday-fireworks-letter.show .birthday-letter-photo-slide:nth-child(1){animation-delay:2.3s}
 .birthday-fireworks-letter.show .birthday-letter-photo-slide:nth-child(2){animation-delay:5.3s}
 .birthday-fireworks-letter.show .birthday-letter-photo-slide:nth-child(3){animation-delay:8.3s}
 .birthday-fireworks-letter.show .birthday-letter-photo-slide:nth-child(4){animation-delay:11.3s}
 .birthday-fireworks-letter.show .birthday-letter-photo-slide:nth-child(5){animation-delay:14.3s}
+.birthday-fireworks-letter.show .birthday-letter-photo-slide:nth-child(6){animation-delay:17.3s}
 .birthday-fireworks-letter.show .birthday-letter-photo-frame{animation:birthdayLetterLine .7s 2.3s ease forwards}
 .birthday-final-cake{position:absolute;z-index:4;left:50%;bottom:max(9px,env(safe-area-inset-bottom));width:min(68vw,330px);height:190px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0;border:0;background:none;color:inherit;font:inherit;opacity:0;transform:translate(-50%,125%) scale(.78);pointer-events:none;filter:drop-shadow(0 18px 24px rgba(0,0,0,.4))}
 .birthday-final-cake.show{pointer-events:auto;cursor:pointer;animation:birthdayCakeRise 1.15s cubic-bezier(.2,1.25,.35,1) forwards}
@@ -363,7 +371,7 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 @keyframes birthdayEnvelopePullHint{from{transform:translateY(4px)}to{transform:translateY(-5px)}}
 @keyframes birthdayLetterIn{from{opacity:0;transform:translate(-50%,84px) scale(.42) rotateX(-16deg)}to{opacity:1;transform:translate(-50%,0) scale(1) rotateX(0)}}
 @keyframes birthdayLetterLine{to{opacity:1;transform:none}}
-@keyframes birthdayLetterPhotoCycle{0%,19%{opacity:1}20%,100%{opacity:0}}
+@keyframes birthdayLetterPhotoCycle{0%,16%{opacity:1}16.667%,100%{opacity:0}}
 @keyframes birthdayLetterDecoGlow{0%,100%{opacity:.48}50%{opacity:.86}}
 @keyframes birthdayCakeRise{0%{opacity:0;transform:translate(-50%,125%) scale(.78)}70%{opacity:1;transform:translate(-50%,-5%) scale(1.04)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
 @keyframes birthdayCakeLeave{from{opacity:1;transform:translate(-50%,0) scale(1)}to{opacity:0;transform:translate(-50%,48px) scale(.86)}}
@@ -773,6 +781,16 @@ border-color:var(--pink);
 .modal-section-title{
 font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 }
+.modal-section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cohabiting-toggle{display:inline-flex;align-items:center;gap:7px;min-height:32px;padding:5px 9px;border:1px solid var(--card-border);border-radius:10px;background:var(--pink-light);color:var(--text);font-size:12px;font-weight:700;cursor:pointer;user-select:none;-webkit-user-select:none}
+.cohabiting-toggle input{width:17px;height:17px;margin:0;accent-color:var(--pink);cursor:pointer}
+.cohabiting-view{display:flex;align-items:center;justify-content:center;gap:11px;min-height:88px;padding:15px;border:1px solid rgba(232,99,122,.16);border-radius:14px;background:var(--pink-light);color:var(--text)}
+.cohabiting-view-icon{font-size:32px;line-height:1}
+.cohabiting-view-copy{display:flex;flex-direction:column;gap:3px}
+.cohabiting-view-copy strong{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:15px}
+.cohabiting-view-copy small{color:var(--text-muted);font-size:11px}
+.cohabiting-note-badge{display:inline-flex;align-items:center;gap:4px;margin-bottom:7px;padding:4px 8px;border-radius:999px;background:var(--pink-light);color:var(--rose);font-size:11px;font-weight:800}
+[data-theme="dark"] .cohabiting-toggle{border-color:rgba(255,158,178,.22)}
 
 .modal-photos-grid{
 display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;
@@ -824,6 +842,14 @@ color:var(--text-muted);
 font-size:13px;
 padding:16px 0;
 }
+.album-empty-meeting{position:relative;width:min(240px,100%);aspect-ratio:1;margin:2px auto 0;overflow:hidden;border:1px solid rgba(232,99,122,.14);border-radius:18px;background:#fbe1e5;box-shadow:inset 0 1px 0 rgba(255,255,255,.75)}
+.album-empty-meeting img{display:block;width:100%;height:100%;object-fit:cover}
+.album-empty-meeting-bubble{position:absolute;z-index:2;top:17px;left:50%;transform:translateX(-50%);min-width:148px;padding:9px 13px;border:1px solid rgba(232,99,122,.22);border-radius:15px;background:rgba(255,255,255,.94);box-shadow:0 7px 18px rgba(143,69,86,.13);color:var(--rose);font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;text-align:center;white-space:nowrap}
+.album-empty-meeting-bubble::after{content:'';position:absolute;left:50%;bottom:-8px;width:14px;height:14px;transform:translateX(-50%) rotate(45deg);border-right:1px solid rgba(232,99,122,.22);border-bottom:1px solid rgba(232,99,122,.22);background:rgba(255,255,255,.94)}
+[data-theme="dark"] .album-empty-meeting{border-color:rgba(255,158,178,.22);background:#402a31;box-shadow:none}
+[data-theme="dark"] .album-empty-meeting img{filter:brightness(.82) saturate(.88)}
+[data-theme="dark"] .album-empty-meeting-bubble{background:#342128;border-color:rgba(255,158,178,.26);color:#ffb1c1}
+[data-theme="dark"] .album-empty-meeting-bubble::after{background:#342128;border-color:rgba(255,158,178,.26)}
 
 .modal-add-photo{
 width:100%;padding:10px;
@@ -1331,13 +1357,18 @@ onclick="hideSpecialForToday()">
     <img id="surprise-preview" style="display:none;width:100%;border-radius:14px;margin-bottom:10px">
 
     <button class="open-btn" onclick="saveSurprise()">發送驚喜 💝</button>
-
-    <div id="surprise-history-panel" style="display:none;margin-top:14px;padding-top:14px;border-top:1px dashed var(--card-border)">
-      <div id="surprise-history-list" style="display:flex;flex-direction:column;gap:10px;max-height:460px;overflow-y:auto;padding-right:3px"></div>
-    </div>
-
   </div>
 
+</div>
+
+<div class="surprise-history-overlay hidden" id="surprise-history-panel" onclick="closeLoveSurpriseHistory(event)">
+  <section class="surprise-history-dialog" role="dialog" aria-modal="true" aria-labelledby="surprise-history-title" onclick="event.stopPropagation()">
+    <div class="surprise-history-head">
+      <h2 class="surprise-history-title" id="surprise-history-title">歷史驚喜</h2>
+      <button type="button" class="surprise-history-close" onclick="toggleLoveSurpriseHistory(false)" aria-label="關閉歷史驚喜">✕</button>
+    </div>
+    <div class="surprise-history-list" id="surprise-history-list"></div>
+  </section>
 </div>
 
 <!-- ALBUM -->
@@ -1463,7 +1494,13 @@ onclick="hideSpecialForToday()">
         </div>
       </div>
       <div class="modal-section">
-        <div class="modal-section-title">🗓️ 當天行程</div>
+        <div class="modal-section-title modal-section-title-row">
+          <span>🗓️ 當天行程</span>
+          <label class="cohabiting-toggle" for="modal-cohabiting">
+            <input type="checkbox" id="modal-cohabiting">
+            <span>同居</span>
+          </label>
+        </div>
         <textarea class="modal-textarea" id="modal-note" rows="3" placeholder="記錄這天的行程、回憶..."></textarea>
       </div>
       <button class="modal-save-btn" onclick="saveDayData()">儲存 💾</button>
@@ -2488,12 +2525,22 @@ function getLoveSurpriseSeen(){
 
 function toggleLoveSurpriseHistory(force){
   const panel=document.getElementById('surprise-history-panel');
-  const button=document.getElementById('surprise-history-toggle');
   if(!panel) return;
-  const open=typeof force==='boolean' ? force : panel.style.display==='none';
-  panel.style.display=open?'block':'none';
-  if(button) button.textContent=open?'收起歷史':'歷史驚喜';
-  if(open) renderLoveSurpriseHistory();
+  const open=typeof force==='boolean' ? force : panel.classList.contains('hidden');
+  panel.classList.toggle('hidden',!open);
+  if(open){
+    panel.dataset.previousOverflow=document.body.style.overflow||'';
+    document.body.style.overflow='hidden';
+    renderLoveSurpriseHistory();
+  }else{
+    document.body.style.overflow=panel.dataset.previousOverflow||'';
+    delete panel.dataset.previousOverflow;
+  }
+}
+
+function closeLoveSurpriseHistory(event){
+  if(event && event.target!==document.getElementById('surprise-history-panel')) return;
+  toggleLoveSurpriseHistory(false);
 }
 
 function formatLoveSurpriseTime(value){
@@ -3391,6 +3438,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
         <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-06-27.jpg" alt="6月27日一起逛街的回憶"></div>
         <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-05-06.jpg" alt="5月6日一起看球的回憶"></div>
         <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-04-beach.jpg" alt="7月4日一起在海邊的回憶"></div>
+        <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-28-02.jpg" alt="7月28日的回憶"></div>
       </div>
     </div>
     <button type="button" class="birthday-final-cake" onclick="openYujunBirthdayLetter()" aria-label="點擊生日蛋糕，打開給予君的生日信" aria-expanded="false">
@@ -5411,7 +5459,7 @@ async function deleteAlbumVideo(encodedId){
 
 function albumHasDayContent(dayData){
   if(!dayData) return false;
-  return !!((dayData.photos && dayData.photos.length) || (dayData.note && String(dayData.note).trim()) || (dayData.schedule && dayData.schedule.length));
+  return !!(dayData.cohabiting || (dayData.photos && dayData.photos.length) || (dayData.note && String(dayData.note).trim()) || (dayData.schedule && dayData.schedule.length));
 }
 function albumBuildDayStats(dayData){
   const hasContent = albumHasDayContent(dayData);
@@ -5568,7 +5616,7 @@ function albumRenderCal(){
   for(let d=1;d<=daysInMonth;d++){
     const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const dayData=albumFirebaseData[key];
-    const hasData=dayData&&((dayData.photos&&dayData.photos.length)||(dayData.note&&dayData.note.trim()));
+    const hasData=albumHasDayContent(dayData);
     const isToday=new Date(y,m,d).getTime()===t.getTime();
     html+=`<div class="cal-day${isToday?' today':''}${hasData?' has-data':''}" onclick="openDayModal('${key}',${d})">${d}</div>`;
   }
@@ -5579,10 +5627,10 @@ function albumRenderCal(){
   for(let d=1;d<=daysInMonth;d++){
     const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const dd=albumFirebaseData[key];
-    if(dd&&((dd.photos&&dd.photos.length)||(dd.note&&dd.note.trim()))) outCount++;
+    if(albumHasDayContent(dd)) outCount++;
   }
   const countEl=document.getElementById('album-month-count');
-  if(countEl){ countEl.textContent = outCount ? `🗓 這個月一起出去了 ${outCount} 天 💕` : '這個月還沒有出遊記錄 🥺'; countEl.style.fontSize='12px'; }
+  if(countEl){ countEl.textContent = outCount ? `🗓 這個月見面了 ${outCount} 天 💕` : '這個月還沒有見面記錄 🥺'; countEl.style.fontSize='12px'; }
 
   // 統計本月愛愛次數（行程備注裡有「愛愛」或「做愛」關鍵字就算一次）
   let loveCount = 0;
@@ -5629,12 +5677,13 @@ function applyModalMode(dayData){
     viewContent.classList.add('hidden');editContent.classList.remove('hidden');
     renderModalPhotosEdit(dayData.photos||[]);
     document.getElementById('modal-note').value=dayData.note||'';
+    document.getElementById('modal-cohabiting').checked=!!dayData.cohabiting;
     updateCloudinaryUiStatus();
   } else {
     editBtn.hidden=false;editBtn.style.display='';editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
     viewContent.classList.remove('hidden');editContent.classList.add('hidden');
     renderViewPhotos(dayData.photos||[]);
-    renderViewNote(dayData.note||'');
+    renderViewNote(dayData.note||'',!!dayData.cohabiting);
   }
 }
 
@@ -5659,10 +5708,23 @@ function renderViewSchedule(items){
   if(!list.length){el.innerHTML='<div class="view-empty">今天還沒有另外記下行程</div>';return;}
   el.innerHTML=list.map(item=>`<div class="view-schedule-item"><span class="view-schedule-text">${escapeHtml(item)}</span></div>`).join('');
 }
-function renderViewNote(note){
+function renderViewNote(note,cohabiting=false){
   const el=document.getElementById('view-note');
-  if(!note||!note.trim()){el.innerHTML='<div class="view-empty">今天還沒有記下行程</div>';return;}
-  el.innerHTML=`<div class="view-note">${escapeHtml(note)}</div>`;
+  if(!note||!note.trim()){
+    if(cohabiting){
+      el.innerHTML=`<div class="cohabiting-view">
+        <span class="cohabiting-view-icon">🏠</span>
+        <span class="cohabiting-view-copy"><strong>今天一起生活中</strong><small>同居日</small></span>
+      </div>`;
+      return;
+    }
+    el.innerHTML=`<div class="album-empty-meeting">
+      <div class="album-empty-meeting-bubble">今天還沒有見面</div>
+      <img src="assets/album-empty-puppy.png" alt="水汪汪眼睛的小狗狗">
+    </div>`;
+    return;
+  }
+  el.innerHTML=`${cohabiting?'<div class="cohabiting-note-badge">🏠 同居日</div>':''}<div class="view-note">${escapeHtml(note)}</div>`;
 }
 function renderModalScheduleEdit(items){
   const list=document.getElementById('modal-schedule-list');
@@ -5895,6 +5957,7 @@ function saveDayDataSilent(){
   const key=currentDayKey;
   const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
   dayData.note=document.getElementById('modal-note').value;
+  dayData.cohabiting=!!document.getElementById('modal-cohabiting')?.checked;
   return albumSaveDay(key,dayData);
 }
 async function saveDayData(){
@@ -5906,6 +5969,7 @@ async function saveDayData(){
   const note=document.getElementById('modal-note').value;
   const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
   dayData.note=note;
+  dayData.cohabiting=!!document.getElementById('modal-cohabiting')?.checked;
   await albumSaveDay(key,dayData);
   if(currentDayKey!==key) return;
   modalEditMode=false;

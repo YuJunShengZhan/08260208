@@ -5178,10 +5178,14 @@ async function albumPlanAdd(event){
   if(!window._fb) return;
   const {db,ref,push,set}=window._fb;
   if(button) button.disabled=true;
+  if(input){
+    input.value='';
+    input.focus();
+  }
   try{
     await set(push(ref(db,'albumPlans')),{text,done:false,createdAt:Date.now()});
-    if(input) input.value='';
   }catch(err){
+    if(input && !input.value) input.value=text;
     console.warn('新增待安排行程失敗',err);
     const count=document.getElementById('album-plan-count');
     if(count) count.textContent='儲存失敗，請再試一次';

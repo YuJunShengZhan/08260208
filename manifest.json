@@ -1,0 +1,27 @@
+{
+  "id": "/",
+  "name": "林聖展與蘇予君 - 要永遠在一起",
+  "short_name": "要永遠在一起",
+  "description": "屬於林聖展與蘇予君的回憶網站",
+  "lang": "zh-TW",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone"],
+  "orientation": "any",
+  "background_color": "#fdf8f5",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/assets/app-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

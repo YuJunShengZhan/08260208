@@ -665,7 +665,7 @@ font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text);font-weight:7
 .album-cal-grid{
 display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 }
-.album-media-tabs{position:sticky;top:0;z-index:90;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;margin-bottom:12px;padding:3px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light);box-shadow:0 6px 18px rgba(201,75,100,.1)}
+.album-media-tabs{position:sticky;top:var(--album-tabs-top,100px);z-index:99;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;margin-bottom:12px;padding:3px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light);box-shadow:0 6px 18px rgba(201,75,100,.1)}
 .album-media-tab{min-height:40px;border:0;border-radius:6px;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
 .album-media-tab.active{background:var(--white);color:var(--rose);box-shadow:0 3px 12px rgba(201,75,100,.1)}
 .album-media-section[hidden]{display:none!important}
@@ -4981,6 +4981,23 @@ let albumVideoFilterYear='';
 let albumVideoFilterMonth='';
 const ALBUM_VIDEO_MAX_BYTES=100*1024*1024;
 
+let albumTabsResizeObserver=null;
+function updateAlbumTabsStickyOffset(){
+  const header=document.querySelector('.header');
+  const height=header?Math.ceil(header.getBoundingClientRect().height):0;
+  document.documentElement.style.setProperty('--album-tabs-top',`${height}px`);
+}
+function initAlbumTabsSticky(){
+  updateAlbumTabsStickyOffset();
+  const header=document.querySelector('.header');
+  if(header && 'ResizeObserver' in window){
+    albumTabsResizeObserver=new ResizeObserver(updateAlbumTabsStickyOffset);
+    albumTabsResizeObserver.observe(header);
+  }
+  window.addEventListener('resize',updateAlbumTabsStickyOffset,{passive:true});
+}
+initAlbumTabsSticky();
+
 function albumSwitchMedia(type,button){
   const next=type==='videos'?'videos':'photos';
   albumActiveMedia=next;
@@ -7428,18 +7445,42 @@ const titleWrap=document.getElementById('music-title-wrap');
 let customMusicSongs=[];
 let customMusicSyncStarted=false;
 const MUSIC_FIREBASE_STORAGE='firebase-rtdb-chunks-v1';
-const MUSIC_CHUNK_BYTES=192*1024;
+const MUSIC_METADATA_CACHE_KEY='customMusicMetadataCacheV1';
 const musicSourceCache=new Map();
 let musicSourceLoadToken=0;
 
-function musicBytesToBase64(bytes){
-  let binary='';
-  const batchSize=0x8000;
-  for(let i=0;i<bytes.length;i+=batchSize){
-    binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+batchSize,bytes.length)));
-  }
-  return btoa(binary);
+function normalizeCustomMusicSongs(value){
+  return Object.entries(value||{})
+    .map(([key,item])=>({
+      key,
+      custom:true,
+      name:String(item?.name||'未命名歌曲').slice(0,80),
+      file:String(item?.file||''),
+      publicId:String(item?.publicId||''),
+      storage:String(item?.storage||''),
+      fileId:String(item?.fileId||''),
+      chunkCount:Number(item?.chunkCount)||0,
+      mime:String(item?.mime||'audio/mpeg'),
+      bytes:Number(item?.bytes)||0,
+      createdAt:Number(item?.createdAt)||0
+    }))
+    .filter(song=>/^https:\/\//i.test(song.file) || (song.storage===MUSIC_FIREBASE_STORAGE && song.fileId && song.chunkCount>0))
+    .sort((a,b)=>a.createdAt-b.createdAt);
 }
+function readCachedCustomMusicSongs(){
+  try{
+    const cached=JSON.parse(localStorage.getItem(MUSIC_METADATA_CACHE_KEY)||'[]');
+    if(!Array.isArray(cached)) return [];
+    return normalizeCustomMusicSongs(Object.fromEntries(cached.filter(item=>item?.key).map(item=>[item.key,item])));
+  }catch(_){
+    return [];
+  }
+}
+function cacheCustomMusicSongs(){
+  try{localStorage.setItem(MUSIC_METADATA_CACHE_KEY,JSON.stringify(customMusicSongs));}catch(_){}
+}
+customMusicSongs=readCachedCustomMusicSongs();
+
 function musicBase64ToBytes(value){
   const binary=atob(String(value||''));
   const bytes=new Uint8Array(binary.length);
@@ -7447,49 +7488,28 @@ function musicBase64ToBytes(value){
   return bytes;
 }
 async function uploadMp3ToFirebase(file,name){
+  const cfg=getCloudinarySettings();
+  if(!cfg) throw new Error('音樂儲存空間尚未連線');
   const {db,ref,push,set,remove}=window._fb;
   const itemRef=push(ref(db,'musicLibrary/custom'));
-  const fileId=itemRef.key;
-  const fileRef=ref(db,`musicLibrary/files/${fileId}`);
   const safeFileName=String(file.name||'music.mp3').replace(/[^\w.-]+/g,'-').slice(-100)||'music.mp3';
-  const bytes=new Uint8Array(await file.arrayBuffer());
-  const chunkCount=Math.ceil(bytes.length/MUSIC_CHUNK_BYTES);
-  const meta={
-    fileName:safeFileName,
-    mime:'audio/mpeg',
-    bytes:bytes.length,
-    chunkBytes:MUSIC_CHUNK_BYTES,
-    chunkCount,
-    createdAt:Date.now()
-  };
   try{
-    await set(ref(db,`musicLibrary/files/${fileId}/meta`),{...meta,complete:false});
-    const concurrentWrites=4;
-    for(let start=0;start<chunkCount;start+=concurrentWrites){
-      const writes=[];
-      for(let index=start;index<Math.min(start+concurrentWrites,chunkCount);index+=1){
-        const chunk=bytes.subarray(index*MUSIC_CHUNK_BYTES,Math.min((index+1)*MUSIC_CHUNK_BYTES,bytes.length));
-        const chunkKey=String(index).padStart(4,'0');
-        writes.push(set(ref(db,`musicLibrary/files/${fileId}/chunks/${chunkKey}`),musicBytesToBase64(chunk)));
-      }
-      await Promise.all(writes);
-      const completed=Math.min(start+concurrentWrites,chunkCount);
-      setMusicAddStatus(`正在同步 MP3 ${Math.round(completed/chunkCount*100)}%，請不要關閉頁面...`);
-    }
-    await set(ref(db,`musicLibrary/files/${fileId}/meta`),{...meta,complete:true});
+    const uploaded=await uploadBlobToCloudinary(file,safeFileName,'music','video',true);
+    const fileUrl=String(uploaded?.secure_url||uploaded?.url||'').trim();
+    if(!fileUrl) throw new Error('音樂上傳後沒有取得播放網址');
     await set(itemRef,{
       name,
-      storage:MUSIC_FIREBASE_STORAGE,
-      fileId,
-      chunkCount,
+      file:fileUrl,
+      publicId:String(uploaded?.public_id||''),
+      storage:'cloudinary-video',
       mime:'audio/mpeg',
       source:'mp3',
-      bytes:bytes.length,
+      bytes:file.size,
       createdAt:Date.now()
     });
-    return fileId;
+    return itemRef.key;
   }catch(err){
-    await Promise.allSettled([remove(itemRef),remove(fileRef)]);
+    await remove(itemRef).catch(()=>{});
     throw err;
   }
 }
@@ -7578,7 +7598,7 @@ async function saveMp3Music(){
   if(file.size>30*1024*1024){setMusicAddStatus('單首 MP3 不可以超過 30 MB',true);return;}
   if(!window._fb){setMusicAddStatus('同步服務尚未連線，請稍後再試',true);return;}
   submit.disabled=true;
-  setMusicAddStatus('正在準備 MP3，請不要關閉頁面...');
+  setMusicAddStatus('正在上傳 MP3，請不要關閉頁面...');
   try{
     await uploadMp3ToFirebase(file,name);
     nameInput.value='';
@@ -7616,22 +7636,8 @@ function initCustomMusicSync(){
   const {db,ref,onValue}=window._fb;
   onValue(ref(db,'musicLibrary/custom'),snap=>{
     const current=getCurrentMusicSong();
-    customMusicSongs=Object.entries(snap.val()||{})
-      .map(([key,value])=>({
-        key,
-        custom:true,
-        name:String(value?.name||'未命名歌曲').slice(0,80),
-        file:String(value?.file||''),
-        publicId:String(value?.publicId||''),
-        storage:String(value?.storage||''),
-        fileId:String(value?.fileId||''),
-        chunkCount:Number(value?.chunkCount)||0,
-        mime:String(value?.mime||'audio/mpeg'),
-        bytes:Number(value?.bytes)||0,
-        createdAt:Number(value?.createdAt)||0
-      }))
-      .filter(song=>/^https:\/\//i.test(song.file) || (song.storage===MUSIC_FIREBASE_STORAGE && song.fileId && song.chunkCount>0))
-      .sort((a,b)=>a.createdAt-b.createdAt);
+    customMusicSongs=normalizeCustomMusicSongs(snap.val());
+    cacheCustomMusicSongs();
     if(current?.custom){
       const nextIndex=getMusicPlaylist().findIndex(song=>song.custom && song.key===current.key);
       if(nextIndex>=0){

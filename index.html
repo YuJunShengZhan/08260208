@@ -676,7 +676,7 @@ display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 .album-media-tab:focus,.album-media-tab:focus-visible{outline:none;box-shadow:none}
 .album-media-tab:focus-visible::after{width:38px}
 .album-media-tab:active{background:rgba(255,255,255,.32)}
-.album-plan-launch-row{margin-top:9px}
+.album-plan-launch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:9px}
 .album-plan-launch{min-height:34px;display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;letter-spacing:0;cursor:pointer}
 .album-plan-launch::before{content:'';width:7px;height:7px;border-radius:2px;background:var(--pink)}
 .album-plan-launch-count{min-width:18px;height:18px;display:inline-grid;place-items:center;padding:0 5px;border-radius:9px;background:var(--pink);color:#fff;font-size:10px;line-height:1}
@@ -1448,10 +1448,8 @@ onclick="hideSpecialForToday()">
 	  <button class="album-plan-launch" type="button" onclick="albumPlanOpen()">
 	    <span>待安排行程</span><span class="album-plan-launch-count" id="album-plan-launch-count" hidden></span>
 	  </button>
+	  <span id="album-love-count"></span>
 	</div>
-	 <div style="margin-top:8px;text-align:right;">
-      <span id="album-love-count"></span>
-    </div>
   </div>
   </section>
   <section class="album-media-section" id="album-video-section" role="tabpanel" aria-labelledby="album-video-tab" hidden>

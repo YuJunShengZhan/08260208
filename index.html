@@ -5048,6 +5048,8 @@ let albumCacheHydrationPromise=null;
 let albumDownloadProgress=0;
 let albumDownloadTimer=null;
 let albumDownloadHideTimer=null;
+let albumDownloadTimeoutTimer=null;
+let albumDownloadDeferred=false;
 let albumDownloadRunId=0;
 let albumStatsData={};
 let albumStatsReady=false;
@@ -5844,6 +5846,9 @@ function albumStartDownloadProgress(startAt=6){
   albumDownloadRunId+=1;
   clearInterval(albumDownloadTimer);
   clearTimeout(albumDownloadHideTimer);
+  clearTimeout(albumDownloadTimeoutTimer);
+  albumDownloadDeferred=false;
+  const runId=albumDownloadRunId;
   const toast=albumGetDownloadToast();
   toast.classList.remove('done');
   toast.hidden=false;
@@ -5854,11 +5859,33 @@ function albumStartDownloadProgress(startAt=6){
     albumDownloadProgress=Math.min(92,albumDownloadProgress+step);
     albumRenderDownloadProgress(albumDownloadProgress);
   },260);
+  albumDownloadTimeoutTimer=setTimeout(()=>{
+    if(runId!==albumDownloadRunId || !albumDownloadTimer) return;
+    albumDeferDownloadProgress();
+  },4000);
+}
+function albumDeferDownloadProgress(){
+  clearInterval(albumDownloadTimer);
+  clearTimeout(albumDownloadTimeoutTimer);
+  albumDownloadTimer=null;
+  albumDownloadTimeoutTimer=null;
+  albumDownloadDeferred=true;
+  const toast=albumGetDownloadToast();
+  const runId=albumDownloadRunId;
+  albumRenderDownloadProgress(albumDownloadProgress,'背景更新');
+  albumDownloadHideTimer=setTimeout(()=>{
+    if(runId!==albumDownloadRunId) return;
+    toast.classList.add('done');
+    setTimeout(()=>{ if(runId===albumDownloadRunId){ toast.hidden=true; toast.classList.remove('done'); } },220);
+  },850);
 }
 function albumFinishDownloadProgress(){
   clearInterval(albumDownloadTimer);
+  clearTimeout(albumDownloadTimeoutTimer);
   albumDownloadTimer=null;
+  albumDownloadTimeoutTimer=null;
   albumDownloadProgress=100;
+  if(albumDownloadDeferred) return;
   const toast=albumGetDownloadToast();
   const runId=albumDownloadRunId;
   toast.hidden=false;
@@ -5871,7 +5898,10 @@ function albumFinishDownloadProgress(){
 }
 function albumFailDownloadProgress(){
   clearInterval(albumDownloadTimer);
+  clearTimeout(albumDownloadTimeoutTimer);
   albumDownloadTimer=null;
+  albumDownloadTimeoutTimer=null;
+  if(albumDownloadDeferred) return;
   const toast=albumGetDownloadToast();
   const runId=albumDownloadRunId;
   toast.hidden=false;

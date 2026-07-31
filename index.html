@@ -665,10 +665,40 @@ font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text);font-weight:7
 .album-cal-grid{
 display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 }
-.album-media-tabs{position:sticky;top:var(--album-tabs-top,100px);z-index:99;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;margin-bottom:0;padding:3px;border:1px solid var(--card-border);border-bottom:16px solid var(--cream);border-radius:8px 8px 0 0;background:var(--pink-light);box-shadow:0 6px 18px rgba(201,75,100,.1)}
-.album-media-tabs::before{content:'';position:absolute;z-index:-1;top:-1px;right:-16px;bottom:0;left:-16px;background:var(--pink-light);border-bottom:1px solid var(--card-border);box-shadow:0 8px 18px rgba(201,75,100,.08)}
-.album-media-tab{min-height:40px;border:0;border-radius:6px;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
-.album-media-tab.active{background:var(--white);color:var(--rose);box-shadow:0 3px 12px rgba(201,75,100,.1)}
+.album-media-tabs{position:sticky;isolation:isolate;top:var(--album-tabs-top,100px);z-index:99;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:6px 8px 7px;border:0;border-radius:0;background:var(--pink-light);box-shadow:0 6px 13px rgba(168,76,96,.08)}
+.album-media-tabs::before{content:'';position:absolute;z-index:-1;top:-1px;right:-16px;bottom:-1px;left:-16px;background:var(--pink-light);border-top:1px solid rgba(232,99,122,.08);border-bottom:1px solid rgba(232,99,122,.13)}
+.album-media-tab{position:relative;min-height:38px;border:0;border-radius:6px;outline:none;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;letter-spacing:0;cursor:pointer;transition:background-color .18s ease,color .18s ease}
+.album-media-tab::after{content:'';position:absolute;left:50%;bottom:1px;width:0;height:3px;border-radius:999px;background:var(--pink);transform:translateX(-50%);transition:width .22s ease}
+.album-media-tab:hover{background:rgba(255,255,255,.24)}
+.album-media-tab.active{background:transparent;color:var(--rose);box-shadow:none}
+.album-media-tab.active::after{width:28px}
+.album-media-tab:focus,.album-media-tab:focus-visible{outline:none;box-shadow:none}
+.album-media-tab:focus-visible::after{width:38px}
+.album-media-tab:active{background:rgba(255,255,255,.32)}
+.album-plan{margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border)}
+.album-plan-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.album-plan-title{display:flex;align-items:center;gap:8px;color:var(--rose);font-size:13px;font-weight:800}
+.album-plan-title::before{content:'';width:8px;height:8px;border-radius:2px;background:var(--pink);box-shadow:0 0 0 4px rgba(232,99,122,.10)}
+.album-plan-count{color:var(--text-muted);font-size:11px;font-weight:700}
+.album-plan-form{display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:7px}
+.album-plan-input{width:100%;min-width:0;min-height:40px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--card-border);border-radius:7px;outline:none;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;letter-spacing:0}
+.album-plan-input::placeholder{color:var(--text-muted)}
+.album-plan-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.10)}
+.album-plan-add{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:7px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:23px;line-height:1;cursor:pointer;transition:transform .16s ease,opacity .16s ease}
+.album-plan-add:active{transform:scale(.95)}
+.album-plan-add:disabled{opacity:.55;cursor:wait}
+.album-plan-list{margin-top:8px}
+.album-plan-empty{padding:9px 2px 2px;color:var(--text-muted);font-size:11px;line-height:1.6}
+.album-plan-item{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:7px;min-height:43px;border-bottom:1px solid rgba(232,99,122,.10)}
+.album-plan-check{width:19px;height:19px;margin:0;accent-color:var(--pink);cursor:pointer}
+.album-plan-text{min-width:0;padding:8px 0;color:var(--text);font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.album-plan-item.done .album-plan-text{color:var(--text-muted);text-decoration:line-through;text-decoration-thickness:1px}
+.album-plan-delete{width:32px;height:32px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--text-muted);font-size:18px;cursor:pointer}
+.album-plan-delete:hover{background:var(--pink-light);color:var(--rose)}
+.album-plan-confirm{display:flex;align-items:center;gap:5px}
+.album-plan-confirm button{min-height:30px;padding:5px 8px;border:1px solid var(--card-border);border-radius:6px;background:var(--white);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.album-plan-confirm .danger{border-color:var(--pink);background:var(--pink);color:#fff}
+[data-theme="dark"] .album-plan-title::before{box-shadow:0 0 0 4px rgba(255,170,190,.09)}
 .album-media-section[hidden]{display:none!important}
 .album-video-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
 .album-video-heading{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:800;color:var(--pink)}
@@ -711,7 +741,7 @@ textarea.album-video-input{min-height:74px;resize:vertical;line-height:1.55}
 .album-video-viewer-topbar{min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 9px 7px 14px;border-bottom:1px solid rgba(255,255,255,.12);background:#21191f}.album-video-viewer-topbar span{min-width:0;overflow:hidden;color:rgba(255,255,255,.76);font-size:12px;font-weight:800;white-space:nowrap;text-overflow:ellipsis}.album-video-viewer-controls{display:flex;align-items:center;gap:7px}
 .album-video-viewer video{display:block;width:100%;max-height:72dvh;background:#000;object-fit:contain}.album-video-viewer-copy{padding:13px 14px 15px}.album-video-viewer-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:800}.album-video-viewer-date{margin-top:4px;color:rgba(255,255,255,.58);font-size:11px}.album-video-viewer-note{margin-top:8px;color:rgba(255,255,255,.8);font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
 .album-video-viewer-sound,.album-video-viewer-close{position:static;flex:0 0 auto;width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(15,11,14,.5);color:#fff;cursor:pointer}.album-video-viewer-sound img{width:18px;height:18px;filter:brightness(0) invert(1)}.album-video-viewer-close{font-size:18px}
-[data-theme="dark"] .album-media-tab.active{box-shadow:0 3px 12px rgba(0,0,0,.28)}[data-theme="dark"] .album-video-upload-panel,[data-theme="dark"] .album-video-card{box-shadow:0 7px 22px rgba(0,0,0,.24)}
+[data-theme="dark"] .album-media-tab:active{background:rgba(255,255,255,.07)}[data-theme="dark"] .album-video-upload-panel,[data-theme="dark"] .album-video-card{box-shadow:0 7px 22px rgba(0,0,0,.24)}
 @media(min-width:560px){.album-video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:520px){.album-video-form-grid,.album-video-editor-grid{grid-template-columns:1fr}.album-video-field.full,.album-video-editor-grid .full{grid-column:auto}#album-video-date-input{min-width:0;max-width:100%;display:block;-webkit-appearance:none;appearance:none}.album-video-grid{gap:7px}.album-video-title{font-size:12px}}
 @media(max-width:350px){.album-video-filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))}.album-video-filter-clear{grid-column:1/-1}}
@@ -1405,6 +1435,17 @@ onclick="hideSpecialForToday()">
       </div>
       <div id="album-month-count" style="font-size:12px;color:var(--rose);font-weight:600;background:var(--pink-light);padding:4px 10px;border-radius:20px;"></div>
     </div>
+	<div class="album-plan" aria-labelledby="album-plan-title">
+	  <div class="album-plan-head">
+	    <div class="album-plan-title" id="album-plan-title">待安排行程</div>
+	    <div class="album-plan-count" id="album-plan-count"></div>
+	  </div>
+	  <form class="album-plan-form" onsubmit="albumPlanAdd(event)">
+	    <input class="album-plan-input" id="album-plan-input" type="text" maxlength="80" autocomplete="off" placeholder="想去哪裡，或想一起做什麼？" aria-label="新增待安排行程">
+	    <button class="album-plan-add" id="album-plan-add" type="submit" aria-label="新增" title="新增">＋</button>
+	  </form>
+	  <div class="album-plan-list" id="album-plan-list" aria-live="polite"></div>
+	</div>
 	 <div style="margin-top:8px;text-align:right;">
       <span id="album-love-count"></span>
     </div>
@@ -4976,6 +5017,9 @@ let albumStatsBackfillStarted=false;
 let albumActiveMedia='photos';
 let albumVideosData={};
 let albumVideosSyncStarted=false;
+let albumPlansData={};
+let albumPlansSyncStarted=false;
+let albumPlanDeletePending='';
 let albumVideoUploading=false;
 let albumPhotoUploading=false;
 let albumVideoFilterYear='';
@@ -5011,6 +5055,111 @@ function albumSwitchMedia(type,button){
   });
   if(next==='photos') albumRenderCal();
   else renderAlbumVideos();
+}
+function albumPlanNormalize(value,key=''){
+  const text=String(value?.text||'').trim().slice(0,80);
+  if(!text) return null;
+  return {id:key,text,done:value?.done===true,createdAt:Number(value?.createdAt)||0};
+}
+function albumPlanRender(){
+  const list=document.getElementById('album-plan-list');
+  const count=document.getElementById('album-plan-count');
+  if(!list || !count) return;
+  const items=Object.entries(albumPlansData)
+    .map(([key,value])=>albumPlanNormalize(value,key))
+    .filter(Boolean)
+    .sort((a,b)=>Number(a.done)-Number(b.done) || b.createdAt-a.createdAt);
+  const pending=items.filter(item=>!item.done).length;
+  count.textContent=items.length ? `${pending} 個待安排` : '';
+  if(!items.length){
+    list.innerHTML='<div class="album-plan-empty">還沒有安排，先留下一個想去的地方。</div>';
+    return;
+  }
+  list.innerHTML=items.map(item=>{
+    const idArg=JSON.stringify(item.id);
+    const action=albumPlanDeletePending===item.id
+      ? `<div class="album-plan-confirm"><button type="button" onclick="albumPlanCancelDelete()">取消</button><button type="button" class="danger" onclick='albumPlanDelete(${idArg})'>刪除</button></div>`
+      : `<button type="button" class="album-plan-delete" onclick='albumPlanAskDelete(${idArg})' aria-label="刪除 ${escapeHtml(item.text)}" title="刪除">×</button>`;
+    return `<div class="album-plan-item${item.done?' done':''}">
+      <input class="album-plan-check" type="checkbox" ${item.done?'checked':''} onchange='albumPlanToggle(${idArg},this.checked)' aria-label="${item.done?'取消完成':'標記已安排'}：${escapeHtml(item.text)}">
+      <div class="album-plan-text">${escapeHtml(item.text)}</div>
+      ${action}
+    </div>`;
+  }).join('');
+}
+function albumPlanInitFirebase(){
+  if(albumPlansSyncStarted || !window._fb) return;
+  albumPlansSyncStarted=true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'albumPlans'),snap=>{
+    albumPlansData=snap.val()||{};
+    if(albumPlanDeletePending && !albumPlansData[albumPlanDeletePending]) albumPlanDeletePending='';
+    albumPlanRender();
+  },err=>{
+    console.warn('待安排行程同步失敗',err);
+    albumPlansSyncStarted=false;
+    const count=document.getElementById('album-plan-count');
+    if(count) count.textContent='同步失敗';
+  });
+}
+async function albumPlanAdd(event){
+  event?.preventDefault();
+  const input=document.getElementById('album-plan-input');
+  const button=document.getElementById('album-plan-add');
+  const text=String(input?.value||'').trim().slice(0,80);
+  if(!text){ input?.focus(); return; }
+  if(!window._fb) return;
+  const {db,ref,push,set}=window._fb;
+  if(button) button.disabled=true;
+  try{
+    await set(push(ref(db,'albumPlans')),{text,done:false,createdAt:Date.now()});
+    if(input) input.value='';
+  }catch(err){
+    console.warn('新增待安排行程失敗',err);
+    const count=document.getElementById('album-plan-count');
+    if(count) count.textContent='儲存失敗，請再試一次';
+  }finally{
+    if(button) button.disabled=false;
+    input?.focus();
+  }
+}
+async function albumPlanToggle(id,done){
+  const item=albumPlansData[id];
+  if(!item || !window._fb) return;
+  const previous=item.done===true;
+  item.done=Boolean(done);
+  albumPlanRender();
+  try{
+    const {db,ref,set}=window._fb;
+    await set(ref(db,`albumPlans/${id}/done`),Boolean(done));
+  }catch(err){
+    item.done=previous;
+    albumPlanRender();
+    console.warn('更新待安排行程失敗',err);
+  }
+}
+function albumPlanAskDelete(id){
+  albumPlanDeletePending=id;
+  albumPlanRender();
+}
+function albumPlanCancelDelete(){
+  albumPlanDeletePending='';
+  albumPlanRender();
+}
+async function albumPlanDelete(id){
+  if(!albumPlansData[id] || !window._fb) return;
+  const previous=albumPlansData[id];
+  delete albumPlansData[id];
+  albumPlanDeletePending='';
+  albumPlanRender();
+  try{
+    const {db,ref,remove}=window._fb;
+    await remove(ref(db,`albumPlans/${id}`));
+  }catch(err){
+    albumPlansData[id]=previous;
+    albumPlanRender();
+    console.warn('刪除待安排行程失敗',err);
+  }
 }
 function albumVideoNormalize(value,key=''){
   const url=String(value?.url||'').trim();
@@ -5576,6 +5725,7 @@ function albumLoadMonth(){
 }
 function albumInitFirebase(){
   albumInitStats();
+  albumPlanInitFirebase();
   albumVideoInitFirebase();
   albumLoadMonth(albumYear, albumMonth);
   flushAlbumPendingWrites();

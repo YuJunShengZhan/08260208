@@ -1082,6 +1082,14 @@ padding:3px 8px;border-radius:20px;
 background:var(--pink-light);margin-left:8px;
 }
 .album-sync-badge:empty,.album-sync-badge[hidden]{display:none}
+.album-download-toast{position:fixed;top:calc(var(--album-tabs-top,100px) + 9px);right:11px;z-index:240;width:138px;padding:8px 9px;border:1px solid rgba(232,99,122,.18);border-radius:7px;background:rgba(255,250,251,.94);box-shadow:0 8px 24px rgba(108,53,67,.14);backdrop-filter:blur(8px);transition:opacity .18s ease,transform .18s ease}
+.album-download-toast[hidden]{display:none}
+.album-download-toast-head{display:flex;align-items:center;justify-content:space-between;gap:7px;color:var(--text-muted);font-size:10px;font-weight:700;line-height:1.2}
+.album-download-toast-value{color:var(--rose);font-variant-numeric:tabular-nums}
+.album-download-toast-track{height:3px;margin-top:6px;overflow:hidden;border-radius:2px;background:rgba(232,99,122,.13)}
+.album-download-toast-track i{display:block;width:0;height:100%;border-radius:2px;background:var(--pink);transition:width .22s ease}
+.album-download-toast.done{opacity:0;transform:translateY(-4px)}
+[data-theme="dark"] .album-download-toast{background:rgba(43,25,33,.94);border-color:rgba(255,170,190,.16);box-shadow:0 8px 24px rgba(0,0,0,.28)}
 
 .view-schedule-item{align-items:flex-start;white-space:pre-wrap;}
 .schedule-item{align-items:flex-start;}
@@ -5035,6 +5043,10 @@ let albumAllDataSyncStarted=false;
 let albumAllDataReady=false;
 let albumRemoteDataReady=false;
 let albumCacheHydrationPromise=null;
+let albumDownloadProgress=0;
+let albumDownloadTimer=null;
+let albumDownloadHideTimer=null;
+let albumDownloadRunId=0;
 let albumStatsData={};
 let albumStatsReady=false;
 let albumStatsBackfillStarted=false;
@@ -5797,6 +5809,69 @@ function albumHydrateCachedData(){
   })();
   return albumCacheHydrationPromise;
 }
+function albumGetDownloadToast(){
+  let toast=document.getElementById('album-download-toast');
+  if(toast) return toast;
+  toast=document.createElement('div');
+  toast.className='album-download-toast';
+  toast.id='album-download-toast';
+  toast.hidden=true;
+  toast.setAttribute('role','status');
+  toast.setAttribute('aria-live','polite');
+  toast.innerHTML='<div class="album-download-toast-head"><span>相簿資料</span><span class="album-download-toast-value">0%</span></div><div class="album-download-toast-track"><i></i></div>';
+  document.body.appendChild(toast);
+  return toast;
+}
+function albumRenderDownloadProgress(value,label=''){
+  const toast=albumGetDownloadToast();
+  const progress=Math.max(0,Math.min(100,Math.round(Number(value)||0)));
+  const valueEl=toast.querySelector('.album-download-toast-value');
+  const bar=toast.querySelector('.album-download-toast-track i');
+  if(valueEl) valueEl.textContent=label || `${progress}%`;
+  if(bar) bar.style.width=`${progress}%`;
+}
+function albumStartDownloadProgress(startAt=6){
+  albumDownloadRunId+=1;
+  clearInterval(albumDownloadTimer);
+  clearTimeout(albumDownloadHideTimer);
+  const toast=albumGetDownloadToast();
+  toast.classList.remove('done');
+  toast.hidden=false;
+  albumDownloadProgress=Math.max(1,Math.min(90,Number(startAt)||6));
+  albumRenderDownloadProgress(albumDownloadProgress);
+  albumDownloadTimer=setInterval(()=>{
+    const step=albumDownloadProgress<40 ? 7 : (albumDownloadProgress<70 ? 4 : 1);
+    albumDownloadProgress=Math.min(92,albumDownloadProgress+step);
+    albumRenderDownloadProgress(albumDownloadProgress);
+  },260);
+}
+function albumFinishDownloadProgress(){
+  clearInterval(albumDownloadTimer);
+  albumDownloadTimer=null;
+  albumDownloadProgress=100;
+  const toast=albumGetDownloadToast();
+  const runId=albumDownloadRunId;
+  toast.hidden=false;
+  albumRenderDownloadProgress(100);
+  albumDownloadHideTimer=setTimeout(()=>{
+    if(runId!==albumDownloadRunId) return;
+    toast.classList.add('done');
+    setTimeout(()=>{ if(runId===albumDownloadRunId){ toast.hidden=true; toast.classList.remove('done'); } },220);
+  },720);
+}
+function albumFailDownloadProgress(){
+  clearInterval(albumDownloadTimer);
+  albumDownloadTimer=null;
+  const toast=albumGetDownloadToast();
+  const runId=albumDownloadRunId;
+  toast.hidden=false;
+  albumRenderDownloadProgress(albumDownloadProgress,'稍後更新');
+  albumDownloadHideTimer=setTimeout(()=>{
+    if(runId!==albumDownloadRunId) return;
+    toast.classList.add('done');
+    setTimeout(()=>{ if(runId===albumDownloadRunId){ toast.hidden=true; toast.classList.remove('done'); } },220);
+  },1800);
+}
 function albumSetBadge(text){
   const badge=document.getElementById('album-sync-badge');
   if(!badge) return;
@@ -5815,12 +5890,15 @@ function albumLoadMonth(){
   albumAllDataSyncStarted=true;
   const {db,ref,onValue}=window._fb;
   albumSetBadge('');
+  albumStartDownloadProgress();
   onValue(ref(db,'albumData'),snap=>{
+    if(albumRemoteDataReady && !albumDownloadTimer) albumStartDownloadProgress(76);
     albumFirebaseData=snap.val()||{};
     albumAllDataReady=true;
     albumRemoteDataReady=true;
     albumSetBadge('');
     albumWriteCachedData(albumFirebaseData);
+    albumFinishDownloadProgress();
     albumRenderCal();
     renderMemories();
     if(albumStatsReady && !Object.keys(albumStatsData).length) albumBackfillStatsFromAlbumData();
@@ -5834,6 +5912,7 @@ function albumLoadMonth(){
   },err=>{
     albumAllDataSyncStarted=false;
     if(!albumAllDataReady) albumSetBadge('目前離線，稍後會自動更新');
+    albumFailDownloadProgress();
     console.warn('album sync failed',err);
   });
 }

@@ -7570,7 +7570,7 @@ function pdRefresh(){
           bannerTitle=day===1?'預計今天來':'可能延後';
           bannerSub=day===1?'這是系統預測，實際開始後再按下方按鈕記錄':`比預測開始日晚 ${day-1} 天，實際開始後再按下方按鈕記錄`;
         }else{
-          bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，月曆淡紅色是預估，結束時請按「設定月經結束日」確認`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;
+          bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，月經結束時請按「設定月經結束日」`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;
         }
         break;
       }

@@ -666,6 +666,7 @@ font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text);font-weight:7
 display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 }
 .album-media-tabs{position:sticky;top:var(--album-tabs-top,100px);z-index:99;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;margin-bottom:12px;padding:3px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light);box-shadow:0 6px 18px rgba(201,75,100,.1)}
+.album-media-tabs::before{content:'';position:absolute;z-index:-1;top:-1px;right:-16px;bottom:-12px;left:-16px;background:var(--pink-light);border-bottom:1px solid var(--card-border);box-shadow:0 8px 18px rgba(201,75,100,.08)}
 .album-media-tab{min-height:40px;border:0;border-radius:6px;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
 .album-media-tab.active{background:var(--white);color:var(--rose);box-shadow:0 3px 12px rgba(201,75,100,.1)}
 .album-media-section[hidden]{display:none!important}

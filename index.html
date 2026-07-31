@@ -665,8 +665,9 @@ font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text);font-weight:7
 .album-cal-grid{
 display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 }
-.album-media-tabs{position:sticky;isolation:isolate;top:var(--album-tabs-top,100px);z-index:99;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:6px 8px 7px;border:0;border-radius:0;background:var(--pink-light);box-shadow:0 6px 13px rgba(168,76,96,.08)}
+.album-media-tabs{position:sticky;isolation:isolate;top:var(--album-tabs-top,100px);z-index:99;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 9px;padding:6px 8px 7px;border:0;border-radius:0;background:var(--pink-light);box-shadow:0 6px 13px rgba(168,76,96,.08)}
 .album-media-tabs::before{content:'';position:absolute;z-index:-1;top:-1px;right:-16px;bottom:-1px;left:-16px;background:var(--pink-light);border-top:1px solid rgba(232,99,122,.08);border-bottom:1px solid rgba(232,99,122,.13)}
+.album-media-tabs::after{content:'';position:absolute;right:-16px;bottom:-9px;left:-16px;height:9px;background:var(--cream);pointer-events:none}
 .album-media-tab{position:relative;min-height:38px;border:0;border-radius:6px;outline:none;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;letter-spacing:0;cursor:pointer;transition:background-color .18s ease,color .18s ease}
 .album-media-tab::after{content:'';position:absolute;left:50%;bottom:1px;width:0;height:3px;border-radius:999px;background:var(--pink);transform:translateX(-50%);transition:width .22s ease}
 .album-media-tab:hover{background:rgba(255,255,255,.24)}
@@ -675,11 +676,18 @@ display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 .album-media-tab:focus,.album-media-tab:focus-visible{outline:none;box-shadow:none}
 .album-media-tab:focus-visible::after{width:38px}
 .album-media-tab:active{background:rgba(255,255,255,.32)}
-.album-plan{margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border)}
-.album-plan-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px}
+.album-plan-launch-row{margin-top:9px}
+.album-plan-launch{min-height:34px;display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;letter-spacing:0;cursor:pointer}
+.album-plan-launch::before{content:'';width:7px;height:7px;border-radius:2px;background:var(--pink)}
+.album-plan-launch-count{min-width:18px;height:18px;display:inline-grid;place-items:center;padding:0 5px;border-radius:9px;background:var(--pink);color:#fff;font-size:10px;line-height:1}
+.album-plan-launch-count[hidden]{display:none}
+.album-plan-dialog-bg{position:fixed;inset:0;z-index:560;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(39,22,29,.46);backdrop-filter:blur(3px)}
+.album-plan-dialog{width:min(100%,440px);max-height:min(78vh,620px);max-height:min(78dvh,620px);display:flex;flex-direction:column;padding:17px;border:1px solid var(--card-border);border-radius:16px;background:var(--white);box-shadow:0 22px 70px rgba(75,34,47,.25)}
+.album-plan-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
 .album-plan-title{display:flex;align-items:center;gap:8px;color:var(--rose);font-size:13px;font-weight:800}
 .album-plan-title::before{content:'';width:8px;height:8px;border-radius:2px;background:var(--pink);box-shadow:0 0 0 4px rgba(232,99,122,.10)}
 .album-plan-count{color:var(--text-muted);font-size:11px;font-weight:700}
+.album-plan-close{flex:0 0 auto;width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:19px;cursor:pointer}
 .album-plan-form{display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:7px}
 .album-plan-input{width:100%;min-width:0;min-height:40px;box-sizing:border-box;padding:9px 11px;border:1px solid var(--card-border);border-radius:7px;outline:none;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;letter-spacing:0}
 .album-plan-input::placeholder{color:var(--text-muted)}
@@ -687,7 +695,7 @@ display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 .album-plan-add{width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:7px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:23px;line-height:1;cursor:pointer;transition:transform .16s ease,opacity .16s ease}
 .album-plan-add:active{transform:scale(.95)}
 .album-plan-add:disabled{opacity:.55;cursor:wait}
-.album-plan-list{margin-top:8px}
+.album-plan-list{min-height:0;margin-top:8px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .album-plan-empty{padding:9px 2px 2px;color:var(--text-muted);font-size:11px;line-height:1.6}
 .album-plan-item{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:7px;min-height:43px;border-bottom:1px solid rgba(232,99,122,.10)}
 .album-plan-check{width:19px;height:19px;margin:0;accent-color:var(--pink);cursor:pointer}
@@ -699,6 +707,7 @@ display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 .album-plan-confirm button{min-height:30px;padding:5px 8px;border:1px solid var(--card-border);border-radius:6px;background:var(--white);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
 .album-plan-confirm .danger{border-color:var(--pink);background:var(--pink);color:#fff}
 [data-theme="dark"] .album-plan-title::before{box-shadow:0 0 0 4px rgba(255,170,190,.09)}
+@media(max-width:520px){.album-plan-dialog-bg{align-items:flex-end;padding:0}.album-plan-dialog{width:100%;max-height:76dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0;padding:17px 16px calc(18px + env(safe-area-inset-bottom))}}
 .album-media-section[hidden]{display:none!important}
 .album-video-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
 .album-video-heading{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:800;color:var(--pink)}
@@ -1435,16 +1444,10 @@ onclick="hideSpecialForToday()">
       </div>
       <div id="album-month-count" style="font-size:12px;color:var(--rose);font-weight:600;background:var(--pink-light);padding:4px 10px;border-radius:20px;"></div>
     </div>
-	<div class="album-plan" aria-labelledby="album-plan-title">
-	  <div class="album-plan-head">
-	    <div class="album-plan-title" id="album-plan-title">待安排行程</div>
-	    <div class="album-plan-count" id="album-plan-count"></div>
-	  </div>
-	  <form class="album-plan-form" onsubmit="albumPlanAdd(event)">
-	    <input class="album-plan-input" id="album-plan-input" type="text" maxlength="80" autocomplete="off" placeholder="想去哪裡，或想一起做什麼？" aria-label="新增待安排行程">
-	    <button class="album-plan-add" id="album-plan-add" type="submit" aria-label="新增" title="新增">＋</button>
-	  </form>
-	  <div class="album-plan-list" id="album-plan-list" aria-live="polite"></div>
+	<div class="album-plan-launch-row">
+	  <button class="album-plan-launch" type="button" onclick="albumPlanOpen()">
+	    <span>待安排行程</span><span class="album-plan-launch-count" id="album-plan-launch-count" hidden></span>
+	  </button>
 	</div>
 	 <div style="margin-top:8px;text-align:right;">
       <span id="album-love-count"></span>
@@ -1497,6 +1500,23 @@ onclick="hideSpecialForToday()">
     <div class="album-video-grid" id="album-video-grid">
       <div class="album-video-empty"><b>還沒有影片</b>第一段影片會出現在這裡</div>
     </div>
+  </section>
+</div>
+
+<div class="album-plan-dialog-bg hidden" id="album-plan-dialog-bg" onclick="albumPlanClose(event)">
+  <section class="album-plan-dialog" role="dialog" aria-modal="true" aria-labelledby="album-plan-title" onclick="event.stopPropagation()">
+    <div class="album-plan-head">
+      <div>
+        <div class="album-plan-title" id="album-plan-title">待安排行程</div>
+        <div class="album-plan-count" id="album-plan-count"></div>
+      </div>
+      <button class="album-plan-close" type="button" onclick="albumPlanCloseDirect()" aria-label="關閉">×</button>
+    </div>
+    <form class="album-plan-form" onsubmit="albumPlanAdd(event)">
+      <input class="album-plan-input" id="album-plan-input" type="text" maxlength="80" autocomplete="off" placeholder="想去哪裡，或想一起做什麼？" aria-label="新增待安排行程">
+      <button class="album-plan-add" id="album-plan-add" type="submit" aria-label="新增" title="新增">＋</button>
+    </form>
+    <div class="album-plan-list" id="album-plan-list" aria-live="polite"></div>
   </section>
 </div>
 
@@ -5020,6 +5040,7 @@ let albumVideosSyncStarted=false;
 let albumPlansData={};
 let albumPlansSyncStarted=false;
 let albumPlanDeletePending='';
+let albumPlanBodyOverflow='';
 let albumVideoUploading=false;
 let albumPhotoUploading=false;
 let albumVideoFilterYear='';
@@ -5061,9 +5082,31 @@ function albumPlanNormalize(value,key=''){
   if(!text) return null;
   return {id:key,text,done:value?.done===true,createdAt:Number(value?.createdAt)||0};
 }
+function albumPlanOpen(){
+  const overlay=document.getElementById('album-plan-dialog-bg');
+  if(!overlay) return;
+  albumPlanDeletePending='';
+  albumPlanRender();
+  albumPlanBodyOverflow=document.body.style.overflow;
+  document.body.style.overflow='hidden';
+  overlay.classList.remove('hidden');
+  setTimeout(()=>document.getElementById('album-plan-input')?.focus(),80);
+}
+function albumPlanClose(){
+  const overlay=document.getElementById('album-plan-dialog-bg');
+  if(!overlay) return;
+  overlay.classList.add('hidden');
+  document.body.style.overflow=albumPlanBodyOverflow;
+  albumPlanDeletePending='';
+  albumPlanRender();
+}
+function albumPlanCloseDirect(){
+  albumPlanClose();
+}
 function albumPlanRender(){
   const list=document.getElementById('album-plan-list');
   const count=document.getElementById('album-plan-count');
+  const launchCount=document.getElementById('album-plan-launch-count');
   if(!list || !count) return;
   const items=Object.entries(albumPlansData)
     .map(([key,value])=>albumPlanNormalize(value,key))
@@ -5071,6 +5114,10 @@ function albumPlanRender(){
     .sort((a,b)=>Number(a.done)-Number(b.done) || b.createdAt-a.createdAt);
   const pending=items.filter(item=>!item.done).length;
   count.textContent=items.length ? `${pending} 個待安排` : '';
+  if(launchCount){
+    launchCount.textContent=String(pending);
+    launchCount.hidden=pending===0;
+  }
   if(!items.length){
     list.innerHTML='<div class="album-plan-empty">還沒有安排，先留下一個想去的地方。</div>';
     return;

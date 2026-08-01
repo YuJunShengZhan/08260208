@@ -1399,6 +1399,12 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-lock-progress{display:flex;justify-content:center;gap:8px;margin-top:17px}
 .choose-lock-progress span{min-width:92px;padding:8px 11px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--text-muted);font-size:10px;font-weight:800}
 .choose-lock-progress span.ready{border-color:rgba(47,154,104,.26);background:#e7f5ed;color:#267c55}
+.choose-unlock-button{width:min(100%,280px);min-height:52px;display:flex;align-items:center;justify-content:center;gap:9px;margin:26px auto 0;padding:0 22px;border:1px solid color-mix(in srgb,var(--rose) 78%,#fff);border-radius:999px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 12px 26px rgba(166,76,98,.25);transition:transform .18s ease,box-shadow .18s ease}
+.choose-unlock-button::before{content:'♡';font:700 21px/1 Georgia,serif}
+.choose-unlock-button:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(166,76,98,.3)}
+.choose-unlock-button:active{transform:translateY(0) scale(.98)}
+.choose-lock-scene.ready .choose-lock-envelopes{animation:chooseEnvelopeFloat 2.2s ease-in-out infinite}
+.choose-lock-scene.ready .choose-lock-heart{box-shadow:0 0 0 10px rgba(232,99,122,.1),0 12px 28px rgba(166,76,98,.3)}
 .choose-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
 .choose-answer{position:relative;min-width:0;min-height:300px;overflow:hidden;padding:27px 24px 22px;border:1px solid var(--card-border);border-radius:8px;background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(166,76,98,.055) 31px 32px),var(--white);box-shadow:0 15px 34px rgba(74,37,49,.1)}
 .choose-answer::before{content:'';position:absolute;right:-28px;top:-28px;width:66px;height:66px;border:1px solid var(--card-border);background:var(--pink-light);transform:rotate(45deg)}
@@ -7772,14 +7778,22 @@ function chooseRenderLetterbox(month=chooseLetterboxMonth||chooseMonthKey()){
   const data=chooseEntriesData[month]||{};
   const shengzhan=chooseNormalizeEntry(data.shengzhan);
   const yujun=chooseNormalizeEntry(data.yujun);
-  const unlocked=Boolean(shengzhan&&yujun);
+  const complete=Boolean(shengzhan&&yujun);
+  const unlocked=complete&&chooseLettersUnlocked(month);
   document.getElementById('choose-letterbox-title').textContent=month===chooseMonthKey()?'本月心約':'歷史心約';
   document.getElementById('choose-letterbox-month').textContent=chooseMonthLabel(month);
-  document.getElementById('choose-letterbox-intro').textContent=unlocked?'兩封信已經一起抵達，現在可以好好讀完彼此的選擇。':'先各自寫下真心，等兩封信都封存後才會一起打開。';
+  document.getElementById('choose-letterbox-intro').textContent=unlocked?'兩封信已經一起抵達，現在可以好好讀完彼此的選擇。':(complete?'兩封信都已抵達，按下解鎖後再一起打開。':'先各自寫下真心，等兩封信都封存後才會一起打開。');
   answers.classList.toggle('choose-letterbox-locked',!unlocked);
-  answers.innerHTML=unlocked
-    ?chooseRenderAnswer('shengzhan',shengzhan)+chooseRenderAnswer('yujun',yujun)
-    :`<div class="choose-lock-scene"><div class="choose-lock-envelopes"><span class="choose-lock-envelope${shengzhan?' written':''}"></span><span class="choose-lock-envelope${yujun?' written':''}"></span><span class="choose-lock-heart">♡</span></div><div class="choose-lock-title">信匣還在等另一封真心</div><div class="choose-lock-copy">內容目前是封存的。等聖展和予君都送出這個月的答案，信匣才會同時為兩個人解鎖。</div><div class="choose-lock-progress"><span class="${shengzhan?'ready':''}">聖展 ${shengzhan?'已送出':'等待中'}</span><span class="${yujun?'ready':''}">予君 ${yujun?'已送出':'等待中'}</span></div></div>`;
+  if(unlocked){
+    answers.innerHTML=chooseRenderAnswer('shengzhan',shengzhan)+chooseRenderAnswer('yujun',yujun);
+    return;
+  }
+  if(complete){
+    answers.innerHTML=`<div class="choose-lock-scene ready"><div class="choose-lock-envelopes"><span class="choose-lock-envelope written"></span><span class="choose-lock-envelope written"></span><span class="choose-lock-heart">♡</span></div><div class="choose-lock-title">兩封真心都已抵達</div><div class="choose-lock-copy">答案仍好好封存在信匣裡。準備好後，一起解鎖這個月選擇彼此的理由。</div><div class="choose-lock-progress"><span class="ready">聖展 已送出</span><span class="ready">予君 已送出</span></div><button type="button" class="choose-unlock-button" data-choose-unlock-month="${chooseEscape(month)}">解鎖兩封信</button></div>`;
+    answers.querySelector('[data-choose-unlock-month]')?.addEventListener('click',()=>chooseCelebrateUnlock(month));
+    return;
+  }
+  answers.innerHTML=`<div class="choose-lock-scene"><div class="choose-lock-envelopes"><span class="choose-lock-envelope${shengzhan?' written':''}"></span><span class="choose-lock-envelope${yujun?' written':''}"></span><span class="choose-lock-heart">♡</span></div><div class="choose-lock-title">信匣還在等另一封真心</div><div class="choose-lock-copy">內容目前是封存的。等聖展和予君都送出這個月的答案，信匣才會同時為兩個人解鎖。</div><div class="choose-lock-progress"><span class="${shengzhan?'ready':''}">聖展 ${shengzhan?'已送出':'等待中'}</span><span class="${yujun?'ready':''}">予君 ${yujun?'已送出':'等待中'}</span></div></div>`;
 }
 function chooseOpenLetters(month=chooseMonthKey()){
   chooseLetterboxMonth=month;
@@ -7800,6 +7814,12 @@ function chooseReadySeen(month){
 function chooseMarkReadySeen(month){
   try{localStorage.setItem(`choose_ready_seen_${month}`,'1');}catch(_){}
 }
+function chooseLettersUnlocked(month){
+  try{return localStorage.getItem(`choose_letters_unlocked_${month}`)==='1';}catch(_){return false;}
+}
+function chooseMarkLettersUnlocked(month){
+  try{localStorage.setItem(`choose_letters_unlocked_${month}`,'1');}catch(_){}
+}
 function chooseMaybeShowReadyPage(month=chooseMonthKey()){
   if(chooseEntryCount(chooseEntriesData[month])<2||chooseReadySeen(month)) return;
   chooseShowReadyPage(month);
@@ -7819,7 +7839,10 @@ function chooseShowReadyPage(month=chooseMonthKey()){
   overlay.querySelector('.choose-ready-button').addEventListener('click',()=>{overlay.remove();document.body.classList.remove('choose-letterbox-open');chooseCelebrateUnlock(month);});
 }
 function chooseCelebrateUnlock(month=chooseMonthKey()){
+  if(chooseEntryCount(chooseEntriesData[month])<2) return;
   if(chooseCelebrating||document.querySelector('.choose-celebration')) return;
+  chooseMarkLettersUnlocked(month);
+  chooseCloseLettersDirect();
   chooseCelebrating=true;
   const overlay=document.createElement('div');
   overlay.className='choose-celebration';
@@ -7835,7 +7858,7 @@ function chooseCelebrateUnlock(month=chooseMonthKey()){
   let width=0,height=0,start=performance.now(),burstIndex=0,finished=false;
   const resize=()=>{width=window.innerWidth;height=window.innerHeight;canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;context.setTransform(ratio,0,0,ratio,0,0);};
   const burst=(x,y)=>{for(let i=0;i<48;i++){const angle=Math.PI*2*i/48+Math.random()*.16;const speed=2.2+Math.random()*3.6;particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,fade:.012+Math.random()*.008,size:1.4+Math.random()*2.5,color:colors[Math.floor(Math.random()*colors.length)]});}};
-  const finish=()=>{if(finished)return;finished=true;window.removeEventListener('resize',resize);overlay.remove();chooseCelebrating=false;chooseOpenLetters(month);};
+  const finish=()=>{if(finished)return;finished=true;window.removeEventListener('resize',resize);overlay.remove();chooseCelebrating=false;chooseRender();chooseOpenLetters(month);};
   const animate=now=>{
     if(finished)return;
     const elapsed=now-start;
@@ -7895,7 +7918,7 @@ function chooseRender(){
   const written=Number(Boolean(entries.shengzhan))+Number(Boolean(entries.yujun));
   document.getElementById('choose-current-status').textContent=written===2?'兩封信都已送出':`已送出 ${written} / 2 封信`;
   const openButton=document.getElementById('choose-open-letters');
-  if(openButton) openButton.textContent=written===2?'打開本月信匣':`查看封存進度 · ${written} / 2`;
+  if(openButton) openButton.textContent=written===2?(chooseLettersUnlocked(key)?'打開本月信匣':'解鎖本月信匣'):`查看封存進度 · ${written} / 2`;
   if(chooseLetterboxMonth) chooseRenderLetterbox(chooseLetterboxMonth);
 
   const historyKeys=Object.keys(chooseEntriesData||{}).filter(month=>month!==key&&/^\d{4}-\d{2}$/.test(month)).sort().reverse().filter(month=>{
@@ -7916,7 +7939,8 @@ function chooseRender(){
     const shengzhan=chooseNormalizeEntry(data.shengzhan);
     const yujun=chooseNormalizeEntry(data.yujun);
     const count=Number(Boolean(shengzhan))+Number(Boolean(yujun));
-    return `<button type="button" class="choose-history-month" data-choose-history-month="${month}"><span class="choose-history-mark">${count===2?'✓':'♡'}</span><span><span class="choose-history-label">${chooseMonthLabel(month)}</span><span class="choose-history-summary">${count===2?'兩封信已共同解鎖':`已封存 ${count} / 2 封信`}</span></span><span class="choose-history-open">${count===2?'打開信匣':'查看進度'}</span></button>`;
+    const unlocked=count===2&&chooseLettersUnlocked(month);
+    return `<button type="button" class="choose-history-month" data-choose-history-month="${month}"><span class="choose-history-mark">${unlocked?'✓':'♡'}</span><span><span class="choose-history-label">${chooseMonthLabel(month)}</span><span class="choose-history-summary">${count===2?(unlocked?'兩封信已共同解鎖':'兩封信等待解鎖'):`已封存 ${count} / 2 封信`}</span></span><span class="choose-history-open">${count===2?(unlocked?'打開信匣':'解鎖信匣'):'查看進度'}</span></button>`;
   }).join('');
   list.querySelectorAll('[data-choose-history-month]').forEach(button=>button.addEventListener('click',()=>chooseOpenLetters(button.dataset.chooseHistoryMonth)));
 }

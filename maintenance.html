@@ -3,105 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#090000">
+<meta name="theme-color" content="#f4f7fd">
 <meta name="robots" content="noindex,nofollow">
-<title>CRITICAL SECURITY ALERT</title>
+<title>無法連上這個網站</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--red:#ff263d;--deep:#a40016;--ink:#090000;--panel:#170307;--text:#ffe8eb;--muted:#c98d96;--line:rgba(255,38,61,.34)}
-html,body{min-height:100%;background:var(--ink)}
-body{min-height:100vh;min-height:100dvh;overflow-x:hidden;padding:max(14px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(14px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));color:var(--text);font-family:Consolas,"SFMono-Regular","Noto Sans TC",monospace;background:radial-gradient(circle at 50% 30%,#310009 0,#120003 42%,#050000 100%)}
-body::before{content:"";position:fixed;z-index:20;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px);mix-blend-mode:screen;animation:scan 8s linear infinite}
-body::after{content:"";position:fixed;z-index:21;inset:0;pointer-events:none;box-shadow:inset 0 0 110px #000,inset 0 0 28px rgba(255,0,35,.32)}
-.shell{position:relative;z-index:2;width:min(100%,920px);min-height:calc(100dvh - max(28px,env(safe-area-inset-top) + env(safe-area-inset-bottom)));margin:auto;border:1px solid rgba(255,38,61,.62);background:rgba(9,0,1,.88);box-shadow:0 0 0 1px #250006,0 0 70px rgba(255,0,35,.2)}
-.system-bar{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,#3e000b,#140003);font-size:11px;font-weight:800;letter-spacing:1px;color:#ffb5bf}
-.critical{padding:5px 9px;border:1px solid var(--red);background:var(--red);color:#190003;animation:alarm .72s steps(2,end) infinite}
-.content{padding:clamp(20px,5vw,46px)}
-.warning{display:grid;grid-template-columns:78px minmax(0,1fr);align-items:center;gap:20px;padding-bottom:25px;border-bottom:1px solid var(--line)}
-.warning-icon{position:relative;width:72px;height:64px;display:grid;place-items:end center;padding-bottom:7px;color:#100003;font-size:34px;font-weight:900;filter:drop-shadow(0 0 13px rgba(255,38,61,.72))}
-.warning-icon::before{content:"";position:absolute;z-index:-1;inset:0;background:var(--red);clip-path:polygon(50% 0,100% 100%,0 100%)}
-.eyebrow{margin-bottom:7px;color:var(--red);font-size:11px;font-weight:900;letter-spacing:2px}
-h1{position:relative;width:max-content;max-width:100%;color:#fff;font-family:Arial,"Noto Sans TC",sans-serif;font-size:clamp(30px,7vw,66px);font-weight:1000;line-height:1.02;letter-spacing:0;text-shadow:3px 0 var(--deep),-2px 0 #55000d;animation:glitch 2.8s steps(1,end) infinite}
-.sub{margin-top:10px;color:#ff8d9c;font-size:clamp(13px,2vw,17px);line-height:1.65}
-.risk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:22px 0}
-.risk{min-height:84px;padding:13px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,38,61,.12),rgba(35,0,6,.64))}
-.risk span{display:block;margin-bottom:7px;color:var(--muted);font-size:9px;letter-spacing:1px}
-.risk b{color:#fff;font-family:Arial,sans-serif;font-size:clamp(21px,5vw,34px);letter-spacing:0}
-.risk b.red{color:var(--red);text-shadow:0 0 14px rgba(255,38,61,.7)}
-.intercept{margin-bottom:12px;padding:14px;border-left:4px solid var(--red);background:rgba(255,38,61,.1)}
-.intercept-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;color:var(--red);font-size:10px;font-weight:900;letter-spacing:1px}
-.intercept-message{padding:12px;border:1px dashed rgba(255,94,112,.48);background:#0d0002;color:#ffdce1;font-family:"Noto Sans TC",sans-serif;font-size:13px;line-height:1.65}
-.terminal{height:min(220px,27dvh);min-height:150px;overflow:hidden;border:1px solid rgba(255,38,61,.3);background:#030000;box-shadow:inset 0 0 26px rgba(255,0,35,.06)}
-.terminal-head{display:flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-bottom:1px solid #340008;color:#9d5b64;font-size:9px;letter-spacing:1px}
-.dot{width:7px;height:7px;border-radius:50%;background:#8e0015}.dot:nth-child(2){background:#ff263d}.dot:nth-child(3){background:#4c000b}
-.logs{height:calc(100% - 30px);padding:9px 11px;overflow:hidden;color:#dc7e8a;font-size:10px;line-height:1.65}
-.log{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.log strong{color:var(--red)}
-.footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;color:#8d555d;font-size:9px;letter-spacing:.6px}.footer b{color:#ff5368}
-@keyframes alarm{50%{background:#3b0009;color:#ff7587;box-shadow:0 0 16px rgba(255,38,61,.5)}}
-@keyframes glitch{0%,88%,100%{transform:none;filter:none}89%{transform:translateX(4px);filter:blur(.4px)}90%{transform:translateX(-5px);color:#ff263d}91%{transform:none;color:#fff}}
-@keyframes scan{to{transform:translateY(4px)}}
-@media(max-width:560px){.shell{min-height:calc(100dvh - 28px)}.content{padding:22px 15px}.warning{grid-template-columns:52px minmax(0,1fr);gap:13px}.warning-icon{width:50px;height:45px;padding-bottom:5px;font-size:24px}.risk-grid{gap:6px}.risk{min-height:74px;padding:10px 8px}.terminal{height:190px}.footer{align-items:flex-start;flex-direction:column}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0;background:#f4f7fd}
+body{color:#202124;font-family:Arial,"Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:14px}
+.error-page{width:min(100%,600px);margin:0 auto;padding:72px 42px 48px}
+.error-icon{display:block;width:42px;height:48px;margin:0 0 28px;color:#202124}
+h1{margin:0 0 18px;font-size:28px;font-weight:400;line-height:1.25;letter-spacing:0}
+.detail{margin:0 0 18px;color:#5f6368;font-size:14px;line-height:1.65}
+.detail strong{color:#202124;font-weight:700}
+.error-code{margin:0 0 30px;color:#5f6368;font-size:12px;line-height:1.5}
+.reload{min-width:92px;height:38px;padding:0 19px;border:0;border-radius:19px;background:#1a73e8;color:#fff;font:500 14px Arial,"Noto Sans TC",sans-serif;cursor:pointer;box-shadow:0 1px 2px rgba(26,115,232,.24)}
+.reload:active{background:#1558b0}
+@media(max-width:520px){
+  .error-page{width:280px;margin:0 auto;padding:38px 0 32px}
+  .error-icon{width:30px;height:36px;margin-bottom:27px}
+  h1{margin-bottom:14px;font-size:17px;line-height:1.35}
+  .detail{font-size:11px}
+  .detail{margin-bottom:12px;line-height:1.55}
+  .error-code{margin-bottom:25px;font-size:9px}
+  .reload{min-width:76px;height:31px;padding:0 15px;border-radius:16px;font-size:10px}
+}
+@media(max-width:330px){.error-page{width:210px}}
 </style>
 </head>
 <body>
-<main class="shell">
-  <header class="system-bar"><span>SECURITY GATEWAY // CONNECTION TERMINATED</span><b class="critical">CRITICAL</b></header>
-  <div class="content">
-    <section class="warning">
-      <div class="warning-icon" aria-hidden="true">!</div>
-      <div>
-        <div class="eyebrow">THREAT LEVEL 05 · QUARANTINE ACTIVE</div>
-        <h1>偵測到惡意程式</h1>
-        <p class="sub">此網域疑似遭到入侵，安全系統已強制切斷所有公開連線。</p>
-      </div>
-    </section>
+<main class="error-page">
+  <svg class="error-icon" viewBox="0 0 48 56" aria-hidden="true">
+    <path d="M9 3h21l9 9v41H9z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M30 3v10h9" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M17 24h4v5h-4zm11 0h4v5h-4z" fill="currentColor"/>
+    <path d="M17 41c2-4 5-6 8-6s6 2 8 6" fill="none" stroke="currentColor" stroke-width="3"/>
+  </svg>
 
-    <section class="risk-grid" aria-label="風險摘要">
-      <div class="risk"><span>COMPROMISED MODULES</span><b id="module-count">47</b></div>
-      <div class="risk"><span>OUTBOUND ATTEMPTS</span><b id="attempt-count">1,289</b></div>
-      <div class="risk"><span>CURRENT RISK</span><b class="red">SEVERE</b></div>
-    </section>
-
-    <section class="intercept">
-      <div class="intercept-head"><span>SCAM PAYLOAD INTERCEPTED</span><span>BLOCKED</span></div>
-      <div class="intercept-message">「您的帳號已遭鎖定，請在 5 分鐘內支付 9,898 元解除限制，否則所有資料將永久刪除。」</div>
-    </section>
-
-    <section class="terminal" aria-label="安全系統紀錄">
-      <div class="terminal-head"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>LIVE THREAT MONITOR</span></div>
-      <div class="logs" id="security-logs"></div>
-    </section>
-    <footer class="footer"><span>CASE ID: <b>QRT-9898-X</b></span><span>STATUS: DOMAIN ISOLATED</span></footer>
-  </div>
+  <h1>無法連上這個網站</h1>
+  <p class="detail"><strong>shengzhan-yujun-site.vercel.app</strong> 的回應時間過長。</p>
+  <p class="error-code">ERR_CONNECTION_TIMED_OUT</p>
+  <button class="reload" type="button" onclick="location.reload()">重新載入</button>
 </main>
-<script>
-const messages=[
-  ['BLOCKED','偵測到偽造登入頁面注入程序'],
-  ['ALERT','不明來源正在建立付款轉址'],
-  ['DENIED','可疑交易要求 NT$ 98,980'],
-  ['PURGED','惡意追蹤腳本已從記憶體清除'],
-  ['WARNING','發現假冒客服訊息產生器'],
-  ['LOCKED','公開存取權限已暫時撤銷'],
-  ['SCAN','正在檢查受影響的網站模組'],
-  ['BLOCKED','外部資料傳輸要求已拒絕'],
-  ['QUARANTINE','高風險程式已移至隔離區']
-];
-const logs=document.getElementById('security-logs');
-let line=0;
-function appendLog(){
-  const entry=messages[line%messages.length];
-  const now=new Date().toLocaleTimeString('zh-TW',{hour12:false});
-  const row=document.createElement('div');
-  row.className='log';
-  row.innerHTML=`[${now}] <strong>${entry[0]}</strong> ${entry[1]}`;
-  logs.appendChild(row);
-  while(logs.children.length>10) logs.firstElementChild.remove();
-  line+=1;
-  document.getElementById('attempt-count').textContent=(1289+line*7).toLocaleString('en-US');
-}
-for(let i=0;i<8;i++) appendLog();
-setInterval(appendLog,900);
-</script>
 </body>
 </html>

@@ -1,0 +1,166 @@
+const APP_ORIGIN = 'https://shengzhan-yujun-site.vercel.app';
+const GOOGLE_DOMAINS = ['google.com', 'google.com.tw'];
+
+function sendJson(response, status, payload) {
+  response.setHeader('Content-Type', 'application/json; charset=utf-8');
+  response.setHeader('Cache-Control', status === 200
+    ? 'public, max-age=300, s-maxage=86400, stale-while-revalidate=604800'
+    : 'no-store');
+  response.status(status).json(payload);
+}
+
+function isAllowedMapUrl(url) {
+  if (!(url instanceof URL) || url.protocol !== 'https:') return false;
+  const host = url.hostname.toLowerCase();
+  if (host === 'maps.app.goo.gl' || host === 'maps.google.com') return true;
+  if (host === 'goo.gl') return url.pathname.startsWith('/maps');
+  return GOOGLE_DOMAINS.some(domain => host === domain || host.endsWith(`.${domain}`));
+}
+
+function safeDecode(value) {
+  try { return decodeURIComponent(value); } catch (_) { return value; }
+}
+
+function coordinateCandidates(value) {
+  const raw = String(value || '');
+  return [...new Set([
+    raw,
+    safeDecode(raw),
+    raw.replace(/\\u003d/gi, '=').replace(/\\u0026/gi, '&').replace(/&amp;/gi, '&')
+  ])];
+}
+
+function parseCoordinates(value) {
+  const patterns = [
+    /!3d(-?\d{1,2}(?:\.\d+)?)!4d(-?\d{1,3}(?:\.\d+)?)/i,
+    /@(-?\d{1,2}(?:\.\d+)?),(-?\d{1,3}(?:\.\d+)?)/,
+    /[?&](?:q|query|ll|center)=(?:loc:)?(-?\d{1,2}(?:\.\d+)?)[,\s]+(-?\d{1,3}(?:\.\d+)?)/i
+  ];
+  for (const candidate of coordinateCandidates(value)) {
+    for (const pattern of patterns) {
+      const match = candidate.match(pattern);
+      if (!match) continue;
+      const lat = Number(match[1]);
+      const lng = Number(match[2]);
+      if (Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180) return { lat, lng };
+    }
+  }
+  return null;
+}
+
+function parsePlaceName(value, html = '') {
+  const candidates = coordinateCandidates(value);
+  for (const candidate of candidates) {
+    try {
+      const url = new URL(candidate);
+      const match = url.pathname.match(/\/maps\/place\/([^/]+)/i);
+      if (match) {
+        const name = safeDecode(match[1]).replace(/\+/g, ' ').trim();
+        if (name && !/^-?\d+(?:\.\d+)?[, ]/.test(name)) return name.slice(0, 60);
+      }
+      const query = url.searchParams.get('query') || url.searchParams.get('q');
+      if (query && !parseCoordinates(`?q=${query}`)) return query.replace(/^loc:/i, '').trim().slice(0, 60);
+    } catch (_) {}
+  }
+  const titleMatch = String(html || '').match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i)
+    || String(html || '').match(/<title>([^<]+)<\/title>/i);
+  return safeDecode(titleMatch?.[1] || '').replace(/&amp;/gi, '&').replace(/\s*[-–]\s*Google Maps.*$/i, '').trim().slice(0, 60);
+}
+
+async function resolveMapUrl(initialUrl) {
+  let current = initialUrl;
+  let html = '';
+  for (let index = 0; index < 7; index += 1) {
+    if (!isAllowedMapUrl(current)) throw new Error('只支援 Google Maps 的分享連結');
+    if (parseCoordinates(current.href)) return { url: current, html };
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
+    let result;
+    try {
+      result = await fetch(current, {
+        redirect: 'manual',
+        signal: controller.signal,
+        headers: {
+          'Accept-Language': 'zh-TW,zh;q=0.9',
+          'User-Agent': 'Mozilla/5.0 (compatible; ShengzhanYujunSite/1.0)'
+        }
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+    const location = result.headers.get('location');
+    if (location && result.status >= 300 && result.status < 400) {
+      const next = new URL(location, current);
+      if (!isAllowedMapUrl(next)) throw new Error('分享連結導向了不支援的網站');
+      current = next;
+      continue;
+    }
+    html = (await result.text()).slice(0, 400000);
+    return { url: current, html };
+  }
+  return { url: current, html };
+}
+
+async function reverseAddress(lat, lng) {
+  const params = new URLSearchParams({ format: 'jsonv2', lat: String(lat), lon: String(lng), 'accept-language': 'zh-TW' });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 6000);
+  try {
+    const result = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`, {
+      signal: controller.signal,
+      headers: {
+        Accept: 'application/json',
+        Referer: APP_ORIGIN,
+        'User-Agent': `ShengzhanYujunSite/1.0 (${APP_ORIGIN})`
+      }
+    });
+    if (!result.ok) return null;
+    return result.json();
+  } catch (_) {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+module.exports = async function mapLink(request, response) {
+  if (request.method !== 'GET') {
+    response.setHeader('Allow', 'GET');
+    sendJson(response, 405, { error: 'Method not allowed' });
+    return;
+  }
+
+  const rawValue = Array.isArray(request.query?.url) ? request.query.url[0] : request.query?.url;
+  let initialUrl;
+  try { initialUrl = new URL(String(rawValue || '').trim()); }
+  catch (_) { sendJson(response, 400, { error: '請貼上完整的 Google Maps 分享連結' }); return; }
+  if (!isAllowedMapUrl(initialUrl)) {
+    sendJson(response, 400, { error: '只支援 Google Maps 的分享連結' });
+    return;
+  }
+
+  try {
+    const resolved = await resolveMapUrl(initialUrl);
+    const coordinates = parseCoordinates(resolved.url.href) || parseCoordinates(resolved.html);
+    if (!coordinates) {
+      sendJson(response, 422, { error: '連結沒有帶入地點位置，請在 Google Maps 開啟店家後按「分享」再複製連結' });
+      return;
+    }
+    const reverse = await reverseAddress(coordinates.lat, coordinates.lng);
+    const name = parsePlaceName(resolved.url.href, resolved.html)
+      || String(reverse?.name || reverse?.display_name || 'Google Maps 地點').split(',')[0].trim().slice(0, 60);
+    const displayName = String(reverse?.display_name || name).trim().slice(0, 180);
+    sendJson(response, 200, {
+      result: {
+        name,
+        displayName,
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+        placeId: `google_link_${coordinates.lat.toFixed(6)}_${coordinates.lng.toFixed(6)}`,
+        provider: 'google-link'
+      }
+    });
+  } catch (error) {
+    sendJson(response, 502, { error: error?.name === 'AbortError' ? '讀取分享連結逾時，請再試一次' : (error?.message || '無法讀取這個分享連結') });
+  }
+};

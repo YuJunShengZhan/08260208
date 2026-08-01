@@ -2005,7 +2005,7 @@ onclick="hideSpecialForToday()">
           <input class="footprint-input" id="footprint-place-name" type="text" maxlength="60" autocomplete="off" placeholder="例如：淡水老街" oninput="footprintMirrorPlaceQuery(this.value)" required>
         </label>
         <label class="footprint-field full">地址
-          <input class="footprint-input" id="footprint-address" type="text" maxlength="160" autocomplete="street-address" placeholder="搜尋店名後會自動帶入，也可以自行輸入">
+          <input class="footprint-input" id="footprint-address" type="text" maxlength="500" autocomplete="street-address" placeholder="可輸入地址，也可直接貼 Google Maps 分享連結" onpaste="footprintHandleMapLinkPaste(event)">
         </label>
         <label class="footprint-field full">想記住的事
           <textarea class="footprint-input" id="footprint-note" maxlength="500" placeholder="這次一起做了什麼？"></textarea>
@@ -8299,6 +8299,16 @@ function footprintPrepareMapLink(){
   footprintRenderSearchResults([], '貼上地點的 Google Maps 分享連結，再按搜尋');
   input.focus();
 }
+function footprintHandleMapLinkPaste(event){
+  const value=String(event.clipboardData?.getData('text')||'').trim();
+  if(!footprintIsGoogleMapsLink(value)) return;
+  event.preventDefault();
+  const address=document.getElementById('footprint-address');
+  const search=document.getElementById('footprint-search-input');
+  if(address) address.value=value;
+  if(search) search.value=value;
+  footprintSearchLocation();
+}
 async function footprintSearchServer(query){
   const response=await fetch(`/api/place-search?q=${encodeURIComponent(query)}`,{headers:{Accept:'application/json'}});
   if(!response.ok) throw new Error(`地點搜尋服務 HTTP ${response.status}`);
@@ -8339,7 +8349,7 @@ async function footprintSearchOpenStreetMap(query){
 async function footprintSearchLocation(){
   const input=document.getElementById('footprint-search-input');
   const button=document.getElementById('footprint-search-btn');
-  const query=String(input?.value||document.getElementById('footprint-place-name')?.value||'').trim();
+  const query=String(input?.value||document.getElementById('footprint-address')?.value||document.getElementById('footprint-place-name')?.value||'').trim();
   const importingMapLink=footprintIsGoogleMapsLink(query);
   if(!importingMapLink&&query.length<2){footprintRenderSearchResults([], '請至少輸入兩個字');return;}
   const cacheKey=footprintNormalizeName(query);

@@ -12,6 +12,7 @@
 <meta name="format-detection" content="telephone=no">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/app-icon-180.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <title>林聖展 ♡ 蘇予君</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
@@ -1162,6 +1163,94 @@ background:var(--pink-light);margin-left:8px;
   position: absolute;
   pointer-events: none;
 }
+
+/* 足跡地圖 */
+.footprint-page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.footprint-page-title{font-family:'Noto Serif TC',serif;font-size:23px;font-weight:700;color:var(--rose)}
+.footprint-page-sub{margin-top:3px;color:var(--text-muted);font-size:12px}
+.footprint-add-btn{flex:0 0 auto;min-height:42px;padding:0 14px;border:0;border-radius:8px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(232,99,122,.2)}
+.footprint-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.footprint-stat{padding:11px 13px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
+.footprint-stat strong{display:block;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;line-height:1.1}
+.footprint-stat span{display:block;margin-top:4px;color:var(--text-muted);font-size:11px}
+.footprint-map-shell{position:relative;overflow:hidden;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 10px 28px rgba(201,75,100,.1)}
+#footprint-map{width:100%;height:clamp(310px,48dvh,480px);background:#edf5ed}
+.footprint-map-status{position:absolute;z-index:500;left:10px;top:10px;max-width:calc(100% - 68px);padding:7px 10px;border:1px solid rgba(232,99,122,.18);border-radius:7px;background:rgba(255,255,255,.92);color:#945064;font-size:11px;box-shadow:0 5px 16px rgba(74,39,48,.12);backdrop-filter:blur(6px)}
+.footprint-map-status[hidden]{display:none}
+.footprint-place-strip{display:flex;gap:7px;overflow-x:auto;margin:10px -2px 12px;padding:2px 2px 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.footprint-place-strip::-webkit-scrollbar{display:none}
+.footprint-place-chip{flex:0 0 auto;max-width:180px;min-height:37px;padding:7px 11px;border:1px solid var(--card-border);border-radius:999px;background:var(--white);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.footprint-place-chip.active{border-color:var(--pink);background:var(--pink);color:#fff;font-weight:700}
+.footprint-empty{padding:30px 18px;border:1px dashed rgba(232,99,122,.34);border-radius:8px;background:var(--white);text-align:center}
+.footprint-empty-icon{font-size:34px;line-height:1}
+.footprint-empty-title{margin-top:9px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.footprint-empty-copy{margin-top:5px;color:var(--text-muted);font-size:12px;line-height:1.6}
+.footprint-detail{border:1px solid var(--card-border);border-radius:8px;background:var(--white);overflow:hidden}
+.footprint-detail[hidden]{display:none}
+.footprint-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 15px 12px;border-bottom:1px solid var(--card-border)}
+.footprint-detail-name{min-width:0;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;word-break:break-word}
+.footprint-detail-meta{margin-top:3px;color:var(--text-muted);font-size:11px}
+.footprint-revisit-btn{flex:0 0 auto;min-height:36px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.footprint-timeline{padding:3px 15px 11px}
+.footprint-visit{position:relative;display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:10px;padding:13px 0 11px}
+.footprint-visit+.footprint-visit{border-top:1px solid rgba(232,99,122,.1)}
+.footprint-visit-dot{width:10px;height:10px;margin-top:5px;border:2px solid var(--pink);border-radius:50%;background:var(--white);box-shadow:0 0 0 3px var(--pink-light)}
+.footprint-visit-date{color:var(--rose);font-size:12px;font-weight:700}
+.footprint-visit-note{margin-top:4px;color:var(--text);font-size:12px;line-height:1.65;white-space:normal;overflow-wrap:anywhere}
+.footprint-visit-note.muted{color:var(--text-muted)}
+.footprint-visit-media{margin-top:5px;color:var(--text-muted);font-size:10px}
+.footprint-visit-actions{display:flex;align-items:flex-start;gap:5px}
+.footprint-icon-btn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-size:14px;cursor:pointer}
+.footprint-icon-btn.delete{background:var(--white)}
+.footprint-leaflet-icon{background:transparent!important;border:0!important}
+.footprint-pin{position:relative;width:38px;height:46px;filter:drop-shadow(0 5px 7px rgba(137,44,66,.26));transform-origin:50% 100%;transition:transform .18s ease}
+.footprint-pin:hover{transform:translateY(-2px) scale(1.04)}
+.footprint-pin-body{position:absolute;left:3px;top:1px;width:32px;height:32px;display:grid;place-items:center;border:3px solid #fff;border-radius:50% 50% 50% 7px;background:var(--pink);color:#fff;font-size:15px;transform:rotate(-45deg);box-shadow:inset 0 0 0 1px rgba(151,41,66,.16)}
+.footprint-pin-body span{transform:rotate(45deg)}
+.footprint-pin-count{position:absolute;right:-5px;top:-5px;min-width:21px;height:21px;display:grid;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#2f9a68;color:#fff;font-size:9px;font-weight:800}
+.leaflet-control-zoom a{color:var(--rose)!important}
+.leaflet-control-attribution{font-size:8px!important}
+[data-theme="dark"] .footprint-map-shell{background:#202a24}
+[data-theme="dark"] #footprint-map .leaflet-tile-pane{filter:brightness(.68) saturate(.72) contrast(1.08)}
+[data-theme="dark"] .footprint-map-status{background:rgba(42,24,32,.92);color:#ffd6df}
+
+.footprint-editor-bg{position:fixed;inset:0;z-index:10020;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(28,17,22,.68);backdrop-filter:blur(6px)}
+.footprint-editor-bg.hidden{display:none}
+.footprint-editor{width:min(100%,480px);max-height:calc(100dvh - 28px);overflow-y:auto;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 25px 70px rgba(35,14,23,.38)}
+.footprint-editor-head{position:sticky;z-index:3;top:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 15px 11px;border-bottom:1px solid var(--card-border);background:var(--white)}
+.footprint-editor-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700}
+.footprint-editor-close{width:36px;height:36px;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:20px;cursor:pointer}
+.footprint-editor-form{padding:14px}
+.footprint-form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.footprint-field{display:flex;flex-direction:column;gap:6px;color:var(--text-muted);font-size:11px;font-weight:700}
+.footprint-field.full{grid-column:1/-1}
+.footprint-input{width:100%;min-height:44px;padding:10px 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
+textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
+.footprint-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
+.footprint-picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:13px 0 7px;color:var(--text-muted);font-size:11px;font-weight:700}
+.footprint-location-btn{min-height:34px;padding:0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
+#footprint-editor-map{width:100%;height:230px;border:1px solid var(--card-border);border-radius:8px;background:#edf5ed;overflow:hidden}
+.footprint-coordinate{min-height:18px;margin-top:6px;color:var(--text-muted);font-size:10px}
+.footprint-editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.footprint-editor-action{min-height:45px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.footprint-editor-action.primary{border-color:var(--pink);background:var(--pink);color:#fff}
+.footprint-editor-action:disabled{opacity:.56;cursor:wait}
+.footprint-memory-card{margin-top:10px;padding:16px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
+.footprint-memory-card[hidden]{display:none}
+.footprint-memory-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px}
+.footprint-memory-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.footprint-memory-sub{margin-top:3px;color:var(--text-muted);font-size:10px}
+.footprint-memory-total{color:var(--text-muted);font-size:11px;white-space:nowrap}
+.footprint-ranking-list{display:flex;flex-direction:column}
+.footprint-ranking-row{position:relative;width:100%;min-height:54px;display:grid;grid-template-columns:25px minmax(0,1fr) auto;align-items:center;gap:9px;overflow:hidden;padding:8px 9px;border:0;border-top:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
+.footprint-ranking-row:first-child{border-top:0}
+.footprint-ranking-bar{position:absolute;z-index:0;left:0;top:8px;bottom:8px;border-radius:6px;background:linear-gradient(90deg,var(--pink-light),rgba(252,232,236,.25));pointer-events:none}
+.footprint-ranking-rank,.footprint-ranking-copy,.footprint-ranking-count{position:relative;z-index:1}
+.footprint-ranking-rank{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:var(--pink);color:#fff;font-size:10px;font-weight:800}
+.footprint-ranking-name{font-size:13px;font-weight:700;overflow-wrap:anywhere}
+.footprint-ranking-date{margin-top:2px;color:var(--text-muted);font-size:10px}
+.footprint-ranking-count{color:var(--rose);font-size:12px;font-weight:800;white-space:nowrap}
+@media(max-width:520px){.footprint-editor-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 </style>
 </head>
 <body>
@@ -1532,6 +1621,87 @@ onclick="hideSpecialForToday()">
   <div id="memories-total-stats" style="margin-top:16px"></div>
 </div>
   </div>
+  <section class="footprint-memory-card" id="footprint-memory-stats" hidden>
+    <div class="footprint-memory-head">
+      <div>
+        <div class="footprint-memory-title">📍 常去的地方</div>
+        <div class="footprint-memory-sub">依一起造訪的次數排列</div>
+      </div>
+      <div class="footprint-memory-total" id="footprint-memory-total"></div>
+    </div>
+    <div class="footprint-ranking-list" id="footprint-ranking-list"></div>
+  </section>
+</div>
+
+<!-- FOOTPRINTS -->
+<div id="page-footprints" class="page">
+  <div class="footprint-page-head">
+    <div>
+      <div class="footprint-page-title">我們的足跡</div>
+      <div class="footprint-page-sub">把一起到過的地方，慢慢留在地圖上</div>
+    </div>
+    <button type="button" class="footprint-add-btn" onclick="footprintOpenEditor()">＋ 新增足跡</button>
+  </div>
+  <div class="footprint-summary" aria-label="足跡統計">
+    <div class="footprint-stat"><strong id="footprint-place-total">0</strong><span>去過的地點</span></div>
+    <div class="footprint-stat"><strong id="footprint-visit-total">0</strong><span>留下的回憶</span></div>
+  </div>
+  <div class="footprint-map-shell">
+    <div id="footprint-map" aria-label="足跡地圖"></div>
+    <div class="footprint-map-status" id="footprint-map-status">載入地圖中...</div>
+  </div>
+  <div class="footprint-place-strip" id="footprint-place-strip" aria-label="足跡地點清單"></div>
+  <div class="footprint-empty" id="footprint-empty">
+    <div class="footprint-empty-icon">📍</div>
+    <div class="footprint-empty-title">第一個足跡會從這裡開始</div>
+    <div class="footprint-empty-copy">新增日期、地點和回憶，再到地圖上點選位置。</div>
+  </div>
+  <section class="footprint-detail" id="footprint-detail" hidden aria-live="polite">
+    <div class="footprint-detail-head">
+      <div>
+        <div class="footprint-detail-name" id="footprint-detail-name"></div>
+        <div class="footprint-detail-meta" id="footprint-detail-meta"></div>
+      </div>
+      <button type="button" class="footprint-revisit-btn" id="footprint-revisit-btn">＋ 再記一次</button>
+    </div>
+    <div class="footprint-timeline" id="footprint-timeline"></div>
+  </section>
+</div>
+
+<div class="footprint-editor-bg hidden" id="footprint-editor-bg" onclick="footprintCloseEditor(event)">
+  <section class="footprint-editor" role="dialog" aria-modal="true" aria-labelledby="footprint-editor-title" onclick="event.stopPropagation()">
+    <div class="footprint-editor-head">
+      <div class="footprint-editor-title" id="footprint-editor-title">新增足跡</div>
+      <button type="button" class="footprint-editor-close" onclick="footprintCloseEditorDirect()" aria-label="關閉">×</button>
+    </div>
+    <form class="footprint-editor-form" id="footprint-editor-form" onsubmit="footprintSaveVisit(event)">
+      <input type="hidden" id="footprint-edit-id">
+      <input type="hidden" id="footprint-place-id">
+      <input type="hidden" id="footprint-lat">
+      <input type="hidden" id="footprint-lng">
+      <div class="footprint-form-grid">
+        <label class="footprint-field">日期
+          <input class="footprint-input" id="footprint-date" type="date" required>
+        </label>
+        <label class="footprint-field">地點名稱
+          <input class="footprint-input" id="footprint-place-name" type="text" maxlength="60" autocomplete="off" placeholder="例如：淡水老街" required>
+        </label>
+        <label class="footprint-field full">想記住的事
+          <textarea class="footprint-input" id="footprint-note" maxlength="500" placeholder="這次一起做了什麼？"></textarea>
+        </label>
+      </div>
+      <div class="footprint-picker-head">
+        <span>點地圖選擇位置</span>
+        <button type="button" class="footprint-location-btn" onclick="footprintUseCurrentLocation()">定位目前位置</button>
+      </div>
+      <div id="footprint-editor-map" aria-label="選擇足跡位置"></div>
+      <div class="footprint-coordinate" id="footprint-coordinate">尚未選擇位置</div>
+      <div class="footprint-editor-actions">
+        <button type="button" class="footprint-editor-action" onclick="footprintCloseEditorDirect()">取消</button>
+        <button type="submit" class="footprint-editor-action primary" id="footprint-save-btn">儲存足跡</button>
+      </div>
+    </form>
+  </section>
 </div>
 
 <!-- PERIOD -->
@@ -1617,24 +1787,18 @@ onclick="hideSpecialForToday()">
   <!-- 已設定時顯示摘要 -->
   <div id="pd-settings-summary" style="font-size:13px;color:var(--text-muted);line-height:2"></div>
 </div>
-  <div class="card">
-    <div class="card-title">📝 今日症狀記錄</div>
-    <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">選擇今天有哪些感覺</div>
-    <div id="pd-symptom-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px"></div>
-    <textarea id="pd-note" rows="2" placeholder="備注（心情、特別狀況...）" style="width:100%;padding:10px;border:1px solid var(--card-border);border-radius:10px;font-size:13px;font-family:'Noto Sans TC',sans-serif;resize:none;background:var(--pink-light);color:var(--text)"></textarea>
-    <button class="open-btn" style="margin-top:10px" onclick="pdSaveLog()">記錄今天 ✍️</button>
-    <div id="pd-log-list" style="margin-top:14px"></div>
-  </div>
 </div>
 
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>首頁</button>
   <button class="nav-btn" onclick="showPage('album',this)"><span class="nav-icon">📸</span>相簿</button>
   <button class="nav-btn" onclick="showPage('memories',this)"><span class="nav-icon">🎞️</span>回憶</button>
+  <button class="nav-btn" onclick="showPage('footprints',this)"><span class="nav-icon">📍</span>足跡</button>
   <button class="nav-btn" onclick="showPage('period',this)"><span class="nav-icon">🌸</span>生理期</button>
 </nav>
 
 <!-- Firebase SDK -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -3917,6 +4081,7 @@ function showPage(id,btn){
     else albumRenderCal();
   }
   if(id==='memories') renderMemories();
+  if(id==='footprints') footprintShowPage();
 }
 
 // ── Letter ──
@@ -6181,12 +6346,10 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-const SYMPTOMS=['😴 疲勞','😣 腹痛','🤯 頭痛','😤 情緒波動','🤢 噁心','🎈 脹氣','💤 嗜睡','🍫 想吃甜食','🥶 怕冷','💪 還不錯'];
 let pdSettings={start:'',end:'',cycle:28,dur:5};
 let pdCycleHistory=[];
 let pdCalYear=new Date().getFullYear();
 let pdCalMonth=new Date().getMonth();
-let pdSelectedSymptoms=new Set();
 
 function pdApplySettings(s){
   pdSettings=s;
@@ -6235,7 +6398,6 @@ function pdLoad(){
     settingsReady=true;
     syncHomeWhenReady();
   });
-  onValue(ref(db,'pdLogs'),snap=>{pdRenderLogsFromSnap(snap.val());});
   onValue(ref(db,'pdPeriodHistory'),snap=>{
     pdRenderHistory(snap.val());
     historyReady=true;
@@ -6526,46 +6688,6 @@ function pdRenderCal(){
 }
 function pdCalPrev(){pdCalMonth--;if(pdCalMonth<0){pdCalMonth=11;pdCalYear--;}pdRenderCal();}
 function pdCalNext(){pdCalMonth++;if(pdCalMonth>11){pdCalMonth=0;pdCalYear++;}pdRenderCal();}
-function pdInitSymptoms(){
-  document.getElementById('pd-symptom-tags').innerHTML=SYMPTOMS.map((s,i)=>`
-    <button onclick="pdToggleSymptom(${i},this)" style="padding:7px 12px;border-radius:20px;border:1px solid var(--card-border);background:var(--white);font-size:12px;cursor:pointer;transition:all .2s;font-family:'Noto Sans TC',sans-serif;color:var(--text)">${s}</button>`).join('');
-}
-function pdToggleSymptom(i,el){
-  if(pdSelectedSymptoms.has(i)){pdSelectedSymptoms.delete(i);el.style.background='var(--white)';el.style.color='';el.style.borderColor='var(--card-border)';}
-  else{pdSelectedSymptoms.add(i);el.style.background='var(--pink)';el.style.color='white';el.style.borderColor='var(--pink)';}
-}
-function pdSaveLog(){
-  const note=document.getElementById('pd-note').value.trim();
-  const syms=Array.from(pdSelectedSymptoms).map(i=>SYMPTOMS[i]);
-  if(!syms.length&&!note){alert('請至少選一個症狀或填寫備注');return;}
-  const {db,ref,set}=window._fb;
-  const t=today();
-  const dateStr=`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
-  set(ref(db,`pdLogs/${dateStr}`),{date:dateStr,symptoms:syms,note});
-  document.getElementById('pd-note').value='';
-  pdSelectedSymptoms.clear();
-  document.querySelectorAll('#pd-symptom-tags button').forEach(el=>{el.style.background='var(--white)';el.style.color='';el.style.borderColor='var(--card-border)';});
-  alert('已記錄 ✅');
-}
-function pdRenderLogsFromSnap(val){
-  const el=document.getElementById('pd-log-list');
-  if(!val){el.innerHTML='<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:12px 0">還沒有記錄</div>';return;}
-  const logs=Object.values(val).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,10);
-  el.innerHTML=logs.map((l)=>`
-    <div style="border-top:1px solid var(--card-border);padding:10px 0;display:flex;justify-content:space-between;align-items:flex-start">
-      <div>
-        <div style="font-size:12px;color:var(--text-muted)">${l.date}</div>
-        <div style="font-size:13px;margin-top:3px">${(l.symptoms||[]).join('　')}</div>
-        ${l.note?`<div style="font-size:12px;color:var(--text-muted);margin-top:2px">${l.note}</div>`:''}
-      </div>
-      <button onclick="pdDeleteLog('${l.date}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px">✕</button>
-    </div>`).join('');
-}
-function pdDeleteLog(dateStr){
-  if(!confirm('刪除這筆記錄？')) return;
-  const {db,ref,remove}=window._fb;
-  remove(ref(db,`pdLogs/${dateStr}`));
-}
 function pdToggleSettings(){
   const body = document.getElementById('pd-settings-body');
   const btn = document.getElementById('pd-settings-toggle-btn');
@@ -7093,8 +7215,334 @@ function showLoveSurprise(item){
 
 
 
+// ── 足跡地圖（Firebase 同步）──
+const FOOTPRINT_CACHE_KEY='footprint_visits_cache_v1';
+let footprintVisitsData={};
+let footprintSyncStarted=false;
+let footprintMap=null;
+let footprintMarkerLayer=null;
+let footprintMapHasFit=false;
+let footprintSelectedPlaceId='';
+let footprintEditorMap=null;
+let footprintEditorMarker=null;
+
+function footprintEscape(value){
+  return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+}
+function footprintTodayKey(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function footprintNormalizeName(value){
+  return String(value||'').trim().toLowerCase().replace(/[\s　]+/g,'');
+}
+function footprintNumber(value){
+  const number=Number(value);
+  return Number.isFinite(number)?number:null;
+}
+function footprintNormalizeVisit(id,value){
+  const lat=footprintNumber(value?.lat);
+  const lng=footprintNumber(value?.lng);
+  const placeName=String(value?.placeName||'').trim().slice(0,60);
+  const date=String(value?.date||'').slice(0,10);
+  if(lat===null||lng===null||!placeName||!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
+  return {id:String(id),placeId:String(value?.placeId||''),placeName,date,note:String(value?.note||'').trim().slice(0,500),lat:Math.max(-90,Math.min(90,lat)),lng:Math.max(-180,Math.min(180,lng)),createdAt:Number(value?.createdAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
+}
+function footprintLoadCache(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(FOOTPRINT_CACHE_KEY)||'{}');
+    footprintVisitsData=parsed&&typeof parsed==='object'?parsed:{};
+  }catch(_){footprintVisitsData={};}
+}
+function footprintWriteCache(){
+  try{localStorage.setItem(FOOTPRINT_CACHE_KEY,JSON.stringify(footprintVisitsData));}catch(_){}
+}
+function footprintDistanceMeters(aLat,aLng,bLat,bLng){
+  const rad=value=>value*Math.PI/180;
+  const dLat=rad(bLat-aLat),dLng=rad(bLng-aLng);
+  const h=Math.sin(dLat/2)**2+Math.cos(rad(aLat))*Math.cos(rad(bLat))*Math.sin(dLng/2)**2;
+  return 6371000*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
+}
+function footprintGetGroups(){
+  const groups=new Map();
+  Object.entries(footprintVisitsData||{}).forEach(([id,raw])=>{
+    const visit=footprintNormalizeVisit(id,raw);
+    if(!visit) return;
+    const placeId=visit.placeId||`legacy_${footprintNormalizeName(visit.placeName)}`;
+    if(!groups.has(placeId)) groups.set(placeId,{placeId,visits:[]});
+    groups.get(placeId).visits.push(visit);
+  });
+  return [...groups.values()].map(group=>{
+    group.visits.sort((a,b)=>b.date.localeCompare(a.date)||(b.updatedAt-a.updatedAt));
+    const latest=group.visits[0];
+    Object.assign(group,{name:latest.placeName,lat:latest.lat,lng:latest.lng,latestDate:latest.date});
+    return group;
+  }).sort((a,b)=>b.latestDate.localeCompare(a.latestDate)||a.name.localeCompare(b.name,'zh-Hant'));
+}
+function footprintFormatDate(value){
+  const date=new Date(`${value}T12:00:00`);
+  return Number.isNaN(date.getTime())?value:`${date.getFullYear()} 年 ${date.getMonth()+1} 月 ${date.getDate()} 日`;
+}
+function footprintSetStatus(message,autoHide=false){
+  const status=document.getElementById('footprint-map-status');
+  if(!status) return;
+  status.textContent=message;
+  status.hidden=!message;
+  if(autoHide&&message) setTimeout(()=>{if(status.textContent===message) status.hidden=true;},2200);
+}
+function footprintEnsureMap(){
+  if(footprintMap) return true;
+  if(!window.L){footprintSetStatus('地圖載入失敗，請重新整理後再試');return false;}
+  const element=document.getElementById('footprint-map');
+  if(!element) return false;
+  footprintMap=L.map(element,{zoomControl:false,minZoom:5,maxZoom:19}).setView([23.72,121],7);
+  L.control.zoom({position:'topright'}).addTo(footprintMap);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(footprintMap);
+  footprintMarkerLayer=L.layerGroup().addTo(footprintMap);
+  footprintMap.on('click',event=>footprintOpenEditor('', '', event.latlng));
+  footprintSetStatus('點地圖就能新增這個位置',true);
+  return true;
+}
+function footprintMarkerIcon(count){
+  return L.divIcon({className:'footprint-leaflet-icon',html:`<div class="footprint-pin"><div class="footprint-pin-body"><span>♥</span></div><b class="footprint-pin-count">${count}</b></div>`,iconSize:[38,46],iconAnchor:[19,44],tooltipAnchor:[0,-38]});
+}
+function footprintRefreshMap(groups){
+  if(!footprintEnsureMap()||!footprintMarkerLayer) return;
+  footprintMarkerLayer.clearLayers();
+  const bounds=[];
+  groups.forEach(group=>{
+    const marker=L.marker([group.lat,group.lng],{icon:footprintMarkerIcon(group.visits.length),riseOnHover:true});
+    marker.bindTooltip(`${footprintEscape(group.name)} · ${group.visits.length} 次`,{direction:'top',offset:[0,-3]});
+    marker.on('click',()=>footprintFocusPlace(group.placeId,true));
+    marker.addTo(footprintMarkerLayer);
+    bounds.push([group.lat,group.lng]);
+  });
+  if(!footprintMapHasFit&&bounds.length){
+    if(bounds.length===1) footprintMap.setView(bounds[0],14);
+    else footprintMap.fitBounds(bounds,{padding:[34,34],maxZoom:14});
+    footprintMapHasFit=true;
+  }
+}
+function footprintRender(){
+  const groups=footprintGetGroups();
+  const visitTotal=groups.reduce((sum,group)=>sum+group.visits.length,0);
+  const placeTotal=document.getElementById('footprint-place-total');
+  const total=document.getElementById('footprint-visit-total');
+  if(placeTotal) placeTotal.textContent=groups.length;
+  if(total) total.textContent=visitTotal;
+  if(groups.length&&!groups.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=groups[0].placeId;
+  if(!groups.length) footprintSelectedPlaceId='';
+  const strip=document.getElementById('footprint-place-strip');
+  if(strip){
+    strip.innerHTML=groups.map(group=>`<button type="button" class="footprint-place-chip${group.placeId===footprintSelectedPlaceId?' active':''}" data-place-id="${footprintEscape(group.placeId)}">${footprintEscape(group.name)} · ${group.visits.length}</button>`).join('');
+    strip.querySelectorAll('[data-place-id]').forEach(button=>button.addEventListener('click',()=>footprintFocusPlace(button.dataset.placeId,true)));
+  }
+  const empty=document.getElementById('footprint-empty');
+  if(empty) empty.style.display=groups.length?'none':'block';
+  const page=document.getElementById('page-footprints');
+  if(footprintMap||page?.classList.contains('active')) footprintRefreshMap(groups);
+  footprintRenderDetail(groups.find(group=>group.placeId===footprintSelectedPlaceId)||null);
+  renderFootprintMemoryStats(groups);
+}
+function footprintRenderDetail(group){
+  const detail=document.getElementById('footprint-detail');
+  if(!detail) return;
+  if(!group){detail.hidden=true;return;}
+  detail.hidden=false;
+  document.getElementById('footprint-detail-name').textContent=group.name;
+  document.getElementById('footprint-detail-meta').textContent=`去過 ${group.visits.length} 次 · 最近一次 ${footprintFormatDate(group.latestDate)}`;
+  document.getElementById('footprint-revisit-btn').onclick=()=>footprintOpenEditor('',group.placeId);
+  const timeline=document.getElementById('footprint-timeline');
+  timeline.innerHTML=group.visits.map(visit=>{
+    const dayData=(typeof albumFirebaseData!=='undefined'&&albumFirebaseData)?albumFirebaseData[visit.date]:null;
+    const photoCount=Array.isArray(dayData?.photos)?dayData.photos.length:0;
+    return `<article class="footprint-visit"><span class="footprint-visit-dot" aria-hidden="true"></span><div><div class="footprint-visit-date">${footprintFormatDate(visit.date)}</div><div class="footprint-visit-note${visit.note?'':' muted'}">${visit.note?footprintEscape(visit.note).replace(/\n/g,'<br>'):'這次還沒有寫下回憶'}</div>${photoCount?`<div class="footprint-visit-media">相簿裡有 ${photoCount} 張照片</div>`:''}</div><div class="footprint-visit-actions"><button type="button" class="footprint-icon-btn" data-footprint-edit="${footprintEscape(visit.id)}" aria-label="編輯這次足跡" title="編輯">✎</button><button type="button" class="footprint-icon-btn delete" data-footprint-delete="${footprintEscape(visit.id)}" aria-label="刪除這次足跡" title="刪除">⌫</button></div></article>`;
+  }).join('');
+  timeline.querySelectorAll('[data-footprint-edit]').forEach(button=>button.addEventListener('click',()=>footprintOpenEditor(button.dataset.footprintEdit)));
+  timeline.querySelectorAll('[data-footprint-delete]').forEach(button=>button.addEventListener('click',()=>footprintDeleteVisit(button.dataset.footprintDelete)));
+}
+function footprintFocusPlace(placeId,moveMap=false){
+  footprintSelectedPlaceId=String(placeId||'');
+  footprintRender();
+  if(moveMap&&footprintMap){
+    const group=footprintGetGroups().find(item=>item.placeId===footprintSelectedPlaceId);
+    if(group) footprintMap.flyTo([group.lat,group.lng],Math.max(footprintMap.getZoom(),14),{duration:.65});
+  }
+}
+function renderFootprintMemoryStats(groups=footprintGetGroups()){
+  const section=document.getElementById('footprint-memory-stats');
+  const list=document.getElementById('footprint-ranking-list');
+  if(!section||!list) return;
+  if(!groups.length){section.hidden=true;list.innerHTML='';return;}
+  const ranked=[...groups].sort((a,b)=>b.visits.length-a.visits.length||b.latestDate.localeCompare(a.latestDate)).slice(0,5);
+  const maxCount=Math.max(...ranked.map(group=>group.visits.length),1);
+  section.hidden=false;
+  document.getElementById('footprint-memory-total').textContent=`共 ${groups.length} 個地點`;
+  list.innerHTML=ranked.map((group,index)=>`<button type="button" class="footprint-ranking-row" data-footprint-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-bar" style="width:${Math.max(18,Math.round(group.visits.length/maxCount*100))}%"></span><span class="footprint-ranking-rank">${index+1}</span><span class="footprint-ranking-copy"><span class="footprint-ranking-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-date">最近一次 ${footprintFormatDate(group.latestDate)}</span></span><span class="footprint-ranking-count">${group.visits.length} 次</span></button>`).join('');
+  list.querySelectorAll('[data-footprint-ranking]').forEach(button=>button.addEventListener('click',()=>footprintOpenFromMemory(button.dataset.footprintRanking)));
+}
+function footprintOpenFromMemory(placeId){
+  const button=[...document.querySelectorAll('.nav-btn')].find(item=>(item.getAttribute('onclick')||'').includes("'footprints'"));
+  showPage('footprints',button||null);
+  setTimeout(()=>footprintFocusPlace(placeId,true),80);
+}
+function footprintShowPage(){
+  footprintEnsureMap();
+  footprintRender();
+  requestAnimationFrame(()=>{if(footprintMap) footprintMap.invalidateSize();});
+}
+
+function footprintEnsureEditorMap(){
+  if(footprintEditorMap) return true;
+  if(!window.L) return false;
+  footprintEditorMap=L.map('footprint-editor-map',{zoomControl:false,minZoom:5,maxZoom:19}).setView([23.72,121],7);
+  L.control.zoom({position:'topright'}).addTo(footprintEditorMap);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(footprintEditorMap);
+  footprintEditorMap.on('click',event=>footprintSetEditorPosition(event.latlng.lat,event.latlng.lng,true));
+  return true;
+}
+function footprintSetEditorPosition(lat,lng,move=true){
+  lat=footprintNumber(lat);lng=footprintNumber(lng);
+  if(lat===null||lng===null||!footprintEnsureEditorMap()) return;
+  document.getElementById('footprint-lat').value=lat.toFixed(6);
+  document.getElementById('footprint-lng').value=lng.toFixed(6);
+  document.getElementById('footprint-coordinate').textContent=`已選擇位置：${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  if(!footprintEditorMarker){
+    footprintEditorMarker=L.marker([lat,lng],{draggable:true}).addTo(footprintEditorMap);
+    footprintEditorMarker.on('dragend',event=>{const point=event.target.getLatLng();footprintSetEditorPosition(point.lat,point.lng,false);});
+  }else footprintEditorMarker.setLatLng([lat,lng]);
+  if(move) footprintEditorMap.setView([lat,lng],Math.max(footprintEditorMap.getZoom(),15));
+}
+function footprintOpenEditor(visitId='',placeId='',presetPosition=null){
+  const visit=visitId?footprintNormalizeVisit(visitId,footprintVisitsData[visitId]):null;
+  const group=placeId?footprintGetGroups().find(item=>item.placeId===placeId):null;
+  document.getElementById('footprint-edit-id').value=visit?.id||'';
+  document.getElementById('footprint-place-id').value=visit?.placeId||group?.placeId||'';
+  document.getElementById('footprint-date').value=visit?.date||footprintTodayKey();
+  document.getElementById('footprint-place-name').value=visit?.placeName||group?.name||'';
+  document.getElementById('footprint-note').value=visit?.note||'';
+  document.getElementById('footprint-lat').value='';
+  document.getElementById('footprint-lng').value='';
+  document.getElementById('footprint-coordinate').textContent='尚未選擇位置';
+  document.getElementById('footprint-editor-title').textContent=visit?'編輯足跡':(group?'再記一次':'新增足跡');
+  document.getElementById('footprint-save-btn').textContent=visit?'儲存修改':'儲存足跡';
+  document.getElementById('footprint-editor-bg').classList.remove('hidden');
+  requestAnimationFrame(()=>{
+    if(!footprintEnsureEditorMap()) return;
+    footprintEditorMap.invalidateSize();
+    const point=presetPosition||visit||group;
+    if(point&&footprintNumber(point.lat)!==null&&footprintNumber(point.lng)!==null) footprintSetEditorPosition(point.lat,point.lng,true);
+    else{
+      const center=footprintMap?footprintMap.getCenter():{lat:23.72,lng:121};
+      footprintEditorMap.setView(center,footprintMap?Math.max(7,footprintMap.getZoom()):7);
+      if(footprintEditorMarker){footprintEditorMap.removeLayer(footprintEditorMarker);footprintEditorMarker=null;}
+    }
+  });
+  setTimeout(()=>document.getElementById('footprint-place-name').focus(),180);
+}
+function footprintCloseEditor(event){
+  if(event.target===document.getElementById('footprint-editor-bg')) footprintCloseEditorDirect();
+}
+function footprintCloseEditorDirect(){
+  document.getElementById('footprint-editor-bg').classList.add('hidden');
+}
+function footprintUseCurrentLocation(){
+  const coordinate=document.getElementById('footprint-coordinate');
+  if(!navigator.geolocation){coordinate.textContent='這台裝置不支援定位，請直接點地圖選擇';return;}
+  coordinate.textContent='正在取得目前位置...';
+  navigator.geolocation.getCurrentPosition(position=>footprintSetEditorPosition(position.coords.latitude,position.coords.longitude,true),()=>{coordinate.textContent='無法取得定位，請允許定位權限或直接點地圖';},{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+}
+function footprintFindMatchingGroup(name,lat,lng,excludedVisitId=''){
+  const normalized=footprintNormalizeName(name);
+  return footprintGetGroups().find(group=>{
+    const candidates=group.visits.filter(visit=>visit.id!==excludedVisitId);
+    if(!candidates.length) return false;
+    return candidates.some(visit=>footprintNormalizeName(visit.placeName)===normalized)||candidates.some(visit=>footprintDistanceMeters(visit.lat,visit.lng,lat,lng)<=80);
+  })||null;
+}
+async function footprintSaveVisit(event){
+  event.preventDefault();
+  const button=document.getElementById('footprint-save-btn');
+  const editId=document.getElementById('footprint-edit-id').value;
+  const original=editId?footprintNormalizeVisit(editId,footprintVisitsData[editId]):null;
+  const placeName=document.getElementById('footprint-place-name').value.trim();
+  const date=document.getElementById('footprint-date').value;
+  const note=document.getElementById('footprint-note').value.trim();
+  const lat=footprintNumber(document.getElementById('footprint-lat').value);
+  const lng=footprintNumber(document.getElementById('footprint-lng').value);
+  if(!placeName||!date){alert('請填寫日期和地點名稱');return;}
+  if(lat===null||lng===null){alert('請在地圖上點一下，選擇這次足跡的位置');return;}
+  let placeId=document.getElementById('footprint-place-id').value;
+  if(original&&placeId){
+    const group=footprintGetGroups().find(item=>item.placeId===placeId);
+    const anchor=group?.visits.find(visit=>visit.id!==editId);
+    if(anchor&&footprintDistanceMeters(anchor.lat,anchor.lng,lat,lng)>120&&footprintNormalizeName(anchor.placeName)!==footprintNormalizeName(placeName)) placeId='';
+  }
+  if(!placeId){
+    const match=footprintFindMatchingGroup(placeName,lat,lng,editId);
+    placeId=match?.placeId||`place_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+  }
+  const id=editId||`visit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+  const record={placeId,placeName:placeName.slice(0,60),date,note:note.slice(0,500),lat,lng,createdAt:original?.createdAt||Date.now(),updatedAt:Date.now()};
+  const wasEmpty=!footprintGetGroups().length;
+  footprintVisitsData[id]=record;
+  footprintSelectedPlaceId=placeId;
+  footprintWriteCache();
+  if(wasEmpty) footprintMapHasFit=false;
+  footprintRender();
+  footprintCloseEditorDirect();
+  button.disabled=true;
+  try{
+    if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`footprintVisits/${id}`),record);}
+    else queueFirebaseWrite(`footprintVisits/${id}`,record);
+    footprintSetStatus(editId?'足跡已更新':'足跡已儲存',true);
+  }catch(error){
+    console.warn('足跡同步失敗，已排入待同步',error);
+    queueFirebaseWrite(`footprintVisits/${id}`,record);
+    footprintSetStatus('已先存到這台裝置，連線後會補同步',true);
+  }finally{button.disabled=false;}
+}
+async function footprintDeleteVisit(id){
+  const visit=footprintNormalizeVisit(id,footprintVisitsData[id]);
+  if(!visit||!confirm(`確定要刪除 ${footprintFormatDate(visit.date)} 的「${visit.placeName}」足跡嗎？`)) return;
+  delete footprintVisitsData[id];
+  footprintWriteCache();
+  footprintRender();
+  try{
+    if(window._fb){const {db,ref,remove}=window._fb;await remove(ref(db,`footprintVisits/${id}`));}
+    else queueFirebaseWrite(`footprintVisits/${id}`,null);
+    footprintSetStatus('足跡已刪除',true);
+  }catch(error){
+    console.warn('足跡刪除同步失敗，已排入待同步',error);
+    queueFirebaseWrite(`footprintVisits/${id}`,null);
+    footprintSetStatus('已在本機刪除，連線後會補同步',true);
+  }
+}
+function footprintInitFirebase(){
+  footprintLoadCache();
+  footprintRender();
+  if(footprintSyncStarted||!window._fb) return;
+  footprintSyncStarted=true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'footprintVisits'),snapshot=>{
+    footprintVisitsData=snapshot.val()||{};
+    footprintWriteCache();
+    footprintRender();
+  },error=>{
+    footprintSyncStarted=false;
+    console.warn('足跡同步失敗',error);
+    footprintSetStatus('目前顯示已下載的足跡',true);
+  });
+}
+
+footprintLoadCache();
+footprintRender();
+window.addEventListener('albumDataReady',()=>footprintRender());
+if(window._fb) footprintInitFirebase();
+
 window.addEventListener('firebaseReady',()=>{
   albumInitFirebase();
+  footprintInitFirebase();
   pdLoad();
   checkLoveSurprise();
 });

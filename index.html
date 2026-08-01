@@ -1227,6 +1227,22 @@ background:var(--pink-light);margin-left:8px;
 .footprint-input{width:100%;min-height:44px;padding:10px 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
 textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
+.footprint-search-wrap{margin-top:13px}
+.footprint-search-label{display:block;margin-bottom:6px;color:var(--text-muted);font-size:11px;font-weight:700}
+.footprint-search-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.footprint-search-input{width:100%;min-width:0;min-height:44px;padding:10px 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
+.footprint-search-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
+.footprint-search-btn{min-width:76px;min-height:44px;padding:0 13px;border:0;border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.footprint-search-btn:disabled{opacity:.55;cursor:wait}
+.footprint-search-results{max-height:205px;overflow-y:auto;margin-top:7px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 9px 24px rgba(63,31,41,.12)}
+.footprint-search-results[hidden]{display:none}
+.footprint-search-message{padding:13px;color:var(--text-muted);font-size:11px;text-align:center}
+.footprint-search-item{width:100%;display:block;padding:10px 11px;border:0;border-bottom:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
+.footprint-search-item:last-of-type{border-bottom:0}
+.footprint-search-item:hover,.footprint-search-item:focus{background:var(--pink-light);outline:none}
+.footprint-search-name{display:block;color:var(--rose);font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.footprint-search-address{display:block;margin-top:3px;color:var(--text-muted);font-size:10px;line-height:1.45;overflow-wrap:anywhere}
+.footprint-search-credit{padding:6px 10px;border-top:1px solid rgba(232,99,122,.1);color:var(--text-muted);font-size:8px;text-align:right}
 .footprint-picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:13px 0 7px;color:var(--text-muted);font-size:11px;font-weight:700}
 .footprint-location-btn{min-height:34px;padding:0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
 #footprint-editor-map{width:100%;height:230px;border:1px solid var(--card-border);border-radius:8px;background:#edf5ed;overflow:hidden}
@@ -1689,6 +1705,14 @@ onclick="hideSpecialForToday()">
         <label class="footprint-field full">想記住的事
           <textarea class="footprint-input" id="footprint-note" maxlength="500" placeholder="這次一起做了什麼？"></textarea>
         </label>
+      </div>
+      <div class="footprint-search-wrap">
+        <label class="footprint-search-label" for="footprint-search-input">搜尋地點或地址</label>
+        <div class="footprint-search-bar">
+          <input class="footprint-search-input" id="footprint-search-input" type="search" maxlength="100" autocomplete="off" placeholder="輸入店名、景點或地址" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintSearchLocation()}">
+          <button type="button" class="footprint-search-btn" id="footprint-search-btn" onclick="footprintSearchLocation()">搜尋</button>
+        </div>
+        <div class="footprint-search-results" id="footprint-search-results" hidden aria-live="polite"></div>
       </div>
       <div class="footprint-picker-head">
         <span>點地圖選擇位置</span>
@@ -7217,6 +7241,7 @@ function showLoveSurprise(item){
 
 // ── 足跡地圖（Firebase 同步）──
 const FOOTPRINT_CACHE_KEY='footprint_visits_cache_v1';
+const FOOTPRINT_SEARCH_CACHE_KEY='footprint_place_search_cache_v1';
 let footprintVisitsData={};
 let footprintSyncStarted=false;
 let footprintMap=null;
@@ -7225,6 +7250,9 @@ let footprintMapHasFit=false;
 let footprintSelectedPlaceId='';
 let footprintEditorMap=null;
 let footprintEditorMarker=null;
+let footprintSearchResults=[];
+let footprintLastSearchAt=0;
+let footprintSearchRequestId=0;
 
 function footprintEscape(value){
   return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -7392,6 +7420,86 @@ function footprintShowPage(){
   requestAnimationFrame(()=>{if(footprintMap) footprintMap.invalidateSize();});
 }
 
+function footprintReadSearchCache(){
+  try{
+    const value=JSON.parse(localStorage.getItem(FOOTPRINT_SEARCH_CACHE_KEY)||'{}');
+    return value&&typeof value==='object'?value:{};
+  }catch(_){return {};}
+}
+function footprintWriteSearchCache(query,results){
+  try{
+    const cache=footprintReadSearchCache();
+    cache[query]={savedAt:Date.now(),results};
+    const trimmed=Object.entries(cache).sort((a,b)=>(b[1]?.savedAt||0)-(a[1]?.savedAt||0)).slice(0,40);
+    localStorage.setItem(FOOTPRINT_SEARCH_CACHE_KEY,JSON.stringify(Object.fromEntries(trimmed)));
+  }catch(_){}
+}
+function footprintNormalizeSearchResults(items){
+  const seen=new Set();
+  return (Array.isArray(items)?items:[]).map(item=>{
+    const lat=footprintNumber(item?.lat),lng=footprintNumber(item?.lon??item?.lng);
+    if(lat===null||lng===null) return null;
+    const details=item?.namedetails||{};
+    const displayName=String(item?.display_name||'').trim();
+    const name=String(details['name:zh-Hant']||details['name:zh']||details.name||item?.name||displayName.split(',')[0]||'搜尋結果').trim().slice(0,60);
+    const key=`${lat.toFixed(5)},${lng.toFixed(5)}`;
+    if(seen.has(key)) return null;
+    seen.add(key);
+    return {name,displayName:displayName||name,lat,lng};
+  }).filter(Boolean).slice(0,5);
+}
+function footprintRenderSearchResults(results,message=''){
+  const panel=document.getElementById('footprint-search-results');
+  if(!panel) return;
+  panel.hidden=false;
+  if(message){panel.innerHTML=`<div class="footprint-search-message">${footprintEscape(message)}</div>`;return;}
+  if(!results.length){panel.innerHTML='<div class="footprint-search-message">找不到符合的地點，換個關鍵字或輸入完整地址試試看</div>';return;}
+  panel.innerHTML=results.map((result,index)=>`<button type="button" class="footprint-search-item" data-footprint-search-index="${index}"><span class="footprint-search-name">${footprintEscape(result.name)}</span><span class="footprint-search-address">${footprintEscape(result.displayName)}</span></button>`).join('')+'<div class="footprint-search-credit">搜尋資料 © OpenStreetMap contributors</div>';
+  panel.querySelectorAll('[data-footprint-search-index]').forEach(button=>button.addEventListener('click',()=>footprintSelectSearchResult(Number(button.dataset.footprintSearchIndex))));
+}
+async function footprintSearchLocation(){
+  const input=document.getElementById('footprint-search-input');
+  const button=document.getElementById('footprint-search-btn');
+  const query=String(input?.value||'').trim();
+  if(query.length<2){footprintRenderSearchResults([], '請至少輸入兩個字');return;}
+  const cacheKey=footprintNormalizeName(query);
+  const cached=footprintReadSearchCache()[cacheKey];
+  if(cached&&Date.now()-Number(cached.savedAt)<90*864e5){
+    footprintSearchResults=footprintNormalizeSearchResults(cached.results);
+    footprintRenderSearchResults(footprintSearchResults);
+    return;
+  }
+  const requestId=++footprintSearchRequestId;
+  button.disabled=true;
+  footprintRenderSearchResults([], '正在搜尋地點...');
+  const wait=Math.max(0,1000-(Date.now()-footprintLastSearchAt));
+  if(wait) await new Promise(resolve=>setTimeout(resolve,wait));
+  footprintLastSearchAt=Date.now();
+  try{
+    const params=new URLSearchParams({format:'jsonv2',q:query,limit:'5',addressdetails:'1',namedetails:'1','accept-language':'zh-TW'});
+    const response=await fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`,{headers:{Accept:'application/json'}});
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+    const raw=await response.json();
+    if(requestId!==footprintSearchRequestId) return;
+    footprintSearchResults=footprintNormalizeSearchResults(raw);
+    footprintWriteSearchCache(cacheKey,raw);
+    footprintRenderSearchResults(footprintSearchResults);
+  }catch(error){
+    console.warn('地點搜尋失敗',error);
+    if(requestId===footprintSearchRequestId) footprintRenderSearchResults([], '目前無法搜尋，請稍後再試，或直接點地圖選擇');
+  }finally{
+    if(requestId===footprintSearchRequestId) button.disabled=false;
+  }
+}
+function footprintSelectSearchResult(index){
+  const result=footprintSearchResults[index];
+  if(!result) return;
+  document.getElementById('footprint-place-name').value=result.name;
+  document.getElementById('footprint-search-input').value=result.name;
+  document.getElementById('footprint-search-results').hidden=true;
+  footprintSetEditorPosition(result.lat,result.lng,true);
+}
+
 function footprintEnsureEditorMap(){
   if(footprintEditorMap) return true;
   if(!window.L) return false;
@@ -7424,6 +7532,12 @@ function footprintOpenEditor(visitId='',placeId='',presetPosition=null){
   document.getElementById('footprint-lat').value='';
   document.getElementById('footprint-lng').value='';
   document.getElementById('footprint-coordinate').textContent='尚未選擇位置';
+  document.getElementById('footprint-search-input').value='';
+  document.getElementById('footprint-search-results').hidden=true;
+  document.getElementById('footprint-search-results').innerHTML='';
+  document.getElementById('footprint-search-btn').disabled=false;
+  footprintSearchResults=[];
+  footprintSearchRequestId++;
   document.getElementById('footprint-editor-title').textContent=visit?'編輯足跡':(group?'再記一次':'新增足跡');
   document.getElementById('footprint-save-btn').textContent=visit?'儲存修改':'儲存足跡';
   document.getElementById('footprint-editor-bg').classList.remove('hidden');

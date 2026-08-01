@@ -2014,7 +2014,7 @@ onclick="hideSpecialForToday()">
       <div class="footprint-search-wrap">
         <label class="footprint-search-label" for="footprint-search-input">搜尋地點或地址</label>
         <div class="footprint-search-bar">
-          <input class="footprint-search-input" id="footprint-search-input" type="search" maxlength="500" autocomplete="off" placeholder="輸入店名、地址或 Google Maps 分享連結" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintSearchLocation()}">
+          <input class="footprint-search-input" id="footprint-search-input" type="search" maxlength="500" autocomplete="off" placeholder="輸入店名、地址或 Google Maps 分享連結" oninput="delete this.dataset.mapLink" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintSearchLocation()}">
           <button type="button" class="footprint-search-btn" id="footprint-search-btn" onclick="footprintSearchLocation()">搜尋</button>
         </div>
         <div class="footprint-search-results" id="footprint-search-results" hidden aria-live="polite"></div>
@@ -8231,7 +8231,10 @@ function footprintShowPage(){
 }
 function footprintMirrorPlaceQuery(value){
   const search=document.getElementById('footprint-search-input');
-  if(search&&document.activeElement!==search) search.value=String(value||'');
+  if(search&&document.activeElement!==search){
+    search.value=String(value||'');
+    delete search.dataset.mapLink;
+  }
 }
 
 function footprintReadSearchCache(){
@@ -8295,6 +8298,7 @@ function footprintPrepareMapLink(){
   const input=document.getElementById('footprint-search-input');
   if(!input) return;
   input.value='';
+  delete input.dataset.mapLink;
   input.placeholder='貼上 Google Maps 的分享連結';
   footprintRenderSearchResults([], '貼上地點的 Google Maps 分享連結，再按搜尋');
   input.focus();
@@ -8349,7 +8353,10 @@ async function footprintSearchOpenStreetMap(query){
 async function footprintSearchLocation(){
   const input=document.getElementById('footprint-search-input');
   const button=document.getElementById('footprint-search-btn');
-  const query=String(input?.value||document.getElementById('footprint-address')?.value||document.getElementById('footprint-place-name')?.value||'').trim();
+  const placeName=String(document.getElementById('footprint-place-name')?.value||'').trim();
+  const rawQuery=String(input?.value||document.getElementById('footprint-address')?.value||placeName).trim();
+  const savedMapLink=String(input?.dataset.mapLink||'').trim();
+  const query=savedMapLink&&rawQuery===placeName?savedMapLink:rawQuery;
   const importingMapLink=footprintIsGoogleMapsLink(query);
   if(!importingMapLink&&query.length<2){footprintRenderSearchResults([], '請至少輸入兩個字');return;}
   const cacheKey=footprintNormalizeName(query);
@@ -8371,6 +8378,7 @@ async function footprintSearchLocation(){
       if(!result) throw new Error('連結裡沒有可匯入的位置');
       footprintSearchResults=[result];
       footprintSelectSearchResult(0);
+      input.dataset.mapLink=query;
       footprintRenderSearchResults([], `已匯入「${result.name}」，也可以繼續修改地點名稱與地址`);
       return;
     }
@@ -8442,6 +8450,7 @@ function footprintOpenEditor(visitId='',placeId='',presetPosition=null){
   document.getElementById('footprint-lng').value='';
   document.getElementById('footprint-coordinate').textContent='尚未選擇位置';
   document.getElementById('footprint-search-input').value=visit?.placeName||group?.name||'';
+  delete document.getElementById('footprint-search-input').dataset.mapLink;
   document.getElementById('footprint-search-results').hidden=true;
   document.getElementById('footprint-search-results').innerHTML='';
   document.getElementById('footprint-search-btn').disabled=false;

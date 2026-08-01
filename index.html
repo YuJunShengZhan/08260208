@@ -593,7 +593,7 @@ display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 .album-plan-launch::before{content:'';width:7px;height:7px;border-radius:2px;background:var(--pink)}
 .album-plan-launch-count{min-width:18px;height:18px;display:inline-grid;place-items:center;padding:0 5px;border-radius:9px;background:var(--pink);color:#fff;font-size:10px;line-height:1}
 .album-plan-launch-count[hidden]{display:none}
-.album-plan-dialog-bg{position:fixed;inset:0;z-index:560;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(39,22,29,.46);backdrop-filter:blur(3px)}
+.album-plan-dialog-bg{position:fixed;inset:0;z-index:2200;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(39,22,29,.46);backdrop-filter:blur(3px)}
 .album-plan-dialog{width:min(100%,440px);max-height:min(78vh,620px);max-height:min(78dvh,620px);display:flex;flex-direction:column;padding:17px;border:1px solid var(--card-border);border-radius:16px;background:var(--white);box-shadow:0 22px 70px rgba(75,34,47,.25)}
 .album-plan-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
 .album-plan-title{display:flex;align-items:center;gap:8px;color:var(--rose);font-size:13px;font-weight:800}
@@ -619,7 +619,7 @@ display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
 .album-plan-confirm button{min-height:30px;padding:5px 8px;border:1px solid var(--card-border);border-radius:6px;background:var(--white);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
 .album-plan-confirm .danger{border-color:var(--pink);background:var(--pink);color:#fff}
 [data-theme="dark"] .album-plan-title::before{box-shadow:0 0 0 4px rgba(255,170,190,.09)}
-@media(max-width:520px){.album-plan-dialog-bg{align-items:flex-end;padding:0}.album-plan-dialog{width:100%;max-height:76dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0;padding:17px 16px calc(18px + env(safe-area-inset-bottom))}}
+@media(max-width:520px){.album-plan-dialog-bg{align-items:flex-end;padding:0}.album-plan-dialog{width:100%;max-height:calc(100dvh - 18px);border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0;padding:17px 16px calc(22px + env(safe-area-inset-bottom))}.album-plan-list{padding-bottom:8px}}
 .album-media-section[hidden]{display:none!important}
 .album-video-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
 .album-video-heading{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:800;color:var(--pink)}
@@ -929,18 +929,24 @@ border-radius:16px;
 padding:8px 10px;
 display:flex;align-items:center;gap:8px;
 box-shadow:0 4px 20px rgba(232,99,122,0.2);
-width:200px;
-transition:background .3s;
+width:224px;
+box-sizing:border-box;
+transition:background .3s,transform .3s cubic-bezier(.22,.8,.25,1),right .3s ease,box-shadow .3s ease;
+will-change:transform;
 }
+.music-player.collapsed{right:0;transform:translateX(calc(100% - 49px));box-shadow:-5px 5px 22px rgba(201,75,100,.2)}
+.music-player.collapsed .music-info,.music-player.collapsed .music-btns{opacity:0;pointer-events:none;transform:translateX(8px)}
 .music-disc{
 width:32px;height:32px;border-radius:50%;
 background:var(--pink);
 display:flex;align-items:center;justify-content:center;
-font-size:14px;flex-shrink:0;
+font-size:14px;flex-shrink:0;border:0;color:#fff;cursor:pointer;
+transition:transform .25s ease,background .2s ease;
 }
+.music-player.collapsed .music-disc{transform:rotate(-10deg) scale(1.04)}
 .music-disc.playing{animation:spin 4s linear infinite;}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.music-info{flex:1;min-width:0;overflow:hidden;}
+.music-info{flex:1;min-width:0;overflow:hidden;cursor:pointer;transition:opacity .2s ease,transform .25s ease;}
 .music-title-wrap{overflow:hidden;white-space:nowrap;}
 .music-title{display:inline-block;font-size:11px;color:var(--text);white-space:nowrap;}
 .music-title.marquee{animation:marquee 8s linear infinite;}
@@ -949,7 +955,7 @@ font-size:14px;flex-shrink:0;
 80%{transform:translateX(var(--marquee-dist,-100px));}
 100%{transform:translateX(var(--marquee-dist,-100px));}
 }
-.music-btns{display:flex;gap:2px;flex-shrink:0;}
+.music-btns{display:flex;gap:1px;flex-shrink:0;transition:opacity .2s ease,transform .25s ease;}
 .music-btn{background:none;border:none;cursor:pointer;font-size:16px;padding:1px;color:var(--pink);}
 .music-library{display:none;position:fixed;bottom:130px;right:14px;z-index:201;width:min(320px,calc(100vw - 28px));max-height:min(560px,calc(100dvh - 170px));overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
 .music-library-head{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:12px 13px;background:var(--pink);color:#fff}
@@ -1174,7 +1180,7 @@ background:var(--pink-light);margin-left:8px;
 .footprint-stat{padding:11px 13px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
 .footprint-stat strong{display:block;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;line-height:1.1}
 .footprint-stat span{display:block;margin-top:4px;color:var(--text-muted);font-size:11px}
-.footprint-map-shell{position:relative;overflow:hidden;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 10px 28px rgba(201,75,100,.1)}
+.footprint-map-shell{position:relative;z-index:0;isolation:isolate;overflow:hidden;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 10px 28px rgba(201,75,100,.1)}
 #footprint-map{width:100%;height:clamp(310px,48dvh,480px);background:#edf5ed}
 .footprint-map-status{position:absolute;z-index:500;left:10px;top:10px;max-width:calc(100% - 68px);padding:7px 10px;border:1px solid rgba(232,99,122,.18);border-radius:7px;background:rgba(255,255,255,.92);color:#945064;font-size:11px;box-shadow:0 5px 16px rgba(74,39,48,.12);backdrop-filter:blur(6px)}
 .footprint-map-status[hidden]{display:none}
@@ -1191,6 +1197,7 @@ background:var(--pink-light);margin-left:8px;
 .footprint-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:15px 15px 12px;border-bottom:1px solid var(--card-border)}
 .footprint-detail-name{min-width:0;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;word-break:break-word}
 .footprint-detail-meta{margin-top:3px;color:var(--text-muted);font-size:11px}
+.footprint-detail-address{max-width:540px;margin-top:4px;color:var(--text-muted);font-size:10px;line-height:1.55;overflow-wrap:anywhere}
 .footprint-revisit-btn{flex:0 0 auto;min-height:36px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
 .footprint-timeline{padding:3px 15px 11px}
 .footprint-visit{position:relative;display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:10px;padding:13px 0 11px}
@@ -1225,6 +1232,13 @@ background:var(--pink-light);margin-left:8px;
 .footprint-form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
 .footprint-field{display:flex;flex-direction:column;gap:6px;color:var(--text-muted);font-size:11px;font-weight:700}
 .footprint-field.full{grid-column:1/-1}
+.footprint-date-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.footprint-date-add{min-width:82px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.footprint-date-add[hidden]{display:none}
+.footprint-date-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.footprint-date-chips:empty{display:none}
+.footprint-date-chip{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:5px 7px 5px 10px;border:1px solid var(--card-border);border-radius:999px;background:var(--white);color:var(--text);font-size:10px}
+.footprint-date-chip button{width:20px;height:20px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:13px;cursor:pointer}
 .footprint-input{width:100%;min-height:44px;padding:10px 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
 textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
@@ -1246,7 +1260,7 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-search-credit{padding:6px 10px;border-top:1px solid rgba(232,99,122,.1);color:var(--text-muted);font-size:8px;text-align:right}
 .footprint-picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:13px 0 7px;color:var(--text-muted);font-size:11px;font-weight:700}
 .footprint-location-btn{min-height:34px;padding:0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
-#footprint-editor-map{width:100%;height:230px;border:1px solid var(--card-border);border-radius:8px;background:#edf5ed;overflow:hidden}
+#footprint-editor-map{position:relative;z-index:0;isolation:isolate;width:100%;height:230px;border:1px solid var(--card-border);border-radius:8px;background:#edf5ed;overflow:hidden}
 .footprint-coordinate{min-height:18px;margin-top:6px;color:var(--text-muted);font-size:10px}
 .footprint-editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
 .footprint-editor-action{min-height:45px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
@@ -1277,7 +1291,8 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-period-mark{width:22px;height:22px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:6px;color:var(--rose);font-size:12px}
 .choose-month-badge{color:var(--rose);font-weight:700;white-space:nowrap}
 .choose-layout{display:grid;grid-template-columns:minmax(0,1.32fr) minmax(300px,.78fr);gap:28px;padding:28px;background:linear-gradient(135deg,color-mix(in srgb,var(--pink-light) 52%,var(--white)),color-mix(in srgb,var(--white) 82%,#eaf6ef))}
-.choose-compose{min-width:0;padding:29px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 16px 36px rgba(73,39,49,.09)}
+.choose-compose{position:relative;min-width:0;overflow:hidden;padding:29px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 16px 36px rgba(73,39,49,.09);animation:choosePaperArrive .52s ease both}
+.choose-compose::after{content:'♡';position:absolute;right:-19px;top:-27px;color:rgba(201,75,100,.08);font:700 112px/1 Georgia,serif;transform:rotate(13deg);pointer-events:none}
 .choose-letter-kicker{color:var(--rose);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
 .choose-letter-title{max-width:540px;margin:13px 0 0;color:var(--text);font-family:'Noto Serif TC',serif;font-size:38px;font-weight:400;line-height:1.32;letter-spacing:0}
 .choose-letter-copy{max-width:600px;margin:14px 0 0;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.9}
@@ -1285,23 +1300,40 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-player-btn{min-height:43px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:background .18s,color .18s,border-color .18s,transform .18s}
 .choose-player-btn:active{transform:scale(.985)}
 .choose-player-btn.active{border-color:var(--rose);background:var(--rose);color:#fff;box-shadow:0 8px 18px rgba(201,75,100,.2)}
-.choose-prompt-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
-.choose-prompt-chip{min-height:34px;padding:7px 11px;border:1px solid var(--card-border);border-radius:999px;background:var(--white);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:10px;cursor:pointer;transition:border-color .18s,color .18s,background .18s}
-.choose-prompt-chip:hover,.choose-prompt-chip:focus{border-color:var(--pink);background:var(--pink-light);color:var(--rose);outline:none}
 .choose-compose-prompt{display:block;margin-bottom:7px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.55}
 .choose-textarea{width:100%;min-height:190px;padding:14px 15px;border:1px solid var(--card-border);border-radius:8px;background:color-mix(in srgb,var(--pink-light) 46%,var(--white));color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:1.8;resize:vertical;outline:none;overflow-wrap:anywhere}
 .choose-textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
+.choose-photo-panel{margin-top:11px;padding:11px;border:1px solid var(--card-border);border-radius:8px;background:color-mix(in srgb,var(--white) 72%,var(--pink-light))}
+.choose-photo-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.choose-photo-title{color:var(--text);font-size:11px;font-weight:800}
+.choose-photo-add{min-height:34px;padding:0 12px;border:1px solid var(--card-border);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer}
+.choose-photo-add.disabled{opacity:.5;pointer-events:none}
+.choose-photo-input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.choose-photo-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:10px}
+.choose-photo-grid:empty{display:none}
+.choose-photo-item{position:relative;aspect-ratio:1;overflow:hidden;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light)}
+.choose-photo-item img{width:100%;height:100%;display:block;object-fit:cover}
+.choose-photo-remove{position:absolute;right:4px;top:4px;width:23px;height:23px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(33,19,24,.76);color:#fff;font-size:15px;line-height:1;cursor:pointer}
+.choose-photo-help{margin-top:7px;color:var(--text-muted);font-size:9px}
+.choose-password-field{display:block;margin-top:11px;color:var(--text);font-size:10px;font-weight:800}
+.choose-password-field[hidden]{display:none}
+.choose-password-input{width:100%;min-height:42px;box-sizing:border-box;margin-top:6px;padding:9px 12px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;letter-spacing:2px;outline:none}
+.choose-password-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
+.choose-password-help{display:block;margin-top:5px;color:var(--text-muted);font-size:9px;font-weight:400;letter-spacing:0;line-height:1.5}
 .choose-compose-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:7px;color:var(--text-muted);font-size:9px}
 .choose-compose-actions{display:flex;align-items:center;gap:13px;margin-top:14px}
 .choose-save-btn{min-width:210px;min-height:46px;padding:0 19px;border:0;border-radius:999px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 9px 20px rgba(201,75,100,.2)}
 .choose-save-btn:disabled{opacity:.58;cursor:wait}
+.choose-edit-sealed{min-height:46px;padding:0 17px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.choose-edit-sealed[hidden]{display:none}
 .choose-lock-copy{display:flex;align-items:center;gap:6px;color:var(--text-muted);font-size:9px;line-height:1.5}
 .choose-lock-copy::before{content:'◇';color:#2f9a68;font-size:14px}
 .choose-side{min-width:0}
 .choose-seal-card{overflow:hidden;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 14px 32px rgba(73,39,49,.08)}
 .choose-seal-visual{height:200px;display:grid;place-items:center;background:linear-gradient(150deg,var(--pink-light),color-mix(in srgb,var(--pink-soft) 65%,var(--white)));position:relative;overflow:hidden}
-.choose-youtube-host{position:absolute;z-index:0;inset:0;width:100%;height:100%;overflow:hidden;background:var(--pink-light)}
-.choose-youtube-host iframe{width:100%!important;height:100%!important;border:0;opacity:.16;filter:saturate(.7) contrast(.88);pointer-events:none;transform:scale(1.04)}
+.choose-song-art{position:absolute;z-index:0;inset:0;overflow:hidden;background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(166,76,98,.06) 27px 28px),linear-gradient(150deg,var(--pink-light),color-mix(in srgb,var(--pink-soft) 65%,var(--white)))}
+.choose-song-art::before{content:'♪';position:absolute;left:24px;top:16px;color:rgba(166,76,98,.14);font:700 98px/1 Georgia,serif;transform:rotate(-12deg)}
+.choose-song-art::after{content:'♡';position:absolute;right:24px;bottom:4px;color:rgba(166,76,98,.14);font:700 108px/1 Georgia,serif;transform:rotate(9deg)}
 .choose-seal-visual::before,.choose-seal-visual::after{content:'';position:absolute;z-index:1;bottom:-50px;width:70%;height:125px;background:rgba(255,255,255,.3);transform:rotate(27deg)}
 .choose-seal-visual::before{left:-35%}.choose-seal-visual::after{right:-35%;transform:rotate(-27deg)}
 .choose-seal-mark{position:relative;z-index:2;width:76px;height:76px;display:grid;place-items:center;border-radius:50%;background:#a64c62;color:#fff;font:700 37px/1 Georgia,serif;box-shadow:0 14px 28px rgba(116,48,65,.2),inset 0 0 0 8px rgba(255,255,255,.08)}
@@ -1312,30 +1344,100 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-song-control{min-height:35px;display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:7px 11px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer}
 .choose-song-control.playing{border-color:rgba(47,154,104,.3);background:color-mix(in srgb,var(--white) 55%,#dff2e8);color:#267c55}
 .choose-song-icon{width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:var(--white);font-size:10px}
-.choose-answers{margin-top:14px}
+.choose-open-letters{width:100%;min-height:43px;margin-top:10px;border:1px solid var(--card-border);border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(201,75,100,.16)}
 .choose-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:9px}
 .choose-section-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700}
 .choose-section-sub{color:var(--text-muted);font-size:9px}
-.choose-answer-grid{display:grid;grid-template-columns:1fr;gap:7px}
-.choose-answer{min-width:0;padding:12px 13px;border:1px solid var(--card-border);border-radius:7px;background:color-mix(in srgb,var(--white) 70%,var(--pink-light))}
-.choose-answer.written{background:var(--white)}
-.choose-answer-name{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--rose);font-size:11px;font-weight:800}
-.choose-answer-status{width:8px;height:8px;border-radius:50%;background:#c7b4bb}
-.choose-answer.written .choose-answer-status{background:#2f9a68;box-shadow:0 0 0 3px rgba(47,154,104,.12)}
-.choose-answer-text{margin-top:7px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:11px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
-.choose-answer-empty{margin-top:7px;color:var(--text-muted);font-size:10px;line-height:1.55}
-.choose-answer-time{margin-top:6px;color:var(--text-muted);font-size:8px}
 .choose-history{margin-top:15px}
 .choose-history[hidden]{display:none}
-.choose-history-month{position:relative;margin-bottom:0;padding:10px 0 10px 29px;border-top:1px solid var(--card-border)}
-.choose-history-month::before{content:'✓';position:absolute;left:0;top:13px;width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:10px;font-weight:800}
-.choose-history-label{margin-bottom:6px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700}
-.choose-history-pair{display:grid;grid-template-columns:1fr;gap:5px}
-.choose-history-entry{min-width:0;padding:0;background:transparent}
-.choose-history-name{display:inline;color:var(--rose);font-size:9px;font-weight:800}
-.choose-history-text{display:inline;margin-left:5px;color:var(--text-muted);font-size:9px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
-@media(max-width:820px){.choose-layout{grid-template-columns:1fr;gap:18px;padding:18px}.choose-side{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:14px}.choose-seal-card{align-self:start}.choose-answers{margin-top:0}.choose-history{grid-column:1/-1}}
-@media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-seal-body{padding:15px}.choose-answers,.choose-history{margin-top:14px}}
+.choose-history-toggle{min-height:31px;padding:6px 9px;border:1px solid var(--card-border);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:800;cursor:pointer}
+.choose-history-toggle:disabled{color:var(--text-muted);cursor:default;opacity:.72}
+.choose-history-empty{padding:13px 0;border-top:1px solid var(--card-border);color:var(--text-muted);font-size:10px;line-height:1.6}
+.choose-history-empty[hidden],#choose-history-list[hidden]{display:none}
+.choose-history-month{position:relative;width:100%;min-height:58px;display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:9px;padding:10px 2px;border:0;border-top:1px solid var(--card-border);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
+.choose-history-mark{width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:10px;font-weight:800}
+.choose-history-label{color:var(--text);font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700}
+.choose-history-summary{margin-top:2px;color:var(--text-muted);font-size:9px}
+.choose-history-open{color:var(--rose);font-size:9px;font-weight:800;white-space:nowrap}
+.choose-letterbox-bg{position:fixed;z-index:10030;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(29,17,22,.72);backdrop-filter:blur(10px)}
+.choose-letterbox-bg.hidden{display:none}
+.choose-letterbox{width:min(100%,900px);max-height:calc(100dvh - 32px);overflow:auto;border:1px solid rgba(255,255,255,.3);border-radius:10px;background:var(--cream);box-shadow:0 28px 90px rgba(28,12,19,.45);animation:chooseLetterboxOpen .42s cubic-bezier(.2,.85,.25,1) both}
+.choose-letterbox-head{position:sticky;z-index:4;top:0;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid var(--card-border);background:color-mix(in srgb,var(--white) 92%,var(--pink-light));backdrop-filter:blur(12px)}
+.choose-letterbox-kicker{color:#2f9a68;font-size:9px;font-weight:900;letter-spacing:1.8px}
+.choose-letterbox-title{margin-top:3px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700}
+.choose-letterbox-month{margin-top:3px;color:var(--text-muted);font-size:10px}
+.choose-letterbox-close{flex:0 0 auto;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:21px;cursor:pointer}
+.choose-letterbox-body{padding:22px}
+.choose-letterbox-intro{max-width:620px;margin:0 auto 17px;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:12px;line-height:1.8;text-align:center}
+.choose-letterbox-locked{min-height:360px;display:grid;place-items:center;padding:34px 18px;text-align:center}
+.choose-lock-scene{width:min(100%,480px)}
+.choose-lock-envelopes{position:relative;width:210px;height:116px;margin:0 auto 22px}
+.choose-lock-envelope{position:absolute;top:9px;width:116px;height:80px;border:1px solid rgba(166,76,98,.22);border-radius:7px;background:var(--white);box-shadow:0 14px 28px rgba(95,44,58,.13);transform:rotate(-7deg)}
+.choose-lock-envelope:last-child{right:0;transform:rotate(7deg)}
+.choose-lock-envelope::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,transparent 49%,var(--pink-light) 50%) 0 0/50% 100% no-repeat,linear-gradient(215deg,transparent 49%,var(--pink-light) 50%) 100% 0/50% 100% no-repeat;border-radius:7px}
+.choose-lock-envelope.written::after{content:'\2713';position:absolute;z-index:2;right:8px;top:8px;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:#2f9a68;color:#fff;font-size:11px;font-weight:900}
+.choose-lock-heart{position:absolute;z-index:4;left:50%;bottom:0;width:54px;height:54px;display:grid;place-items:center;border:7px solid var(--cream);border-radius:50%;background:var(--rose);color:#fff;font:700 27px/1 Georgia,serif;transform:translateX(-50%);box-shadow:0 10px 24px rgba(166,76,98,.25)}
+.choose-lock-title{color:var(--text);font-family:'Noto Serif TC',serif;font-size:23px;font-weight:700}
+.choose-lock-copy{max-width:390px;margin:9px auto 0;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:12px;line-height:1.85}
+.choose-lock-progress{display:flex;justify-content:center;gap:8px;margin-top:17px}
+.choose-lock-progress span{min-width:92px;padding:8px 11px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--text-muted);font-size:10px;font-weight:800}
+.choose-lock-progress span.ready{border-color:rgba(47,154,104,.26);background:#e7f5ed;color:#267c55}
+.choose-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.choose-answer{position:relative;min-width:0;min-height:300px;overflow:hidden;padding:27px 24px 22px;border:1px solid var(--card-border);border-radius:8px;background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(166,76,98,.055) 31px 32px),var(--white);box-shadow:0 15px 34px rgba(74,37,49,.1)}
+.choose-answer::before{content:'';position:absolute;right:-28px;top:-28px;width:66px;height:66px;border:1px solid var(--card-border);background:var(--pink-light);transform:rotate(45deg)}
+.choose-answer.written{border-color:rgba(47,154,104,.2)}
+.choose-answer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:13px;border-bottom:1px solid var(--card-border)}
+.choose-answer-name{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.choose-answer-status{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:9px;font-style:normal}
+.choose-answer-status::before{content:'';width:8px;height:8px;border-radius:50%;background:#c7b4bb}
+.choose-answer.written .choose-answer-status{color:#2f9a68}
+.choose-answer.written .choose-answer-status::before{background:#2f9a68;box-shadow:0 0 0 3px rgba(47,154,104,.12)}
+.choose-answer-quote{margin-top:19px;color:rgba(166,76,98,.2);font:700 42px/1 Georgia,serif}
+.choose-answer-text{margin-top:-13px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
+.choose-answer-photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:18px 0 26px}
+.choose-answer-photos img{width:100%;aspect-ratio:4/3;display:block;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);object-fit:cover}
+.choose-answer-photos img:first-child:nth-last-child(1){grid-column:1/-1;aspect-ratio:16/10;object-fit:contain}
+.choose-answer-empty{margin-top:25px;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:12px;line-height:1.8;text-align:center}
+.choose-answer-time{position:absolute;right:22px;bottom:17px;color:var(--text-muted);font-size:9px}
+body.choose-letterbox-open{overflow:hidden}
+.choose-ready-bg{position:fixed;z-index:10055;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(circle at 50% 18%,rgba(255,238,243,.97),rgba(68,35,46,.82));backdrop-filter:blur(9px)}
+.choose-ready-card{position:relative;width:min(100%,530px);overflow:hidden;padding:48px 30px 32px;border:1px solid rgba(255,255,255,.62);border-radius:10px;background:var(--white);text-align:center;box-shadow:0 30px 90px rgba(37,14,23,.38);animation:chooseReadyArrive .58s cubic-bezier(.16,1,.3,1) both}
+.choose-ready-card::before,.choose-ready-card::after{content:'♡';position:absolute;color:rgba(201,75,100,.1);font:700 138px/1 Georgia,serif}
+.choose-ready-card::before{left:-33px;top:-30px;transform:rotate(-18deg)}
+.choose-ready-card::after{right:-38px;bottom:-47px;transform:rotate(16deg)}
+.choose-ready-close{position:absolute;z-index:3;right:13px;top:13px;width:36px;height:36px;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:20px;cursor:pointer}
+.choose-ready-icon{position:relative;z-index:1;width:116px;height:83px;margin:0 auto 24px;border:1px solid var(--card-border);border-radius:7px;background:linear-gradient(145deg,var(--white),var(--pink-light));box-shadow:0 15px 30px rgba(166,76,98,.17);transform:rotate(-2deg);animation:chooseEnvelopeFloat 2.2s ease-in-out infinite}
+.choose-ready-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,transparent 49%,rgba(232,99,122,.16) 50%) 0 0/50% 100% no-repeat,linear-gradient(215deg,transparent 49%,rgba(232,99,122,.16) 50%) 100% 0/50% 100% no-repeat}
+.choose-ready-icon::after{content:'♡';position:absolute;left:50%;top:50%;width:47px;height:47px;display:grid;place-items:center;border:6px solid var(--white);border-radius:50%;background:var(--rose);color:#fff;font:700 25px/1 Georgia,serif;transform:translate(-50%,-38%);box-shadow:0 8px 18px rgba(166,76,98,.24)}
+.choose-ready-kicker{position:relative;z-index:1;color:#2f9a68;font-size:9px;font-weight:900;letter-spacing:2px}
+.choose-ready-title{position:relative;z-index:1;margin-top:8px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:clamp(27px,7vw,39px);font-weight:700;line-height:1.35}
+.choose-ready-copy{position:relative;z-index:1;max-width:390px;margin:11px auto 0;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:12px;line-height:1.85}
+.choose-ready-button{position:relative;z-index:1;width:min(100%,310px);min-height:50px;margin-top:24px;border:0;border-radius:999px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 11px 25px rgba(166,76,98,.25)}
+.choose-password-bg{position:fixed;z-index:10058;inset:0;display:grid;place-items:center;padding:16px;background:rgba(34,16,24,.72);backdrop-filter:blur(8px)}
+.choose-password-bg.hidden{display:none}
+.choose-password-dialog{width:min(100%,410px);padding:27px 23px 22px;border:1px solid rgba(255,255,255,.5);border-radius:10px;background:var(--white);box-shadow:0 25px 75px rgba(32,13,21,.38);animation:chooseReadyArrive .36s ease both}
+.choose-password-mark{width:54px;height:54px;display:grid;place-items:center;margin:0 auto 13px;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:24px}
+.choose-password-title{color:var(--text);font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;text-align:center}
+.choose-password-copy{margin-top:7px;color:var(--text-muted);font-size:11px;line-height:1.7;text-align:center}
+.choose-password-error{min-height:18px;margin-top:6px;color:var(--rose);font-size:10px;text-align:center}
+.choose-password-actions{display:grid;grid-template-columns:1fr 1.35fr;gap:8px;margin-top:11px}
+.choose-password-action{min-height:43px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.choose-password-action.primary{border-color:var(--rose);background:var(--rose);color:#fff}
+.choose-celebration{position:fixed;z-index:10060;inset:0;overflow:hidden;background:rgba(34,16,24,.78);backdrop-filter:blur(7px);cursor:pointer}
+.choose-celebration canvas{position:absolute;inset:0;width:100%;height:100%}
+.choose-celebration-copy{position:absolute;z-index:2;left:50%;top:50%;width:min(88vw,520px);text-align:center;color:#fff;transform:translate(-50%,-50%);text-shadow:0 4px 22px rgba(0,0,0,.42);pointer-events:none}
+.choose-celebration-mark{width:76px;height:76px;display:grid;place-items:center;margin:0 auto 17px;border:1px solid rgba(255,255,255,.48);border-radius:50%;background:rgba(201,75,100,.75);font:700 39px/1 Georgia,serif;box-shadow:0 0 0 12px rgba(255,255,255,.08),0 12px 38px rgba(0,0,0,.28);animation:chooseHeartBeat 1s ease-in-out infinite}
+.choose-celebration-title{font-family:'Noto Serif TC',serif;font-size:clamp(28px,7vw,48px);font-weight:700}
+.choose-celebration-sub{margin-top:10px;font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.7;opacity:.9}
+@keyframes chooseHeartBeat{50%{transform:scale(1.08)}}
+@keyframes choosePaperArrive{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}
+@keyframes chooseLetterboxOpen{from{opacity:0;transform:translateY(24px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes chooseReadyArrive{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes chooseEnvelopeFloat{50%{transform:translateY(-7px) rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){.choose-compose,.choose-letterbox,.choose-ready-card,.choose-ready-icon,.choose-celebration-mark{animation:none!important}}
+@media(max-width:820px){.choose-layout{grid-template-columns:1fr;gap:18px;padding:18px}.choose-side{display:block}.choose-history{margin-top:14px}}
+@media(max-width:620px){.choose-answer-grid{grid-template-columns:1fr}.choose-letterbox-bg{align-items:flex-end;padding:0}.choose-letterbox{max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-letterbox-body{padding:16px 13px calc(22px + env(safe-area-inset-bottom))}.choose-answer{min-height:270px;padding:22px 18px}}
+@media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn,.choose-edit-sealed{width:100%;min-width:0}.choose-edit-sealed{margin-top:8px}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
 @media(max-width:520px){.footprint-editor-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 </style>
 </head>
@@ -1352,14 +1454,15 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
   <button class="dark-toggle" onclick="toggleDark()" id="dark-btn" title="切換深色模式">🌙</button>
 </header>
 
-<div class="music-player" id="music-player">
-  <div class="music-disc" id="music-disc" onclick="toggleMusicLibrary()" style="cursor:pointer" title="點我開啟音樂庫">🎵</div>
-  <div class="music-info">
+<div class="music-player collapsed" id="music-player">
+  <button type="button" class="music-disc" id="music-disc" onclick="toggleMusicPlayerDock()" title="展開音樂播放器" aria-label="展開音樂播放器" aria-expanded="false">🎵</button>
+  <div class="music-info" onclick="toggleMusicLibrary()" title="開啟音樂庫">
     <div class="music-title-wrap" id="music-title-wrap">
       <span class="music-title" id="music-title">點一下播放</span>
     </div>
   </div>
   <div class="music-btns">
+    <button class="music-btn" onclick="toggleMusicLibrary()" aria-label="開啟音樂庫" title="音樂庫">☷</button>
     <button class="music-btn" onclick="prevSong()">⏮</button>
     <button class="music-btn" id="play-btn" onclick="togglePlay()">▶️</button>
     <button class="music-btn" onclick="nextSong()">⏭</button>
@@ -1735,49 +1838,73 @@ onclick="hideSpecialForToday()">
       <button type="button" class="choose-player-btn active" data-choose-player="shengzhan" onclick="chooseSelectPlayer('shengzhan')">我是聖展</button>
       <button type="button" class="choose-player-btn" data-choose-player="yujun" onclick="chooseSelectPlayer('yujun')">我是予君</button>
     </div>
-    <div class="choose-prompt-chips" aria-label="寫作提示">
-      <button type="button" class="choose-prompt-chip" onclick="chooseUsePrompt('這個月最感謝你的，是')">這個月最感謝你...</button>
-      <button type="button" class="choose-prompt-chip" onclick="chooseUsePrompt('我看見你為我們做出的改變，是')">我看見你的改變...</button>
-      <button type="button" class="choose-prompt-chip" onclick="chooseUsePrompt('下個月，我還想和你一起')">下個月還想一起...</button>
-    </div>
     <label class="choose-compose-prompt" id="choose-compose-prompt" for="choose-text"></label>
     <textarea class="choose-textarea" id="choose-text" maxlength="600" placeholder="不用寫得完美，只要寫下此刻最真實的原因。" oninput="chooseUpdateCount()"></textarea>
+    <div class="choose-photo-panel" id="choose-photo-panel">
+      <div class="choose-photo-head"><span class="choose-photo-title">附上這個月的照片</span><label class="choose-photo-add" id="choose-photo-add">＋ 選擇照片<input class="choose-photo-input" id="choose-photo-input" type="file" accept="image/*" multiple onchange="chooseAddPhotos(event)"></label></div>
+      <div class="choose-photo-grid" id="choose-photo-grid"></div>
+      <div class="choose-photo-help" id="choose-photo-help">最多 5 張，會和這封信一起保密到共同解鎖。</div>
+    </div>
+    <label class="choose-password-field" id="choose-password-field">設定修改密碼
+      <input class="choose-password-input" id="choose-password-input" type="password" minlength="4" maxlength="20" autocomplete="new-password" placeholder="至少 4 個字元">
+      <span class="choose-password-help" id="choose-password-help">送出後要輸入這組密碼，才能重新修改自己的信。</span>
+    </label>
     <div class="choose-compose-meta">
       <span id="choose-edit-hint">這個月還沒有寫下答案</span>
       <span id="choose-char-count">0 / 600</span>
     </div>
     <div class="choose-compose-actions">
-      <button type="button" class="choose-save-btn" id="choose-save-btn" onclick="chooseSaveEntry()">封存這個月的選擇</button>
+      <button type="button" class="choose-save-btn" id="choose-save-btn" onclick="chooseSaveEntry()">送出這個月的信</button>
+      <button type="button" class="choose-edit-sealed" id="choose-edit-sealed" onclick="chooseEditSealedEntry()" hidden>修改我的信</button>
       <span class="choose-lock-copy">每人每月保留一封，內容會同步收藏</span>
     </div>
   </section>
   <aside class="choose-side">
     <section class="choose-seal-card">
-      <div class="choose-seal-visual"><div class="choose-youtube-host" id="choose-youtube-player" aria-hidden="true"></div><div class="choose-seal-mark" aria-hidden="true">♡</div></div>
+      <div class="choose-seal-visual"><div class="choose-song-art" aria-hidden="true"></div><div class="choose-seal-mark" aria-hidden="true">♡</div></div>
       <div class="choose-seal-body">
         <h2>兩封信，一個約定</h2>
         <p>這個月的答案會一起留在這裡，成為只屬於你們的回憶。</p>
         <div class="choose-seal-status" id="choose-current-status"></div>
         <button type="button" class="choose-song-control" id="choose-song-toggle" onclick="chooseToggleSong()" aria-label="播放心約背景音樂" title="播放或暫停心約背景音樂"><span class="choose-song-icon" id="choose-song-icon" aria-hidden="true">♪</span><span id="choose-song-label">心約音樂</span></button>
+        <button type="button" class="choose-open-letters" id="choose-open-letters" onclick="chooseOpenLetters()">查看本月信匣</button>
       </div>
     </section>
-  <section class="choose-answers">
-    <div class="choose-section-head">
-      <div class="choose-section-title">這個月的我們</div>
-      <div class="choose-section-sub">同步收藏</div>
-    </div>
-    <div class="choose-answer-grid" id="choose-current-answers"></div>
-  </section>
   <section class="choose-history" id="choose-history" hidden>
     <div class="choose-section-head">
-      <div class="choose-section-title">以前的選擇</div>
-      <div class="choose-section-sub">每個月都留下來</div>
+      <div class="choose-section-title">歷史月份</div>
+      <button type="button" class="choose-history-toggle" id="choose-history-toggle" onclick="chooseToggleHistory()">查看歷史月份</button>
     </div>
-    <div id="choose-history-list"></div>
+    <div class="choose-history-empty" id="choose-history-empty">還沒有其他月份的心約，下一個月會從這裡開始收藏。</div>
+    <div id="choose-history-list" hidden></div>
   </section>
   </aside>
     </div>
   </section>
+  <div class="choose-letterbox-bg hidden" id="choose-letterbox-bg" onclick="chooseCloseLetters(event)">
+    <section class="choose-letterbox" role="dialog" aria-modal="true" aria-labelledby="choose-letterbox-title" onclick="event.stopPropagation()">
+      <div class="choose-letterbox-head">
+        <div><div class="choose-letterbox-kicker">OUR MONTHLY LETTERS</div><div class="choose-letterbox-title" id="choose-letterbox-title">本月心約</div><div class="choose-letterbox-month" id="choose-letterbox-month"></div></div>
+        <button type="button" class="choose-letterbox-close" onclick="chooseCloseLettersDirect()" aria-label="關閉信匣">×</button>
+      </div>
+      <div class="choose-letterbox-body">
+        <p class="choose-letterbox-intro" id="choose-letterbox-intro">同一個月份，兩個人的答案會一起收藏在這裡。</p>
+        <div class="choose-answer-grid" id="choose-current-answers"></div>
+      </div>
+    </section>
+  </div>
+  <audio id="choose-song-audio" src="assets/heart-vow-theme.mp3" preload="metadata" loop hidden></audio>
+</div>
+
+<div class="choose-password-bg hidden" id="choose-password-bg" onclick="chooseClosePasswordDialog(event)">
+  <form class="choose-password-dialog" onsubmit="chooseVerifyPassword(event)" onclick="event.stopPropagation()">
+    <div class="choose-password-mark" aria-hidden="true">♡</div>
+    <div class="choose-password-title">打開自己的封存信</div>
+    <div class="choose-password-copy" id="choose-password-dialog-copy">輸入送出時設定的修改密碼，驗證後才能重新編輯。</div>
+    <input class="choose-password-input" id="choose-password-verify" type="password" minlength="4" maxlength="20" autocomplete="current-password" placeholder="輸入修改密碼" required>
+    <div class="choose-password-error" id="choose-password-error" aria-live="polite"></div>
+    <div class="choose-password-actions"><button type="button" class="choose-password-action" onclick="chooseClosePasswordDialogDirect()">取消</button><button type="submit" class="choose-password-action primary">驗證並修改</button></div>
+  </form>
 </div>
 
 <!-- FOOTPRINTS -->
@@ -1808,6 +1935,7 @@ onclick="hideSpecialForToday()">
       <div>
         <div class="footprint-detail-name" id="footprint-detail-name"></div>
         <div class="footprint-detail-meta" id="footprint-detail-meta"></div>
+        <div class="footprint-detail-address" id="footprint-detail-address"></div>
       </div>
       <button type="button" class="footprint-revisit-btn" id="footprint-revisit-btn">＋ 再記一次</button>
     </div>
@@ -1828,10 +1956,14 @@ onclick="hideSpecialForToday()">
       <input type="hidden" id="footprint-lng">
       <div class="footprint-form-grid">
         <label class="footprint-field">日期
-          <input class="footprint-input" id="footprint-date" type="date" required>
+          <span class="footprint-date-row"><input class="footprint-input" id="footprint-date" type="date"><button type="button" class="footprint-date-add" id="footprint-date-add" onclick="footprintAddSelectedDate()">＋ 加入</button></span>
+          <span class="footprint-date-chips" id="footprint-date-chips"></span>
         </label>
         <label class="footprint-field">地點名稱
-          <input class="footprint-input" id="footprint-place-name" type="text" maxlength="60" autocomplete="off" placeholder="例如：淡水老街" required>
+          <input class="footprint-input" id="footprint-place-name" type="text" maxlength="60" autocomplete="off" placeholder="例如：淡水老街" oninput="footprintMirrorPlaceQuery(this.value)" required>
+        </label>
+        <label class="footprint-field full">地址
+          <input class="footprint-input" id="footprint-address" type="text" maxlength="160" autocomplete="street-address" placeholder="搜尋店名後會自動帶入，也可以自行輸入">
         </label>
         <label class="footprint-field full">想記住的事
           <textarea class="footprint-input" id="footprint-note" maxlength="500" placeholder="這次一起做了什麼？"></textarea>
@@ -1955,10 +2087,6 @@ onclick="hideSpecialForToday()">
 
 <!-- Firebase SDK -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="https://www.youtube.com/iframe_api" async></script>
-<script>
-(g=>{let h,a,k;const p='Google Maps JavaScript API',c='google',l='importLibrary',q='__ib__',m=document,b=window;b[c]=b[c]||{};const d=b[c].maps=b[c].maps||{},r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(resolve,reject)=>{a=m.createElement('script');e.set('libraries',[...r]+'');for(k in g)e.set(k.replace(/[A-Z]/g,t=>'_'+t[0].toLowerCase()),g[k]);e.set('callback',c+'.maps.'+q);a.src='https://maps.googleapis.com/maps/api/js?'+e;d[q]=resolve;a.onerror=()=>{h=null;reject(Error(p+' could not load.'))};a.nonce=m.querySelector('script[nonce]')?.nonce||'';m.head.append(a)}));d[l]?console.warn(p+' only loads once.'):d[l]=(library,...args)=>r.add(library)&&u().then(()=>d[l](library,...args))})({key:'AIzaSyCnb0mN8CFMTMPRp-2Z-7LMU2ekw6njybc',v:'weekly',language:'zh-TW',region:'TW'});
-</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -4244,6 +4372,7 @@ function showPage(id,btn){
   if(id==='choose'){
     chooseRender();
     chooseStartSong();
+    setTimeout(()=>chooseMaybeShowReadyPage(),180);
   }else{
     chooseStopSong();
   }
@@ -7276,9 +7405,24 @@ function renderMusicLibrary(){
   }).join(''):'<div class="music-library-empty">音樂庫目前是空的</div>';
 }
 
+function toggleMusicPlayerDock(forceExpanded){
+  const player=document.getElementById('music-player');
+  const button=document.getElementById('music-disc');
+  if(!player||!button) return;
+  const shouldExpand=typeof forceExpanded==='boolean'?forceExpanded:player.classList.contains('collapsed');
+  player.classList.toggle('collapsed',!shouldExpand);
+  button.setAttribute('aria-expanded',String(shouldExpand));
+  button.setAttribute('aria-label',shouldExpand?'收合音樂播放器':'展開音樂播放器');
+  button.title=shouldExpand?'收合到側邊':'展開音樂播放器';
+  if(!shouldExpand){
+    const library=document.getElementById('music-library');
+    if(library) library.style.display='none';
+  }
+}
 function toggleMusicLibrary(){
   const lib = document.getElementById('music-library');
   const isHidden = getComputedStyle(lib).display === 'none';
+  if(isHidden) toggleMusicPlayerDock(true);
   lib.style.display = isHidden ? 'block' : 'none';
   if(isHidden) renderMusicLibrary();
 }
@@ -7382,10 +7526,7 @@ function showLoveSurprise(item){
 
 
 // ── 每月重新選擇你（Firebase 同步）──
-const CHOOSE_YOUTUBE_VIDEO_ID='RwCr6p1Jm1o';
-let chooseYoutubeApiPromise=null;
-let chooseYoutubePlayerPromise=null;
-let chooseYoutubePlayer=null;
+const chooseSongAudio=document.getElementById('choose-song-audio');
 let chooseSongRequested=false;
 let chooseSongPlaying=false;
 
@@ -7401,62 +7542,14 @@ function chooseSetSongState(playing,label='心約音樂'){
   if(icon) icon.textContent=chooseSongPlaying?'Ⅱ':'♪';
   if(text) text.textContent=label;
 }
-function chooseLoadYouTubeApi(){
-  if(window.YT?.Player) return Promise.resolve(window.YT);
-  if(chooseYoutubeApiPromise) return chooseYoutubeApiPromise;
-  chooseYoutubeApiPromise=new Promise((resolve,reject)=>{
-    const previousReady=window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady=()=>{
-      if(typeof previousReady==='function') previousReady();
-      resolve(window.YT);
-    };
-    let script=document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
-    if(!script){
-      script=document.createElement('script');
-      script.src='https://www.youtube.com/iframe_api';
-      script.async=true;
-      document.head.appendChild(script);
-    }
-    script.addEventListener('error',()=>reject(new Error('YouTube player failed to load')),{once:true});
-  });
-  return chooseYoutubeApiPromise;
-}
-async function chooseEnsureYoutubePlayer(){
-  if(chooseYoutubePlayer) return chooseYoutubePlayer;
-  if(chooseYoutubePlayerPromise) return chooseYoutubePlayerPromise;
-  chooseYoutubePlayerPromise=(async()=>{
-    const YTApi=await chooseLoadYouTubeApi();
-    return await new Promise((resolve,reject)=>{
-      chooseYoutubePlayer=new YTApi.Player('choose-youtube-player',{
-        width:'100%',
-        height:'100%',
-        videoId:CHOOSE_YOUTUBE_VIDEO_ID,
-        playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,loop:1,playlist:CHOOSE_YOUTUBE_VIDEO_ID,origin:location.origin},
-        events:{
-          onReady:event=>{event.target.setVolume(58);resolve(event.target);},
-          onStateChange:event=>{
-            if(event.data===YTApi.PlayerState.PLAYING) chooseSetSongState(true,'紙短情長 · 播放中');
-            else if(event.data===YTApi.PlayerState.PAUSED||event.data===YTApi.PlayerState.CUED) chooseSetSongState(false,'心約音樂');
-          },
-          onError:event=>{console.warn('心約 YouTube 播放錯誤',event.data);chooseSetSongState(false,'歌曲暫時無法播放');reject(new Error(`YouTube video unavailable (${event.data})`));}
-        }
-      });
-    });
-  })();
-  try{return await chooseYoutubePlayerPromise;}
-  catch(error){chooseYoutubePlayerPromise=null;throw error;}
-}
 async function chooseStartSong(){
   chooseSongRequested=true;
   if(typeof audio!=='undefined'&&!audio.paused) audio.pause();
   if(typeof setUI==='function') setUI(false);
-  chooseSetSongState(false,'正在準備心約音樂...');
+  chooseSetSongState(false,'正在播放紙短情長...');
   try{
-    const player=await chooseEnsureYoutubePlayer();
-    if(!chooseSongRequested) return;
-    player.unMute?.();
-    player.setVolume?.(58);
-    player.playVideo?.();
+    chooseSongAudio.volume=.58;
+    await chooseSongAudio.play();
   }catch(error){
     console.warn('心約背景音樂無法自動播放',error);
     if(chooseSongRequested) chooseSetSongState(false,'點一下播放心約音樂');
@@ -7464,18 +7557,37 @@ async function chooseStartSong(){
 }
 function chooseStopSong(){
   chooseSongRequested=false;
-  chooseYoutubePlayer?.pauseVideo?.();
+  chooseSongAudio.pause();
+  chooseSongAudio.currentTime=0;
   chooseSetSongState(false,'心約音樂');
 }
 function chooseToggleSong(){
-  if(chooseSongPlaying) chooseStopSong();
+  if(chooseSongPlaying){
+    chooseSongRequested=false;
+    chooseSongAudio.pause();
+    chooseSetSongState(false,'心約音樂');
+  }
   else chooseStartSong();
 }
+chooseSongAudio.addEventListener('play',()=>chooseSetSongState(true,'紙短情長 · 播放中'));
+chooseSongAudio.addEventListener('pause',()=>{if(!chooseSongRequested) chooseSetSongState(false,'心約音樂');});
+chooseSongAudio.addEventListener('error',()=>chooseSetSongState(false,'歌曲暫時無法播放'));
 
 const CHOOSE_CACHE_KEY='choose_you_entries_cache_v1';
 let chooseEntriesData={};
 let chooseSelectedPlayer=localStorage.getItem('choose_you_player')||'shengzhan';
 let chooseSyncStarted=false;
+let chooseHistoryExpanded=false;
+let chooseLetterboxMonth='';
+let chooseCelebrating=false;
+let choosePhotoPlayer='';
+let chooseExistingPhotos=[];
+let choosePendingPhotoFiles=[];
+let choosePendingPhotoUrls=[];
+let choosePhotosDirty=false;
+let chooseEditingSealed=false;
+let chooseVerifiedPasswordHash='';
+let chooseVerifiedPasswordSalt='';
 
 function chooseEscape(value){
   return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -7493,7 +7605,22 @@ function choosePlayerInfo(player){
 function chooseNormalizeEntry(value){
   const text=String(value?.text||'').trim().slice(0,600);
   if(!text) return null;
-  return {text,createdAt:Number(value?.createdAt)||Number(value?.updatedAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
+  const photos=(Array.isArray(value?.photos)?value.photos:[]).map(url=>String(url||'').trim()).filter(url=>/^https:\/\//i.test(url)||/^data:image\//i.test(url)).slice(0,5);
+  const editPasswordHash=/^[a-f0-9]{64}$/i.test(String(value?.editPasswordHash||''))?String(value.editPasswordHash).toLowerCase():'';
+  const editPasswordSalt=/^[a-f0-9]{32}$/i.test(String(value?.editPasswordSalt||''))?String(value.editPasswordSalt).toLowerCase():'';
+  return {text,photos,editPasswordHash,editPasswordSalt,createdAt:Number(value?.createdAt)||Number(value?.updatedAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
+}
+function chooseCreatePasswordSalt(){
+  const bytes=crypto.getRandomValues(new Uint8Array(16));
+  return [...bytes].map(byte=>byte.toString(16).padStart(2,'0')).join('');
+}
+async function chooseHashPassword(value,salt=''){
+  const bytes=new TextEncoder().encode(`${salt}:${String(value||'')}`);
+  const digest=await crypto.subtle.digest('SHA-256',bytes);
+  return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');
+}
+function chooseEntryCount(monthData){
+  return Number(Boolean(chooseNormalizeEntry(monthData?.shengzhan)))+Number(Boolean(chooseNormalizeEntry(monthData?.yujun)));
 }
 function chooseLoadCache(){
   try{
@@ -7509,10 +7636,160 @@ function chooseFormatTime(timestamp){
   if(Number.isNaN(date.getTime())) return '';
   return `${date.getMonth()+1}/${date.getDate()} ${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
 }
+function chooseClearPendingPhotoUrls(){
+  choosePendingPhotoUrls.forEach(url=>{try{URL.revokeObjectURL(url);}catch(_){}});
+  choosePendingPhotoUrls=[];
+}
+function chooseSyncPhotoEditor(force=false){
+  const selected=chooseNormalizeEntry(chooseEntriesData[chooseMonthKey()]?.[chooseSelectedPlayer]);
+  const nextPhotos=selected?.photos||[];
+  const changed=JSON.stringify(nextPhotos)!==JSON.stringify(chooseExistingPhotos);
+  if(force||choosePhotoPlayer!==chooseSelectedPlayer||(!choosePhotosDirty&&!choosePendingPhotoFiles.length&&changed)){
+    chooseClearPendingPhotoUrls();
+    choosePhotoPlayer=chooseSelectedPlayer;
+    chooseExistingPhotos=[...nextPhotos];
+    choosePendingPhotoFiles=[];
+    choosePhotosDirty=false;
+  }
+  chooseRenderPhotoEditor();
+}
+function chooseRenderPhotoEditor(){
+  const grid=document.getElementById('choose-photo-grid');
+  if(!grid) return;
+  const items=[...chooseExistingPhotos.map((url,index)=>({url,type:'existing',index})),...choosePendingPhotoUrls.map((url,index)=>({url,type:'pending',index}))];
+  grid.innerHTML=items.map(item=>`<div class="choose-photo-item"><img src="${chooseEscape(item.url)}" alt="待附上的心約照片"><button type="button" class="choose-photo-remove" data-photo-type="${item.type}" data-photo-index="${item.index}" aria-label="移除照片">×</button></div>`).join('');
+  grid.querySelectorAll('[data-photo-type]').forEach(button=>button.addEventListener('click',()=>chooseRemovePhoto(button.dataset.photoType,Number(button.dataset.photoIndex))));
+  const total=items.length;
+  const add=document.getElementById('choose-photo-add');
+  if(add) add.classList.toggle('disabled',total>=5);
+  document.getElementById('choose-photo-help').textContent=total?`已選 ${total} / 5 張，會和這封信一起保密到共同解鎖。`:'最多 5 張，會和這封信一起保密到共同解鎖。';
+}
+function chooseAddPhotos(event){
+  const files=Array.from(event.target.files||[]).filter(file=>file.type?.startsWith('image/'));
+  const available=Math.max(0,5-chooseExistingPhotos.length-choosePendingPhotoFiles.length);
+  if(files.length>available) alert(`這封信最多放 5 張照片，目前還能加入 ${available} 張`);
+  files.slice(0,available).forEach(file=>{
+    choosePendingPhotoFiles.push(file);
+    choosePendingPhotoUrls.push(URL.createObjectURL(file));
+  });
+  if(files.length) choosePhotosDirty=true;
+  event.target.value='';
+  chooseRenderPhotoEditor();
+}
+function chooseRemovePhoto(type,index){
+  if(type==='existing') chooseExistingPhotos.splice(index,1);
+  else if(type==='pending'){
+    try{URL.revokeObjectURL(choosePendingPhotoUrls[index]);}catch(_){}
+    choosePendingPhotoUrls.splice(index,1);
+    choosePendingPhotoFiles.splice(index,1);
+  }
+  choosePhotosDirty=true;
+  chooseRenderPhotoEditor();
+}
+async function chooseUploadPhoto(file,index,key,player){
+  const safeName=String(file.name||`heart-vow-${index}.jpg`).replace(/[^\w.-]+/g,'-').slice(-70)||`heart-vow-${index}.jpg`;
+  if(hasCloudinarySettings()){
+    try{return await uploadImageFileToCloudinary(file,`${key}-${player}-${Date.now()}-${index}-${safeName}`,`heart-vows/${key}`);}
+    catch(error){console.warn('心約照片雲端上傳失敗，改存壓縮照片',error);}
+  }
+  return compressToBase64(file,1200,.8);
+}
 function chooseRenderAnswer(player,entry){
   const info=choosePlayerInfo(player);
-  if(!entry) return `<article class="choose-answer"><div class="choose-answer-name"><span>${info.name}</span><i class="choose-answer-status" aria-hidden="true"></i></div><div class="choose-answer-empty">還沒寫下這個月的答案。</div></article>`;
-  return `<article class="choose-answer written"><div class="choose-answer-name"><span>${info.name}</span><i class="choose-answer-status" aria-hidden="true"></i></div><div class="choose-answer-text">${chooseEscape(entry.text)}</div><div class="choose-answer-time">${chooseFormatTime(entry.updatedAt)} 寫下</div></article>`;
+  if(!entry) return `<article class="choose-answer"><div class="choose-answer-head"><div class="choose-answer-name">${info.name}</div><i class="choose-answer-status">等待寫信</i></div><div class="choose-answer-empty">這個月份還沒有留下答案。</div></article>`;
+  const photos=entry.photos?.length?`<div class="choose-answer-photos">${entry.photos.map(url=>`<img src="${chooseEscape(url)}" alt="${info.name}附上的心約照片" loading="lazy">`).join('')}</div>`:'';
+  return `<article class="choose-answer written"><div class="choose-answer-head"><div class="choose-answer-name">${info.name}</div><i class="choose-answer-status">已送出</i></div><div class="choose-answer-quote" aria-hidden="true">“</div><div class="choose-answer-text">${chooseEscape(entry.text)}</div>${photos}<div class="choose-answer-time">${chooseFormatTime(entry.updatedAt)} 寫下</div></article>`;
+}
+function chooseRenderLetterbox(month=chooseLetterboxMonth||chooseMonthKey()){
+  const answers=document.getElementById('choose-current-answers');
+  if(!answers) return;
+  const data=chooseEntriesData[month]||{};
+  const shengzhan=chooseNormalizeEntry(data.shengzhan);
+  const yujun=chooseNormalizeEntry(data.yujun);
+  const unlocked=Boolean(shengzhan&&yujun);
+  document.getElementById('choose-letterbox-title').textContent=month===chooseMonthKey()?'本月心約':'歷史心約';
+  document.getElementById('choose-letterbox-month').textContent=chooseMonthLabel(month);
+  document.getElementById('choose-letterbox-intro').textContent=unlocked?'兩封信已經一起抵達，現在可以好好讀完彼此的選擇。':'先各自寫下真心，等兩封信都封存後才會一起打開。';
+  answers.classList.toggle('choose-letterbox-locked',!unlocked);
+  answers.innerHTML=unlocked
+    ?chooseRenderAnswer('shengzhan',shengzhan)+chooseRenderAnswer('yujun',yujun)
+    :`<div class="choose-lock-scene"><div class="choose-lock-envelopes"><span class="choose-lock-envelope${shengzhan?' written':''}"></span><span class="choose-lock-envelope${yujun?' written':''}"></span><span class="choose-lock-heart">♡</span></div><div class="choose-lock-title">信匣還在等另一封真心</div><div class="choose-lock-copy">內容目前是封存的。等聖展和予君都送出這個月的答案，信匣才會同時為兩個人解鎖。</div><div class="choose-lock-progress"><span class="${shengzhan?'ready':''}">聖展 ${shengzhan?'已送出':'等待中'}</span><span class="${yujun?'ready':''}">予君 ${yujun?'已送出':'等待中'}</span></div></div>`;
+}
+function chooseOpenLetters(month=chooseMonthKey()){
+  chooseLetterboxMonth=month;
+  chooseRenderLetterbox(month);
+  document.getElementById('choose-letterbox-bg').classList.remove('hidden');
+  document.body.classList.add('choose-letterbox-open');
+}
+function chooseCloseLetters(event){
+  if(event.target===document.getElementById('choose-letterbox-bg')) chooseCloseLettersDirect();
+}
+function chooseCloseLettersDirect(){
+  document.getElementById('choose-letterbox-bg').classList.add('hidden');
+  document.body.classList.remove('choose-letterbox-open');
+}
+function chooseReadySeen(month){
+  try{return localStorage.getItem(`choose_ready_seen_${month}`)==='1';}catch(_){return false;}
+}
+function chooseMarkReadySeen(month){
+  try{localStorage.setItem(`choose_ready_seen_${month}`,'1');}catch(_){}
+}
+function chooseMaybeShowReadyPage(month=chooseMonthKey()){
+  if(chooseEntryCount(chooseEntriesData[month])<2||chooseReadySeen(month)) return;
+  chooseShowReadyPage(month);
+}
+function chooseShowReadyPage(month=chooseMonthKey()){
+  if(document.querySelector('.choose-ready-bg')||chooseCelebrating) return;
+  chooseMarkReadySeen(month);
+  const overlay=document.createElement('div');
+  overlay.className='choose-ready-bg';
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-modal','true');
+  overlay.setAttribute('aria-label','兩封心約已送達');
+  overlay.innerHTML=`<section class="choose-ready-card"><button type="button" class="choose-ready-close" aria-label="稍後查看">×</button><div class="choose-ready-icon" aria-hidden="true"></div><div class="choose-ready-kicker">TWO LETTERS ARRIVED</div><div class="choose-ready-title">已收到兩個人的信</div><div class="choose-ready-copy">兩份答案都已經好好封存。準備好以後，再一起打開這個月只屬於你們的心約。</div><button type="button" class="choose-ready-button">查看信封</button></section>`;
+  document.body.appendChild(overlay);
+  document.body.classList.add('choose-letterbox-open');
+  overlay.querySelector('.choose-ready-close').addEventListener('click',()=>{overlay.remove();document.body.classList.remove('choose-letterbox-open');});
+  overlay.querySelector('.choose-ready-button').addEventListener('click',()=>{overlay.remove();document.body.classList.remove('choose-letterbox-open');chooseCelebrateUnlock(month);});
+}
+function chooseCelebrateUnlock(month=chooseMonthKey()){
+  if(chooseCelebrating||document.querySelector('.choose-celebration')) return;
+  chooseCelebrating=true;
+  const overlay=document.createElement('div');
+  overlay.className='choose-celebration';
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-label','兩封心約已解鎖');
+  overlay.innerHTML='<canvas aria-hidden="true"></canvas><div class="choose-celebration-copy"><div class="choose-celebration-mark">♡</div><div class="choose-celebration-title">兩封真心，一起抵達</div><div class="choose-celebration-sub">這個月的心約已經解鎖<br>現在，去看看彼此仍然選擇對方的理由。</div></div>';
+  document.body.appendChild(overlay);
+  const canvas=overlay.querySelector('canvas');
+  const context=canvas.getContext('2d');
+  const ratio=Math.min(window.devicePixelRatio||1,1.5);
+  const particles=[];
+  const colors=['#ff6f91','#ffd166','#ffffff','#7ee2b8','#f6a6c1'];
+  let width=0,height=0,start=performance.now(),burstIndex=0,finished=false;
+  const resize=()=>{width=window.innerWidth;height=window.innerHeight;canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;context.setTransform(ratio,0,0,ratio,0,0);};
+  const burst=(x,y)=>{for(let i=0;i<48;i++){const angle=Math.PI*2*i/48+Math.random()*.16;const speed=2.2+Math.random()*3.6;particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,fade:.012+Math.random()*.008,size:1.4+Math.random()*2.5,color:colors[Math.floor(Math.random()*colors.length)]});}};
+  const finish=()=>{if(finished)return;finished=true;window.removeEventListener('resize',resize);overlay.remove();chooseCelebrating=false;chooseOpenLetters(month);};
+  const animate=now=>{
+    if(finished)return;
+    const elapsed=now-start;
+    const moments=[0,430,820,1240];
+    while(burstIndex<moments.length&&elapsed>=moments[burstIndex]){
+      const positions=[[.22,.32],[.77,.28],[.36,.7],[.69,.66]];
+      burst(width*positions[burstIndex][0],height*positions[burstIndex][1]);burstIndex++;
+    }
+    context.clearRect(0,0,width,height);
+    particles.forEach(particle=>{
+      particle.x+=particle.vx;particle.y+=particle.vy;particle.vy+=.035;particle.vx*=.992;particle.life-=particle.fade;
+      if(particle.life<=0)return;
+      context.globalAlpha=Math.max(0,particle.life);context.fillStyle=particle.color;context.beginPath();context.arc(particle.x,particle.y,particle.size,0,Math.PI*2);context.fill();
+    });
+    context.globalAlpha=1;
+    if(elapsed<2600) requestAnimationFrame(animate); else finish();
+  };
+  resize();
+  overlay.addEventListener('click',finish,{once:true});
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) setTimeout(finish,700); else requestAnimationFrame(animate);
 }
 function chooseRender(){
   const badge=document.getElementById('choose-month-badge');
@@ -7521,6 +7798,8 @@ function chooseRender(){
   const key=chooseMonthKey();
   const current=chooseEntriesData[key]||{};
   const selected=chooseNormalizeEntry(current[chooseSelectedPlayer]);
+  const selectedIsSealed=Boolean(selected);
+  const sealedReadOnly=selectedIsSealed&&!chooseEditingSealed;
   const info=choosePlayerInfo(chooseSelectedPlayer);
   badge.textContent=key.replace('-', '.');
   const now=new Date();
@@ -7530,14 +7809,33 @@ function chooseRender(){
   document.querySelectorAll('[data-choose-player]').forEach(button=>button.classList.toggle('active',button.dataset.choosePlayer===chooseSelectedPlayer));
   document.getElementById('choose-compose-prompt').textContent=`${info.name}，這個月為什麼仍然願意選擇${info.partner}？`;
   const textarea=document.getElementById('choose-text');
-  if(document.activeElement!==textarea) textarea.value=selected?.text||'';
-  document.getElementById('choose-edit-hint').textContent=selected?'已經寫下，可以隨時修改':'這個月還沒有寫下答案';
-  document.getElementById('choose-save-btn').textContent=selected?'更新這個月的信':'封存這個月的選擇';
+  textarea.disabled=sealedReadOnly;
+  textarea.placeholder=sealedReadOnly?'這封信已經封存，等另一封抵達後再一起打開。':'不用寫得完美，只要寫下此刻最真實的原因。';
+  if(sealedReadOnly) textarea.value='';
+  else if(document.activeElement!==textarea) textarea.value=selected?.text||'';
+  const photoPanel=document.getElementById('choose-photo-panel');
+  photoPanel.hidden=sealedReadOnly;
+  if(sealedReadOnly){
+    chooseClearPendingPhotoUrls();choosePendingPhotoFiles=[];chooseExistingPhotos=[];choosePhotosDirty=false;chooseRenderPhotoEditor();
+  }else chooseSyncPhotoEditor();
+  const passwordField=document.getElementById('choose-password-field');
+  const passwordInput=document.getElementById('choose-password-input');
+  passwordField.hidden=sealedReadOnly;
+  document.getElementById('choose-password-help').textContent=chooseEditingSealed?'留空會沿用原本的修改密碼；輸入新密碼可一併更換。':'送出後要輸入這組密碼，才能重新修改自己的信。';
+  if(sealedReadOnly) passwordInput.value='';
+  document.getElementById('choose-edit-hint').textContent=sealedReadOnly?'已送出，輸入密碼才能修改':(chooseEditingSealed?'正在修改自己的信':(selected?'已經寫下，可以隨時修改':'這個月還沒有寫下答案'));
+  const saveButton=document.getElementById('choose-save-btn');
+  saveButton.textContent=sealedReadOnly?'已送出':(selected?'儲存修改並重新送出':'送出這個月的信');
+  saveButton.disabled=sealedReadOnly;
+  const editSealedButton=document.getElementById('choose-edit-sealed');
+  editSealedButton.hidden=!sealedReadOnly;
   chooseUpdateCount();
   const entries={shengzhan:chooseNormalizeEntry(current.shengzhan),yujun:chooseNormalizeEntry(current.yujun)};
   const written=Number(Boolean(entries.shengzhan))+Number(Boolean(entries.yujun));
-  document.getElementById('choose-current-status').textContent=written===2?'兩封信都已收藏':`已收藏 ${written} / 2 封信`;
-  document.getElementById('choose-current-answers').innerHTML=chooseRenderAnswer('shengzhan',entries.shengzhan)+chooseRenderAnswer('yujun',entries.yujun);
+  document.getElementById('choose-current-status').textContent=written===2?'兩封信都已送出':`已送出 ${written} / 2 封信`;
+  const openButton=document.getElementById('choose-open-letters');
+  if(openButton) openButton.textContent=written===2?'打開本月信匣':`查看封存進度 · ${written} / 2`;
+  if(chooseLetterboxMonth) chooseRenderLetterbox(chooseLetterboxMonth);
 
   const historyKeys=Object.keys(chooseEntriesData||{}).filter(month=>month!==key&&/^\d{4}-\d{2}$/.test(month)).sort().reverse().filter(month=>{
     const data=chooseEntriesData[month]||{};
@@ -7545,36 +7843,78 @@ function chooseRender(){
   }).slice(0,24);
   const history=document.getElementById('choose-history');
   const list=document.getElementById('choose-history-list');
-  history.hidden=!historyKeys.length;
+  const historyToggle=document.getElementById('choose-history-toggle');
+  const historyEmpty=document.getElementById('choose-history-empty');
+  history.hidden=false;
+  historyToggle.disabled=!historyKeys.length;
+  historyToggle.textContent=historyKeys.length?(chooseHistoryExpanded?'收起歷史月份':`查看 ${historyKeys.length} 個月份`):'尚無歷史月份';
+  historyEmpty.hidden=Boolean(historyKeys.length);
+  list.hidden=!historyKeys.length||!chooseHistoryExpanded;
   list.innerHTML=historyKeys.map(month=>{
     const data=chooseEntriesData[month]||{};
     const shengzhan=chooseNormalizeEntry(data.shengzhan);
     const yujun=chooseNormalizeEntry(data.yujun);
-    const entry=(player,value)=>`<div class="choose-history-entry"><div class="choose-history-name">${choosePlayerInfo(player).name}</div><div class="choose-history-text">${value?chooseEscape(value.text):'這個月沒有留下答案'}</div></div>`;
-    return `<article class="choose-history-month"><div class="choose-history-label">${chooseMonthLabel(month)}</div><div class="choose-history-pair">${entry('shengzhan',shengzhan)}${entry('yujun',yujun)}</div></article>`;
+    const count=Number(Boolean(shengzhan))+Number(Boolean(yujun));
+    return `<button type="button" class="choose-history-month" data-choose-history-month="${month}"><span class="choose-history-mark">${count===2?'✓':'♡'}</span><span><span class="choose-history-label">${chooseMonthLabel(month)}</span><span class="choose-history-summary">${count===2?'兩封信已共同解鎖':`已封存 ${count} / 2 封信`}</span></span><span class="choose-history-open">${count===2?'打開信匣':'查看進度'}</span></button>`;
   }).join('');
+  list.querySelectorAll('[data-choose-history-month]').forEach(button=>button.addEventListener('click',()=>chooseOpenLetters(button.dataset.chooseHistoryMonth)));
+}
+function chooseToggleHistory(){
+  const hasHistory=Object.keys(chooseEntriesData||{}).some(month=>month!==chooseMonthKey()&&/^\d{4}-\d{2}$/.test(month));
+  if(!hasHistory) return;
+  chooseHistoryExpanded=!chooseHistoryExpanded;
+  chooseRender();
 }
 function chooseSelectPlayer(player){
   if(!['shengzhan','yujun'].includes(player)) return;
+  chooseEditingSealed=false;
+  chooseVerifiedPasswordHash='';
+  chooseVerifiedPasswordSalt='';
   chooseSelectedPlayer=player;
   localStorage.setItem('choose_you_player',player);
   chooseRender();
-  document.getElementById('choose-text').focus();
+}
+function chooseEditSealedEntry(){
+  const entry=chooseNormalizeEntry(chooseEntriesData[chooseMonthKey()]?.[chooseSelectedPlayer]);
+  if(!entry) return;
+  const info=choosePlayerInfo(chooseSelectedPlayer);
+  document.getElementById('choose-password-dialog-copy').textContent=entry.editPasswordHash?`輸入 ${info.name} 送出時設定的修改密碼，驗證後才能重新編輯。`:'這是改版前送出的信，請先設定一組新的修改密碼。';
+  document.getElementById('choose-password-verify').value='';
+  document.getElementById('choose-password-error').textContent='';
+  document.getElementById('choose-password-bg').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('choose-password-verify').focus(),100);
+}
+function chooseClosePasswordDialog(event){
+  if(event.target===document.getElementById('choose-password-bg')) chooseClosePasswordDialogDirect();
+}
+function chooseClosePasswordDialogDirect(){
+  document.getElementById('choose-password-bg').classList.add('hidden');
+}
+async function chooseVerifyPassword(event){
+  event.preventDefault();
+  const input=document.getElementById('choose-password-verify');
+  const error=document.getElementById('choose-password-error');
+  const password=input.value;
+  if(password.length<4){error.textContent='密碼至少需要 4 個字元';return;}
+  const entry=chooseNormalizeEntry(chooseEntriesData[chooseMonthKey()]?.[chooseSelectedPlayer]);
+  if(!entry){chooseClosePasswordDialogDirect();return;}
+  const salt=entry.editPasswordSalt||chooseCreatePasswordSalt();
+  const hash=await chooseHashPassword(password,salt);
+  if(entry.editPasswordHash&&hash!==entry.editPasswordHash){
+    error.textContent='密碼不正確，再試一次';
+    input.select();
+    return;
+  }
+  chooseVerifiedPasswordHash=entry.editPasswordHash||hash;
+  chooseVerifiedPasswordSalt=salt;
+  chooseEditingSealed=true;
+  chooseClosePasswordDialogDirect();
+  chooseRender();
 }
 function chooseUpdateCount(){
   const textarea=document.getElementById('choose-text');
   const counter=document.getElementById('choose-char-count');
   if(textarea&&counter) counter.textContent=`${textarea.value.length} / 600`;
-}
-function chooseUsePrompt(prompt){
-  const textarea=document.getElementById('choose-text');
-  const value=String(prompt||'').trim();
-  if(!textarea||!value) return;
-  const current=textarea.value.trim();
-  textarea.value=current?`${current}\n\n${value}`:value;
-  textarea.focus();
-  textarea.setSelectionRange(textarea.value.length,textarea.value.length);
-  chooseUpdateCount();
 }
 async function chooseSaveEntry(){
   const textarea=document.getElementById('choose-text');
@@ -7582,21 +7922,52 @@ async function chooseSaveEntry(){
   const text=textarea.value.trim();
   if(!text){alert('先寫下這個月為什麼仍然選擇對方');return;}
   const key=chooseMonthKey();
+  const beforeCount=chooseEntryCount(chooseEntriesData[key]);
   const old=chooseNormalizeEntry(chooseEntriesData[key]?.[chooseSelectedPlayer]);
-  const entry={text:text.slice(0,600),createdAt:old?.createdAt||Date.now(),updatedAt:Date.now()};
-  chooseEntriesData[key]={...(chooseEntriesData[key]||{}),[chooseSelectedPlayer]:entry};
-  chooseWriteCache();
-  chooseRender();
+  const passwordInput=document.getElementById('choose-password-input');
+  const password=passwordInput.value;
+  if(!old&&password.length<4){alert('請先設定至少 4 個字元的修改密碼');passwordInput.focus();return;}
   button.disabled=true;
+  button.textContent=choosePendingPhotoFiles.length?'正在收進照片...':'正在封存這封信...';
+  let saved=false;
   try{
-    if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`chooseYouEntries/${key}/${chooseSelectedPlayer}`),entry);}
-    else queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
-    document.getElementById('choose-edit-hint').textContent='已儲存並同步';
-  }catch(error){
-    console.warn('每月選擇同步失敗，已排入待同步',error);
-    queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
-    document.getElementById('choose-edit-hint').textContent='已先存到這台裝置，連線後會補同步';
-  }finally{button.disabled=false;}
+    let editPasswordSalt=old?.editPasswordSalt||chooseVerifiedPasswordSalt||chooseCreatePasswordSalt();
+    let editPasswordHash=old?.editPasswordHash||chooseVerifiedPasswordHash;
+    if(password) editPasswordHash=await chooseHashPassword(password,editPasswordSalt);
+    if(!editPasswordHash) throw new Error('缺少修改密碼');
+    const uploaded=await Promise.all(choosePendingPhotoFiles.map((file,index)=>chooseUploadPhoto(file,index,key,chooseSelectedPlayer)));
+    const photos=[...chooseExistingPhotos,...uploaded].slice(0,5);
+    const entry={text:text.slice(0,600),photos,editPasswordHash,editPasswordSalt,createdAt:old?.createdAt||Date.now(),updatedAt:Date.now()};
+    chooseClearPendingPhotoUrls();
+    choosePendingPhotoFiles=[];
+    chooseExistingPhotos=[...photos];
+    choosePhotosDirty=false;
+    chooseEditingSealed=false;
+    chooseVerifiedPasswordHash='';
+    chooseVerifiedPasswordSalt='';
+    passwordInput.value='';
+    chooseEntriesData[key]={...(chooseEntriesData[key]||{}),[chooseSelectedPlayer]:entry};
+    chooseWriteCache();
+    chooseRender();
+    saved=true;
+    try{
+      if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`chooseYouEntries/${key}/${chooseSelectedPlayer}`),entry);}
+      else queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
+      document.getElementById('choose-edit-hint').textContent='已儲存並同步';
+    }catch(syncError){
+      console.warn('每月選擇同步失敗，已排入待同步',syncError);
+      queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
+      document.getElementById('choose-edit-hint').textContent='已先存到這台裝置，連線後會補同步';
+    }
+  }catch(uploadError){
+    console.warn('心約照片處理失敗',uploadError);
+    document.getElementById('choose-edit-hint').textContent='照片處理失敗，請重選後再試';
+    alert('照片沒有成功放進信裡，請換一張再試一次');
+  }finally{
+    button.disabled=false;
+    chooseRender();
+    if(saved&&beforeCount<2&&chooseEntryCount(chooseEntriesData[key])===2) chooseMaybeShowReadyPage(key);
+  }
 }
 function chooseInitFirebase(){
   chooseLoadCache();
@@ -7608,6 +7979,8 @@ function chooseInitFirebase(){
     chooseEntriesData=snapshot.val()||{};
     chooseWriteCache();
     chooseRender();
+    const nextCount=chooseEntryCount(chooseEntriesData[chooseMonthKey()]);
+    if(nextCount===2&&document.getElementById('page-choose')?.classList.contains('active')) chooseMaybeShowReadyPage(chooseMonthKey());
   },error=>{
     chooseSyncStarted=false;
     console.warn('每月選擇同步失敗',error);
@@ -7620,7 +7993,7 @@ if(window._fb) chooseInitFirebase();
 
 // ── 足跡地圖（Firebase 同步）──
 const FOOTPRINT_CACHE_KEY='footprint_visits_cache_v1';
-const FOOTPRINT_SEARCH_CACHE_KEY='footprint_place_search_cache_v2';
+const FOOTPRINT_SEARCH_CACHE_KEY='footprint_place_search_cache_v4';
 let footprintVisitsData={};
 let footprintSyncStarted=false;
 let footprintMap=null;
@@ -7632,6 +8005,7 @@ let footprintEditorMarker=null;
 let footprintSearchResults=[];
 let footprintLastSearchAt=0;
 let footprintSearchRequestId=0;
+let footprintExtraDates=[];
 
 function footprintEscape(value){
   return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -7639,6 +8013,23 @@ function footprintEscape(value){
 function footprintTodayKey(){
   const d=new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function footprintRenderDateChips(){
+  const wrap=document.getElementById('footprint-date-chips');
+  if(!wrap) return;
+  wrap.innerHTML=footprintExtraDates.sort().map(date=>`<span class="footprint-date-chip">${footprintEscape(date)}<button type="button" data-footprint-date-remove="${footprintEscape(date)}" aria-label="移除 ${footprintEscape(date)}">×</button></span>`).join('');
+  wrap.querySelectorAll('[data-footprint-date-remove]').forEach(button=>button.addEventListener('click',()=>{
+    footprintExtraDates=footprintExtraDates.filter(date=>date!==button.dataset.footprintDateRemove);
+    footprintRenderDateChips();
+  }));
+}
+function footprintAddSelectedDate(){
+  const input=document.getElementById('footprint-date');
+  const date=String(input?.value||'');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)){alert('請先選一個日期');return;}
+  if(!footprintExtraDates.includes(date)) footprintExtraDates.push(date);
+  input.value='';
+  footprintRenderDateChips();
 }
 function footprintNormalizeName(value){
   return String(value||'').trim().toLowerCase().replace(/[\s　]+/g,'');
@@ -7653,7 +8044,7 @@ function footprintNormalizeVisit(id,value){
   const placeName=String(value?.placeName||'').trim().slice(0,60);
   const date=String(value?.date||'').slice(0,10);
   if(lat===null||lng===null||!placeName||!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
-  return {id:String(id),placeId:String(value?.placeId||''),placeName,date,note:String(value?.note||'').trim().slice(0,500),lat:Math.max(-90,Math.min(90,lat)),lng:Math.max(-180,Math.min(180,lng)),createdAt:Number(value?.createdAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
+  return {id:String(id),placeId:String(value?.placeId||''),placeName,address:String(value?.address||'').trim().slice(0,160),date,note:String(value?.note||'').trim().slice(0,500),lat:Math.max(-90,Math.min(90,lat)),lng:Math.max(-180,Math.min(180,lng)),createdAt:Number(value?.createdAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
 }
 function footprintLoadCache(){
   try{
@@ -7758,6 +8149,8 @@ function footprintRenderDetail(group){
   detail.hidden=false;
   document.getElementById('footprint-detail-name').textContent=group.name;
   document.getElementById('footprint-detail-meta').textContent=`去過 ${group.visits.length} 次 · 最近一次 ${footprintFormatDate(group.latestDate)}`;
+  const latestAddress=group.visits.find(visit=>visit.address)?.address||'';
+  document.getElementById('footprint-detail-address').textContent=latestAddress;
   document.getElementById('footprint-revisit-btn').onclick=()=>footprintOpenEditor('',group.placeId);
   const timeline=document.getElementById('footprint-timeline');
   timeline.innerHTML=group.visits.map(visit=>{
@@ -7798,6 +8191,10 @@ function footprintShowPage(){
   footprintRender();
   requestAnimationFrame(()=>{if(footprintMap) footprintMap.invalidateSize();});
 }
+function footprintMirrorPlaceQuery(value){
+  const search=document.getElementById('footprint-search-input');
+  if(search&&document.activeElement!==search) search.value=String(value||'');
+}
 
 function footprintReadSearchCache(){
   try{
@@ -7816,19 +8213,37 @@ function footprintWriteSearchCache(query,results){
 function footprintNormalizeSearchResults(items){
   const seen=new Set();
   return (Array.isArray(items)?items:[]).map(item=>{
-    const location=item?.location||{};
-    const locationLat=typeof location.lat==='function'?location.lat():location.lat;
-    const locationLng=typeof location.lng==='function'?location.lng():location.lng;
-    const lat=footprintNumber(item?.lat??locationLat),lng=footprintNumber(item?.lon??item?.lng??locationLng);
+    const lat=footprintNumber(item?.lat),lng=footprintNumber(item?.lon??item?.lng);
     if(lat===null||lng===null) return null;
     const details=item?.namedetails||{};
-    const displayName=String(item?.formattedAddress||item?.display_name||item?.displayName?.text||'').trim();
-    const name=String(item?.displayName?.text||details['name:zh-Hant']||details['name:zh']||details.name||item?.name||displayName.split(',')[0]||'搜尋結果').trim().slice(0,60);
+    const displayName=String(item?.displayName||item?.display_name||'').trim();
+    const name=String(item?.name||details['name:zh-Hant']||details['name:zh']||details.name||displayName.split(',')[0]||'搜尋結果').trim().slice(0,60);
     const key=`${lat.toFixed(5)},${lng.toFixed(5)}`;
     if(seen.has(key)) return null;
     seen.add(key);
-    return {name,displayName:displayName||name,lat,lng,placeId:String(item?.placeId||item?.id||''),provider:item?.provider==='google'||item?.id?'google':'osm'};
+    const osmId=item?.osm_type&&item?.osm_id?`osm_${item.osm_type}_${item.osm_id}`:'';
+    return {name,displayName:displayName||name,lat,lng,placeId:String(item?.placeId||osmId||item?.id||''),provider:String(item?.provider||'nominatim')};
   }).filter(Boolean).slice(0,8);
+}
+function footprintNormalizePhotonResults(features){
+  return footprintNormalizeSearchResults((Array.isArray(features)?features:[]).filter(feature=>{
+    const countryCode=String(feature?.properties?.countrycode||'').toUpperCase();
+    return !countryCode||countryCode==='TW';
+  }).map(feature=>{
+    const properties=feature?.properties||{};
+    const coordinates=feature?.geometry?.coordinates||[];
+    const address=[properties.name,[properties.housenumber,properties.street].filter(Boolean).join(' '),properties.district,properties.city,properties.county,properties.state,properties.postcode,properties.country]
+      .filter(Boolean).filter((value,index,list)=>list.indexOf(value)===index).join('，');
+    return {name:properties.name||properties.street||properties.city||'搜尋結果',displayName:address,lat:coordinates[1],lng:coordinates[0],osm_type:properties.osm_type,osm_id:properties.osm_id,provider:'photon'};
+  }));
+}
+function footprintMergeSearchResults(...sets){
+  const seen=new Set();
+  return sets.flat().filter(result=>{
+    const key=`${Number(result.lat).toFixed(5)},${Number(result.lng).toFixed(5)}`;
+    if(seen.has(key)) return false;
+    seen.add(key);return true;
+  }).slice(0,8);
 }
 function footprintRenderSearchResults(results,message=''){
   const panel=document.getElementById('footprint-search-results');
@@ -7836,30 +8251,15 @@ function footprintRenderSearchResults(results,message=''){
   panel.hidden=false;
   if(message){panel.innerHTML=`<div class="footprint-search-message">${footprintEscape(message)}</div>`;return;}
   if(!results.length){panel.innerHTML='<div class="footprint-search-message">找不到符合的地點，換個關鍵字或輸入完整地址試試看</div>';return;}
-  const usesGoogle=results.some(result=>result.provider==='google');
-  const credit=usesGoogle?'地點資料由 Google Maps 提供':'搜尋資料 © OpenStreetMap contributors';
-  panel.innerHTML=results.map((result,index)=>`<button type="button" class="footprint-search-item" data-footprint-search-index="${index}"><span class="footprint-search-name">${footprintEscape(result.name)}</span><span class="footprint-search-address">${footprintEscape(result.displayName)}</span></button>`).join('')+`<div class="footprint-search-credit">${credit}</div>`;
+  panel.innerHTML=results.map((result,index)=>`<button type="button" class="footprint-search-item" data-footprint-search-index="${index}"><span class="footprint-search-name">${footprintEscape(result.name)}</span><span class="footprint-search-address">${footprintEscape(result.displayName)}</span></button>`).join('')+'<div class="footprint-search-credit">地點資料 © OpenStreetMap contributors · Photon / Nominatim</div>';
   panel.querySelectorAll('[data-footprint-search-index]').forEach(button=>button.addEventListener('click',()=>footprintSelectSearchResult(Number(button.dataset.footprintSearchIndex))));
 }
-async function footprintSearchGooglePlaces(query){
-  if(!window.google?.maps?.importLibrary) throw new Error('Google Places loader unavailable');
-  const {Place}=await google.maps.importLibrary('places');
-  const center=footprintEditorMap?.getCenter?.()||footprintMap?.getCenter?.()||{lat:23.72,lng:121};
-  const {places}=await Place.searchByText({
-    textQuery:query,
-    fields:['id','displayName','formattedAddress','location'],
-    locationBias:{lat:Number(center.lat),lng:Number(center.lng)},
-    language:'zh-TW',
-    region:'tw',
-    maxResultCount:8
-  });
-  return footprintNormalizeSearchResults((places||[]).map(place=>({
-    id:place.id,
-    displayName:{text:place.displayName},
-    formattedAddress:place.formattedAddress,
-    location:place.location,
-    provider:'google'
-  })));
+async function footprintSearchPhoton(query){
+  const params=new URLSearchParams({q:query,limit:'8'});
+  const response=await fetch(`https://photon.komoot.io/api/?${params.toString()}`,{headers:{Accept:'application/json'}});
+  if(!response.ok) throw new Error(`Photon HTTP ${response.status}`);
+  const data=await response.json();
+  return footprintNormalizePhotonResults(data?.features);
 }
 async function footprintSearchOpenStreetMap(query){
   const wait=Math.max(0,1000-(Date.now()-footprintLastSearchAt));
@@ -7873,13 +8273,11 @@ async function footprintSearchOpenStreetMap(query){
 async function footprintSearchLocation(){
   const input=document.getElementById('footprint-search-input');
   const button=document.getElementById('footprint-search-btn');
-  const query=String(input?.value||'').trim();
+  const query=String(input?.value||document.getElementById('footprint-place-name')?.value||'').trim();
   if(query.length<2){footprintRenderSearchResults([], '請至少輸入兩個字');return;}
   const cacheKey=footprintNormalizeName(query);
   const cached=footprintReadSearchCache()[cacheKey];
-  const cachedUsesGoogle=Array.isArray(cached?.results)&&cached.results.some(result=>result?.provider==='google');
-  const cacheMaxAge=(cachedUsesGoogle?30:90)*864e5;
-  if(cached&&Date.now()-Number(cached.savedAt)<cacheMaxAge){
+  if(cached&&Date.now()-Number(cached.savedAt)<90*864e5){
     footprintSearchResults=footprintNormalizeSearchResults(cached.results);
     footprintRenderSearchResults(footprintSearchResults);
     return;
@@ -7889,9 +8287,10 @@ async function footprintSearchLocation(){
   footprintRenderSearchResults([], '正在搜尋地點...');
   try{
     let results=[];
-    try{results=await footprintSearchGooglePlaces(query);}
-    catch(googleError){console.warn('Google 地點搜尋暫時不可用，改用一般地點資料',googleError);}
-    if(!results.length) results=await footprintSearchOpenStreetMap(query);
+    try{results=await footprintSearchPhoton(query);}
+    catch(photonError){console.warn('Photon 地點搜尋暫時不可用',photonError);}
+    try{results=footprintMergeSearchResults(results,await footprintSearchOpenStreetMap(query));}
+    catch(nominatimError){console.warn('Nominatim 地點搜尋暫時不可用',nominatimError);}
     if(requestId!==footprintSearchRequestId) return;
     footprintSearchResults=results;
     footprintWriteSearchCache(cacheKey,results);
@@ -7907,7 +8306,8 @@ function footprintSelectSearchResult(index){
   const result=footprintSearchResults[index];
   if(!result) return;
   document.getElementById('footprint-place-name').value=result.name;
-  document.getElementById('footprint-place-id').value=result.placeId?`google_${result.placeId}`:'';
+  document.getElementById('footprint-address').value=result.displayName;
+  document.getElementById('footprint-place-id').value=result.placeId||'';
   document.getElementById('footprint-search-input').value=result.name;
   document.getElementById('footprint-search-results').hidden=true;
   footprintSetEditorPosition(result.lat,result.lng,true);
@@ -7937,15 +8337,19 @@ function footprintSetEditorPosition(lat,lng,move=true){
 function footprintOpenEditor(visitId='',placeId='',presetPosition=null){
   const visit=visitId?footprintNormalizeVisit(visitId,footprintVisitsData[visitId]):null;
   const group=placeId?footprintGetGroups().find(item=>item.placeId===placeId):null;
+  footprintExtraDates=[];
+  footprintRenderDateChips();
+  document.getElementById('footprint-date-add').hidden=Boolean(visit);
   document.getElementById('footprint-edit-id').value=visit?.id||'';
   document.getElementById('footprint-place-id').value=visit?.placeId||group?.placeId||'';
   document.getElementById('footprint-date').value=visit?.date||footprintTodayKey();
   document.getElementById('footprint-place-name').value=visit?.placeName||group?.name||'';
+  document.getElementById('footprint-address').value=visit?.address||group?.visits?.find(item=>item.address)?.address||'';
   document.getElementById('footprint-note').value=visit?.note||'';
   document.getElementById('footprint-lat').value='';
   document.getElementById('footprint-lng').value='';
   document.getElementById('footprint-coordinate').textContent='尚未選擇位置';
-  document.getElementById('footprint-search-input').value='';
+  document.getElementById('footprint-search-input').value=visit?.placeName||group?.name||'';
   document.getElementById('footprint-search-results').hidden=true;
   document.getElementById('footprint-search-results').innerHTML='';
   document.getElementById('footprint-search-btn').disabled=false;
@@ -7993,11 +8397,13 @@ async function footprintSaveVisit(event){
   const editId=document.getElementById('footprint-edit-id').value;
   const original=editId?footprintNormalizeVisit(editId,footprintVisitsData[editId]):null;
   const placeName=document.getElementById('footprint-place-name').value.trim();
+  const address=document.getElementById('footprint-address').value.trim();
   const date=document.getElementById('footprint-date').value;
+  const dates=(editId?[date]:[...footprintExtraDates,date]).filter(value=>/^\d{4}-\d{2}-\d{2}$/.test(value)).filter((value,index,list)=>list.indexOf(value)===index).sort();
   const note=document.getElementById('footprint-note').value.trim();
   const lat=footprintNumber(document.getElementById('footprint-lat').value);
   const lng=footprintNumber(document.getElementById('footprint-lng').value);
-  if(!placeName||!date){alert('請填寫日期和地點名稱');return;}
+  if(!placeName||!dates.length){alert('請填寫地點名稱並至少選一個日期');return;}
   if(lat===null||lng===null){alert('請在地圖上點一下，選擇這次足跡的位置');return;}
   let placeId=document.getElementById('footprint-place-id').value;
   if(original&&placeId){
@@ -8009,10 +8415,13 @@ async function footprintSaveVisit(event){
     const match=footprintFindMatchingGroup(placeName,lat,lng,editId);
     placeId=match?.placeId||`place_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
   }
-  const id=editId||`visit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
-  const record={placeId,placeName:placeName.slice(0,60),date,note:note.slice(0,500),lat,lng,createdAt:original?.createdAt||Date.now(),updatedAt:Date.now()};
+  const stamp=Date.now();
+  const records=dates.map((visitDate,index)=>{
+    const id=editId||`visit_${stamp}_${index}_${Math.random().toString(36).slice(2,7)}`;
+    return [id,{placeId,placeName:placeName.slice(0,60),address:address.slice(0,160),date:visitDate,note:note.slice(0,500),lat,lng,createdAt:original?.createdAt||stamp,updatedAt:stamp}];
+  });
   const wasEmpty=!footprintGetGroups().length;
-  footprintVisitsData[id]=record;
+  records.forEach(([id,record])=>{footprintVisitsData[id]=record;});
   footprintSelectedPlaceId=placeId;
   footprintWriteCache();
   if(wasEmpty) footprintMapHasFit=false;
@@ -8020,12 +8429,14 @@ async function footprintSaveVisit(event){
   footprintCloseEditorDirect();
   button.disabled=true;
   try{
-    if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`footprintVisits/${id}`),record);}
-    else queueFirebaseWrite(`footprintVisits/${id}`,record);
-    footprintSetStatus(editId?'足跡已更新':'足跡已儲存',true);
+    if(window._fb){
+      const {db,ref,update}=window._fb;
+      await update(ref(db,'footprintVisits'),Object.fromEntries(records));
+    }else records.forEach(([id,record])=>queueFirebaseWrite(`footprintVisits/${id}`,record));
+    footprintSetStatus(editId?'足跡已更新':(records.length>1?`${records.length} 個日期已一起儲存`:'足跡已儲存'),true);
   }catch(error){
     console.warn('足跡同步失敗，已排入待同步',error);
-    queueFirebaseWrite(`footprintVisits/${id}`,record);
+    records.forEach(([id,record])=>queueFirebaseWrite(`footprintVisits/${id}`,record));
     footprintSetStatus('已先存到這台裝置，連線後會補同步',true);
   }finally{button.disabled=false;}
 }

@@ -159,8 +159,9 @@ position:fixed;bottom:0;left:0;right:0;
 background:var(--white);
 border-top:1px solid var(--card-border);
 display:flex;justify-content:space-around;
-padding:8px max(0px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(0px,env(safe-area-inset-left));z-index:100;
+padding:8px max(0px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(0px,env(safe-area-inset-left));z-index:1500;
 transition:background .3s;
+isolation:isolate;
 }
 .nav-btn{
 background:none;border:none;
@@ -1266,6 +1267,47 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-ranking-name{font-size:13px;font-weight:700;overflow-wrap:anywhere}
 .footprint-ranking-date{margin-top:2px;color:var(--text-muted);font-size:10px}
 .footprint-ranking-count{color:var(--rose);font-size:12px;font-weight:800;white-space:nowrap}
+
+/* 每月重新選擇你 */
+.choose-page-head{margin-bottom:13px}
+.choose-page-kicker{color:#2f9a68;font-size:10px;font-weight:900;text-transform:uppercase}
+.choose-page-title{margin-top:3px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:24px;font-weight:700}
+.choose-page-sub{margin-top:5px;color:var(--text-muted);font-size:12px;line-height:1.65}
+.choose-month-badge{display:inline-flex;align-items:center;min-height:29px;margin-top:9px;padding:0 10px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--rose);font-size:11px;font-weight:700}
+.choose-compose{padding:16px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
+.choose-compose-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.choose-compose-prompt{margin-top:4px;color:var(--text-muted);font-size:11px;line-height:1.55}
+.choose-player-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:13px 0}
+.choose-player-btn{min-height:43px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.choose-player-btn.active{border-color:var(--pink);background:var(--pink);color:#fff;box-shadow:0 7px 16px rgba(232,99,122,.18)}
+.choose-textarea{width:100%;min-height:150px;padding:13px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:14px;line-height:1.75;resize:vertical;outline:none;overflow-wrap:anywhere}
+.choose-textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
+.choose-compose-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:7px;color:var(--text-muted);font-size:10px}
+.choose-save-btn{width:100%;min-height:47px;margin-top:11px;border:0;border-radius:8px;background:var(--pink);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(232,99,122,.2)}
+.choose-save-btn:disabled{opacity:.58;cursor:wait}
+.choose-answers{margin-top:10px;padding:16px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
+.choose-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:10px}
+.choose-section-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.choose-section-sub{color:var(--text-muted);font-size:10px}
+.choose-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.choose-answer{min-width:0;padding:13px;border:1px solid var(--card-border);border-radius:8px;background:var(--pink-light)}
+.choose-answer.written{background:linear-gradient(145deg,var(--pink-light),var(--white))}
+.choose-answer-name{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--rose);font-size:12px;font-weight:800}
+.choose-answer-status{width:8px;height:8px;border-radius:50%;background:#c7b4bb}
+.choose-answer.written .choose-answer-status{background:#2f9a68;box-shadow:0 0 0 3px rgba(47,154,104,.12)}
+.choose-answer-text{margin-top:9px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}
+.choose-answer-empty{margin-top:9px;color:var(--text-muted);font-size:11px;line-height:1.55}
+.choose-answer-time{margin-top:8px;color:var(--text-muted);font-size:9px}
+.choose-history{margin-top:10px}
+.choose-history[hidden]{display:none}
+.choose-history-month{margin-bottom:8px;padding:14px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
+.choose-history-month:last-child{margin-bottom:0}
+.choose-history-label{margin-bottom:9px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700}
+.choose-history-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.choose-history-entry{min-width:0;padding:10px;border-radius:7px;background:var(--pink-light)}
+.choose-history-name{color:var(--rose);font-size:11px;font-weight:800}
+.choose-history-text{margin-top:5px;color:var(--text);font-size:11px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:520px){.choose-answer-grid,.choose-history-pair{grid-template-columns:1fr}.choose-page-title{font-size:21px}.choose-textarea{min-height:132px}}
 @media(max-width:520px){.footprint-editor-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 </style>
 </head>
@@ -1649,6 +1691,44 @@ onclick="hideSpecialForToday()">
   </section>
 </div>
 
+<!-- CHOOSE YOU -->
+<div id="page-choose" class="page">
+  <div class="choose-page-head">
+    <div class="choose-page-kicker">MONTHLY PROMISE</div>
+    <div class="choose-page-title">今天重新選擇你</div>
+    <div class="choose-page-sub">一個月一次，寫下現在為什麼仍願意選擇對方。</div>
+    <div class="choose-month-badge" id="choose-month-badge"></div>
+  </div>
+  <section class="choose-compose">
+    <div class="choose-compose-title">這個月，我想說</div>
+    <div class="choose-compose-prompt" id="choose-compose-prompt"></div>
+    <div class="choose-player-tabs" role="group" aria-label="選擇寫下答案的人">
+      <button type="button" class="choose-player-btn active" data-choose-player="shengzhan" onclick="chooseSelectPlayer('shengzhan')">我是聖展</button>
+      <button type="button" class="choose-player-btn" data-choose-player="yujun" onclick="chooseSelectPlayer('yujun')">我是予君</button>
+    </div>
+    <textarea class="choose-textarea" id="choose-text" maxlength="600" placeholder="不用寫得完美，只要寫下此刻最真實的原因。" oninput="chooseUpdateCount()"></textarea>
+    <div class="choose-compose-meta">
+      <span id="choose-edit-hint">這個月還沒有寫下答案</span>
+      <span id="choose-char-count">0 / 600</span>
+    </div>
+    <button type="button" class="choose-save-btn" id="choose-save-btn" onclick="chooseSaveEntry()">寫下這個月的答案</button>
+  </section>
+  <section class="choose-answers">
+    <div class="choose-section-head">
+      <div class="choose-section-title">這個月的我們</div>
+      <div class="choose-section-sub" id="choose-current-status"></div>
+    </div>
+    <div class="choose-answer-grid" id="choose-current-answers"></div>
+  </section>
+  <section class="choose-history" id="choose-history" hidden>
+    <div class="choose-section-head">
+      <div class="choose-section-title">以前的選擇</div>
+      <div class="choose-section-sub">每個月都留下來</div>
+    </div>
+    <div id="choose-history-list"></div>
+  </section>
+</div>
+
 <!-- FOOTPRINTS -->
 <div id="page-footprints" class="page">
   <div class="footprint-page-head">
@@ -1817,6 +1897,7 @@ onclick="hideSpecialForToday()">
   <button class="nav-btn active" onclick="showPage('home',this)"><span class="nav-icon">🏠</span>首頁</button>
   <button class="nav-btn" onclick="showPage('album',this)"><span class="nav-icon">📸</span>相簿</button>
   <button class="nav-btn" onclick="showPage('memories',this)"><span class="nav-icon">🎞️</span>回憶</button>
+  <button class="nav-btn" onclick="showPage('choose',this)"><span class="nav-icon">♡</span>選擇你</button>
   <button class="nav-btn" onclick="showPage('footprints',this)"><span class="nav-icon">📍</span>足跡</button>
   <button class="nav-btn" onclick="showPage('period',this)"><span class="nav-icon">🌸</span>生理期</button>
 </nav>
@@ -4105,6 +4186,7 @@ function showPage(id,btn){
     else albumRenderCal();
   }
   if(id==='memories') renderMemories();
+  if(id==='choose') chooseRender();
   if(id==='footprints') footprintShowPage();
 }
 
@@ -7239,6 +7321,139 @@ function showLoveSurprise(item){
 
 
 
+// ── 每月重新選擇你（Firebase 同步）──
+const CHOOSE_CACHE_KEY='choose_you_entries_cache_v1';
+let chooseEntriesData={};
+let chooseSelectedPlayer=localStorage.getItem('choose_you_player')||'shengzhan';
+let chooseSyncStarted=false;
+
+function chooseEscape(value){
+  return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+}
+function chooseMonthKey(date=new Date()){
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+}
+function chooseMonthLabel(key){
+  const match=String(key||'').match(/^(\d{4})-(\d{2})$/);
+  return match?`${match[1]} 年 ${Number(match[2])} 月`:key;
+}
+function choosePlayerInfo(player){
+  return player==='yujun'?{name:'予君',partner:'聖展'}:{name:'聖展',partner:'予君'};
+}
+function chooseNormalizeEntry(value){
+  const text=String(value?.text||'').trim().slice(0,600);
+  if(!text) return null;
+  return {text,createdAt:Number(value?.createdAt)||Number(value?.updatedAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
+}
+function chooseLoadCache(){
+  try{
+    const value=JSON.parse(localStorage.getItem(CHOOSE_CACHE_KEY)||'{}');
+    chooseEntriesData=value&&typeof value==='object'?value:{};
+  }catch(_){chooseEntriesData={};}
+}
+function chooseWriteCache(){
+  try{localStorage.setItem(CHOOSE_CACHE_KEY,JSON.stringify(chooseEntriesData));}catch(_){}
+}
+function chooseFormatTime(timestamp){
+  const date=new Date(Number(timestamp)||0);
+  if(Number.isNaN(date.getTime())) return '';
+  return `${date.getMonth()+1}/${date.getDate()} ${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
+}
+function chooseRenderAnswer(player,entry){
+  const info=choosePlayerInfo(player);
+  if(!entry) return `<article class="choose-answer"><div class="choose-answer-name"><span>${info.name}</span><i class="choose-answer-status" aria-hidden="true"></i></div><div class="choose-answer-empty">還沒寫下這個月的答案。</div></article>`;
+  return `<article class="choose-answer written"><div class="choose-answer-name"><span>${info.name}</span><i class="choose-answer-status" aria-hidden="true"></i></div><div class="choose-answer-text">${chooseEscape(entry.text)}</div><div class="choose-answer-time">${chooseFormatTime(entry.updatedAt)} 寫下</div></article>`;
+}
+function chooseRender(){
+  const badge=document.getElementById('choose-month-badge');
+  if(!badge) return;
+  if(!['shengzhan','yujun'].includes(chooseSelectedPlayer)) chooseSelectedPlayer='shengzhan';
+  const key=chooseMonthKey();
+  const current=chooseEntriesData[key]||{};
+  const selected=chooseNormalizeEntry(current[chooseSelectedPlayer]);
+  const info=choosePlayerInfo(chooseSelectedPlayer);
+  badge.textContent=`${chooseMonthLabel(key)} · 本月的選擇`;
+  document.querySelectorAll('[data-choose-player]').forEach(button=>button.classList.toggle('active',button.dataset.choosePlayer===chooseSelectedPlayer));
+  document.getElementById('choose-compose-prompt').textContent=`${info.name}，這個月為什麼仍然願意選擇${info.partner}？`;
+  const textarea=document.getElementById('choose-text');
+  if(document.activeElement!==textarea) textarea.value=selected?.text||'';
+  document.getElementById('choose-edit-hint').textContent=selected?'已經寫下，可以隨時修改':'這個月還沒有寫下答案';
+  document.getElementById('choose-save-btn').textContent=selected?'更新這個月的答案':'寫下這個月的答案';
+  chooseUpdateCount();
+  const entries={shengzhan:chooseNormalizeEntry(current.shengzhan),yujun:chooseNormalizeEntry(current.yujun)};
+  const written=Number(Boolean(entries.shengzhan))+Number(Boolean(entries.yujun));
+  document.getElementById('choose-current-status').textContent=`已寫下 ${written} / 2`;
+  document.getElementById('choose-current-answers').innerHTML=chooseRenderAnswer('shengzhan',entries.shengzhan)+chooseRenderAnswer('yujun',entries.yujun);
+
+  const historyKeys=Object.keys(chooseEntriesData||{}).filter(month=>month!==key&&/^\d{4}-\d{2}$/.test(month)).sort().reverse().filter(month=>{
+    const data=chooseEntriesData[month]||{};
+    return chooseNormalizeEntry(data.shengzhan)||chooseNormalizeEntry(data.yujun);
+  }).slice(0,24);
+  const history=document.getElementById('choose-history');
+  const list=document.getElementById('choose-history-list');
+  history.hidden=!historyKeys.length;
+  list.innerHTML=historyKeys.map(month=>{
+    const data=chooseEntriesData[month]||{};
+    const shengzhan=chooseNormalizeEntry(data.shengzhan);
+    const yujun=chooseNormalizeEntry(data.yujun);
+    const entry=(player,value)=>`<div class="choose-history-entry"><div class="choose-history-name">${choosePlayerInfo(player).name}</div><div class="choose-history-text">${value?chooseEscape(value.text):'這個月沒有留下答案'}</div></div>`;
+    return `<article class="choose-history-month"><div class="choose-history-label">${chooseMonthLabel(month)}</div><div class="choose-history-pair">${entry('shengzhan',shengzhan)}${entry('yujun',yujun)}</div></article>`;
+  }).join('');
+}
+function chooseSelectPlayer(player){
+  if(!['shengzhan','yujun'].includes(player)) return;
+  chooseSelectedPlayer=player;
+  localStorage.setItem('choose_you_player',player);
+  chooseRender();
+  document.getElementById('choose-text').focus();
+}
+function chooseUpdateCount(){
+  const textarea=document.getElementById('choose-text');
+  const counter=document.getElementById('choose-char-count');
+  if(textarea&&counter) counter.textContent=`${textarea.value.length} / 600`;
+}
+async function chooseSaveEntry(){
+  const textarea=document.getElementById('choose-text');
+  const button=document.getElementById('choose-save-btn');
+  const text=textarea.value.trim();
+  if(!text){alert('先寫下這個月為什麼仍然選擇對方');return;}
+  const key=chooseMonthKey();
+  const old=chooseNormalizeEntry(chooseEntriesData[key]?.[chooseSelectedPlayer]);
+  const entry={text:text.slice(0,600),createdAt:old?.createdAt||Date.now(),updatedAt:Date.now()};
+  chooseEntriesData[key]={...(chooseEntriesData[key]||{}),[chooseSelectedPlayer]:entry};
+  chooseWriteCache();
+  chooseRender();
+  button.disabled=true;
+  try{
+    if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`chooseYouEntries/${key}/${chooseSelectedPlayer}`),entry);}
+    else queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
+    document.getElementById('choose-edit-hint').textContent='已儲存並同步';
+  }catch(error){
+    console.warn('每月選擇同步失敗，已排入待同步',error);
+    queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
+    document.getElementById('choose-edit-hint').textContent='已先存到這台裝置，連線後會補同步';
+  }finally{button.disabled=false;}
+}
+function chooseInitFirebase(){
+  chooseLoadCache();
+  chooseRender();
+  if(chooseSyncStarted||!window._fb) return;
+  chooseSyncStarted=true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'chooseYouEntries'),snapshot=>{
+    chooseEntriesData=snapshot.val()||{};
+    chooseWriteCache();
+    chooseRender();
+  },error=>{
+    chooseSyncStarted=false;
+    console.warn('每月選擇同步失敗',error);
+  });
+}
+
+chooseLoadCache();
+chooseRender();
+if(window._fb) chooseInitFirebase();
+
 // ── 足跡地圖（Firebase 同步）──
 const FOOTPRINT_CACHE_KEY='footprint_visits_cache_v1';
 const FOOTPRINT_SEARCH_CACHE_KEY='footprint_place_search_cache_v1';
@@ -7656,6 +7871,7 @@ if(window._fb) footprintInitFirebase();
 
 window.addEventListener('firebaseReady',()=>{
   albumInitFirebase();
+  chooseInitFirebase();
   footprintInitFirebase();
   pdLoad();
   checkLoveSurprise();

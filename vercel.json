@@ -1,10 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/((?!maintenance).*)",
-      "destination": "/maintenance"
-    }
-  ]
+  "cleanUrls": true
 }

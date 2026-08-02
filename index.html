@@ -1339,8 +1339,6 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-compose-actions{display:flex;align-items:center;gap:13px;margin-top:14px}
 .choose-save-btn{min-width:210px;min-height:46px;padding:0 19px;border:0;border-radius:999px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 9px 20px rgba(201,75,100,.2)}
 .choose-save-btn:disabled{opacity:.58;cursor:wait}
-.choose-edit-sealed{min-height:46px;padding:0 17px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
-.choose-edit-sealed[hidden]{display:none}
 .choose-lock-copy{display:flex;align-items:center;gap:6px;color:var(--text-muted);font-size:9px;line-height:1.5}
 .choose-lock-copy::before{content:'◇';color:#2f9a68;font-size:14px}
 .choose-side{min-width:0}
@@ -1407,21 +1405,21 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-lock-scene.ready .choose-lock-heart{box-shadow:0 0 0 10px rgba(232,99,122,.1),0 12px 28px rgba(166,76,98,.3)}
 .choose-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
 .choose-answer{position:relative;min-width:0;min-height:300px;overflow:hidden;padding:27px 24px 22px;border:1px solid var(--card-border);border-radius:8px;background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(166,76,98,.055) 31px 32px),var(--white);box-shadow:0 15px 34px rgba(74,37,49,.1)}
-.choose-answer::before{content:'';position:absolute;right:-28px;top:-28px;width:66px;height:66px;border:1px solid var(--card-border);background:var(--pink-light);transform:rotate(45deg)}
+.choose-answer::before{content:'';position:absolute;z-index:0;right:-23px;top:-23px;width:44px;height:44px;border:1px solid var(--card-border);background:var(--pink-light);transform:rotate(45deg);pointer-events:none}
 .choose-answer.written{border-color:rgba(47,154,104,.2)}
-.choose-answer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:13px;border-bottom:1px solid var(--card-border)}
+.choose-answer-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 18px 13px 0;border-bottom:1px solid var(--card-border)}
 .choose-answer-name{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
 .choose-answer-status{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:9px;font-style:normal}
 .choose-answer-status::before{content:'';width:8px;height:8px;border-radius:50%;background:#c7b4bb}
 .choose-answer.written .choose-answer-status{color:#2f9a68}
 .choose-answer.written .choose-answer-status::before{background:#2f9a68;box-shadow:0 0 0 3px rgba(47,154,104,.12)}
-.choose-answer-quote{margin-top:19px;color:rgba(166,76,98,.2);font:700 42px/1 Georgia,serif}
-.choose-answer-text{margin-top:-13px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
-.choose-answer-photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:18px 0 26px}
+.choose-answer-quote{position:relative;z-index:1;margin-top:19px;color:rgba(166,76,98,.2);font:700 42px/1 Georgia,serif}
+.choose-answer-text{position:relative;z-index:1;margin-top:-13px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
+.choose-answer-photos{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:18px 0 26px}
 .choose-answer-photos img{width:100%;aspect-ratio:4/3;display:block;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);object-fit:cover}
 .choose-answer-photos img:first-child:nth-last-child(1){grid-column:1/-1;aspect-ratio:16/10;object-fit:contain}
-.choose-answer-empty{margin-top:25px;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:12px;line-height:1.8;text-align:center}
-.choose-answer-time{position:absolute;right:22px;bottom:17px;color:var(--text-muted);font-size:9px}
+.choose-answer-empty{position:relative;z-index:1;margin-top:25px;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:12px;line-height:1.8;text-align:center}
+.choose-answer-time{position:absolute;z-index:1;right:22px;bottom:17px;color:var(--text-muted);font-size:9px}
 body.choose-letterbox-open{overflow:hidden}
 .choose-ready-bg{position:fixed;z-index:10055;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(circle at 50% 18%,rgba(255,238,243,.97),rgba(68,35,46,.82));backdrop-filter:blur(9px)}
 .choose-ready-card{position:relative;width:min(100%,530px);overflow:hidden;padding:48px 30px 32px;border:1px solid rgba(255,255,255,.62);border-radius:10px;background:var(--white);text-align:center;box-shadow:0 30px 90px rgba(37,14,23,.38);animation:chooseReadyArrive .58s cubic-bezier(.16,1,.3,1) both}
@@ -1467,7 +1465,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.choose-compose,.choose-letterbox,.choose-ready-card,.choose-ready-icon,.choose-celebration-mark{animation:none!important}}
 @media(max-width:820px){.choose-layout{grid-template-columns:1fr;gap:18px;padding:18px}.choose-side{display:block}.choose-history{margin-top:14px}}
 @media(max-width:620px){.choose-answer-grid{grid-template-columns:1fr}.choose-letterbox-bg{align-items:flex-end;padding:0}.choose-letterbox{max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-letterbox-body{padding:16px 13px calc(22px + env(safe-area-inset-bottom))}.choose-answer{min-height:270px;padding:22px 18px}}
-@media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn,.choose-edit-sealed{width:100%;min-width:0}.choose-edit-sealed{margin-top:8px}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
+@media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-brand{min-width:0;font-size:10px}.choose-brand span:last-child{overflow-wrap:anywhere}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
 @media(max-width:520px){.footprint-editor-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 </style>
 </head>
@@ -1856,14 +1854,14 @@ onclick="hideSpecialForToday()">
 <div id="page-choose" class="page choose-page">
   <section class="choose-shell">
     <div class="choose-topbar">
-      <div class="choose-brand"><span class="choose-brand-mark" aria-hidden="true">♡</span><span>心約 · 只屬於我們</span></div>
+      <div class="choose-brand"><span class="choose-brand-mark" aria-hidden="true">♡</span><span>心約 · 一個月一次的心意約定</span></div>
       <div class="choose-period"><span class="choose-period-mark" aria-hidden="true">▦</span><span>本月的選擇</span><strong class="choose-month-badge" id="choose-month-badge"></strong></div>
     </div>
     <div class="choose-layout">
   <section class="choose-compose">
     <div class="choose-letter-kicker" id="choose-date-kicker">MONTHLY PROMISE</div>
     <h1 class="choose-letter-title">今天，我依然選擇你。</h1>
-    <p class="choose-letter-copy">不是因為一切都完美，而是走過這個月以後，我仍然想牽著你繼續往前。</p>
+    <p class="choose-letter-copy" id="choose-letter-copy">不是因為一切都完美，而是走過這個月以後，我仍然想牽著你繼續往前。</p>
     <div class="choose-player-tabs" role="group" aria-label="選擇寫下答案的人">
       <button type="button" class="choose-player-btn active" data-choose-player="shengzhan" onclick="chooseSelectPlayer('shengzhan')">我是聖展</button>
       <button type="button" class="choose-player-btn" data-choose-player="yujun" onclick="chooseSelectPlayer('yujun')">我是予君</button>
@@ -1881,7 +1879,6 @@ onclick="hideSpecialForToday()">
     </div>
     <div class="choose-compose-actions">
       <button type="button" class="choose-save-btn" id="choose-save-btn" onclick="chooseOpenSubmitPreview()">送出這個月的信</button>
-      <button type="button" class="choose-edit-sealed" id="choose-edit-sealed" onclick="chooseEditSealedEntry()" hidden>修改我的信</button>
       <span class="choose-lock-copy">每人每月保留一封，內容會同步收藏</span>
     </div>
   </section>
@@ -4419,6 +4416,7 @@ function showPage(id,btn){
   }
   if(id==='memories') renderMemories();
   if(id==='choose'){
+    chooseRefreshOpeningCopy();
     chooseRender();
     chooseStartSong();
     setTimeout(()=>chooseMaybeShowReadyPage(),180);
@@ -7622,6 +7620,124 @@ chooseSongAudio.addEventListener('play',()=>chooseSetSongState(true,'紙短情�
 chooseSongAudio.addEventListener('pause',()=>{if(!chooseSongRequested) chooseSetSongState(false,'心約音樂');});
 chooseSongAudio.addEventListener('error',()=>chooseSetSongState(false,'歌曲暫時無法播放'));
 
+const CHOOSE_OPENING_COPIES=[
+  '不是因為一切都完美，而是走過這個月以後，我仍然想牽著你繼續往前。',
+  '這個月有晴天也有雨天，但想到下一段日子時，我最想並肩的人還是你。',
+  '我們不一定每件事都做得剛好，可我依然願意和你慢慢磨合，把日子過好。',
+  '生活偶爾讓人疲倦，而你仍是我忙完一天後最想靠近的那個人。',
+  '有些日子平淡得沒有故事，但只要身邊是你，我就願意繼續收藏。',
+  '每一次重新想起我們，我都更確定，未來的普通日子還想和你一起過。',
+  '這個月也許不算容易，可我沒有少愛你，反而更想好好理解你。',
+  '即使我們偶爾步調不同，我仍想停下來等你，再一起往同一個方向走。',
+  '我喜歡的不只是快樂時的我們，也願意抱住彼此累了、亂了的樣子。',
+  '我願意再次選擇你，因為和你一起面對生活，比獨自完美更有意義。',
+  '不是每個瞬間都浪漫，但每當想起你，我仍然對我們的以後有所期待。',
+  '走過這個月的大小事情，我最想保留的，依然是我們站在彼此身邊。',
+  '我們都有不夠成熟的時候，可我想陪你一起學會更溫柔地相愛。',
+  '就算生活把節奏打亂，我還是想在每一個明天裡，替你留一個位置。',
+  '這份選擇不是一時心動，而是看過彼此真實的樣子後，仍想繼續靠近。',
+  '我知道愛不是永遠順利，而是在不順利的時候，還願意回到彼此身邊。',
+  '這個月我又多認識你一點，也又多了一個想繼續愛你的理由。',
+  '有時我們會累、會沉默，但我的心並沒有離開，仍然想和你好好走下去。',
+  '我想要的不是沒有爭執的關係，而是每次爭執後，我們都願意再次牽手。',
+  '無論這個月留下多少情緒，我最後最清楚的答案，仍然是想選擇你。',
+  '和你在一起後，我更懂得幸福不只在大事裡，也藏在每天願意陪伴的細節裡。',
+  '我還是會期待你的消息、你的笑，也期待我們下一個一起完成的小日子。',
+  '這個月的我們有進步也有不足，而我願意留下來，陪彼此慢慢變得更好。',
+  '因為是你，所以我願意把耐心多留一點，把真心再說清楚一點。',
+  '我不是因為習慣才選擇你，而是直到現在，仍然真心想把你放進未來。',
+  '每個月重新回答一次，我的答案沒有變：我還想和你一起看更多風景。',
+  '我們或許還不擅長所有事情，但我相信，只要願意說、願意聽，就能繼續走。',
+  '你讓平凡的日子多了盼望，也讓我在想到未來時，自然地想到我們。',
+  '即使這個月有過委屈，我仍願意把心打開，和你重新站回同一邊。',
+  '我選擇的不是一段永遠輕鬆的關係，而是一個值得我認真珍惜的你。',
+  '這個月結束以前，我想再告訴你一次：我依然很慶幸身邊的人是你。',
+  '有你參與的生活，連瑣碎都值得記住，所以我還想和你一起寫下更多。',
+  '我不需要我們時時刻刻完美，只希望遇到問題時，我們仍願意朝彼此走去。',
+  '看過彼此的開心和低落，我還是喜歡這個真實的我們，也願意繼續守護。',
+  '愛你不是只記得心動，也是在普通又忙碌的日子裡，仍然記得你的感受。',
+  '這一個月讓我更確定，比起獨自向前，我更想和你商量著走完往後的路。',
+  '我們偶爾會忘記怎麼表達，但我從沒忘記，你是我很重要、很想珍惜的人。',
+  '即使有些話說得不夠漂亮，我真正想說的是，我仍願意好好陪在你身邊。',
+  '每一次選擇你，都不是重複答案，而是帶著這個月的新回憶，再愛你一次。',
+  '我喜歡我們一起笑的樣子，也珍惜彼此願意為對方調整的每一個瞬間。',
+  '生活有很多未知，但只要想到能和你一起經歷，我就不那麼害怕明天。',
+  '這個月的每一次見面、每一句關心，都讓我更想把我們的故事繼續寫下去。',
+  '我願意選擇你，不是因為沒有別的可能，而是你就是我最想認真對待的人。',
+  '有時候愛很熱烈，有時候只是安靜陪伴，而這兩種我都想和你一起擁有。',
+  '你不需要永遠開心或堅強，我想選擇的是完整的你，包括所有真實情緒。',
+  '我們還有很多地方要學，可只要學習的對象是你，我願意慢慢來。',
+  '這個月我仍然在你的身上，看見讓我心動、安心，也想繼續靠近的理由。',
+  '我喜歡我們不是因為沒有問題，而是遇到問題後，仍願意想辦法愛對方。',
+  '即使日子有點忙亂，你依然是我想分享小事、也想依靠的第一個人。',
+  '我想陪你走的不只是特別的日子，還有那些沒人記得、卻真實存在的每天。',
+  '我們的愛或許不總是轟轟烈烈，但每一次沒有放開彼此，都很值得珍藏。',
+  '這個月又過去了，而我仍想把下一個月的期待、計畫和溫柔都分給你。',
+  '我選擇你，因為在你面前，我可以真實，也願意為了我們成為更好的人。',
+  '有些答案會隨時間改變，但想和你繼續走下去這件事，今天仍然沒有變。',
+  '我想和你一起把誤會說開、把快樂放大，也把每個普通明天過得有光。',
+  '這個月也許有遺憾，但我更想帶著學到的事，和你把下一個月過得更好。',
+  '我願意一次次選擇你，因為你讓愛不只是一種感覺，也成為每天的行動。',
+  '和你相處越久，我越明白，真正珍貴的是我們仍願意對彼此坦白和溫柔。',
+  '不管這個月發生了什麼，我仍然希望，下一次開心或難過時身邊都有你。',
+  '你是我想認真聽懂的人，也是我願意放下固執、重新好好說話的人。',
+  '我不只喜歡你帶來的快樂，也珍惜你讓我學會理解、承擔和陪伴。',
+  '每當我想像未來，畫面裡總有你的身影，這就是我今天再次選你的原因。',
+  '這份心意不是因為日曆提醒，而是我真的還想牽著你，繼續走進更多日常。',
+  '我們一起經過的每件小事，都在提醒我，這段感情值得被好好照顧。',
+  '就算偶爾覺得辛苦，我仍不想輕易錯過你，而想和你一起把難題解開。',
+  '我願意保留好奇，繼續認識每個階段的你，也讓你看見更真實的我。',
+  '愛有時候是擁抱，有時候是耐心，而我願意把這兩樣都好好留給你。',
+  '這個月的我也許不夠完美，但想珍惜你的心意，仍然十分認真。',
+  '我還想和你一起吃很多頓飯、走很多條路，把平凡慢慢變成我們的回憶。',
+  '因為你，我開始期待那些尚未發生的小事，也願意為我們的未來多努力一點。',
+  '我選擇繼續，不是忽略問題，而是相信我們值得坐下來，一件一件說清楚。',
+  '每次看見你願意靠近，我也更想回應這份真心，不讓你的愛獨自等待。',
+  '你讓我知道，被理解很幸福；而我也想成為那個願意理解你的人。',
+  '這個月無論快慢，我們都一起走到了這裡，所以我想再陪你走下一程。',
+  '我的選擇很簡單：遇到值得分享的事，我還是最想第一個告訴你。',
+  '我願意把愛放回日常，記得關心、記得傾聽，也記得告訴你有多重要。',
+  '我們的差異有時讓人困惑，卻也讓我更想學會，用你需要的方式愛你。',
+  '這個月我最感謝的，是我們仍願意把心裡的話留給彼此，而不是轉身離開。',
+  '只要你也願意，我就想和你繼續練習，把喜歡變成更長久的陪伴。',
+  '我不是只想擁有你的好心情，也想在你脆弱時，成為可以放心依靠的人。',
+  '每一天都可能很普通，可和你一起的普通，正是我最捨不得放下的生活。',
+  '我仍然相信我們，因為每一次認真理解彼此，都讓這份愛更靠近想要的樣子。',
+  '這個月的答案，是想把你抱緊一點，也把那些沒說好的話重新說好。',
+  '無論世界多吵，我仍想為你保留一個安靜的位置，聽你說真正的心情。',
+  '我喜歡的不只是現在的你，也期待陪你看見未來每一個新的自己。',
+  '這段路上或許會繞遠，但只要最後仍能走回你身邊，我就願意繼續努力。',
+  '我願意選擇我們，因為這段感情讓我看見，兩個人可以一起長成更好的樣子。',
+  '這個月有許多細碎瞬間，而每一個想到你的時刻，都讓答案更清楚。',
+  '我還想參與你的日常，聽你的煩惱，分享你的快樂，也陪你完成小小願望。',
+  '愛不是每次都能把話說對，而是說錯之後，仍願意回來理解彼此真正想表達的心。',
+  '我想繼續陪你，不只是因為捨不得，更因為我真心珍惜我們已經擁有的一切。',
+  '這個月讓我再次發現，你的一個笑、一句關心，仍然能讓我的心柔軟下來。',
+  '我們都有需要被接住的時候，而我願意和你輪流堅強，也輪流放心依靠。',
+  '即使未來無法事先安排，我仍想把自己的真心和選擇，穩穩放在你這裡。',
+  '我選擇你，是因為我們的故事還有好多頁，我想和你一起慢慢寫完。',
+  '每一個月都會有新的考驗，但我希望我們也能有新的理解和更多溫柔。',
+  '我願意珍惜你的可愛、你的敏感、你的倔強，因為它們拼成了完整的你。',
+  '走到今天，我還是會因為你的存在而安心，也還是會期待下一次見到你。',
+  '我想讓你知道，無論這個月過得如何，你依然是我願意用心選擇的人。',
+  '今天再次寫下答案，不是為了完成約定，而是想讓你知道，我仍然很愛我們。'
+];
+function chooseRefreshOpeningCopy(){
+  const element=document.getElementById('choose-letter-copy');
+  if(!element||!CHOOSE_OPENING_COPIES.length) return;
+  let previous=-1;
+  try{
+    const saved=sessionStorage.getItem('choose_opening_copy_index');
+    if(saved!==null) previous=Number(saved);
+  }catch(_){}
+  let index=Math.floor(Math.random()*CHOOSE_OPENING_COPIES.length);
+  if(CHOOSE_OPENING_COPIES.length>1&&index===previous){
+    index=(index+1+Math.floor(Math.random()*(CHOOSE_OPENING_COPIES.length-1)))%CHOOSE_OPENING_COPIES.length;
+  }
+  element.textContent=CHOOSE_OPENING_COPIES[index];
+  try{sessionStorage.setItem('choose_opening_copy_index',String(index));}catch(_){}
+}
+
 const CHOOSE_CACHE_KEY='choose_you_entries_cache_v1';
 let chooseEntriesData={};
 let chooseSelectedPlayer=localStorage.getItem('choose_you_player')||'shengzhan';
@@ -7636,7 +7752,6 @@ let chooseAlbumPickerPhotos=[];
 let chooseAlbumPickerSelection=[];
 let chooseAlbumPickerPreviousOverflow='';
 let chooseSubmitPreviewPreviousOverflow='';
-let chooseEditingSealed=false;
 
 function chooseEscape(value){
   return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -7888,7 +8003,7 @@ function chooseRender(){
   const current=chooseEntriesData[key]||{};
   const selected=chooseNormalizeEntry(current[chooseSelectedPlayer]);
   const selectedIsSealed=Boolean(selected);
-  const sealedReadOnly=selectedIsSealed&&!chooseEditingSealed;
+  const sealedReadOnly=selectedIsSealed;
   const info=choosePlayerInfo(chooseSelectedPlayer);
   badge.textContent=key.replace('-', '.');
   const now=new Date();
@@ -7907,12 +8022,10 @@ function chooseRender(){
   if(sealedReadOnly){
     chooseExistingPhotos=[];choosePhotosDirty=false;chooseRenderPhotoEditor();
   }else chooseSyncPhotoEditor();
-  document.getElementById('choose-edit-hint').textContent=sealedReadOnly?'已送出，需要時可以重新修改':(chooseEditingSealed?'正在修改自己的信':(selected?'已經寫下，可以隨時修改':'這個月還沒有寫下答案'));
+  document.getElementById('choose-edit-hint').textContent=sealedReadOnly?'已送出，等另一封信抵達後一起解鎖':'這個月還沒有寫下答案';
   const saveButton=document.getElementById('choose-save-btn');
-  saveButton.textContent=sealedReadOnly?'已送出':(selected?'儲存修改並重新送出':'送出這個月的信');
+  saveButton.textContent=sealedReadOnly?'已送出':'送出這個月的信';
   saveButton.disabled=sealedReadOnly;
-  const editSealedButton=document.getElementById('choose-edit-sealed');
-  editSealedButton.hidden=!sealedReadOnly;
   chooseUpdateCount();
   const entries={shengzhan:chooseNormalizeEntry(current.shengzhan),yujun:chooseNormalizeEntry(current.yujun)};
   const written=Number(Boolean(entries.shengzhan))+Number(Boolean(entries.yujun));
@@ -7952,15 +8065,8 @@ function chooseToggleHistory(){
 }
 function chooseSelectPlayer(player){
   if(!['shengzhan','yujun'].includes(player)) return;
-  chooseEditingSealed=false;
   chooseSelectedPlayer=player;
   localStorage.setItem('choose_you_player',player);
-  chooseRender();
-}
-function chooseEditSealedEntry(){
-  const entry=chooseNormalizeEntry(chooseEntriesData[chooseMonthKey()]?.[chooseSelectedPlayer]);
-  if(!entry) return;
-  chooseEditingSealed=true;
   chooseRender();
 }
 function chooseOpenSubmitPreview(){
@@ -7997,17 +8103,20 @@ async function chooseSaveEntry(){
   const text=textarea.value.trim();
   if(!text){alert('先寫下這個月為什麼仍然選擇對方');return;}
   const key=chooseMonthKey();
+  if(chooseNormalizeEntry(chooseEntriesData[key]?.[chooseSelectedPlayer])){
+    alert('這封信已經送出，無法再修改');
+    chooseRender();
+    return;
+  }
   const beforeCount=chooseEntryCount(chooseEntriesData[key]);
-  const old=chooseNormalizeEntry(chooseEntriesData[key]?.[chooseSelectedPlayer]);
   button.disabled=true;
   button.textContent='正在封存這封信...';
   let saved=false;
   try{
     const photos=[...chooseExistingPhotos].slice(0,5);
-    const entry={text:text.slice(0,600),photos,createdAt:old?.createdAt||Date.now(),updatedAt:Date.now()};
+    const entry={text:text.slice(0,600),photos,createdAt:Date.now(),updatedAt:Date.now()};
     chooseExistingPhotos=[...photos];
     choosePhotosDirty=false;
-    chooseEditingSealed=false;
     chooseEntriesData[key]={...(chooseEntriesData[key]||{}),[chooseSelectedPlayer]:entry};
     chooseWriteCache();
     chooseRender();

@@ -48,6 +48,10 @@ function parseCoordinates(value) {
   return null;
 }
 
+function isCoordinateLabel(value) {
+  return /^-?\d{1,2}(?:\.\d+)?\s*[,，]\s*-?\d{1,3}(?:\.\d+)?/.test(String(value || '').trim());
+}
+
 function parsePlaceName(value, html = '') {
   const candidates = coordinateCandidates(value);
   for (const candidate of candidates) {
@@ -56,11 +60,20 @@ function parsePlaceName(value, html = '') {
       const match = url.pathname.match(/\/maps\/place\/([^/]+)/i);
       if (match) {
         const name = safeDecode(match[1]).replace(/\+/g, ' ').trim();
-        if (name && !/^-?\d+(?:\.\d+)?[, ]/.test(name)) return name.slice(0, 60);
+        if (name && !isCoordinateLabel(name)) return name.slice(0, 60);
       }
       const query = url.searchParams.get('query') || url.searchParams.get('q');
       if (query && !parseCoordinates(`?q=${query}`)) return query.replace(/^loc:/i, '').trim().slice(0, 60);
     } catch (_) {}
+  }
+  const normalizedHtml = String(html || '')
+    .replace(/\\u002f/gi, '/')
+    .replace(/\\\//g, '/')
+    .replace(/&amp;/gi, '&');
+  const embeddedPlaceMatch = normalizedHtml.match(/\/maps\/place\/([^/?#"'<>\\]+)/i);
+  if (embeddedPlaceMatch) {
+    const name = safeDecode(embeddedPlaceMatch[1]).replace(/\+/g, ' ').trim();
+    if (name && !isCoordinateLabel(name)) return name.slice(0, 60);
   }
   const titleMatch = String(html || '').match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i)
     || String(html || '').match(/<title>([^<]+)<\/title>/i);

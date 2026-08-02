@@ -105,9 +105,22 @@ color:var(--text-muted);
 margin-top:4px;
 }
 .heart-pulse{
-display:inline-block;
+display:inline-grid;
+place-items:center;
+min-width:28px;
+padding:0;
+border:0;
+background:transparent;
+color:inherit;
+font:inherit;
+line-height:1;
+letter-spacing:0;
+vertical-align:baseline;
+cursor:pointer;
 animation:pulse 1.4s ease-in-out infinite;
 }
+.heart-pulse:focus-visible{outline:2px solid var(--pink);outline-offset:3px;border-radius:50%}
+.heart-pulse[aria-pressed="true"]{color:var(--rose);filter:drop-shadow(0 0 5px rgba(201,75,100,.28))}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
 .header-dogs-stage{position:absolute;left:8px;right:8px;bottom:0;height:31px;z-index:1;pointer-events:none;user-select:none;--dog-trip-right:calc(50vw - 47px);--dog-trip-left:calc(-50vw + 47px)}
 .line-dog{position:absolute;bottom:1px;width:34px;height:29px;filter:drop-shadow(0 2px 2px rgba(91,54,45,.16));will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
@@ -1032,6 +1045,10 @@ background:var(--pink-light);margin-left:8px;
   align-items:center;
   gap:6px;
 }
+.intimacy-hidden #album-love-count,.intimacy-hidden #memories-love-legend{display:none!important}
+.memories-total-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.memories-total-grid.is-private{grid-template-columns:minmax(0,1fr)}
+.memories-total-card{background:var(--pink-light);border-radius:12px;padding:12px;text-align:center}
 .memories-chart-track{
   min-width:520px;
 }
@@ -1182,13 +1199,19 @@ background:var(--pink-light);margin-left:8px;
 .footprint-stat strong{display:block;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;line-height:1.1}
 .footprint-stat span{display:block;margin-top:4px;color:var(--text-muted);font-size:11px}
 .footprint-map-shell{position:relative;z-index:0;isolation:isolate;overflow:hidden;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 10px 28px rgba(201,75,100,.1)}
-#footprint-map{width:100%;height:clamp(310px,48dvh,480px);background:#edf5ed}
+#footprint-map{width:100%;height:clamp(260px,38dvh,360px);background:#edf5ed}
 .footprint-map-status{position:absolute;z-index:500;left:10px;top:10px;max-width:calc(100% - 68px);padding:7px 10px;border:1px solid rgba(232,99,122,.18);border-radius:7px;background:rgba(255,255,255,.92);color:#945064;font-size:11px;box-shadow:0 5px 16px rgba(74,39,48,.12);backdrop-filter:blur(6px)}
 .footprint-map-status[hidden]{display:none}
-.footprint-place-strip{display:flex;gap:7px;overflow-x:auto;margin:10px -2px 12px;padding:2px 2px 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.footprint-place-strip::-webkit-scrollbar{display:none}
-.footprint-place-chip{flex:0 0 auto;max-width:180px;min-height:37px;padding:7px 11px;border:1px solid var(--card-border);border-radius:999px;background:var(--white);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:12px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.footprint-place-chip.active{border-color:var(--pink);background:var(--pink);color:#fff;font-weight:700}
+.footprint-date-browser{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,.8fr);gap:10px;margin:10px 0 12px;padding:11px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
+.footprint-date-query-label{display:block;margin-bottom:6px;color:var(--text-muted);font-size:10px;font-weight:800}
+.footprint-date-query-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.footprint-date-query-input,.footprint-date-place-select{min-width:0;width:100%;height:39px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:12px;outline:none}
+.footprint-date-query-input:focus,.footprint-date-place-select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
+.footprint-date-query-btn{min-width:76px;height:39px;border:0;border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.footprint-date-query-result{min-width:0;display:flex;flex-direction:column;justify-content:flex-end}
+.footprint-date-query-result[hidden]{display:none}
+.footprint-date-query-summary{display:block;margin-bottom:6px;color:#2f9a68;font-size:10px;font-weight:800}
+.footprint-date-place-select[hidden]{display:none}
 .footprint-empty{padding:30px 18px;border:1px dashed rgba(232,99,122,.34);border-radius:8px;background:var(--white);text-align:center}
 .footprint-empty-icon{font-size:34px;line-height:1}
 .footprint-empty-title{margin-top:9px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
@@ -1201,7 +1224,8 @@ background:var(--pink-light);margin-left:8px;
 .footprint-detail-address{max-width:540px;margin-top:4px;color:var(--text-muted);font-size:10px;line-height:1.55;overflow-wrap:anywhere}
 .footprint-revisit-btn{flex:0 0 auto;min-height:36px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
 .footprint-timeline{padding:3px 15px 11px}
-.footprint-visit{position:relative;display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:10px;padding:13px 0 11px}
+.footprint-visit{position:relative;display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:10px;padding:13px 6px 11px;border-radius:7px;cursor:pointer;transition:background .18s ease}
+.footprint-visit:hover{background:color-mix(in srgb,var(--pink-light) 46%,transparent)}
 .footprint-visit+.footprint-visit{border-top:1px solid rgba(232,99,122,.1)}
 .footprint-visit-dot{width:10px;height:10px;margin-top:5px;border:2px solid var(--pink);border-radius:50%;background:var(--white);box-shadow:0 0 0 3px var(--pink-light)}
 .footprint-visit-open{min-width:0;display:block;padding:0;border:0;background:transparent;color:inherit;font-family:inherit;text-align:left;cursor:pointer}
@@ -1308,8 +1332,9 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-ranking-category.active{border-color:var(--rose);background:var(--rose);color:#fff}
 .footprint-ranking-category.active .footprint-ranking-category-count{background:rgba(255,255,255,.2);color:#fff}
 .footprint-ranking-dialog-list{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:3px;-webkit-overflow-scrolling:touch}
-.footprint-ranking-dialog-row{width:100%;min-height:66px;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 8px;border:0;border-top:1px solid rgba(232,99,122,.12);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
-.footprint-ranking-dialog-row:first-child{border-top:0}
+.footprint-ranking-dialog-item{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;border-top:1px solid rgba(232,99,122,.12)}
+.footprint-ranking-dialog-item:first-child{border-top:0}
+.footprint-ranking-dialog-row{width:100%;min-width:0;min-height:66px;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 8px;border:0;background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
 .footprint-ranking-dialog-row:hover{background:color-mix(in srgb,var(--pink-light) 56%,transparent)}
 .footprint-ranking-dialog-rank{width:31px;height:31px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:11px;font-weight:900}
 .footprint-ranking-dialog-row.is-top .footprint-ranking-dialog-rank{border-color:var(--pink);background:var(--pink);color:#fff}
@@ -1318,9 +1343,31 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-ranking-dialog-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;color:var(--text-muted);font-size:9px;line-height:1.45}
 .footprint-ranking-dialog-tag{display:inline-flex;align-items:center;min-height:20px;padding:2px 7px;border-radius:999px;background:color-mix(in srgb,#dff2e7 72%,var(--white));color:#268c5b;font-weight:800}
 .footprint-ranking-dialog-visits{min-width:55px;color:var(--rose);font-size:12px;font-weight:900;text-align:right;white-space:nowrap}
+.footprint-ranking-expense-summary{color:#a06b20;font-weight:800}
+.footprint-ranking-expense-btn{min-width:67px;min-height:38px;margin-right:7px;padding:0 9px;border:1px solid color-mix(in srgb,#d8b36a 58%,var(--card-border));border-radius:7px;background:color-mix(in srgb,var(--white) 72%,#fff2d8);color:#98651f;font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:900;cursor:pointer;white-space:nowrap}
+.footprint-ranking-expense-btn:hover{border-color:#d0a04a;background:#fff0cf}
 .footprint-ranking-empty{padding:44px 14px;color:var(--text-muted);font-size:12px;line-height:1.7;text-align:center}
 [data-theme="dark"] .footprint-ranking-dialog-head{background:linear-gradient(135deg,color-mix(in srgb,var(--pink-light) 62%,var(--white)),color-mix(in srgb,var(--white) 90%,#183429))}
 [data-theme="dark"] .footprint-ranking-dialog-tag{background:rgba(77,173,119,.15);color:#8bd8aa}
+[data-theme="dark"] .footprint-ranking-expense-btn{background:rgba(208,160,74,.12);color:#efc878}
+
+.footprint-expense-bg{position:fixed;inset:0;z-index:2810;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(35,19,26,.62);backdrop-filter:blur(6px)}
+.footprint-expense-bg.hidden{display:none}
+.footprint-expense-dialog{width:min(100%,420px);overflow:hidden;border:1px solid var(--card-border);border-radius:10px;background:var(--white);box-shadow:0 26px 74px rgba(42,19,28,.35)}
+.footprint-expense-head{position:relative;padding:18px 56px 15px 18px;border-bottom:1px solid var(--card-border);background:color-mix(in srgb,var(--pink-light) 55%,var(--white))}
+.footprint-expense-kicker{color:#2f9a68;font-size:9px;font-weight:900;letter-spacing:1.5px}
+.footprint-expense-title{margin-top:4px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:21px;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
+.footprint-expense-close{position:absolute;right:13px;top:13px;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--white);color:var(--rose);font-size:20px;cursor:pointer}
+.footprint-expense-body{display:grid;gap:12px;padding:16px 18px}
+.footprint-expense-field{display:flex;flex-direction:column;gap:6px;color:var(--text-muted);font-size:10px;font-weight:800}
+.footprint-expense-select,.footprint-expense-input{width:100%;min-width:0;height:44px;padding:0 12px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;outline:none}
+.footprint-expense-select:focus,.footprint-expense-input:focus{border-color:#d0a04a;box-shadow:0 0 0 3px rgba(208,160,74,.12)}
+.footprint-expense-note{min-height:34px;padding:9px 10px;border-radius:7px;background:color-mix(in srgb,var(--white) 72%,#fff2d8);color:#8d6329;font-size:10px;line-height:1.55}
+.footprint-expense-actions{display:grid;grid-template-columns:auto 1fr 1.25fr;gap:8px;padding:0 18px 17px}
+.footprint-expense-action{min-height:43px;padding:0 12px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.footprint-expense-action.clear{color:var(--text-muted);background:var(--white)}
+.footprint-expense-action.primary{border-color:#c9973d;background:#c9973d;color:#fff}
+.footprint-expense-action[hidden]{display:none}
 
 /* 每月重新選擇你 */
 .choose-page{padding-top:12px}
@@ -1442,22 +1489,25 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-lock-scene.ready .choose-lock-envelopes{animation:chooseEnvelopeFloat 2.2s ease-in-out infinite}
 .choose-lock-scene.ready .choose-lock-heart{box-shadow:0 0 0 10px rgba(232,99,122,.1),0 12px 28px rgba(166,76,98,.3)}
 .choose-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.choose-answer{position:relative;min-width:0;min-height:300px;overflow:hidden;padding:27px 24px 22px;border:1px solid var(--card-border);border-radius:8px;background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(166,76,98,.055) 31px 32px),var(--white);box-shadow:0 15px 34px rgba(74,37,49,.1)}
-.choose-answer::before{content:'';position:absolute;z-index:0;right:-23px;top:-23px;width:44px;height:44px;border:1px solid var(--card-border);background:var(--pink-light);transform:rotate(45deg);pointer-events:none}
-.choose-answer.written{border-color:rgba(47,154,104,.2)}
-.choose-answer-head{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 18px 13px 0;border-bottom:1px solid var(--card-border)}
-.choose-answer-name{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.choose-answer{position:relative;min-width:0;min-height:300px;overflow:hidden;padding:27px 24px 25px;border:1px solid color-mix(in srgb,var(--card-border) 78%,#d8b36a);border-radius:8px;background:linear-gradient(145deg,color-mix(in srgb,var(--white) 94%,#fff7ec),var(--white) 52%,color-mix(in srgb,var(--white) 92%,var(--pink-light)));box-shadow:0 16px 36px rgba(74,37,49,.1)}
+.choose-answer::before{content:'✦';position:absolute;z-index:0;right:18px;bottom:12px;color:color-mix(in srgb,var(--rose) 18%,transparent);font:700 24px/1 Georgia,serif;pointer-events:none}
+.choose-answer::after{content:'♡';position:absolute;z-index:0;right:-18px;bottom:-34px;color:color-mix(in srgb,var(--rose) 7%,transparent);font:700 116px/1 Georgia,serif;transform:rotate(-9deg);pointer-events:none}
+.choose-answer.written{border-color:color-mix(in srgb,#2f9a68 24%,var(--card-border))}
+.choose-answer-head{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding-bottom:15px}
+.choose-answer-name{display:flex;align-items:center;flex-wrap:wrap;gap:0 8px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
+.choose-answer-name::before{content:'✦';color:#2f9a68;font-family:Georgia,serif;font-size:10px}
+.choose-answer-name::after{content:'MONTHLY LETTER';flex-basis:100%;margin:3px 0 0 18px;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:7px;font-weight:800;letter-spacing:1.5px}
 .choose-answer-status{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:9px;font-style:normal}
 .choose-answer-status::before{content:'';width:8px;height:8px;border-radius:50%;background:#c7b4bb}
 .choose-answer.written .choose-answer-status{color:#2f9a68}
 .choose-answer.written .choose-answer-status::before{background:#2f9a68;box-shadow:0 0 0 3px rgba(47,154,104,.12)}
-.choose-answer-quote{position:relative;z-index:1;margin-top:19px;color:rgba(166,76,98,.2);font:700 42px/1 Georgia,serif}
-.choose-answer-text{position:relative;z-index:1;margin-top:-13px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
-.choose-answer-photos{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:18px 0 26px}
-.choose-answer-photos img{width:100%;aspect-ratio:4/3;display:block;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);object-fit:cover}
+.choose-answer-quote{position:relative;z-index:1;width:34px;height:34px;display:grid;place-items:center;margin-top:7px;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:color-mix(in srgb,var(--rose) 48%,transparent);font:700 25px/1 Georgia,serif}
+.choose-answer-text{position:relative;z-index:1;margin-top:10px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
+.choose-answer-photos{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0 27px}
+.choose-answer-photos img{width:100%;aspect-ratio:4/3;display:block;padding:4px;border:1px solid color-mix(in srgb,var(--card-border) 82%,#d8b36a);border-radius:6px;background:var(--white);box-shadow:0 7px 16px rgba(61,35,44,.1);object-fit:cover}
 .choose-answer-photos img:first-child:nth-last-child(1){grid-column:1/-1;aspect-ratio:16/10;object-fit:contain}
 .choose-answer-empty{position:relative;z-index:1;margin-top:25px;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:12px;line-height:1.8;text-align:center}
-.choose-answer-time{position:absolute;z-index:1;right:22px;bottom:17px;color:var(--text-muted);font-size:9px}
+.choose-answer-time{position:relative;z-index:1;margin-top:18px;padding-top:11px;border-top:1px solid color-mix(in srgb,var(--card-border) 58%,transparent);color:var(--text-muted);font-size:9px;text-align:right}
 body.choose-letterbox-open{overflow:hidden}
 .choose-ready-bg{position:fixed;z-index:10055;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(circle at 50% 18%,rgba(255,238,243,.97),rgba(68,35,46,.82));backdrop-filter:blur(9px)}
 .choose-ready-card{position:relative;width:min(100%,530px);overflow:hidden;padding:48px 30px 32px;border:1px solid rgba(255,255,255,.62);border-radius:10px;background:var(--white);text-align:center;box-shadow:0 30px 90px rgba(37,14,23,.38);animation:chooseReadyArrive .58s cubic-bezier(.16,1,.3,1) both}
@@ -1481,7 +1531,7 @@ body.choose-letterbox-open{overflow:hidden}
 .choose-submit-preview-close{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:20px;cursor:pointer}
 .choose-submit-preview-body{overflow-y:auto;padding:19px}
 .choose-submit-preview-player{color:var(--rose);font-size:11px;font-weight:800}
-.choose-submit-preview-text{margin-top:9px;padding:17px 16px;border:1px solid var(--card-border);border-radius:8px;background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(166,76,98,.055) 31px 32px),var(--white);color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
+.choose-submit-preview-text{margin-top:9px;padding:18px 17px;border:1px solid color-mix(in srgb,var(--card-border) 78%,#d8b36a);border-radius:8px;background:linear-gradient(145deg,color-mix(in srgb,var(--white) 94%,#fff7ec),var(--white));color:var(--text);font-family:'Noto Serif TC',serif;font-size:14px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 9px 22px rgba(74,37,49,.07)}
 .choose-submit-preview-photos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:12px}
 .choose-submit-preview-photos:empty{display:none}
 .choose-submit-preview-photos img{width:100%;aspect-ratio:1;display:block;object-fit:cover;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light)}
@@ -1512,13 +1562,14 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:820px){.choose-layout{grid-template-columns:1fr;gap:18px;padding:18px}.choose-side{display:block}.choose-history{margin-top:14px}}
 @media(max-width:620px){.choose-answer-grid{grid-template-columns:1fr}.choose-letterbox-bg{align-items:flex-end;padding:0}.choose-letterbox{max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-letterbox-body{padding:16px 13px calc(22px + env(safe-area-inset-bottom))}.choose-answer{min-height:270px;padding:22px 18px}}
 @media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-brand{min-width:0;font-size:10px}.choose-brand span:last-child{overflow-wrap:anywhere}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
-@media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
+@media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-map-shell{margin-right:12px;margin-left:12px}.footprint-map-shell #footprint-map{height:240px}.footprint-date-browser{grid-template-columns:minmax(0,1fr);gap:9px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
+@media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
 
 <header class="header" style="position:sticky;top:0;z-index:100;">
-  <div class="header-names">林聖展 <span class="heart-pulse">♡</span> 蘇予君</div>
+  <div class="header-names">林聖展 <button type="button" class="heart-pulse" id="intimacy-visibility-toggle" onclick="toggleIntimacyVisibility()" aria-label="暫時隱藏親密統計" aria-pressed="false">♡</button> 蘇予君</div>
   <div class="header-sub">要永遠在一起</div>
   <div class="header-dogs-stage" aria-hidden="true">
     <span class="line-dog white"><span class="line-dog-tail"></span><span class="line-dog-body"></span><span class="line-dog-head"><i class="line-dog-ear left"></i><i class="line-dog-ear right"></i><i class="line-dog-eye left"></i><i class="line-dog-eye right"></i><i class="line-dog-nose"></i><i class="line-dog-mouth"></i></span><i class="line-dog-paw left"></i><i class="line-dog-paw right"></i></span>
@@ -1868,7 +1919,7 @@ onclick="hideSpecialForToday()">
     <div class="memories-chart-legend-item">
       <span style="display:inline-block;width:14px;height:3px;background:#e8637a;border-radius:2px;vertical-align:middle"></span>見面天數
     </div>
-    <div class="memories-chart-legend-item">
+    <div class="memories-chart-legend-item" id="memories-love-legend">
       <span style="display:inline-block;width:14px;height:0;border-top:2px dashed #ff9eb5;vertical-align:middle"></span>愛愛次數
     </div>
   </div>
@@ -1910,6 +1961,30 @@ onclick="hideSpecialForToday()">
     <div class="footprint-ranking-dialog-body">
       <div class="footprint-ranking-categories" id="footprint-ranking-categories" role="tablist" aria-label="地點分類"></div>
       <div class="footprint-ranking-dialog-list" id="footprint-ranking-dialog-list"></div>
+    </div>
+  </section>
+</div>
+
+<div class="footprint-expense-bg hidden" id="footprint-expense-bg" onclick="footprintCloseExpense(event)">
+  <section class="footprint-expense-dialog" role="dialog" aria-modal="true" aria-labelledby="footprint-expense-title" onclick="event.stopPropagation()">
+    <header class="footprint-expense-head">
+      <div class="footprint-expense-kicker">DAILY SPENDING</div>
+      <div class="footprint-expense-title" id="footprint-expense-title">記錄當日花費</div>
+      <button type="button" class="footprint-expense-close" onclick="footprintCloseExpenseDirect()" aria-label="關閉花費紀錄">×</button>
+    </header>
+    <div class="footprint-expense-body">
+      <label class="footprint-expense-field">造訪日期
+        <select class="footprint-expense-select" id="footprint-expense-visit" onchange="footprintExpenseVisitChanged()"></select>
+      </label>
+      <label class="footprint-expense-field">當日花費（元）
+        <input class="footprint-expense-input" id="footprint-expense-amount" type="number" min="0" max="9999999" step="1" inputmode="numeric" placeholder="例如：2500">
+      </label>
+      <div class="footprint-expense-note" id="footprint-expense-note">金額會跟這次造訪日期一起收藏。</div>
+    </div>
+    <div class="footprint-expense-actions">
+      <button type="button" class="footprint-expense-action clear" id="footprint-expense-clear" onclick="footprintClearExpense()" hidden>清除</button>
+      <button type="button" class="footprint-expense-action" onclick="footprintCloseExpenseDirect()">取消</button>
+      <button type="button" class="footprint-expense-action primary" id="footprint-expense-save" onclick="footprintSaveExpense()">儲存花費</button>
     </div>
   </section>
 </div>
@@ -2035,7 +2110,19 @@ onclick="hideSpecialForToday()">
     <div id="footprint-map" aria-label="足跡地圖"></div>
     <div class="footprint-map-status" id="footprint-map-status">載入地圖中...</div>
   </div>
-  <div class="footprint-place-strip" id="footprint-place-strip" aria-label="足跡地點清單"></div>
+  <section class="footprint-date-browser" id="footprint-date-browser" aria-label="依日期查詢足跡">
+    <div>
+      <label class="footprint-date-query-label" for="footprint-date-query">依日期查詢</label>
+      <div class="footprint-date-query-controls">
+        <input class="footprint-date-query-input" id="footprint-date-query" type="date" onchange="footprintQueryDate()">
+        <button type="button" class="footprint-date-query-btn" onclick="footprintQueryDate()">查看</button>
+      </div>
+    </div>
+    <div class="footprint-date-query-result" id="footprint-date-query-result" hidden>
+      <span class="footprint-date-query-summary" id="footprint-date-query-summary"></span>
+      <select class="footprint-date-place-select" id="footprint-date-place-select" aria-label="選擇這天去過的地點" onchange="footprintChooseDatePlace(this.value)"></select>
+    </div>
+  </section>
   <div class="footprint-empty" id="footprint-empty">
     <div class="footprint-empty-icon">📍</div>
     <div class="footprint-empty-title">第一個足跡會從這裡開始</div>
@@ -2258,6 +2345,21 @@ window.dispatchEvent(new Event('firebaseReady'));
 
 <script>
 // ── Dark mode ──
+let intimacyHidden=false;
+function applyIntimacyVisibility(){
+  document.documentElement.classList.toggle('intimacy-hidden',intimacyHidden);
+  const button=document.getElementById('intimacy-visibility-toggle');
+  if(button){
+    button.setAttribute('aria-pressed',String(intimacyHidden));
+    button.setAttribute('aria-label',intimacyHidden?'顯示親密統計':'暫時隱藏親密統計');
+  }
+  if(typeof renderMemoriesTotalStats==='function') renderMemoriesTotalStats();
+  if(typeof renderMemoriesCharts==='function') renderMemoriesCharts();
+}
+function toggleIntimacyVisibility(){
+  intimacyHidden=!intimacyHidden;
+  applyIntimacyVisibility();
+}
 function toggleDark(){
   const html=document.documentElement;
   const isDark=html.getAttribute('data-theme')==='dark';
@@ -6124,9 +6226,9 @@ function renderMemoriesTotalStats(){
       💕 我們的累積紀錄
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="memories-total-grid${intimacyHidden?' is-private':''}">
 
-      <div style="background:var(--pink-light);border-radius:12px;padding:12px;text-align:center">
+      <div class="memories-total-card">
         <div style="font-size:12px;color:var(--text-muted)">總共見面</div>
         <div style="font-size:24px;color:var(--rose);font-weight:700">
           ${meetDays}
@@ -6134,13 +6236,13 @@ function renderMemoriesTotalStats(){
         <div style="font-size:11px;color:var(--text-muted)">天</div>
       </div>
 
-      <div style="background:var(--pink-light);border-radius:12px;padding:12px;text-align:center">
+      ${intimacyHidden?'':`<div class="memories-total-card">
         <div style="font-size:12px;color:var(--text-muted)">總共愛愛</div>
         <div style="font-size:24px;color:var(--rose);font-weight:700">
           ${loveTimes}
         </div>
         <div style="font-size:11px;color:var(--text-muted)">次</div>
-      </div>
+      </div>`}
 
     </div>`;
 }
@@ -6222,7 +6324,7 @@ function drawMemoriesChart(months, meetData, loveData){
           tension: 0.35,
           fill: true,
         },
-        {
+        ...(!intimacyHidden?[{
           label: '愛愛次數',
           data: loveData,
           borderColor: '#ff9eb5',
@@ -6234,7 +6336,7 @@ function drawMemoriesChart(months, meetData, loveData){
           pointHoverRadius: 7,
           tension: 0.35,
           fill: true,
-        }
+        }]:[])
       ]
     },
     options: {
@@ -8259,6 +8361,8 @@ let footprintLastSearchAt=0;
 let footprintSearchRequestId=0;
 let footprintExtraDates=[];
 let footprintRankingCategory='all';
+let footprintDateQuery='';
+let footprintExpensePlaceId='';
 
 function footprintEscape(value){
   return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -8297,7 +8401,9 @@ function footprintNormalizeVisit(id,value){
   const placeName=String(value?.placeName||'').trim().slice(0,60);
   const date=String(value?.date||'').slice(0,10);
   if(lat===null||lng===null||!placeName||!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
-  return {id:String(id),placeId:String(value?.placeId||''),placeName,address:String(value?.address||'').trim().slice(0,160),date,note:String(value?.note||'').trim().slice(0,500),lat:Math.max(-90,Math.min(90,lat)),lng:Math.max(-180,Math.min(180,lng)),createdAt:Number(value?.createdAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
+  const expenseNumber=Number(value?.expense);
+  const expense=Number.isFinite(expenseNumber)&&expenseNumber>0?Math.round(expenseNumber):0;
+  return {id:String(id),placeId:String(value?.placeId||''),placeName,address:String(value?.address||'').trim().slice(0,160),date,note:String(value?.note||'').trim().slice(0,500),lat:Math.max(-90,Math.min(90,lat)),lng:Math.max(-180,Math.min(180,lng)),expense,createdAt:Number(value?.createdAt)||Date.now(),updatedAt:Number(value?.updatedAt)||Number(value?.createdAt)||Date.now()};
 }
 function footprintLoadCache(){
   try{
@@ -8381,19 +8487,62 @@ function footprintRender(){
   const total=document.getElementById('footprint-visit-total');
   if(placeTotal) placeTotal.textContent=groups.length;
   if(total) total.textContent=visitTotal;
-  if(groups.length&&!groups.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=groups[0].placeId;
+  if(footprintDateQuery){
+    const queriedGroups=footprintGroupsOnDate(groups,footprintDateQuery);
+    if(!queriedGroups.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=queriedGroups[0]?.placeId||'';
+  }else if(groups.length&&!groups.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=groups[0].placeId;
   if(!groups.length) footprintSelectedPlaceId='';
-  const strip=document.getElementById('footprint-place-strip');
-  if(strip){
-    strip.innerHTML=groups.map(group=>`<button type="button" class="footprint-place-chip${group.placeId===footprintSelectedPlaceId?' active':''}" data-place-id="${footprintEscape(group.placeId)}">${footprintEscape(group.name)} · ${group.visits.length}</button>`).join('');
-    strip.querySelectorAll('[data-place-id]').forEach(button=>button.addEventListener('click',()=>footprintFocusPlace(button.dataset.placeId,true)));
-  }
+  footprintRenderDateQuery(groups);
   const empty=document.getElementById('footprint-empty');
   if(empty) empty.style.display=groups.length?'none':'block';
   const page=document.getElementById('page-footprints');
   if(footprintMap||page?.classList.contains('active')) footprintRefreshMap(groups);
   footprintRenderDetail(groups.find(group=>group.placeId===footprintSelectedPlaceId)||null);
   renderFootprintMemoryStats(groups);
+}
+function footprintGroupsOnDate(groups,date){
+  return groups.filter(group=>group.visits.some(visit=>visit.date===date));
+}
+function footprintRenderDateQuery(groups=footprintGetGroups()){
+  const browser=document.getElementById('footprint-date-browser');
+  const input=document.getElementById('footprint-date-query');
+  const result=document.getElementById('footprint-date-query-result');
+  const summary=document.getElementById('footprint-date-query-summary');
+  const select=document.getElementById('footprint-date-place-select');
+  if(!browser||!input||!result||!summary||!select) return;
+  browser.hidden=!groups.length;
+  input.value=footprintDateQuery;
+  if(!footprintDateQuery){result.hidden=true;return;}
+  const matches=footprintGroupsOnDate(groups,footprintDateQuery);
+  result.hidden=false;
+  if(!matches.length){
+    summary.textContent='這天還沒有足跡紀錄';
+    select.hidden=true;
+    select.innerHTML='';
+    return;
+  }
+  summary.textContent=`這天去了 ${matches.length} 個地點`;
+  select.hidden=false;
+  select.innerHTML=matches.map(group=>`<option value="${footprintEscape(group.placeId)}">${footprintEscape(group.name)}</option>`).join('');
+  const selected=matches.some(group=>group.placeId===footprintSelectedPlaceId)?footprintSelectedPlaceId:matches[0].placeId;
+  select.value=selected;
+}
+function footprintQueryDate(){
+  const input=document.getElementById('footprint-date-query');
+  footprintDateQuery=String(input?.value||'');
+  const groups=footprintGetGroups();
+  const matches=footprintGroupsOnDate(groups,footprintDateQuery);
+  if(matches.length){
+    if(!matches.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=matches[0].placeId;
+    footprintRender();
+    const selected=matches.find(group=>group.placeId===footprintSelectedPlaceId)||matches[0];
+    if(footprintMap) footprintMap.flyTo([selected.lat,selected.lng],Math.max(footprintMap.getZoom(),14),{duration:.65});
+    return;
+  }
+  footprintRender();
+}
+function footprintChooseDatePlace(placeId){
+  if(placeId) footprintFocusPlace(placeId,true);
 }
 function footprintRenderDetail(group){
   const detail=document.getElementById('footprint-detail');
@@ -8410,9 +8559,12 @@ function footprintRenderDetail(group){
     const dayData=(typeof albumFirebaseData!=='undefined'&&albumFirebaseData)?albumFirebaseData[visit.date]:null;
     const photoCount=Array.isArray(dayData?.photos)?dayData.photos.length:0;
     const displayNote=footprintDisplayVisitNote(visit.note);
-    return `<article class="footprint-visit"><span class="footprint-visit-dot" aria-hidden="true"></span><button type="button" class="footprint-visit-open" data-footprint-day="${footprintEscape(visit.date)}" aria-label="查看 ${footprintFormatDate(visit.date)} 的行程"><span class="footprint-visit-date">${footprintFormatDate(visit.date)}</span>${displayNote?`<span class="footprint-visit-note">${footprintEscape(displayNote).replace(/\n/g,'<br>')}</span>`:''}${photoCount?`<span class="footprint-visit-media">相簿裡有 ${photoCount} 張照片</span>`:''}</button><div class="footprint-visit-actions"><button type="button" class="footprint-icon-btn" data-footprint-edit="${footprintEscape(visit.id)}" aria-label="編輯這次足跡" title="編輯">✎</button><button type="button" class="footprint-icon-btn delete" data-footprint-delete="${footprintEscape(visit.id)}" aria-label="刪除這次足跡" title="刪除">⌫</button></div></article>`;
+    return `<article class="footprint-visit" data-footprint-day="${footprintEscape(visit.date)}"><span class="footprint-visit-dot" aria-hidden="true"></span><button type="button" class="footprint-visit-open" aria-label="查看 ${footprintFormatDate(visit.date)} 的行程"><span class="footprint-visit-date">${footprintFormatDate(visit.date)}</span>${displayNote?`<span class="footprint-visit-note">${footprintEscape(displayNote).replace(/\n/g,'<br>')}</span>`:''}${photoCount?`<span class="footprint-visit-media">相簿裡有 ${photoCount} 張照片</span>`:''}</button><div class="footprint-visit-actions"><button type="button" class="footprint-icon-btn" data-footprint-edit="${footprintEscape(visit.id)}" aria-label="編輯這次足跡" title="編輯">✎</button><button type="button" class="footprint-icon-btn delete" data-footprint-delete="${footprintEscape(visit.id)}" aria-label="刪除這次足跡" title="刪除">⌫</button></div></article>`;
   }).join('');
-  timeline.querySelectorAll('[data-footprint-day]').forEach(button=>button.addEventListener('click',()=>footprintOpenAlbumDay(button.dataset.footprintDay)));
+  timeline.querySelectorAll('[data-footprint-day]').forEach(row=>row.addEventListener('click',event=>{
+    if(event.target.closest('[data-footprint-edit],[data-footprint-delete]')) return;
+    footprintOpenAlbumDay(row.dataset.footprintDay);
+  }));
   timeline.querySelectorAll('[data-footprint-edit]').forEach(button=>button.addEventListener('click',()=>footprintOpenEditor(button.dataset.footprintEdit)));
   timeline.querySelectorAll('[data-footprint-delete]').forEach(button=>button.addEventListener('click',()=>footprintDeleteVisit(button.dataset.footprintDelete)));
 }
@@ -8448,6 +8600,15 @@ function footprintPlaceCategory(group){
 function footprintCategoryLabel(category){
   return ({all:'全部',qtime:'Qtime',school:'學校',park:'公園',hotel:'飯店',nightmarket:'夜市',baseball:'棒球場',other:'其他'})[category]||'其他';
 }
+function footprintFormatMoney(value){
+  return new Intl.NumberFormat('zh-TW',{maximumFractionDigits:0}).format(Math.max(0,Math.round(Number(value)||0)));
+}
+function footprintExpenseVisits(group){
+  return (group?.visits||[]).filter(visit=>visit.expense>0);
+}
+function footprintExpenseEligible(group){
+  return ['hotel','baseball'].includes(footprintPlaceCategory(group));
+}
 function footprintRenderAllRanking(){
   const categoryWrap=document.getElementById('footprint-ranking-categories');
   const list=document.getElementById('footprint-ranking-dialog-list');
@@ -8463,7 +8624,8 @@ function footprintRenderAllRanking(){
   }));
   const filtered=footprintRankingCategory==='all'?ranked:ranked.filter(group=>footprintPlaceCategory(group)===footprintRankingCategory);
   const visitTotal=filtered.reduce((total,group)=>total+group.visits.length,0);
-  summary.textContent=`${footprintCategoryLabel(footprintRankingCategory)} · ${filtered.length} 個地點 · 共 ${visitTotal} 次造訪`;
+  const expenseTotal=filtered.reduce((total,group)=>total+footprintExpenseVisits(group).reduce((sum,visit)=>sum+visit.expense,0),0);
+  summary.textContent=`${footprintCategoryLabel(footprintRankingCategory)} · ${filtered.length} 個地點 · 共 ${visitTotal} 次造訪${['hotel','baseball'].includes(footprintRankingCategory)&&expenseTotal>0?` · 花費 $${footprintFormatMoney(expenseTotal)}`:''}`;
   if(!filtered.length){
     list.innerHTML='<div class="footprint-ranking-empty">這個分類目前還沒有地點紀錄。</div>';
     return;
@@ -8472,12 +8634,19 @@ function footprintRenderAllRanking(){
   list.innerHTML=filtered.map(group=>{
     const category=footprintPlaceCategory(group);
     const rank=globalRank.get(group.placeId);
-    return `<button type="button" class="footprint-ranking-dialog-row${rank<=3?' is-top':''}" data-footprint-all-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-dialog-rank">${rank}</span><span class="footprint-ranking-dialog-copy"><span class="footprint-ranking-dialog-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-dialog-meta"><span class="footprint-ranking-dialog-tag">${footprintCategoryLabel(category)}</span><span>最近一次 ${footprintFormatDate(group.latestDate)}</span></span></span><span class="footprint-ranking-dialog-visits">${group.visits.length} 次</span></button>`;
+    const showExpenseAction=footprintRankingCategory===category&&footprintExpenseEligible(group);
+    const expenseVisits=footprintExpenseVisits(group);
+    const expenseTotal=expenseVisits.reduce((sum,visit)=>sum+visit.expense,0);
+    const expenseMeta=showExpenseAction?`<span class="footprint-ranking-expense-summary">${expenseVisits.length?`花費 ${expenseVisits.length} 天 · 共 $${footprintFormatMoney(expenseTotal)}`:'尚未記錄花費'}</span>`:'';
+    return `<div class="footprint-ranking-dialog-item"><button type="button" class="footprint-ranking-dialog-row${rank<=3?' is-top':''}" data-footprint-all-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-dialog-rank">${rank}</span><span class="footprint-ranking-dialog-copy"><span class="footprint-ranking-dialog-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-dialog-meta"><span class="footprint-ranking-dialog-tag">${footprintCategoryLabel(category)}</span><span>最近一次 ${footprintFormatDate(group.latestDate)}</span>${expenseMeta}</span></span><span class="footprint-ranking-dialog-visits">${group.visits.length} 次</span></button>${showExpenseAction?`<button type="button" class="footprint-ranking-expense-btn" data-footprint-expense="${footprintEscape(group.placeId)}">＋ 花費</button>`:''}</div>`;
   }).join('');
   list.querySelectorAll('[data-footprint-all-ranking]').forEach(button=>button.addEventListener('click',()=>{
     const placeId=button.dataset.footprintAllRanking;
     footprintCloseAllRankingDirect();
     footprintOpenFromMemory(placeId);
+  }));
+  list.querySelectorAll('[data-footprint-expense]').forEach(button=>button.addEventListener('click',()=>{
+    footprintOpenExpense(button.dataset.footprintExpense);
   }));
 }
 function footprintOpenAllRanking(){
@@ -8497,6 +8666,88 @@ function footprintCloseAllRankingDirect(){
   if(!overlay) return;
   overlay.classList.add('hidden');
   document.body.style.overflow='';
+}
+function footprintOpenExpense(placeId,preferredVisitId=''){
+  const group=footprintGetGroups().find(item=>item.placeId===placeId);
+  const overlay=document.getElementById('footprint-expense-bg');
+  const select=document.getElementById('footprint-expense-visit');
+  if(!group||!footprintExpenseEligible(group)||!overlay||!select) return;
+  footprintExpensePlaceId=placeId;
+  document.getElementById('footprint-expense-title').textContent=group.name;
+  select.innerHTML=group.visits.map(visit=>`<option value="${footprintEscape(visit.id)}">${footprintFormatDate(visit.date)}${visit.expense?` · $${footprintFormatMoney(visit.expense)}`:' · 尚未記錄'}</option>`).join('');
+  const preferred=group.visits.find(visit=>visit.id===preferredVisitId);
+  const initial=preferred||group.visits.find(visit=>!visit.expense)||group.visits[0];
+  if(initial) select.value=initial.id;
+  footprintExpenseVisitChanged();
+  overlay.classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>select.focus(),40);
+}
+function footprintExpenseVisitChanged(){
+  const visitId=document.getElementById('footprint-expense-visit')?.value||'';
+  const visit=visitId?footprintNormalizeVisit(visitId,footprintVisitsData[visitId]):null;
+  const input=document.getElementById('footprint-expense-amount');
+  const clear=document.getElementById('footprint-expense-clear');
+  const note=document.getElementById('footprint-expense-note');
+  if(!input||!clear||!note) return;
+  input.value=visit?.expense||'';
+  clear.hidden=!visit?.expense;
+  note.textContent=visit?(visit.expense?`${footprintFormatDate(visit.date)}已記錄 $${footprintFormatMoney(visit.expense)}。`:`${footprintFormatDate(visit.date)}尚未記錄花費。`):'請先選擇一個造訪日期。';
+}
+function footprintCloseExpense(event){
+  if(event?.target===document.getElementById('footprint-expense-bg')) footprintCloseExpenseDirect();
+}
+function footprintCloseExpenseDirect(){
+  const overlay=document.getElementById('footprint-expense-bg');
+  if(!overlay) return;
+  overlay.classList.add('hidden');
+  footprintExpensePlaceId='';
+  if(document.getElementById('footprint-ranking-dialog-bg')?.classList.contains('hidden')) document.body.style.overflow='';
+}
+async function footprintWriteExpense(visitId,amount){
+  const raw=footprintVisitsData[visitId];
+  if(!raw) return;
+  const placeId=footprintExpensePlaceId;
+  const button=document.getElementById('footprint-expense-save');
+  const normalizedAmount=amount>0?Math.round(amount):0;
+  const next={...raw,updatedAt:Date.now()};
+  if(normalizedAmount) next.expense=normalizedAmount;
+  else delete next.expense;
+  footprintVisitsData[visitId]=next;
+  footprintWriteCache();
+  footprintRender();
+  footprintRenderAllRanking();
+  footprintOpenExpense(placeId,visitId);
+  if(button) button.disabled=true;
+  try{
+    if(window._fb){
+      const {db,ref,set}=window._fb;
+      await set(ref(db,`footprintVisits/${visitId}/expense`),normalizedAmount||null);
+      await set(ref(db,`footprintVisits/${visitId}/updatedAt`),next.updatedAt);
+    }else{
+      queueFirebaseWrite(`footprintVisits/${visitId}/expense`,normalizedAmount||null);
+      queueFirebaseWrite(`footprintVisits/${visitId}/updatedAt`,next.updatedAt);
+    }
+  }catch(error){
+    console.warn('花費同步失敗，已排入待同步',error);
+    queueFirebaseWrite(`footprintVisits/${visitId}/expense`,normalizedAmount||null);
+    queueFirebaseWrite(`footprintVisits/${visitId}/updatedAt`,next.updatedAt);
+  }finally{
+    const currentButton=document.getElementById('footprint-expense-save');
+    if(currentButton) currentButton.disabled=false;
+  }
+}
+async function footprintSaveExpense(){
+  const visitId=document.getElementById('footprint-expense-visit')?.value||'';
+  const amount=Math.round(Number(document.getElementById('footprint-expense-amount')?.value));
+  if(!visitId) return;
+  if(!Number.isFinite(amount)||amount<=0){alert('請輸入大於 0 的花費金額');return;}
+  await footprintWriteExpense(visitId,amount);
+}
+async function footprintClearExpense(){
+  const visitId=document.getElementById('footprint-expense-visit')?.value||'';
+  if(!visitId||!confirm('確定要清除這天的花費嗎？')) return;
+  await footprintWriteExpense(visitId,0);
 }
 function renderFootprintMemoryStats(groups=footprintGetGroups()){
   const section=document.getElementById('footprint-memory-stats');
@@ -8518,7 +8769,9 @@ function footprintOpenFromMemory(placeId){
   setTimeout(()=>footprintFocusPlace(placeId,true),80);
 }
 document.addEventListener('keydown',event=>{
-  if(event.key==='Escape'&&!document.getElementById('footprint-ranking-dialog-bg')?.classList.contains('hidden')) footprintCloseAllRankingDirect();
+  if(event.key!=='Escape') return;
+  if(!document.getElementById('footprint-expense-bg')?.classList.contains('hidden')) footprintCloseExpenseDirect();
+  else if(!document.getElementById('footprint-ranking-dialog-bg')?.classList.contains('hidden')) footprintCloseAllRankingDirect();
 });
 function footprintShowPage(){
   footprintEnsureMap();
@@ -8815,7 +9068,7 @@ async function footprintSaveVisit(event){
   const stamp=Date.now();
   const records=dates.map((visitDate,index)=>{
     const id=editId||`visit_${stamp}_${index}_${Math.random().toString(36).slice(2,7)}`;
-    return [id,{placeId,placeName:placeName.slice(0,60),address:address.slice(0,160),date:visitDate,note:note.slice(0,500),lat,lng,createdAt:original?.createdAt||stamp,updatedAt:stamp}];
+    return [id,{placeId,placeName:placeName.slice(0,60),address:address.slice(0,160),date:visitDate,note:note.slice(0,500),lat,lng,...(original?.expense?{expense:original.expense}:{}),createdAt:original?.createdAt||stamp,updatedAt:stamp}];
   });
   const wasEmpty=!footprintGetGroups().length;
   records.forEach(([id,record])=>{footprintVisitsData[id]=record;});

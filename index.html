@@ -1204,10 +1204,12 @@ background:var(--pink-light);margin-left:8px;
 .footprint-map-status[hidden]{display:none}
 .footprint-date-browser{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,.8fr);gap:10px;margin:10px 0 12px;padding:11px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
 .footprint-date-query-label{display:block;margin-bottom:6px;color:var(--text-muted);font-size:10px;font-weight:800}
-.footprint-date-query-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.footprint-date-query-controls{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px}
 .footprint-date-query-input,.footprint-date-place-select{min-width:0;width:100%;height:39px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:12px;outline:none}
 .footprint-date-query-input:focus,.footprint-date-place-select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
 .footprint-date-query-btn{min-width:76px;height:39px;border:0;border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.footprint-date-query-clear{min-width:54px;height:39px;padding:0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.footprint-date-query-clear[hidden]{display:none}
 .footprint-date-query-result{min-width:0;display:flex;flex-direction:column;justify-content:flex-end}
 .footprint-date-query-result[hidden]{display:none}
 .footprint-date-query-summary{display:block;margin-bottom:6px;color:#2f9a68;font-size:10px;font-weight:800}
@@ -1300,10 +1302,15 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-editor-action:disabled{opacity:.56;cursor:wait}
 .footprint-memory-card{margin-top:10px;padding:16px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
 .footprint-memory-card[hidden]{display:none}
-.footprint-memory-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px}
+.footprint-memory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
 .footprint-memory-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
 .footprint-memory-sub{margin-top:3px;color:var(--text-muted);font-size:10px}
 .footprint-memory-total{color:var(--text-muted);font-size:11px;white-space:nowrap}
+.footprint-memory-tools{flex:0 0 auto;display:grid;grid-template-columns:minmax(100px,132px) 34px;gap:6px;align-items:center;justify-items:end}
+.footprint-memory-category{width:100%;height:34px;padding:0 28px 0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;outline:none;cursor:pointer}
+.footprint-memory-category:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
+.footprint-category-manage-btn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-size:15px;cursor:pointer}
+.footprint-memory-tools .footprint-memory-total{grid-column:1/-1}
 .footprint-ranking-list{display:flex;flex-direction:column}
 .footprint-ranking-row{position:relative;width:100%;min-height:54px;display:grid;grid-template-columns:25px minmax(0,1fr) auto;align-items:center;gap:9px;overflow:hidden;padding:8px 9px;border:0;border-top:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
 .footprint-ranking-row:first-child{border-top:0}
@@ -1368,6 +1375,45 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-expense-action.clear{color:var(--text-muted);background:var(--white)}
 .footprint-expense-action.primary{border-color:#c9973d;background:#c9973d;color:#fff}
 .footprint-expense-action[hidden]{display:none}
+
+.footprint-category-bg{position:fixed;inset:0;z-index:2860;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(35,19,26,.62);backdrop-filter:blur(6px)}
+.footprint-category-bg.hidden{display:none}
+.footprint-category-dialog{width:min(100%,560px);max-height:min(88dvh,780px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:14px;background:var(--white);box-shadow:0 26px 78px rgba(42,19,28,.34)}
+.footprint-category-head{position:relative;flex:0 0 auto;padding:18px 58px 15px 19px;border-bottom:1px solid var(--card-border);background:linear-gradient(135deg,color-mix(in srgb,var(--pink-light) 70%,var(--white)),color-mix(in srgb,var(--white) 86%,#eaf6ef))}
+.footprint-category-kicker{color:#2f9a68;font-size:9px;font-weight:900;letter-spacing:1.6px}
+.footprint-category-title{margin-top:3px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700}
+.footprint-category-copy{margin-top:4px;color:var(--text-muted);font-size:10px;line-height:1.55}
+.footprint-category-close{position:absolute;right:14px;top:14px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--white);color:var(--rose);font-size:21px;cursor:pointer}
+.footprint-category-body{min-height:0;overflow-y:auto;padding:15px 17px calc(18px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.footprint-category-add{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.footprint-category-input,.footprint-category-search{width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:12px;outline:none}
+.footprint-category-input:focus,.footprint-category-search:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
+.footprint-category-add-btn{min-width:82px;height:42px;border:0;border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:900;cursor:pointer}
+.footprint-category-section-label{margin:15px 0 7px;color:var(--text-muted);font-size:10px;font-weight:900}
+.footprint-category-order{display:flex;flex-direction:column;gap:6px}
+.footprint-category-row{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:52px;padding:7px 8px;border:1px solid var(--card-border);border-radius:8px;background:color-mix(in srgb,var(--white) 74%,var(--pink-light))}
+.footprint-category-row.is-pinned{opacity:.78}
+.footprint-category-order-no{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:9px;font-weight:900}
+.footprint-category-row-copy{min-width:0}
+.footprint-category-row-name{display:block;color:var(--text);font-size:12px;font-weight:900;overflow-wrap:anywhere}
+.footprint-category-row-meta{display:block;margin-top:2px;color:var(--text-muted);font-size:9px}
+.footprint-category-row-actions{display:flex;align-items:center;gap:4px}
+.footprint-category-icon-btn,.footprint-category-places-btn{height:30px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:6px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer}
+.footprint-category-icon-btn{width:30px}
+.footprint-category-icon-btn:disabled{opacity:.28;cursor:default}
+.footprint-category-places-btn{padding:0 9px;font-size:9px}
+.footprint-category-assign{margin-top:14px;padding:12px;border:1px solid var(--card-border);border-radius:9px;background:color-mix(in srgb,var(--pink-light) 42%,var(--white))}
+.footprint-category-assign[hidden]{display:none}
+.footprint-category-assign-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.footprint-category-assign-title{color:var(--rose);font-size:12px;font-weight:900}
+.footprint-category-assign-count{color:var(--text-muted);font-size:9px;white-space:nowrap}
+.footprint-category-place-list{max-height:250px;overflow-y:auto;margin-top:8px;padding-right:2px;overscroll-behavior:contain}
+.footprint-category-place{display:grid;grid-template-columns:20px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:43px;padding:7px 5px;border-top:1px solid rgba(232,99,122,.1);color:var(--text);font-size:11px;cursor:pointer}
+.footprint-category-place:first-child{border-top:0}
+.footprint-category-place input{width:17px;height:17px;accent-color:var(--rose)}
+.footprint-category-place span{min-width:0;overflow-wrap:anywhere}
+.footprint-category-place small{color:var(--text-muted);font-size:9px;white-space:nowrap}
+.footprint-category-empty{padding:22px 8px;color:var(--text-muted);font-size:11px;text-align:center}
 
 /* 每月重新選擇你 */
 .choose-page{padding-top:12px}
@@ -1564,6 +1610,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-brand{min-width:0;font-size:10px}.choose-brand span:last-child{overflow-wrap:anywhere}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
 @media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-map-shell{margin-right:12px;margin-left:12px}.footprint-map-shell #footprint-map{height:240px}.footprint-date-browser{grid-template-columns:minmax(0,1fr);gap:9px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
+@media(max-width:520px){.footprint-memory-head{align-items:flex-start}.footprint-memory-tools{grid-template-columns:minmax(94px,122px) 34px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:220px}}
 </style>
 </head>
 <body>
@@ -1760,7 +1807,7 @@ onclick="hideSpecialForToday()">
       <div class="cal-day-header">六</div>
     </div>
     <div class="album-cal-grid" id="album-cal-grid"></div>
-    <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;">
+    <div class="album-calendar-summary-row" style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;">
       <div style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
         <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--rose)"></span>有照片/行程的日期
       </div>
@@ -1941,7 +1988,11 @@ onclick="hideSpecialForToday()">
         <div class="footprint-memory-title">📍 常去的地方</div>
         <div class="footprint-memory-sub">依一起造訪的次數排列</div>
       </div>
-      <div class="footprint-memory-total" id="footprint-memory-total"></div>
+      <div class="footprint-memory-tools">
+        <select class="footprint-memory-category" id="footprint-memory-category" aria-label="選擇地點類別" onchange="footprintMemoryCategoryChanged(this.value)"></select>
+        <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()" aria-label="管理地點類別" title="管理地點類別">⚙</button>
+        <div class="footprint-memory-total" id="footprint-memory-total"></div>
+      </div>
     </div>
     <div class="footprint-ranking-list" id="footprint-ranking-list"></div>
     <button type="button" class="footprint-ranking-all-btn" id="footprint-ranking-all-btn" onclick="footprintOpenAllRanking()">
@@ -1961,6 +2012,33 @@ onclick="hideSpecialForToday()">
     <div class="footprint-ranking-dialog-body">
       <div class="footprint-ranking-categories" id="footprint-ranking-categories" role="tablist" aria-label="地點分類"></div>
       <div class="footprint-ranking-dialog-list" id="footprint-ranking-dialog-list"></div>
+    </div>
+  </section>
+</div>
+
+<div class="footprint-category-bg hidden" id="footprint-category-bg" onclick="footprintCloseCategoryManager(event)">
+  <section class="footprint-category-dialog" role="dialog" aria-modal="true" aria-labelledby="footprint-category-title" onclick="event.stopPropagation()">
+    <header class="footprint-category-head">
+      <div class="footprint-category-kicker">PLACE COLLECTIONS</div>
+      <div class="footprint-category-title" id="footprint-category-title">管理地點類別</div>
+      <div class="footprint-category-copy">新增自己的分類、調整顯示順序，再把去過的地方收進分類裡。</div>
+      <button type="button" class="footprint-category-close" onclick="footprintCloseCategoryManagerDirect()" aria-label="關閉類別管理">×</button>
+    </header>
+    <div class="footprint-category-body">
+      <div class="footprint-category-add">
+        <input class="footprint-category-input" id="footprint-category-name" type="text" maxlength="18" autocomplete="off" placeholder="輸入新類別名稱" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintAddCustomCategory();}">
+        <button type="button" class="footprint-category-add-btn" onclick="footprintAddCustomCategory()">＋ 新增</button>
+      </div>
+      <div class="footprint-category-section-label">顯示順序</div>
+      <div class="footprint-category-order" id="footprint-category-order"></div>
+      <section class="footprint-category-assign" id="footprint-category-assign" hidden>
+        <div class="footprint-category-assign-head">
+          <div class="footprint-category-assign-title" id="footprint-category-assign-title"></div>
+          <div class="footprint-category-assign-count" id="footprint-category-assign-count"></div>
+        </div>
+        <input class="footprint-category-search" id="footprint-category-search" type="search" autocomplete="off" placeholder="搜尋去過的地方" oninput="footprintCategorySearchChanged(this.value)">
+        <div class="footprint-category-place-list" id="footprint-category-place-list"></div>
+      </section>
     </div>
   </section>
 </div>
@@ -2116,6 +2194,7 @@ onclick="hideSpecialForToday()">
       <div class="footprint-date-query-controls">
         <input class="footprint-date-query-input" id="footprint-date-query" type="date" onchange="footprintQueryDate()">
         <button type="button" class="footprint-date-query-btn" onclick="footprintQueryDate()">查看</button>
+        <button type="button" class="footprint-date-query-clear" id="footprint-date-query-clear" onclick="footprintClearDateQuery()" hidden>全部</button>
       </div>
     </div>
     <div class="footprint-date-query-result" id="footprint-date-query-result" hidden>
@@ -2353,6 +2432,9 @@ function applyIntimacyVisibility(){
     button.setAttribute('aria-pressed',String(intimacyHidden));
     button.setAttribute('aria-label',intimacyHidden?'顯示親密統計':'暫時隱藏親密統計');
   }
+  const monthCount=document.getElementById('album-month-count');
+  const monthCountTarget=document.querySelector(intimacyHidden?'.album-plan-launch-row':'.album-calendar-summary-row');
+  if(monthCount&&monthCountTarget) monthCountTarget.appendChild(monthCount);
   if(typeof renderMemoriesTotalStats==='function') renderMemoriesTotalStats();
   if(typeof renderMemoriesCharts==='function') renderMemoriesCharts();
 }
@@ -8348,8 +8430,12 @@ if(window._fb) chooseInitFirebase();
 // ── 足跡地圖（Firebase 同步）──
 const FOOTPRINT_CACHE_KEY='footprint_visits_cache_v1';
 const FOOTPRINT_SEARCH_CACHE_KEY='footprint_place_search_cache_v5';
+const FOOTPRINT_CATEGORY_CACHE_KEY='footprint_category_settings_v1';
+const FOOTPRINT_BUILTIN_CATEGORY_IDS=['qtime','school','park','hotel','nightmarket','baseball','other'];
+const FOOTPRINT_BUILTIN_CATEGORY_LABELS={qtime:'Qtime',school:'學校',park:'公園',hotel:'飯店',nightmarket:'夜市',baseball:'棒球場',other:'其他'};
 let footprintVisitsData={};
 let footprintSyncStarted=false;
+let footprintCategorySyncStarted=false;
 let footprintMap=null;
 let footprintMarkerLayer=null;
 let footprintMapHasFit=false;
@@ -8361,6 +8447,11 @@ let footprintLastSearchAt=0;
 let footprintSearchRequestId=0;
 let footprintExtraDates=[];
 let footprintRankingCategory='all';
+let footprintMemoryCategory='all';
+let footprintCategorySettings={custom:[],order:[...FOOTPRINT_BUILTIN_CATEGORY_IDS],assignments:{}};
+let footprintCategoryManagerActive='';
+let footprintCategoryManagerQuery='';
+let footprintCategoryWritePromise=Promise.resolve();
 let footprintDateQuery='';
 let footprintExpensePlaceId='';
 
@@ -8413,6 +8504,57 @@ function footprintLoadCache(){
 }
 function footprintWriteCache(){
   try{localStorage.setItem(FOOTPRINT_CACHE_KEY,JSON.stringify(footprintVisitsData));}catch(_){}
+}
+function footprintNormalizeCategorySettings(value){
+  const raw=value&&typeof value==='object'?value:{};
+  const usedIds=new Set();
+  const usedNames=new Set(Object.values(FOOTPRINT_BUILTIN_CATEGORY_LABELS).map(name=>name.toLowerCase()));
+  const custom=(Array.isArray(raw.custom)?raw.custom:[]).map(item=>{
+    const id=String(item?.id||'').trim();
+    const name=String(item?.name||'').trim().slice(0,18);
+    if(!/^custom_[a-z0-9_]+$/i.test(id)||!name||usedIds.has(id)||usedNames.has(name.toLowerCase())) return null;
+    usedIds.add(id);
+    usedNames.add(name.toLowerCase());
+    return {id,name};
+  }).filter(Boolean);
+  const validIds=new Set([...FOOTPRINT_BUILTIN_CATEGORY_IDS,...custom.map(item=>item.id)]);
+  const order=[];
+  (Array.isArray(raw.order)?raw.order:[]).forEach(id=>{
+    const normalized=String(id||'');
+    if(validIds.has(normalized)&&!order.includes(normalized)) order.push(normalized);
+  });
+  validIds.forEach(id=>{if(!order.includes(id)) order.push(id);});
+  const assignments={};
+  custom.forEach(item=>{
+    const source=Array.isArray(raw.assignments?.[item.id])?raw.assignments[item.id]:[];
+    assignments[item.id]=[...new Set(source.map(id=>String(id||'').trim()).filter(Boolean))];
+  });
+  return {custom,order,assignments,updatedAt:Number(raw.updatedAt)||0};
+}
+function footprintLoadCategoryCache(){
+  try{
+    footprintCategorySettings=footprintNormalizeCategorySettings(JSON.parse(localStorage.getItem(FOOTPRINT_CATEGORY_CACHE_KEY)||'{}'));
+  }catch(_){footprintCategorySettings=footprintNormalizeCategorySettings({});}
+}
+function footprintWriteCategoryCache(){
+  try{localStorage.setItem(FOOTPRINT_CATEGORY_CACHE_KEY,JSON.stringify(footprintCategorySettings));}catch(_){}
+}
+function footprintCategoryDefinitions(includeAll=true){
+  const customMap=new Map(footprintCategorySettings.custom.map(item=>[item.id,item]));
+  const definitions=footprintCategorySettings.order.map(id=>{
+    if(FOOTPRINT_BUILTIN_CATEGORY_LABELS[id]) return {id,name:FOOTPRINT_BUILTIN_CATEGORY_LABELS[id],custom:false};
+    const item=customMap.get(id);
+    return item?{id,name:item.name,custom:true}:null;
+  }).filter(Boolean);
+  return includeAll?[{id:'all',name:'全部',custom:false,pinned:true},...definitions]:definitions;
+}
+function footprintCategoryExists(category){
+  return category==='all'||footprintCategoryDefinitions(false).some(item=>item.id===category);
+}
+function footprintGroupMatchesCategory(group,category){
+  if(category==='all') return true;
+  if(FOOTPRINT_BUILTIN_CATEGORY_IDS.includes(category)) return footprintPlaceCategory(group)===category;
+  return (footprintCategorySettings.assignments[category]||[]).includes(group.placeId);
 }
 function footprintDistanceMeters(aLat,aLng,bLat,bLng){
   const rad=value=>value*Math.PI/180;
@@ -8482,26 +8624,30 @@ function footprintRefreshMap(groups){
 }
 function footprintRender(){
   const groups=footprintGetGroups();
-  const visitTotal=groups.reduce((sum,group)=>sum+group.visits.length,0);
+  const displayGroups=footprintDateQuery?footprintGroupsOnDate(groups,footprintDateQuery):groups;
+  const visitTotal=displayGroups.reduce((sum,group)=>sum+group.visits.length,0);
   const placeTotal=document.getElementById('footprint-place-total');
   const total=document.getElementById('footprint-visit-total');
-  if(placeTotal) placeTotal.textContent=groups.length;
+  if(placeTotal) placeTotal.textContent=displayGroups.length;
   if(total) total.textContent=visitTotal;
   if(footprintDateQuery){
-    const queriedGroups=footprintGroupsOnDate(groups,footprintDateQuery);
-    if(!queriedGroups.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=queriedGroups[0]?.placeId||'';
+    if(!displayGroups.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=displayGroups[0]?.placeId||'';
   }else if(groups.length&&!groups.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=groups[0].placeId;
   if(!groups.length) footprintSelectedPlaceId='';
   footprintRenderDateQuery(groups);
   const empty=document.getElementById('footprint-empty');
   if(empty) empty.style.display=groups.length?'none':'block';
   const page=document.getElementById('page-footprints');
-  if(footprintMap||page?.classList.contains('active')) footprintRefreshMap(groups);
-  footprintRenderDetail(groups.find(group=>group.placeId===footprintSelectedPlaceId)||null);
+  if(footprintMap||page?.classList.contains('active')) footprintRefreshMap(displayGroups);
+  footprintRenderDetail(displayGroups.find(group=>group.placeId===footprintSelectedPlaceId)||null);
   renderFootprintMemoryStats(groups);
 }
 function footprintGroupsOnDate(groups,date){
-  return groups.filter(group=>group.visits.some(visit=>visit.date===date));
+  return groups.map(group=>{
+    const visits=group.visits.filter(visit=>visit.date===date);
+    const latest=visits[0];
+    return latest?{...group,visits,name:latest.placeName,lat:latest.lat,lng:latest.lng,latestDate:date}:null;
+  }).filter(Boolean);
 }
 function footprintRenderDateQuery(groups=footprintGetGroups()){
   const browser=document.getElementById('footprint-date-browser');
@@ -8509,9 +8655,11 @@ function footprintRenderDateQuery(groups=footprintGetGroups()){
   const result=document.getElementById('footprint-date-query-result');
   const summary=document.getElementById('footprint-date-query-summary');
   const select=document.getElementById('footprint-date-place-select');
-  if(!browser||!input||!result||!summary||!select) return;
+  const clear=document.getElementById('footprint-date-query-clear');
+  if(!browser||!input||!result||!summary||!select||!clear) return;
   browser.hidden=!groups.length;
-  input.value=footprintDateQuery;
+  input.value=footprintDateQuery||footprintTodayKey();
+  clear.hidden=!footprintDateQuery;
   if(!footprintDateQuery){result.hidden=true;return;}
   const matches=footprintGroupsOnDate(groups,footprintDateQuery);
   result.hidden=false;
@@ -8532,13 +8680,17 @@ function footprintQueryDate(){
   footprintDateQuery=String(input?.value||'');
   const groups=footprintGetGroups();
   const matches=footprintGroupsOnDate(groups,footprintDateQuery);
+  footprintMapHasFit=false;
   if(matches.length){
     if(!matches.some(group=>group.placeId===footprintSelectedPlaceId)) footprintSelectedPlaceId=matches[0].placeId;
     footprintRender();
-    const selected=matches.find(group=>group.placeId===footprintSelectedPlaceId)||matches[0];
-    if(footprintMap) footprintMap.flyTo([selected.lat,selected.lng],Math.max(footprintMap.getZoom(),14),{duration:.65});
     return;
   }
+  footprintRender();
+}
+function footprintClearDateQuery(){
+  footprintDateQuery='';
+  footprintMapHasFit=false;
   footprintRender();
 }
 function footprintChooseDatePlace(placeId){
@@ -8598,7 +8750,7 @@ function footprintPlaceCategory(group){
   return 'other';
 }
 function footprintCategoryLabel(category){
-  return ({all:'全部',qtime:'Qtime',school:'學校',park:'公園',hotel:'飯店',nightmarket:'夜市',baseball:'棒球場',other:'其他'})[category]||'其他';
+  return footprintCategoryDefinitions().find(item=>item.id===category)?.name||'其他';
 }
 function footprintFormatMoney(value){
   return new Intl.NumberFormat('zh-TW',{maximumFractionDigits:0}).format(Math.max(0,Math.round(Number(value)||0)));
@@ -8615,14 +8767,15 @@ function footprintRenderAllRanking(){
   const summary=document.getElementById('footprint-ranking-dialog-summary');
   if(!categoryWrap||!list||!summary) return;
   const ranked=footprintRankedGroups();
-  const categories=['all','qtime','school','park','hotel','nightmarket','baseball','other'];
-  const counts=Object.fromEntries(categories.map(category=>[category,category==='all'?ranked.length:ranked.filter(group=>footprintPlaceCategory(group)===category).length]));
-  categoryWrap.innerHTML=categories.map(category=>`<button type="button" class="footprint-ranking-category${footprintRankingCategory===category?' active':''}" data-footprint-category="${category}" role="tab" aria-selected="${footprintRankingCategory===category}">${footprintCategoryLabel(category)}<span class="footprint-ranking-category-count">${counts[category]}</span></button>`).join('');
+  const categories=footprintCategoryDefinitions();
+  if(!footprintCategoryExists(footprintRankingCategory)) footprintRankingCategory='all';
+  const counts=Object.fromEntries(categories.map(category=>[category.id,ranked.filter(group=>footprintGroupMatchesCategory(group,category.id)).length]));
+  categoryWrap.innerHTML=categories.map(category=>`<button type="button" class="footprint-ranking-category${footprintRankingCategory===category.id?' active':''}" data-footprint-category="${footprintEscape(category.id)}" role="tab" aria-selected="${footprintRankingCategory===category.id}">${footprintEscape(category.name)}<span class="footprint-ranking-category-count">${counts[category.id]}</span></button>`).join('');
   categoryWrap.querySelectorAll('[data-footprint-category]').forEach(button=>button.addEventListener('click',()=>{
     footprintRankingCategory=button.dataset.footprintCategory||'all';
     footprintRenderAllRanking();
   }));
-  const filtered=footprintRankingCategory==='all'?ranked:ranked.filter(group=>footprintPlaceCategory(group)===footprintRankingCategory);
+  const filtered=ranked.filter(group=>footprintGroupMatchesCategory(group,footprintRankingCategory));
   const visitTotal=filtered.reduce((total,group)=>total+group.visits.length,0);
   const expenseTotal=filtered.reduce((total,group)=>total+footprintExpenseVisits(group).reduce((sum,visit)=>sum+visit.expense,0),0);
   summary.textContent=`${footprintCategoryLabel(footprintRankingCategory)} · ${filtered.length} 個地點 · 共 ${visitTotal} 次造訪${['hotel','baseball'].includes(footprintRankingCategory)&&expenseTotal>0?` · 花費 $${footprintFormatMoney(expenseTotal)}`:''}`;
@@ -8638,7 +8791,8 @@ function footprintRenderAllRanking(){
     const expenseVisits=footprintExpenseVisits(group);
     const expenseTotal=expenseVisits.reduce((sum,visit)=>sum+visit.expense,0);
     const expenseMeta=showExpenseAction?`<span class="footprint-ranking-expense-summary">${expenseVisits.length?`花費 ${expenseVisits.length} 天 · 共 $${footprintFormatMoney(expenseTotal)}`:'尚未記錄花費'}</span>`:'';
-    return `<div class="footprint-ranking-dialog-item"><button type="button" class="footprint-ranking-dialog-row${rank<=3?' is-top':''}" data-footprint-all-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-dialog-rank">${rank}</span><span class="footprint-ranking-dialog-copy"><span class="footprint-ranking-dialog-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-dialog-meta"><span class="footprint-ranking-dialog-tag">${footprintCategoryLabel(category)}</span><span>最近一次 ${footprintFormatDate(group.latestDate)}</span>${expenseMeta}</span></span><span class="footprint-ranking-dialog-visits">${group.visits.length} 次</span></button>${showExpenseAction?`<button type="button" class="footprint-ranking-expense-btn" data-footprint-expense="${footprintEscape(group.placeId)}">＋ 花費</button>`:''}</div>`;
+    const displayCategory=footprintRankingCategory.startsWith('custom_')?footprintRankingCategory:category;
+    return `<div class="footprint-ranking-dialog-item"><button type="button" class="footprint-ranking-dialog-row${rank<=3?' is-top':''}" data-footprint-all-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-dialog-rank">${rank}</span><span class="footprint-ranking-dialog-copy"><span class="footprint-ranking-dialog-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-dialog-meta"><span class="footprint-ranking-dialog-tag">${footprintEscape(footprintCategoryLabel(displayCategory))}</span><span>最近一次 ${footprintFormatDate(group.latestDate)}</span>${expenseMeta}</span></span><span class="footprint-ranking-dialog-visits">${group.visits.length} 次</span></button>${showExpenseAction?`<button type="button" class="footprint-ranking-expense-btn" data-footprint-expense="${footprintEscape(group.placeId)}">＋ 花費</button>`:''}</div>`;
   }).join('');
   list.querySelectorAll('[data-footprint-all-ranking]').forEach(button=>button.addEventListener('click',()=>{
     const placeId=button.dataset.footprintAllRanking;
@@ -8649,10 +8803,10 @@ function footprintRenderAllRanking(){
     footprintOpenExpense(button.dataset.footprintExpense);
   }));
 }
-function footprintOpenAllRanking(){
+function footprintOpenAllRanking(category=footprintMemoryCategory){
   const overlay=document.getElementById('footprint-ranking-dialog-bg');
   if(!overlay) return;
-  footprintRankingCategory='all';
+  footprintRankingCategory=footprintCategoryExists(category)?category:'all';
   footprintRenderAllRanking();
   overlay.classList.remove('hidden');
   document.body.style.overflow='hidden';
@@ -8753,24 +8907,175 @@ function renderFootprintMemoryStats(groups=footprintGetGroups()){
   const section=document.getElementById('footprint-memory-stats');
   const list=document.getElementById('footprint-ranking-list');
   const allButton=document.getElementById('footprint-ranking-all-btn');
-  if(!section||!list) return;
+  const select=document.getElementById('footprint-memory-category');
+  if(!section||!list||!select) return;
   if(!groups.length){section.hidden=true;list.innerHTML='';if(allButton)allButton.hidden=true;return;}
-  const ranked=footprintRankedGroups(groups).slice(0,5);
+  const definitions=footprintCategoryDefinitions();
+  if(!footprintCategoryExists(footprintMemoryCategory)) footprintMemoryCategory='all';
+  const allRanked=footprintRankedGroups(groups);
+  const counts=Object.fromEntries(definitions.map(category=>[category.id,allRanked.filter(group=>footprintGroupMatchesCategory(group,category.id)).length]));
+  select.innerHTML=definitions.map(category=>`<option value="${footprintEscape(category.id)}">${footprintEscape(category.name)}（${counts[category.id]}）</option>`).join('');
+  select.value=footprintMemoryCategory;
+  const filtered=allRanked.filter(group=>footprintGroupMatchesCategory(group,footprintMemoryCategory));
+  const ranked=filtered.slice(0,5);
   const maxCount=Math.max(...ranked.map(group=>group.visits.length),1);
   section.hidden=false;
   if(allButton) allButton.hidden=false;
-  document.getElementById('footprint-memory-total').textContent=`共 ${groups.length} 個地點`;
-  list.innerHTML=ranked.map((group,index)=>`<button type="button" class="footprint-ranking-row" data-footprint-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-bar" style="width:${Math.max(18,Math.round(group.visits.length/maxCount*100))}%"></span><span class="footprint-ranking-rank">${index+1}</span><span class="footprint-ranking-copy"><span class="footprint-ranking-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-date">最近一次 ${footprintFormatDate(group.latestDate)}</span></span><span class="footprint-ranking-count">${group.visits.length} 次</span></button>`).join('');
+  document.getElementById('footprint-memory-total').textContent=footprintMemoryCategory==='all'?`共 ${groups.length} 個地點`:`${filtered.length} 個地點`;
+  list.innerHTML=ranked.length?ranked.map((group,index)=>`<button type="button" class="footprint-ranking-row" data-footprint-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-bar" style="width:${Math.max(18,Math.round(group.visits.length/maxCount*100))}%"></span><span class="footprint-ranking-rank">${index+1}</span><span class="footprint-ranking-copy"><span class="footprint-ranking-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-date">最近一次 ${footprintFormatDate(group.latestDate)}</span></span><span class="footprint-ranking-count">${group.visits.length} 次</span></button>`).join(''):'<div class="footprint-ranking-empty">這個類別還沒有收錄地點，可以到「管理類別」加入。</div>';
   list.querySelectorAll('[data-footprint-ranking]').forEach(button=>button.addEventListener('click',()=>footprintOpenFromMemory(button.dataset.footprintRanking)));
 }
+function footprintMemoryCategoryChanged(category){
+  footprintMemoryCategory=footprintCategoryExists(category)?category:'all';
+  renderFootprintMemoryStats();
+}
+function footprintRefreshCategoryViews(renderManager=true){
+  renderFootprintMemoryStats();
+  if(!document.getElementById('footprint-ranking-dialog-bg')?.classList.contains('hidden')) footprintRenderAllRanking();
+  if(renderManager&&!document.getElementById('footprint-category-bg')?.classList.contains('hidden')) footprintRenderCategoryManager();
+}
+function footprintPersistCategorySettings(renderManager=true){
+  footprintCategorySettings=footprintNormalizeCategorySettings({...footprintCategorySettings,updatedAt:Date.now()});
+  footprintWriteCategoryCache();
+  footprintRefreshCategoryViews(renderManager);
+  const payload=JSON.parse(JSON.stringify(footprintCategorySettings));
+  if(!window._fb){queueFirebaseWrite('footprintCategorySettings',payload);return;}
+  footprintCategoryWritePromise=footprintCategoryWritePromise.catch(()=>{}).then(async()=>{
+    const {db,ref,set}=window._fb;
+    await set(ref(db,'footprintCategorySettings'),payload);
+  }).catch(error=>{
+    console.warn('地點類別同步失敗，已排入待同步',error);
+    queueFirebaseWrite('footprintCategorySettings',payload);
+  });
+}
+function footprintOpenCategoryManager(){
+  const overlay=document.getElementById('footprint-category-bg');
+  if(!overlay) return;
+  if(!footprintCategorySettings.custom.some(item=>item.id===footprintCategoryManagerActive)) footprintCategoryManagerActive='';
+  footprintCategoryManagerQuery='';
+  footprintRenderCategoryManager();
+  overlay.classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('footprint-category-name')?.focus(),40);
+}
+function footprintCloseCategoryManager(event){
+  if(event?.target===document.getElementById('footprint-category-bg')) footprintCloseCategoryManagerDirect();
+}
+function footprintCloseCategoryManagerDirect(){
+  const overlay=document.getElementById('footprint-category-bg');
+  if(!overlay) return;
+  overlay.classList.add('hidden');
+  document.body.style.overflow='';
+}
+function footprintRenderCategoryManager(){
+  const orderWrap=document.getElementById('footprint-category-order');
+  const assign=document.getElementById('footprint-category-assign');
+  const list=document.getElementById('footprint-category-place-list');
+  const search=document.getElementById('footprint-category-search');
+  if(!orderWrap||!assign||!list||!search) return;
+  const definitions=footprintCategoryDefinitions(false);
+  const previousScroll=list.scrollTop;
+  const rows=[{id:'all',name:'全部',custom:false,pinned:true},...definitions];
+  orderWrap.innerHTML=rows.map((category,index)=>{
+    const orderedIndex=index-1;
+    const assignedCount=category.custom?(footprintCategorySettings.assignments[category.id]||[]).length:0;
+    const meta=category.pinned?'固定顯示在第一個':category.custom?`自訂分類 · ${assignedCount} 個地點`:'系統自動分類';
+    const actions=category.pinned?'':`<div class="footprint-category-row-actions"><button type="button" class="footprint-category-icon-btn" data-category-up="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往上移" title="往上移"${orderedIndex===0?' disabled':''}>↑</button><button type="button" class="footprint-category-icon-btn" data-category-down="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往下移" title="往下移"${orderedIndex===definitions.length-1?' disabled':''}>↓</button>${category.custom?`<button type="button" class="footprint-category-places-btn" data-category-places="${footprintEscape(category.id)}">選地點</button><button type="button" class="footprint-category-icon-btn" data-category-rename="${footprintEscape(category.id)}" aria-label="重新命名 ${footprintEscape(category.name)}" title="重新命名">✎</button><button type="button" class="footprint-category-icon-btn" data-category-delete="${footprintEscape(category.id)}" aria-label="刪除 ${footprintEscape(category.name)}" title="刪除">×</button>`:''}</div>`;
+    return `<div class="footprint-category-row${category.pinned?' is-pinned':''}${category.custom?' is-custom':''}"><span class="footprint-category-order-no">${category.pinned?'•':index}</span><span class="footprint-category-row-copy"><span class="footprint-category-row-name">${footprintEscape(category.name)}</span><span class="footprint-category-row-meta">${meta}</span></span>${actions}</div>`;
+  }).join('');
+  orderWrap.querySelectorAll('[data-category-up]').forEach(button=>button.addEventListener('click',()=>footprintMoveCategory(button.dataset.categoryUp,-1)));
+  orderWrap.querySelectorAll('[data-category-down]').forEach(button=>button.addEventListener('click',()=>footprintMoveCategory(button.dataset.categoryDown,1)));
+  orderWrap.querySelectorAll('[data-category-places]').forEach(button=>button.addEventListener('click',()=>footprintChooseCategoryPlaces(button.dataset.categoryPlaces)));
+  orderWrap.querySelectorAll('[data-category-rename]').forEach(button=>button.addEventListener('click',()=>footprintRenameCustomCategory(button.dataset.categoryRename)));
+  orderWrap.querySelectorAll('[data-category-delete]').forEach(button=>button.addEventListener('click',()=>footprintDeleteCustomCategory(button.dataset.categoryDelete)));
+  const active=footprintCategorySettings.custom.find(item=>item.id===footprintCategoryManagerActive);
+  assign.hidden=!active;
+  if(!active) return;
+  search.value=footprintCategoryManagerQuery;
+  document.getElementById('footprint-category-assign-title').textContent=`「${active.name}」的地點`;
+  const assigned=new Set(footprintCategorySettings.assignments[active.id]||[]);
+  const query=footprintNormalizeName(footprintCategoryManagerQuery);
+  const places=footprintRankedGroups().filter(group=>!query||footprintNormalizeName([group.name,...group.visits.map(visit=>visit.address)].join(' ')).includes(query));
+  document.getElementById('footprint-category-assign-count').textContent=`已選 ${assigned.size} 個`;
+  list.innerHTML=places.length?places.map(group=>`<label class="footprint-category-place"><input type="checkbox" data-category-place="${footprintEscape(group.placeId)}"${assigned.has(group.placeId)?' checked':''}><span>${footprintEscape(group.name)}</span><small>${group.visits.length} 次</small></label>`).join(''):'<div class="footprint-category-empty">找不到符合的地點</div>';
+  list.querySelectorAll('[data-category-place]').forEach(input=>input.addEventListener('change',()=>footprintToggleCategoryPlace(active.id,input.dataset.categoryPlace,input.checked)));
+  requestAnimationFrame(()=>{list.scrollTop=previousScroll;});
+}
+function footprintAddCustomCategory(){
+  const input=document.getElementById('footprint-category-name');
+  const name=String(input?.value||'').trim().slice(0,18);
+  if(!name){input?.focus();return;}
+  if(footprintCategoryDefinitions().some(item=>item.name.toLowerCase()===name.toLowerCase())){alert('這個類別名稱已經存在');return;}
+  if(footprintCategorySettings.custom.length>=20){alert('自訂類別最多 20 個');return;}
+  const id=`custom_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`;
+  footprintCategorySettings.custom.push({id,name});
+  footprintCategorySettings.order.push(id);
+  footprintCategorySettings.assignments[id]=[];
+  footprintCategoryManagerActive=id;
+  footprintCategoryManagerQuery='';
+  if(input) input.value='';
+  footprintPersistCategorySettings();
+}
+function footprintMoveCategory(id,direction){
+  const index=footprintCategorySettings.order.indexOf(id);
+  const target=index+direction;
+  if(index<0||target<0||target>=footprintCategorySettings.order.length) return;
+  [footprintCategorySettings.order[index],footprintCategorySettings.order[target]]=[footprintCategorySettings.order[target],footprintCategorySettings.order[index]];
+  footprintPersistCategorySettings();
+}
+function footprintChooseCategoryPlaces(id){
+  if(!footprintCategorySettings.custom.some(item=>item.id===id)) return;
+  footprintCategoryManagerActive=id;
+  footprintCategoryManagerQuery='';
+  footprintRenderCategoryManager();
+  setTimeout(()=>document.getElementById('footprint-category-search')?.focus(),20);
+}
+function footprintRenameCustomCategory(id){
+  const item=footprintCategorySettings.custom.find(category=>category.id===id);
+  if(!item) return;
+  const name=String(prompt('新的類別名稱',item.name)||'').trim().slice(0,18);
+  if(!name||name===item.name) return;
+  if(footprintCategoryDefinitions().some(category=>category.id!==id&&category.name.toLowerCase()===name.toLowerCase())){alert('這個類別名稱已經存在');return;}
+  item.name=name;
+  footprintPersistCategorySettings();
+}
+function footprintDeleteCustomCategory(id){
+  const item=footprintCategorySettings.custom.find(category=>category.id===id);
+  if(!item||!confirm(`確定刪除「${item.name}」類別嗎？地點紀錄本身不會被刪除。`)) return;
+  footprintCategorySettings.custom=footprintCategorySettings.custom.filter(category=>category.id!==id);
+  footprintCategorySettings.order=footprintCategorySettings.order.filter(categoryId=>categoryId!==id);
+  delete footprintCategorySettings.assignments[id];
+  if(footprintMemoryCategory===id) footprintMemoryCategory='all';
+  if(footprintRankingCategory===id) footprintRankingCategory='all';
+  if(footprintCategoryManagerActive===id) footprintCategoryManagerActive='';
+  footprintPersistCategorySettings();
+}
+function footprintCategorySearchChanged(value){
+  footprintCategoryManagerQuery=String(value||'');
+  footprintRenderCategoryManager();
+  const search=document.getElementById('footprint-category-search');
+  if(search){search.focus();search.setSelectionRange(search.value.length,search.value.length);}
+}
+function footprintToggleCategoryPlace(categoryId,placeId,checked){
+  if(!footprintCategorySettings.custom.some(item=>item.id===categoryId)) return;
+  const assigned=new Set(footprintCategorySettings.assignments[categoryId]||[]);
+  if(checked) assigned.add(placeId); else assigned.delete(placeId);
+  footprintCategorySettings.assignments[categoryId]=[...assigned];
+  const count=document.getElementById('footprint-category-assign-count');
+  if(count) count.textContent=`已選 ${assigned.size} 個`;
+  footprintPersistCategorySettings(false);
+}
 function footprintOpenFromMemory(placeId){
+  footprintDateQuery='';
+  footprintMapHasFit=false;
   const button=[...document.querySelectorAll('.nav-btn')].find(item=>(item.getAttribute('onclick')||'').includes("'footprints'"));
   showPage('footprints',button||null);
   setTimeout(()=>footprintFocusPlace(placeId,true),80);
 }
 document.addEventListener('keydown',event=>{
   if(event.key!=='Escape') return;
-  if(!document.getElementById('footprint-expense-bg')?.classList.contains('hidden')) footprintCloseExpenseDirect();
+  if(!document.getElementById('footprint-category-bg')?.classList.contains('hidden')) footprintCloseCategoryManagerDirect();
+  else if(!document.getElementById('footprint-expense-bg')?.classList.contains('hidden')) footprintCloseExpenseDirect();
   else if(!document.getElementById('footprint-ranking-dialog-bg')?.classList.contains('hidden')) footprintCloseAllRankingDirect();
 });
 function footprintShowPage(){
@@ -9108,22 +9413,43 @@ async function footprintDeleteVisit(id){
 }
 function footprintInitFirebase(){
   footprintLoadCache();
+  footprintLoadCategoryCache();
   footprintRender();
-  if(footprintSyncStarted||!window._fb) return;
-  footprintSyncStarted=true;
+  if(!window._fb) return;
   const {db,ref,onValue}=window._fb;
-  onValue(ref(db,'footprintVisits'),snapshot=>{
-    footprintVisitsData=snapshot.val()||{};
-    footprintWriteCache();
-    footprintRender();
-  },error=>{
-    footprintSyncStarted=false;
-    console.warn('足跡同步失敗',error);
-    footprintSetStatus('目前顯示已下載的足跡',true);
-  });
+  if(!footprintSyncStarted){
+    footprintSyncStarted=true;
+    onValue(ref(db,'footprintVisits'),snapshot=>{
+      footprintVisitsData=snapshot.val()||{};
+      footprintWriteCache();
+      footprintRender();
+    },error=>{
+      footprintSyncStarted=false;
+      console.warn('足跡同步失敗',error);
+      footprintSetStatus('目前顯示已下載的足跡',true);
+    });
+  }
+  if(!footprintCategorySyncStarted){
+    footprintCategorySyncStarted=true;
+    onValue(ref(db,'footprintCategorySettings'),snapshot=>{
+      const remote=snapshot.val();
+      if(remote&&typeof remote==='object'){
+        const normalized=footprintNormalizeCategorySettings(remote);
+        if(normalized.updatedAt>=footprintCategorySettings.updatedAt){
+          footprintCategorySettings=normalized;
+          footprintWriteCategoryCache();
+          footprintRefreshCategoryViews();
+        }
+      }
+    },error=>{
+      footprintCategorySyncStarted=false;
+      console.warn('地點類別同步失敗',error);
+    });
+  }
 }
 
 footprintLoadCache();
+footprintLoadCategoryCache();
 footprintRender();
 window.addEventListener('albumDataReady',()=>{
   footprintRender();

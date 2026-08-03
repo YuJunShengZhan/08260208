@@ -1215,6 +1215,12 @@ background:var(--pink-light);margin-left:8px;
 .footprint-date-query-result[hidden]{display:none}
 .footprint-date-query-summary{display:block;margin-bottom:6px;color:#2f9a68;font-size:10px;font-weight:800}
 .footprint-date-place-select[hidden]{display:none}
+.footprint-date-place-list{grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding-top:10px;border-top:1px solid rgba(232,99,122,.12)}
+.footprint-date-place-list[hidden]{display:none}
+.footprint-date-place-list-label{margin-right:2px;color:var(--text-muted);font-size:10px;font-weight:800}
+.footprint-date-place-chip{min-height:30px;padding:5px 10px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:700;line-height:1.35;cursor:pointer;transition:border-color .18s ease,background .18s ease,color .18s ease}
+.footprint-date-place-chip:hover,.footprint-date-place-chip:focus-visible{border-color:var(--pink);outline:none}
+.footprint-date-place-chip.active{border-color:var(--rose);background:var(--rose);color:#fff}
 .footprint-empty{padding:30px 18px;border:1px dashed rgba(232,99,122,.34);border-radius:8px;background:var(--white);text-align:center}
 .footprint-empty-icon{font-size:34px;line-height:1}
 .footprint-empty-title{margin-top:9px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
@@ -2208,6 +2214,7 @@ onclick="hideSpecialForToday()">
       <span class="footprint-date-query-summary" id="footprint-date-query-summary"></span>
       <select class="footprint-date-place-select" id="footprint-date-place-select" aria-label="選擇這天去過的地點" onchange="footprintChooseDatePlace(this.value)"></select>
     </div>
+    <div class="footprint-date-place-list" id="footprint-date-place-list" aria-label="這天去過的所有地點" hidden></div>
   </section>
   <div class="footprint-empty" id="footprint-empty">
     <div class="footprint-empty-icon">📍</div>
@@ -8674,18 +8681,21 @@ function footprintRenderDateQuery(groups=footprintGetGroups()){
   const result=document.getElementById('footprint-date-query-result');
   const summary=document.getElementById('footprint-date-query-summary');
   const select=document.getElementById('footprint-date-place-select');
+  const placeList=document.getElementById('footprint-date-place-list');
   const clear=document.getElementById('footprint-date-query-clear');
-  if(!browser||!input||!result||!summary||!select||!clear) return;
+  if(!browser||!input||!result||!summary||!select||!placeList||!clear) return;
   browser.hidden=!groups.length;
   input.value=footprintDateQuery||footprintTodayKey();
   clear.hidden=!footprintDateQuery;
-  if(!footprintDateQuery){result.hidden=true;return;}
+  if(!footprintDateQuery){result.hidden=true;placeList.hidden=true;placeList.innerHTML='';return;}
   const matches=footprintGroupsOnDate(groups,footprintDateQuery);
   result.hidden=false;
   if(!matches.length){
     summary.textContent='這天還沒有足跡紀錄';
     select.hidden=true;
     select.innerHTML='';
+    placeList.hidden=true;
+    placeList.innerHTML='';
     return;
   }
   summary.textContent=`這天去了 ${matches.length} 個地點`;
@@ -8693,6 +8703,9 @@ function footprintRenderDateQuery(groups=footprintGetGroups()){
   select.innerHTML=matches.map(group=>`<option value="${footprintEscape(group.placeId)}">${footprintEscape(group.name)}</option>`).join('');
   const selected=matches.some(group=>group.placeId===footprintSelectedPlaceId)?footprintSelectedPlaceId:matches[0].placeId;
   select.value=selected;
+  placeList.hidden=false;
+  placeList.innerHTML=`<span class="footprint-date-place-list-label">當天地點</span>${matches.map(group=>`<button type="button" class="footprint-date-place-chip${group.placeId===selected?' active':''}" data-footprint-date-place="${footprintEscape(group.placeId)}">${footprintEscape(group.name)}</button>`).join('')}`;
+  placeList.querySelectorAll('[data-footprint-date-place]').forEach(button=>button.addEventListener('click',()=>footprintChooseDatePlace(button.dataset.footprintDatePlace)));
 }
 function footprintQueryDate(){
   const input=document.getElementById('footprint-date-query');

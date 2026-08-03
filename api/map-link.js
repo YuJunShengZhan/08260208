@@ -48,6 +48,28 @@ function parseCoordinates(value) {
   return null;
 }
 
+function decodeGoogleString(value) {
+  try { return JSON.parse(`"${String(value || '')}"`); }
+  catch (_) { return safeDecode(String(value || '')).replace(/\\u0026/gi, '&'); }
+}
+
+function parseEmbedEntity(html) {
+  const source = String(html || '');
+  const match = source.match(/\[\["((?:\\.|[^"\\])*)","((?:\\.|[^"\\])*)",\[(-?\d{1,2}(?:\.\d+)?),(-?\d{1,3}(?:\.\d+)?)\],"((?:\\.|[^"\\])*)"\],"((?:\\.|[^"\\])*)",(\[[^\]]*\])/);
+  if (!match) return null;
+  const lat = Number(match[3]);
+  const lng = Number(match[4]);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+  let addressParts = [];
+  try { addressParts = JSON.parse(match[7]); } catch (_) {}
+  return {
+    coordinates: { lat, lng },
+    query: decodeGoogleString(match[2]).trim(),
+    name: decodeGoogleString(match[6]).trim().slice(0, 60),
+    address: (Array.isArray(addressParts) ? addressParts : []).filter(Boolean).join(', ').trim().slice(0, 180)
+  };
+}
+
 function isCoordinateLabel(value) {
   return /^-?\d{1,2}(?:\.\d+)?\s*[,，]\s*-?\d{1,3}(?:\.\d+)?/.test(String(value || '').trim());
 }
@@ -114,6 +136,32 @@ async function resolveMapUrl(initialUrl) {
   return { url: current, html };
 }
 
+async function fetchEmbedEntity(query, ftid = '') {
+  const cleanQuery = String(query || '').trim();
+  if (!cleanQuery) return null;
+  const embedUrl = new URL('https://maps.google.com/maps');
+  embedUrl.searchParams.set('q', cleanQuery);
+  embedUrl.searchParams.set('output', 'embed');
+  if (ftid) embedUrl.searchParams.set('ftid', ftid);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 7000);
+  try {
+    const result = await fetch(embedUrl, {
+      signal: controller.signal,
+      headers: {
+        'Accept-Language': 'zh-TW,zh;q=0.9',
+        'User-Agent': 'Mozilla/5.0 (compatible; ShengzhanYujunSite/1.0)'
+      }
+    });
+    if (!result.ok) return null;
+    return parseEmbedEntity((await result.text()).slice(0, 400000));
+  } catch (_) {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function reverseAddress(lat, lng) {
   const params = new URLSearchParams({ format: 'jsonv2', lat: String(lat), lon: String(lng), 'accept-language': 'zh-TW' });
   const controller = new AbortController();
@@ -154,15 +202,18 @@ module.exports = async function mapLink(request, response) {
 
   try {
     const resolved = await resolveMapUrl(initialUrl);
-    const coordinates = parseCoordinates(resolved.url.href) || parseCoordinates(resolved.html);
+    const directCoordinates = parseCoordinates(resolved.url.href) || parseCoordinates(resolved.html);
+    const query = resolved.url.searchParams.get('query') || resolved.url.searchParams.get('q') || '';
+    const embedEntity = directCoordinates ? null : await fetchEmbedEntity(query, resolved.url.searchParams.get('ftid') || '');
+    const coordinates = directCoordinates || embedEntity?.coordinates;
     if (!coordinates) {
       sendJson(response, 422, { error: '連結沒有帶入地點位置，請在 Google Maps 開啟店家後按「分享」再複製連結' });
       return;
     }
     const reverse = await reverseAddress(coordinates.lat, coordinates.lng);
-    const name = parsePlaceName(resolved.url.href, resolved.html)
+    const name = embedEntity?.name || parsePlaceName(resolved.url.href, resolved.html)
       || String(reverse?.name || reverse?.display_name || 'Google Maps 地點').split(',')[0].trim().slice(0, 60);
-    const displayName = String(reverse?.display_name || name).trim().slice(0, 180);
+    const displayName = String(embedEntity?.address || reverse?.display_name || embedEntity?.query || name).trim().slice(0, 180);
     sendJson(response, 200, {
       result: {
         name,

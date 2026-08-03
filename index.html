@@ -13,6 +13,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/app-icon-180.png">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <title>林聖展 ♡ 蘇予君</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
@@ -1247,6 +1248,8 @@ background:var(--pink-light);margin-left:8px;
 .footprint-pin-body{position:absolute;left:3px;top:1px;width:32px;height:32px;display:grid;place-items:center;border:3px solid #fff;border-radius:50% 50% 50% 7px;background:var(--pink);color:#fff;font-size:15px;transform:rotate(-45deg);box-shadow:inset 0 0 0 1px rgba(151,41,66,.16)}
 .footprint-pin-body span{transform:rotate(45deg)}
 .footprint-pin-count{position:absolute;right:-5px;top:-5px;min-width:21px;height:21px;display:grid;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#2f9a68;color:#fff;font-size:9px;font-weight:800}
+.footprint-cluster-icon{background:transparent!important;border:0!important}
+.footprint-cluster{width:44px;height:44px;display:grid;place-items:center;border:4px solid rgba(255,255,255,.92);border-radius:50%;background:linear-gradient(145deg,#ef7f94,#c94b64);color:#fff;font-size:12px;font-weight:800;box-shadow:0 7px 18px rgba(137,44,66,.3),0 0 0 5px rgba(232,99,122,.16)}
 .leaflet-control-zoom a{color:var(--rose)!important}
 .leaflet-control-attribution{font-size:8px!important}
 [data-theme="dark"] .footprint-map-shell{background:#202a24}
@@ -2244,16 +2247,13 @@ onclick="hideSpecialForToday()">
           <input class="footprint-input" id="footprint-place-name" type="text" maxlength="60" autocomplete="off" placeholder="例如：淡水老街" oninput="footprintMirrorPlaceQuery(this.value)" required>
         </label>
         <label class="footprint-field full">地址
-          <input class="footprint-input" id="footprint-address" type="text" maxlength="500" autocomplete="street-address" placeholder="可輸入地址，也可直接貼 Google Maps 分享連結" onpaste="footprintHandleMapLinkPaste(event)">
-        </label>
-        <label class="footprint-field full">想記住的事
-          <textarea class="footprint-input" id="footprint-note" maxlength="500" placeholder="這次一起做了什麼？"></textarea>
+          <input class="footprint-input" id="footprint-address" type="text" maxlength="500" autocomplete="street-address" placeholder="可輸入地址，也可直接貼 Google Maps 分享連結" onpaste="footprintHandleMapLinkPaste(event)" oninput="footprintHandleMapLinkInput(this.value,'address')">
         </label>
       </div>
       <div class="footprint-search-wrap">
         <label class="footprint-search-label" for="footprint-search-input">搜尋地點或地址</label>
         <div class="footprint-search-bar">
-          <input class="footprint-search-input" id="footprint-search-input" type="search" maxlength="500" autocomplete="off" placeholder="輸入店名、地址或 Google Maps 分享連結" oninput="delete this.dataset.mapLink" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintSearchLocation()}">
+          <input class="footprint-search-input" id="footprint-search-input" type="search" maxlength="500" autocomplete="off" placeholder="輸入店名、地址或 Google Maps 分享連結" onpaste="footprintHandleMapLinkPaste(event)" oninput="footprintHandleMapLinkInput(this.value,'search')" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintSearchLocation()}">
           <button type="button" class="footprint-search-btn" id="footprint-search-btn" onclick="footprintSearchLocation()">搜尋</button>
         </div>
         <div class="footprint-search-results" id="footprint-search-results" hidden aria-live="polite"></div>
@@ -2369,6 +2369,7 @@ onclick="hideSpecialForToday()">
 
 <!-- Firebase SDK -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -8449,6 +8450,8 @@ let footprintEditorMarker=null;
 let footprintSearchResults=[];
 let footprintLastSearchAt=0;
 let footprintSearchRequestId=0;
+let footprintMapLinkInputTimer=0;
+let footprintMapLinkImporting='';
 let footprintExtraDates=[];
 let footprintRankingCategory='all';
 let footprintMemoryCategory='all';
@@ -8607,10 +8610,13 @@ function footprintEnsureMap(){
   if(!window.L){footprintSetStatus('地圖載入失敗，請重新整理後再試');return false;}
   const element=document.getElementById('footprint-map');
   if(!element) return false;
-  footprintMap=L.map(element,{zoomControl:false,minZoom:5,maxZoom:19}).setView([23.72,121],7);
+  footprintMap=L.map(element,{zoomControl:false,minZoom:5,maxZoom:20}).setView([23.72,121],7);
   L.control.zoom({position:'topright'}).addTo(footprintMap);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(footprintMap);
-  footprintMarkerLayer=L.layerGroup().addTo(footprintMap);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:20,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'}).addTo(footprintMap);
+  footprintMarkerLayer=typeof L.markerClusterGroup==='function'
+    ?L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:46,spiderfyOnMaxZoom:true,disableClusteringAtZoom:17,iconCreateFunction:cluster=>L.divIcon({className:'footprint-cluster-icon',html:`<div class="footprint-cluster">${cluster.getChildCount()}</div>`,iconSize:[44,44],iconAnchor:[22,22]})})
+    :L.layerGroup();
+  footprintMarkerLayer.addTo(footprintMap);
   footprintMap.on('click',event=>footprintOpenEditor('', '', event.latlng));
   footprintSetStatus('點地圖就能新增這個位置',true);
   return true;
@@ -9183,13 +9189,34 @@ function footprintPrepareMapLink(){
 }
 function footprintHandleMapLinkPaste(event){
   const value=String(event.clipboardData?.getData('text')||'').trim();
-  if(!footprintIsGoogleMapsLink(value)) return;
+  const source=event.currentTarget?.id==='footprint-address'?'address':'search';
+  if(!footprintIsGoogleMapsLink(value)){
+    setTimeout(()=>footprintQueueMapLinkImport(event.currentTarget?.value||'',source),0);
+    return;
+  }
   event.preventDefault();
   const address=document.getElementById('footprint-address');
   const search=document.getElementById('footprint-search-input');
   if(address) address.value=value;
   if(search) search.value=value;
-  footprintSearchLocation();
+  footprintQueueMapLinkImport(value,source);
+}
+function footprintHandleMapLinkInput(value,source='search'){
+  footprintQueueMapLinkImport(value,source);
+}
+function footprintQueueMapLinkImport(value,source='search'){
+  const link=String(value||'').trim();
+  const search=document.getElementById('footprint-search-input');
+  if(!footprintIsGoogleMapsLink(link)){
+    if(source==='search'&&search) delete search.dataset.mapLink;
+    return false;
+  }
+  const address=document.getElementById('footprint-address');
+  if(address) address.value=link;
+  if(search) search.value=link;
+  clearTimeout(footprintMapLinkInputTimer);
+  footprintMapLinkInputTimer=setTimeout(()=>footprintSearchLocation(),120);
+  return true;
 }
 async function footprintSearchServer(query){
   const response=await fetch(`/api/place-search?q=${encodeURIComponent(query)}`,{headers:{Accept:'application/json'}});
@@ -9236,6 +9263,7 @@ async function footprintSearchLocation(){
   const savedMapLink=String(input?.dataset.mapLink||'').trim();
   const query=savedMapLink&&rawQuery===placeName?savedMapLink:rawQuery;
   const importingMapLink=footprintIsGoogleMapsLink(query);
+  if(importingMapLink&&footprintMapLinkImporting===query) return;
   if(!importingMapLink&&query.length<2){footprintRenderSearchResults([], '請至少輸入兩個字');return;}
   const cacheKey=footprintNormalizeName(query);
   const cached=footprintReadSearchCache()[cacheKey];
@@ -9245,6 +9273,7 @@ async function footprintSearchLocation(){
     return;
   }
   const requestId=++footprintSearchRequestId;
+  if(importingMapLink) footprintMapLinkImporting=query;
   button.disabled=true;
   const originalLabel=button.textContent;
   button.textContent=importingMapLink?'匯入中':'搜尋中';
@@ -9277,6 +9306,7 @@ async function footprintSearchLocation(){
     console.warn('地點搜尋失敗',error);
     if(requestId===footprintSearchRequestId) footprintRenderSearchResults([], importingMapLink?(error?.message||'無法讀取這個分享連結'):'目前無法搜尋，請稍後再試，或直接點地圖選擇');
   }finally{
+    if(importingMapLink&&footprintMapLinkImporting===query) footprintMapLinkImporting='';
     if(requestId===footprintSearchRequestId){button.disabled=false;button.textContent=originalLabel;}
   }
 }
@@ -9294,9 +9324,9 @@ function footprintSelectSearchResult(index){
 function footprintEnsureEditorMap(){
   if(footprintEditorMap) return true;
   if(!window.L) return false;
-  footprintEditorMap=L.map('footprint-editor-map',{zoomControl:false,minZoom:5,maxZoom:19}).setView([23.72,121],7);
+  footprintEditorMap=L.map('footprint-editor-map',{zoomControl:false,minZoom:5,maxZoom:20}).setView([23.72,121],7);
   L.control.zoom({position:'topright'}).addTo(footprintEditorMap);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(footprintEditorMap);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:20,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'}).addTo(footprintEditorMap);
   footprintEditorMap.on('click',event=>footprintSetEditorPosition(event.latlng.lat,event.latlng.lng,true));
   return true;
 }
@@ -9323,7 +9353,6 @@ function footprintOpenEditor(visitId='',placeId='',presetPosition=null){
   document.getElementById('footprint-date').value=visit?.date||footprintTodayKey();
   document.getElementById('footprint-place-name').value=visit?.placeName||group?.name||'';
   document.getElementById('footprint-address').value=visit?.address||group?.visits?.find(item=>item.address)?.address||'';
-  document.getElementById('footprint-note').value=visit?.note||'';
   document.getElementById('footprint-lat').value='';
   document.getElementById('footprint-lng').value='';
   document.getElementById('footprint-coordinate').textContent='尚未選擇位置';
@@ -9379,7 +9408,7 @@ async function footprintSaveVisit(event){
   const address=document.getElementById('footprint-address').value.trim();
   const date=document.getElementById('footprint-date').value;
   const dates=(editId?[date]:[...footprintExtraDates,date]).filter(value=>/^\d{4}-\d{2}-\d{2}$/.test(value)).filter((value,index,list)=>list.indexOf(value)===index).sort();
-  const note=document.getElementById('footprint-note').value.trim();
+  const note=String(original?.note||'');
   const lat=footprintNumber(document.getElementById('footprint-lat').value);
   const lng=footprintNumber(document.getElementById('footprint-lng').value);
   if(!placeName||!dates.length){alert('請填寫地點名稱並至少選一個日期');return;}

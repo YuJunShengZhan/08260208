@@ -1306,10 +1306,11 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-memory-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
 .footprint-memory-sub{margin-top:3px;color:var(--text-muted);font-size:10px}
 .footprint-memory-total{color:var(--text-muted);font-size:11px;white-space:nowrap}
-.footprint-memory-tools{flex:0 0 auto;display:grid;grid-template-columns:minmax(100px,132px) 34px;gap:6px;align-items:center;justify-items:end}
+.footprint-memory-tools{flex:0 0 auto;display:grid;grid-template-columns:minmax(100px,132px) auto;gap:6px;align-items:center;justify-items:end}
 .footprint-memory-category{width:100%;height:34px;padding:0 28px 0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;outline:none;cursor:pointer}
 .footprint-memory-category:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
-.footprint-category-manage-btn{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-size:15px;cursor:pointer}
+.footprint-category-manage-btn{width:auto;min-width:64px;height:34px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 9px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}
+.footprint-category-manage-btn span[aria-hidden="true"]{font-size:14px}
 .footprint-memory-tools .footprint-memory-total{grid-column:1/-1}
 .footprint-ranking-list{display:flex;flex-direction:column}
 .footprint-ranking-row{position:relative;width:100%;min-height:54px;display:grid;grid-template-columns:25px minmax(0,1fr) auto;align-items:center;gap:9px;overflow:hidden;padding:8px 9px;border:0;border-top:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
@@ -1408,11 +1409,14 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-category-assign-title{color:var(--rose);font-size:12px;font-weight:900}
 .footprint-category-assign-count{color:var(--text-muted);font-size:9px;white-space:nowrap}
 .footprint-category-place-list{max-height:250px;overflow-y:auto;margin-top:8px;padding-right:2px;overscroll-behavior:contain}
-.footprint-category-place{display:grid;grid-template-columns:20px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:43px;padding:7px 5px;border-top:1px solid rgba(232,99,122,.1);color:var(--text);font-size:11px;cursor:pointer}
+.footprint-category-place{display:grid;grid-template-columns:minmax(0,1fr) minmax(116px,152px);align-items:center;gap:9px;min-height:52px;padding:7px 5px;border-top:1px solid rgba(232,99,122,.1);color:var(--text);font-size:11px}
 .footprint-category-place:first-child{border-top:0}
-.footprint-category-place input{width:17px;height:17px;accent-color:var(--rose)}
-.footprint-category-place span{min-width:0;overflow-wrap:anywhere}
-.footprint-category-place small{color:var(--text-muted);font-size:9px;white-space:nowrap}
+.footprint-category-place.is-active{border-radius:7px;background:color-mix(in srgb,var(--pink-light) 68%,transparent)}
+.footprint-category-place-copy{min-width:0}
+.footprint-category-place-name{display:block;font-size:11px;font-weight:800;line-height:1.4;overflow-wrap:anywhere}
+.footprint-category-place-meta{display:block;margin-top:2px;color:var(--text-muted);font-size:9px;line-height:1.4}
+.footprint-category-place-select{width:100%;min-width:0;height:34px;padding:0 24px 0 8px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:800;outline:none;cursor:pointer}
+.footprint-category-place-select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
 .footprint-category-empty{padding:22px 8px;color:var(--text-muted);font-size:11px;text-align:center}
 
 /* 每月重新選擇你 */
@@ -1610,7 +1614,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-brand{min-width:0;font-size:10px}.choose-brand span:last-child{overflow-wrap:anywhere}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
 @media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-map-shell{margin-right:12px;margin-left:12px}.footprint-map-shell #footprint-map{height:240px}.footprint-date-browser{grid-template-columns:minmax(0,1fr);gap:9px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
-@media(max-width:520px){.footprint-memory-head{align-items:flex-start}.footprint-memory-tools{grid-template-columns:minmax(94px,122px) 34px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:220px}}
+@media(max-width:520px){.footprint-memory-head{align-items:flex-start}.footprint-memory-tools{grid-template-columns:minmax(92px,118px) auto}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
 </style>
 </head>
 <body>
@@ -1990,7 +1994,7 @@ onclick="hideSpecialForToday()">
       </div>
       <div class="footprint-memory-tools">
         <select class="footprint-memory-category" id="footprint-memory-category" aria-label="選擇地點類別" onchange="footprintMemoryCategoryChanged(this.value)"></select>
-        <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()" aria-label="管理地點類別" title="管理地點類別">⚙</button>
+        <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()"><span aria-hidden="true">⚙</span><span>管理類別</span></button>
         <div class="footprint-memory-total" id="footprint-memory-total"></div>
       </div>
     </div>
@@ -2021,7 +2025,7 @@ onclick="hideSpecialForToday()">
     <header class="footprint-category-head">
       <div class="footprint-category-kicker">PLACE COLLECTIONS</div>
       <div class="footprint-category-title" id="footprint-category-title">管理地點類別</div>
-      <div class="footprint-category-copy">新增自己的分類、調整顯示順序，再把去過的地方收進分類裡。</div>
+      <div class="footprint-category-copy">自訂分類、顯示順序與每個地點的類別歸屬。</div>
       <button type="button" class="footprint-category-close" onclick="footprintCloseCategoryManagerDirect()" aria-label="關閉類別管理">×</button>
     </header>
     <div class="footprint-category-body">
@@ -2036,7 +2040,7 @@ onclick="hideSpecialForToday()">
           <div class="footprint-category-assign-title" id="footprint-category-assign-title"></div>
           <div class="footprint-category-assign-count" id="footprint-category-assign-count"></div>
         </div>
-        <input class="footprint-category-search" id="footprint-category-search" type="search" autocomplete="off" placeholder="搜尋去過的地方" oninput="footprintCategorySearchChanged(this.value)">
+        <input class="footprint-category-search" id="footprint-category-search" type="search" autocomplete="off" placeholder="搜尋店名或地點" oninput="footprintCategorySearchChanged(this.value)">
         <div class="footprint-category-place-list" id="footprint-category-place-list"></div>
       </section>
     </div>
@@ -8448,7 +8452,7 @@ let footprintSearchRequestId=0;
 let footprintExtraDates=[];
 let footprintRankingCategory='all';
 let footprintMemoryCategory='all';
-let footprintCategorySettings={custom:[],order:[...FOOTPRINT_BUILTIN_CATEGORY_IDS],assignments:{}};
+let footprintCategorySettings={custom:[],order:[...FOOTPRINT_BUILTIN_CATEGORY_IDS],overrides:{}};
 let footprintCategoryManagerActive='';
 let footprintCategoryManagerQuery='';
 let footprintCategoryWritePromise=Promise.resolve();
@@ -8524,12 +8528,22 @@ function footprintNormalizeCategorySettings(value){
     if(validIds.has(normalized)&&!order.includes(normalized)) order.push(normalized);
   });
   validIds.forEach(id=>{if(!order.includes(id)) order.push(id);});
-  const assignments={};
+  const overrides={};
+  if(raw.overrides&&typeof raw.overrides==='object'){
+    Object.entries(raw.overrides).forEach(([placeId,category])=>{
+      const normalizedPlaceId=String(placeId||'').trim();
+      const normalizedCategory=String(category||'').trim();
+      if(normalizedPlaceId&&validIds.has(normalizedCategory)) overrides[normalizedPlaceId]=normalizedCategory;
+    });
+  }
   custom.forEach(item=>{
-    const source=Array.isArray(raw.assignments?.[item.id])?raw.assignments[item.id]:[];
-    assignments[item.id]=[...new Set(source.map(id=>String(id||'').trim()).filter(Boolean))];
+    const legacy=Array.isArray(raw.assignments?.[item.id])?raw.assignments[item.id]:[];
+    legacy.forEach(placeId=>{
+      const normalizedPlaceId=String(placeId||'').trim();
+      if(normalizedPlaceId&&!overrides[normalizedPlaceId]) overrides[normalizedPlaceId]=item.id;
+    });
   });
-  return {custom,order,assignments,updatedAt:Number(raw.updatedAt)||0};
+  return {custom,order,overrides,updatedAt:Number(raw.updatedAt)||0};
 }
 function footprintLoadCategoryCache(){
   try{
@@ -8553,8 +8567,7 @@ function footprintCategoryExists(category){
 }
 function footprintGroupMatchesCategory(group,category){
   if(category==='all') return true;
-  if(FOOTPRINT_BUILTIN_CATEGORY_IDS.includes(category)) return footprintPlaceCategory(group)===category;
-  return (footprintCategorySettings.assignments[category]||[]).includes(group.placeId);
+  return footprintEffectiveCategory(group)===category;
 }
 function footprintDistanceMeters(aLat,aLng,bLat,bLng){
   const rad=value=>value*Math.PI/180;
@@ -8742,12 +8755,16 @@ function footprintPlaceCategory(group){
   const searchable=[group?.name,...(group?.visits||[]).flatMap(visit=>[visit.placeName,visit.address])].filter(Boolean).join(' ');
   const placeNames=[group?.name,...(group?.visits||[]).map(visit=>visit.placeName)].filter(Boolean).join(' ');
   if(/q[\s-]*time/i.test(searchable)) return 'qtime';
-  if(/飯店|旅店|旅館|商旅|民宿|旅宿|住宿|汽車旅館|motel|hotel|\binn\b/i.test(searchable)) return 'hotel';
+  if(/飯店|旅店|旅館|商旅|民宿|旅宿|住宿|汽車旅館|清翼居|motel|hotel|\binn\b/i.test(searchable)) return 'hotel';
   if(/夜市/i.test(searchable)) return 'nightmarket';
   if(/棒球場|大巨蛋/i.test(searchable)) return 'baseball';
   if(/大學|學院|學校|高中|高職|國中|國小|校區/i.test(placeNames)) return 'school';
   if(/公園|河濱|綠地|森林|步道|風景區|國家公園|海水浴場|沙崙|擎天崗|碧潭|草原|植物園|河岸/i.test(searchable)) return 'park';
   return 'other';
+}
+function footprintEffectiveCategory(group){
+  const override=String(footprintCategorySettings.overrides?.[group?.placeId]||'');
+  return footprintCategoryExists(override)&&override!=='all'?override:footprintPlaceCategory(group);
 }
 function footprintCategoryLabel(category){
   return footprintCategoryDefinitions().find(item=>item.id===category)?.name||'其他';
@@ -8759,7 +8776,7 @@ function footprintExpenseVisits(group){
   return (group?.visits||[]).filter(visit=>visit.expense>0);
 }
 function footprintExpenseEligible(group){
-  return ['hotel','baseball'].includes(footprintPlaceCategory(group));
+  return ['hotel','baseball'].includes(footprintEffectiveCategory(group));
 }
 function footprintRenderAllRanking(){
   const categoryWrap=document.getElementById('footprint-ranking-categories');
@@ -8785,7 +8802,7 @@ function footprintRenderAllRanking(){
   }
   const globalRank=new Map(ranked.map((group,index)=>[group.placeId,index+1]));
   list.innerHTML=filtered.map(group=>{
-    const category=footprintPlaceCategory(group);
+    const category=footprintEffectiveCategory(group);
     const rank=globalRank.get(group.placeId);
     const showExpenseAction=footprintRankingCategory===category&&footprintExpenseEligible(group);
     const expenseVisits=footprintExpenseVisits(group);
@@ -8951,7 +8968,7 @@ function footprintPersistCategorySettings(renderManager=true){
 function footprintOpenCategoryManager(){
   const overlay=document.getElementById('footprint-category-bg');
   if(!overlay) return;
-  if(!footprintCategorySettings.custom.some(item=>item.id===footprintCategoryManagerActive)) footprintCategoryManagerActive='';
+  if(!footprintCategoryExists(footprintCategoryManagerActive)||footprintCategoryManagerActive==='all') footprintCategoryManagerActive='';
   footprintCategoryManagerQuery='';
   footprintRenderCategoryManager();
   overlay.classList.remove('hidden');
@@ -8974,13 +8991,14 @@ function footprintRenderCategoryManager(){
   const search=document.getElementById('footprint-category-search');
   if(!orderWrap||!assign||!list||!search) return;
   const definitions=footprintCategoryDefinitions(false);
+  const groups=footprintRankedGroups();
   const previousScroll=list.scrollTop;
   const rows=[{id:'all',name:'全部',custom:false,pinned:true},...definitions];
   orderWrap.innerHTML=rows.map((category,index)=>{
     const orderedIndex=index-1;
-    const assignedCount=category.custom?(footprintCategorySettings.assignments[category.id]||[]).length:0;
-    const meta=category.pinned?'固定顯示在第一個':category.custom?`自訂分類 · ${assignedCount} 個地點`:'系統自動分類';
-    const actions=category.pinned?'':`<div class="footprint-category-row-actions"><button type="button" class="footprint-category-icon-btn" data-category-up="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往上移" title="往上移"${orderedIndex===0?' disabled':''}>↑</button><button type="button" class="footprint-category-icon-btn" data-category-down="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往下移" title="往下移"${orderedIndex===definitions.length-1?' disabled':''}>↓</button>${category.custom?`<button type="button" class="footprint-category-places-btn" data-category-places="${footprintEscape(category.id)}">選地點</button><button type="button" class="footprint-category-icon-btn" data-category-rename="${footprintEscape(category.id)}" aria-label="重新命名 ${footprintEscape(category.name)}" title="重新命名">✎</button><button type="button" class="footprint-category-icon-btn" data-category-delete="${footprintEscape(category.id)}" aria-label="刪除 ${footprintEscape(category.name)}" title="刪除">×</button>`:''}</div>`;
+    const assignedCount=category.pinned?groups.length:groups.filter(group=>footprintEffectiveCategory(group)===category.id).length;
+    const meta=category.pinned?'固定顯示在第一個':`${category.custom?'自訂':'系統'}分類 · ${assignedCount} 個地點`;
+    const actions=category.pinned?'':`<div class="footprint-category-row-actions"><button type="button" class="footprint-category-icon-btn" data-category-up="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往上移" title="往上移"${orderedIndex===0?' disabled':''}>↑</button><button type="button" class="footprint-category-icon-btn" data-category-down="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往下移" title="往下移"${orderedIndex===definitions.length-1?' disabled':''}>↓</button><button type="button" class="footprint-category-places-btn" data-category-places="${footprintEscape(category.id)}">整理地點</button>${category.custom?`<button type="button" class="footprint-category-icon-btn" data-category-rename="${footprintEscape(category.id)}" aria-label="重新命名 ${footprintEscape(category.name)}" title="重新命名">✎</button><button type="button" class="footprint-category-icon-btn" data-category-delete="${footprintEscape(category.id)}" aria-label="刪除 ${footprintEscape(category.name)}" title="刪除">×</button>`:''}</div>`;
     return `<div class="footprint-category-row${category.pinned?' is-pinned':''}${category.custom?' is-custom':''}"><span class="footprint-category-order-no">${category.pinned?'•':index}</span><span class="footprint-category-row-copy"><span class="footprint-category-row-name">${footprintEscape(category.name)}</span><span class="footprint-category-row-meta">${meta}</span></span>${actions}</div>`;
   }).join('');
   orderWrap.querySelectorAll('[data-category-up]').forEach(button=>button.addEventListener('click',()=>footprintMoveCategory(button.dataset.categoryUp,-1)));
@@ -8988,17 +9006,23 @@ function footprintRenderCategoryManager(){
   orderWrap.querySelectorAll('[data-category-places]').forEach(button=>button.addEventListener('click',()=>footprintChooseCategoryPlaces(button.dataset.categoryPlaces)));
   orderWrap.querySelectorAll('[data-category-rename]').forEach(button=>button.addEventListener('click',()=>footprintRenameCustomCategory(button.dataset.categoryRename)));
   orderWrap.querySelectorAll('[data-category-delete]').forEach(button=>button.addEventListener('click',()=>footprintDeleteCustomCategory(button.dataset.categoryDelete)));
-  const active=footprintCategorySettings.custom.find(item=>item.id===footprintCategoryManagerActive);
+  const active=definitions.find(item=>item.id===footprintCategoryManagerActive);
   assign.hidden=!active;
   if(!active) return;
   search.value=footprintCategoryManagerQuery;
-  document.getElementById('footprint-category-assign-title').textContent=`「${active.name}」的地點`;
-  const assigned=new Set(footprintCategorySettings.assignments[active.id]||[]);
+  document.getElementById('footprint-category-assign-title').textContent=`整理「${active.name}」`;
   const query=footprintNormalizeName(footprintCategoryManagerQuery);
-  const places=footprintRankedGroups().filter(group=>!query||footprintNormalizeName([group.name,...group.visits.map(visit=>visit.address)].join(' ')).includes(query));
-  document.getElementById('footprint-category-assign-count').textContent=`已選 ${assigned.size} 個`;
-  list.innerHTML=places.length?places.map(group=>`<label class="footprint-category-place"><input type="checkbox" data-category-place="${footprintEscape(group.placeId)}"${assigned.has(group.placeId)?' checked':''}><span>${footprintEscape(group.name)}</span><small>${group.visits.length} 次</small></label>`).join(''):'<div class="footprint-category-empty">找不到符合的地點</div>';
-  list.querySelectorAll('[data-category-place]').forEach(input=>input.addEventListener('change',()=>footprintToggleCategoryPlace(active.id,input.dataset.categoryPlace,input.checked)));
+  const places=groups.filter(group=>!query||footprintNormalizeName([group.name,...group.visits.map(visit=>visit.address)].join(' ')).includes(query)).sort((a,b)=>Number(footprintEffectiveCategory(b)===active.id)-Number(footprintEffectiveCategory(a)===active.id));
+  const activeCount=groups.filter(group=>footprintEffectiveCategory(group)===active.id).length;
+  document.getElementById('footprint-category-assign-count').textContent=`目前 ${activeCount} 個`;
+  list.innerHTML=places.length?places.map(group=>{
+    const automatic=footprintPlaceCategory(group);
+    const override=String(footprintCategorySettings.overrides[group.placeId]||'');
+    const effective=footprintEffectiveCategory(group);
+    const options=`<option value=""${override?'':' selected'}>自動：${footprintEscape(footprintCategoryLabel(automatic))}</option>${definitions.map(category=>`<option value="${footprintEscape(category.id)}"${override===category.id?' selected':''}>${footprintEscape(category.name)}</option>`).join('')}`;
+    return `<div class="footprint-category-place${effective===active.id?' is-active':''}"><span class="footprint-category-place-copy"><span class="footprint-category-place-name">${footprintEscape(group.name)}</span><span class="footprint-category-place-meta">目前：${footprintEscape(footprintCategoryLabel(effective))} · ${group.visits.length} 次</span></span><select class="footprint-category-place-select" data-category-place-select="${footprintEscape(group.placeId)}" aria-label="設定 ${footprintEscape(group.name)} 的類別">${options}</select></div>`;
+  }).join(''):'<div class="footprint-category-empty">找不到符合的地點</div>';
+  list.querySelectorAll('[data-category-place-select]').forEach(select=>select.addEventListener('change',()=>footprintSetPlaceCategory(select.dataset.categoryPlaceSelect,select.value)));
   requestAnimationFrame(()=>{list.scrollTop=previousScroll;});
 }
 function footprintAddCustomCategory(){
@@ -9010,7 +9034,6 @@ function footprintAddCustomCategory(){
   const id=`custom_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`;
   footprintCategorySettings.custom.push({id,name});
   footprintCategorySettings.order.push(id);
-  footprintCategorySettings.assignments[id]=[];
   footprintCategoryManagerActive=id;
   footprintCategoryManagerQuery='';
   if(input) input.value='';
@@ -9024,7 +9047,7 @@ function footprintMoveCategory(id,direction){
   footprintPersistCategorySettings();
 }
 function footprintChooseCategoryPlaces(id){
-  if(!footprintCategorySettings.custom.some(item=>item.id===id)) return;
+  if(!footprintCategoryExists(id)||id==='all') return;
   footprintCategoryManagerActive=id;
   footprintCategoryManagerQuery='';
   footprintRenderCategoryManager();
@@ -9044,7 +9067,9 @@ function footprintDeleteCustomCategory(id){
   if(!item||!confirm(`確定刪除「${item.name}」類別嗎？地點紀錄本身不會被刪除。`)) return;
   footprintCategorySettings.custom=footprintCategorySettings.custom.filter(category=>category.id!==id);
   footprintCategorySettings.order=footprintCategorySettings.order.filter(categoryId=>categoryId!==id);
-  delete footprintCategorySettings.assignments[id];
+  Object.entries(footprintCategorySettings.overrides).forEach(([placeId,categoryId])=>{
+    if(categoryId===id) delete footprintCategorySettings.overrides[placeId];
+  });
   if(footprintMemoryCategory===id) footprintMemoryCategory='all';
   if(footprintRankingCategory===id) footprintRankingCategory='all';
   if(footprintCategoryManagerActive===id) footprintCategoryManagerActive='';
@@ -9056,14 +9081,13 @@ function footprintCategorySearchChanged(value){
   const search=document.getElementById('footprint-category-search');
   if(search){search.focus();search.setSelectionRange(search.value.length,search.value.length);}
 }
-function footprintToggleCategoryPlace(categoryId,placeId,checked){
-  if(!footprintCategorySettings.custom.some(item=>item.id===categoryId)) return;
-  const assigned=new Set(footprintCategorySettings.assignments[categoryId]||[]);
-  if(checked) assigned.add(placeId); else assigned.delete(placeId);
-  footprintCategorySettings.assignments[categoryId]=[...assigned];
-  const count=document.getElementById('footprint-category-assign-count');
-  if(count) count.textContent=`已選 ${assigned.size} 個`;
-  footprintPersistCategorySettings(false);
+function footprintSetPlaceCategory(placeId,categoryId){
+  const group=footprintGetGroups().find(item=>item.placeId===placeId);
+  if(!group) return;
+  const normalized=String(categoryId||'');
+  if(!normalized||!footprintCategoryExists(normalized)||normalized==='all'||normalized===footprintPlaceCategory(group)) delete footprintCategorySettings.overrides[placeId];
+  else footprintCategorySettings.overrides[placeId]=normalized;
+  footprintPersistCategorySettings();
 }
 function footprintOpenFromMemory(placeId){
   footprintDateQuery='';

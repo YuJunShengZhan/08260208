@@ -1305,35 +1305,46 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-editor-action{min-height:45px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
 .footprint-editor-action.primary{border-color:var(--pink);background:var(--pink);color:#fff}
 .footprint-editor-action:disabled{opacity:.56;cursor:wait}
-.footprint-memory-card{margin-top:10px;padding:16px;border:1px solid var(--card-border);border-radius:8px;background:var(--white)}
+.footprint-memory-card{position:relative;overflow:hidden;margin-top:14px;padding:0;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 16px 38px rgba(78,42,53,.08)}
 .footprint-memory-card[hidden]{display:none}
-.footprint-memory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
-.footprint-memory-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
-.footprint-memory-sub{margin-top:3px;color:var(--text-muted);font-size:10px}
-.footprint-memory-total{color:var(--text-muted);font-size:11px;white-space:nowrap}
-.footprint-memory-tools{flex:0 0 auto;display:grid;grid-template-columns:minmax(100px,132px) auto;gap:6px;align-items:center;justify-items:end}
-.footprint-memory-category{width:100%;height:34px;padding:0 28px 0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;outline:none;cursor:pointer}
+.footprint-memory-card::before{content:'';position:absolute;z-index:2;left:0;top:0;width:4px;height:92px;background:linear-gradient(180deg,var(--rose),#2f9a68)}
+.footprint-memory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin:0;padding:18px 18px 15px 20px;background:color-mix(in srgb,var(--pink-light) 34%,var(--white))}
+.footprint-memory-kicker{color:#2f8f62;font-size:8px;font-weight:900;letter-spacing:0}
+.footprint-memory-title{display:flex;align-items:center;gap:7px;margin-top:4px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;line-height:1.25}
+.footprint-memory-title-mark{width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:var(--rose);color:#fff;font-family:Georgia,serif;font-size:15px;box-shadow:0 5px 12px rgba(201,75,100,.22)}
+.footprint-memory-sub{margin:6px 0 0 34px;color:var(--text-muted);font-size:10px}
+.footprint-memory-total{flex:0 0 auto;min-height:31px;display:flex;align-items:center;padding:0 10px;border:1px solid rgba(47,154,104,.18);border-radius:999px;background:color-mix(in srgb,#e5f4eb 74%,var(--white));color:#267f55;font-size:10px;font-weight:800;white-space:nowrap}
+.footprint-memory-tools{display:flex;align-items:end;gap:8px;padding:11px 16px;border-top:1px solid rgba(232,99,122,.08);border-bottom:1px solid rgba(232,99,122,.12)}
+.footprint-memory-filter{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px;color:var(--text-muted);font-size:9px;font-weight:800}
+.footprint-memory-category{width:100%;height:38px;padding:0 30px 0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;outline:none;cursor:pointer}
 .footprint-memory-category:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
-.footprint-category-manage-btn{width:auto;min-width:64px;height:34px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 9px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}
+.footprint-category-manage-btn{width:auto;min-width:92px;height:38px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}
 .footprint-category-manage-btn span[aria-hidden="true"]{font-size:14px}
-.footprint-memory-tools .footprint-memory-total{grid-column:1/-1}
-.footprint-ranking-list{display:flex;flex-direction:column}
-.footprint-ranking-row{position:relative;width:100%;min-height:54px;display:grid;grid-template-columns:25px minmax(0,1fr) auto;align-items:center;gap:9px;overflow:hidden;padding:8px 9px;border:0;border-top:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
-.footprint-ranking-row:first-child{border-top:0}
-.footprint-ranking-bar{position:absolute;z-index:0;left:0;top:8px;bottom:8px;border-radius:6px;background:linear-gradient(90deg,var(--pink-light),rgba(252,232,236,.25));pointer-events:none}
+.footprint-ranking-list{display:flex;flex-direction:column;padding:4px 16px 8px}
+.footprint-ranking-row{position:relative;width:100%;min-height:68px;display:grid;grid-template-columns:38px minmax(0,1fr) 52px;align-items:center;gap:11px;overflow:hidden;padding:10px 5px;border:0;border-bottom:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer;transition:background .18s ease}
+.footprint-ranking-row:hover{background:color-mix(in srgb,var(--pink-light) 38%,transparent)}
+.footprint-ranking-row.is-rank-1{min-height:82px;margin:5px 0 4px;padding:12px 10px;border:1px solid rgba(207,164,75,.25);border-radius:7px;background:color-mix(in srgb,#fff4d8 42%,var(--white))}
+.footprint-ranking-bar{position:absolute;z-index:0;left:54px;right:64px;bottom:7px;height:3px;overflow:hidden;border-radius:999px;background:rgba(232,99,122,.08);pointer-events:none}
+.footprint-ranking-bar::after{content:'';display:block;width:var(--rank-progress,0%);height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--rose),#46a878)}
 .footprint-ranking-rank,.footprint-ranking-copy,.footprint-ranking-count{position:relative;z-index:1}
-.footprint-ranking-rank{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:var(--pink);color:#fff;font-size:10px;font-weight:800}
-.footprint-ranking-name{font-size:13px;font-weight:700;overflow-wrap:anywhere}
-.footprint-ranking-date{margin-top:2px;color:var(--text-muted);font-size:10px}
-.footprint-ranking-count{color:var(--rose);font-size:12px;font-weight:800;white-space:nowrap}
-.footprint-ranking-all-btn{width:100%;min-height:42px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px;border:1px solid var(--card-border);border-radius:7px;background:color-mix(in srgb,var(--pink-light) 68%,var(--white));color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.footprint-ranking-rank{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:11px;font-weight:900;box-shadow:0 4px 10px rgba(85,47,59,.08)}
+.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:38px;height:38px;border-color:#d8ae59;background:#d2a84f;color:#fff;box-shadow:0 6px 14px rgba(184,137,44,.25)}
+.footprint-ranking-row.is-rank-2 .footprint-ranking-rank{border-color:#a8b3bf;background:#a8b3bf;color:#fff}
+.footprint-ranking-row.is-rank-3 .footprint-ranking-rank{border-color:#bc8063;background:#bc8063;color:#fff}
+.footprint-ranking-copy{min-width:0;display:flex;flex-direction:column;gap:4px}
+.footprint-ranking-name{font-size:13px;font-weight:800;line-height:1.45;overflow-wrap:anywhere}
+.footprint-ranking-date{color:var(--text-muted);font-size:9px;line-height:1.4}
+.footprint-ranking-count{display:flex;align-items:baseline;justify-content:flex-end;gap:2px;color:var(--rose);white-space:nowrap}
+.footprint-ranking-count strong{font-family:'Noto Serif TC',serif;font-size:20px;line-height:1}
+.footprint-ranking-count small{font-size:9px;font-weight:800}
+.footprint-ranking-all-btn{width:calc(100% - 32px);min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 16px 16px;border:1px solid var(--card-border);border-radius:7px;background:color-mix(in srgb,var(--pink-light) 55%,var(--white));color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
 .footprint-ranking-all-btn:hover{border-color:var(--pink);background:var(--pink-light)}
 .footprint-ranking-all-btn:active{transform:scale(.99)}
 .footprint-ranking-all-arrow{font-size:17px;line-height:1;transform:translateY(-1px)}
 .footprint-ranking-dialog-bg{position:fixed;inset:0;z-index:2700;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(39,22,29,.5);backdrop-filter:blur(4px)}
 .footprint-ranking-dialog{width:min(100%,560px);max-height:min(84vh,760px);max-height:min(84dvh,760px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:16px;background:var(--white);box-shadow:0 24px 76px rgba(64,28,40,.28)}
 .footprint-ranking-dialog-head{position:relative;flex:0 0 auto;padding:19px 58px 16px 20px;border-bottom:1px solid var(--card-border);background:linear-gradient(135deg,color-mix(in srgb,var(--pink-light) 72%,var(--white)),color-mix(in srgb,var(--white) 86%,#eaf6ef))}
-.footprint-ranking-dialog-kicker{color:#268c5b;font-size:9px;font-weight:900;letter-spacing:1.7px}
+.footprint-ranking-dialog-kicker{color:#268c5b;font-size:9px;font-weight:900;letter-spacing:0}
 .footprint-ranking-dialog-title{margin:3px 0 0;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:24px;font-weight:700;letter-spacing:0}
 .footprint-ranking-dialog-summary{margin-top:5px;color:var(--text-muted);font-size:11px;line-height:1.55}
 .footprint-ranking-dialog-close{position:absolute;right:15px;top:15px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--white);color:var(--rose);font-size:22px;line-height:1;cursor:pointer}
@@ -1619,7 +1630,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-brand{min-width:0;font-size:10px}.choose-brand span:last-child{overflow-wrap:anywhere}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
 @media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-map-shell{margin-right:12px;margin-left:12px}.footprint-map-shell #footprint-map{height:240px}.footprint-date-browser{grid-template-columns:minmax(0,1fr);gap:9px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
-@media(max-width:520px){.footprint-memory-head{align-items:flex-start}.footprint-memory-tools{grid-template-columns:minmax(92px,118px) auto}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
+@media(max-width:520px){.footprint-memory-head{align-items:flex-start;flex-wrap:wrap;gap:8px;padding:16px 14px 13px 18px}.footprint-memory-title{font-size:20px}.footprint-memory-sub{margin-left:32px}.footprint-memory-total{margin-left:32px}.footprint-memory-tools{align-items:flex-end;padding:10px 12px}.footprint-memory-filter{min-width:0}.footprint-category-manage-btn{min-width:84px;padding:0 8px}.footprint-ranking-list{padding:3px 11px 7px}.footprint-ranking-row{grid-template-columns:34px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:9px 4px}.footprint-ranking-row.is-rank-1{min-height:76px;padding:10px 7px}.footprint-ranking-rank{width:32px;height:32px}.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:35px;height:35px}.footprint-ranking-name{font-size:12px}.footprint-ranking-count strong{font-size:18px}.footprint-ranking-bar{left:46px;right:52px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
 </style>
 </head>
 <body>
@@ -1994,14 +2005,17 @@ onclick="hideSpecialForToday()">
   <section class="footprint-memory-card" id="footprint-memory-stats" hidden>
     <div class="footprint-memory-head">
       <div>
-        <div class="footprint-memory-title">📍 常去的地方</div>
+        <div class="footprint-memory-kicker">PLACES WE RETURN TO</div>
+        <div class="footprint-memory-title"><span class="footprint-memory-title-mark" aria-hidden="true">⌖</span><span>常去的地方</span></div>
         <div class="footprint-memory-sub">依一起造訪的次數排列</div>
       </div>
-      <div class="footprint-memory-tools">
+      <div class="footprint-memory-total" id="footprint-memory-total"></div>
+    </div>
+    <div class="footprint-memory-tools">
+      <label class="footprint-memory-filter"><span>地點分類</span>
         <select class="footprint-memory-category" id="footprint-memory-category" aria-label="選擇地點類別" onchange="footprintMemoryCategoryChanged(this.value)"></select>
-        <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()"><span aria-hidden="true">⚙</span><span>管理類別</span></button>
-        <div class="footprint-memory-total" id="footprint-memory-total"></div>
-      </div>
+      </label>
+      <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()"><span aria-hidden="true">⚙</span><span>管理類別</span></button>
     </div>
     <div class="footprint-ranking-list" id="footprint-ranking-list"></div>
     <button type="button" class="footprint-ranking-all-btn" id="footprint-ranking-all-btn" onclick="footprintOpenAllRanking()">
@@ -2560,6 +2574,8 @@ let homeBroadcastTimer=null;
 let homeBroadcastAnimation=null;
 let homeBroadcastSignature='';
 let homePeriodBroadcastItem=null;
+let homeChooseBroadcastItem=null;
+let homeChooseBroadcastReady=false;
 function stopHomeCountdownBroadcast(){
   if(homeBroadcastTimer){clearTimeout(homeBroadcastTimer);homeBroadcastTimer=null;}
   if(homeBroadcastAnimation){homeBroadcastAnimation.cancel();homeBroadcastAnimation=null;}
@@ -2613,7 +2629,7 @@ function updateHomeCountdownBroadcast(items){
   if(!box) return;
   const upcoming=(items||[])
     .filter(Boolean)
-    .filter(item=>Number.isFinite(item.days) && (item.kind==='period' || (item.days>=1 && item.days<=10)))
+    .filter(item=>Number.isFinite(item.days) && (item.kind==='period' || item.kind==='choose' || (item.days>=1 && item.days<=10)))
     .sort((a,b)=>a.days-b.days || a.label.localeCompare(b.label,'zh-TW'));
   const signature=upcoming.map(item=>`${item.label}:${item.days}:${item.message||''}`).join('|');
   if(signature===homeBroadcastSignature && ((upcoming.length && !box.hidden) || (!upcoming.length && box.hidden))) return;
@@ -2632,6 +2648,9 @@ function updateHome(){
   if(typeof window.pdGetHomeBroadcastItem==='function'){
     homePeriodBroadcastItem=window.pdGetHomeBroadcastItem();
   }
+  if(homeChooseBroadcastReady&&typeof window.chooseGetHomeBroadcastItem==='function'){
+    homeChooseBroadcastItem=window.chooseGetHomeBroadcastItem();
+  }
 
   const anniv=nextAnniv();
   const bd1Days=daysUntilNext(2,8);
@@ -2644,7 +2663,8 @@ function updateHome(){
     vday,
     {label:'聖展生日',days:bd1Days},
     {label:'予君生日',days:bd2Days},
-    homePeriodBroadcastItem
+    homePeriodBroadcastItem,
+    homeChooseBroadcastItem
   ]);
 
   checkLoveDaysMilestone(diff);
@@ -8029,6 +8049,24 @@ function chooseNormalizeEntry(value){
 function chooseEntryCount(monthData){
   return Number(Boolean(chooseNormalizeEntry(monthData?.shengzhan)))+Number(Boolean(chooseNormalizeEntry(monthData?.yujun)));
 }
+function chooseGetHomeBroadcastItem(){
+  const key=chooseMonthKey();
+  const current=chooseEntriesData[key]||{};
+  const missing=[];
+  if(!chooseNormalizeEntry(current.shengzhan)) missing.push('聖展');
+  if(!chooseNormalizeEntry(current.yujun)) missing.push('予君');
+  if(!missing.length) return null;
+  const month=Number(key.slice(5,7));
+  const message=missing.length===2
+    ?`♡ ${month} 月心約已開放：現在可以寫下這個月想對彼此說的話了 ♡`
+    :`♡ ${month} 月心約還在等${missing[0]}：記得寫下這個月想對彼此說的話 ♡`;
+  return {kind:'choose',label:'本月心約',days:0,message};
+}
+window.chooseGetHomeBroadcastItem=chooseGetHomeBroadcastItem;
+function chooseSyncHomeBroadcast(){
+  homeChooseBroadcastReady=true;
+  if(typeof updateHome==='function') updateHome();
+}
 function chooseLoadCache(){
   try{
     const value=JSON.parse(localStorage.getItem(CHOOSE_CACHE_KEY)||'{}');
@@ -8389,6 +8427,7 @@ async function chooseSaveEntry(){
     chooseEntriesData[key]={...(chooseEntriesData[key]||{}),[chooseSelectedPlayer]:entry};
     chooseWriteCache();
     chooseRender();
+    chooseSyncHomeBroadcast();
     saved=true;
     try{
       if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`chooseYouEntries/${key}/${chooseSelectedPlayer}`),entry);}
@@ -8419,6 +8458,7 @@ function chooseInitFirebase(){
     chooseEntriesData=snapshot.val()||{};
     chooseWriteCache();
     chooseRender();
+    chooseSyncHomeBroadcast();
     const nextCount=chooseEntryCount(chooseEntriesData[chooseMonthKey()]);
     if(nextCount===2&&document.getElementById('page-choose')?.classList.contains('active')) chooseMaybeShowReadyPage(chooseMonthKey());
   },error=>{
@@ -8429,6 +8469,7 @@ function chooseInitFirebase(){
 
 chooseLoadCache();
 chooseRender();
+chooseSyncHomeBroadcast();
 if(window._fb) chooseInitFirebase();
 
 // ── 足跡地圖（Firebase 同步）──
@@ -8751,6 +8792,17 @@ function footprintFocusPlace(placeId,moveMap=false){
 function footprintRankedGroups(groups=footprintGetGroups()){
   return [...groups].sort((a,b)=>b.visits.length-a.visits.length||b.latestDate.localeCompare(a.latestDate)||a.name.localeCompare(b.name,'zh-Hant'));
 }
+function footprintCompetitionRanks(groups){
+  const ranks=new Map();
+  let previousCount=null;
+  let currentRank=0;
+  groups.forEach((group,index)=>{
+    const count=group.visits.length;
+    if(count!==previousCount){currentRank=index+1;previousCount=count;}
+    ranks.set(group.placeId,currentRank);
+  });
+  return ranks;
+}
 function footprintPlaceCategory(group){
   const searchable=[group?.name,...(group?.visits||[]).flatMap(visit=>[visit.placeName,visit.address])].filter(Boolean).join(' ');
   const placeNames=[group?.name,...(group?.visits||[]).map(visit=>visit.placeName)].filter(Boolean).join(' ');
@@ -8800,7 +8852,7 @@ function footprintRenderAllRanking(){
     list.innerHTML='<div class="footprint-ranking-empty">這個分類目前還沒有地點紀錄。</div>';
     return;
   }
-  const globalRank=new Map(ranked.map((group,index)=>[group.placeId,index+1]));
+  const globalRank=footprintCompetitionRanks(ranked);
   list.innerHTML=filtered.map(group=>{
     const category=footprintEffectiveCategory(group);
     const rank=globalRank.get(group.placeId);
@@ -8934,12 +8986,18 @@ function renderFootprintMemoryStats(groups=footprintGetGroups()){
   select.innerHTML=definitions.map(category=>`<option value="${footprintEscape(category.id)}">${footprintEscape(category.name)}（${counts[category.id]}）</option>`).join('');
   select.value=footprintMemoryCategory;
   const filtered=allRanked.filter(group=>footprintGroupMatchesCategory(group,footprintMemoryCategory));
-  const ranked=filtered.slice(0,5);
+  const categoryRanks=footprintCompetitionRanks(filtered);
+  const ranked=filtered.filter(group=>categoryRanks.get(group.placeId)<=5);
   const maxCount=Math.max(...ranked.map(group=>group.visits.length),1);
   section.hidden=false;
   if(allButton) allButton.hidden=false;
   document.getElementById('footprint-memory-total').textContent=footprintMemoryCategory==='all'?`共 ${groups.length} 個地點`:`${filtered.length} 個地點`;
-  list.innerHTML=ranked.length?ranked.map((group,index)=>`<button type="button" class="footprint-ranking-row" data-footprint-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-bar" style="width:${Math.max(18,Math.round(group.visits.length/maxCount*100))}%"></span><span class="footprint-ranking-rank">${index+1}</span><span class="footprint-ranking-copy"><span class="footprint-ranking-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-date">最近一次 ${footprintFormatDate(group.latestDate)}</span></span><span class="footprint-ranking-count">${group.visits.length} 次</span></button>`).join(''):'<div class="footprint-ranking-empty">這個類別還沒有收錄地點，可以到「管理類別」加入。</div>';
+  list.innerHTML=ranked.length?ranked.map(group=>{
+    const rank=categoryRanks.get(group.placeId);
+    const rankClass=rank<=3?` is-rank-${rank}`:'';
+    const progress=Math.max(8,Math.round(group.visits.length/maxCount*100));
+    return `<button type="button" class="footprint-ranking-row${rankClass}" data-footprint-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-bar" style="--rank-progress:${progress}%"></span><span class="footprint-ranking-rank">${rank}</span><span class="footprint-ranking-copy"><span class="footprint-ranking-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-date">最近造訪 · ${footprintFormatDate(group.latestDate)}</span></span><span class="footprint-ranking-count"><strong>${group.visits.length}</strong><small>次</small></span></button>`;
+  }).join(''):'<div class="footprint-ranking-empty">這個類別還沒有收錄地點，可以到「管理類別」加入。</div>';
   list.querySelectorAll('[data-footprint-ranking]').forEach(button=>button.addEventListener('click',()=>footprintOpenFromMemory(button.dataset.footprintRanking)));
 }
 function footprintMemoryCategoryChanged(category){

@@ -1393,47 +1393,61 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-expense-action.primary{border-color:#c9973d;background:#c9973d;color:#fff}
 .footprint-expense-action[hidden]{display:none}
 
-.footprint-category-bg{position:fixed;inset:0;z-index:2860;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(35,19,26,.62);backdrop-filter:blur(6px)}
+.footprint-category-bg{position:fixed;inset:0;z-index:2860;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(35,19,26,.62);backdrop-filter:blur(7px)}
 .footprint-category-bg.hidden{display:none}
-.footprint-category-dialog{width:min(100%,560px);max-height:min(88dvh,780px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:14px;background:var(--white);box-shadow:0 26px 78px rgba(42,19,28,.34)}
-.footprint-category-head{position:relative;flex:0 0 auto;padding:18px 58px 15px 19px;border-bottom:1px solid var(--card-border);background:linear-gradient(135deg,color-mix(in srgb,var(--pink-light) 70%,var(--white)),color-mix(in srgb,var(--white) 86%,#eaf6ef))}
-.footprint-category-kicker{color:#2f9a68;font-size:9px;font-weight:900;letter-spacing:1.6px}
-.footprint-category-title{margin-top:3px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700}
+.footprint-category-dialog{width:min(100%,760px);height:min(88dvh,760px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:12px;background:var(--white);box-shadow:0 28px 82px rgba(42,19,28,.36)}
+.footprint-category-head{position:relative;flex:0 0 auto;padding:19px 62px 16px 21px;border-bottom:1px solid var(--card-border);background:var(--white)}
+.footprint-category-head::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--rose) 0 54%,#3b9d70 54% 100%)}
+.footprint-category-kicker{color:#2f8f62;font-size:9px;font-weight:900;letter-spacing:0}
+.footprint-category-title{margin-top:4px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:23px;font-weight:700}
 .footprint-category-copy{margin-top:4px;color:var(--text-muted);font-size:10px;line-height:1.55}
-.footprint-category-close{position:absolute;right:14px;top:14px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--white);color:var(--rose);font-size:21px;cursor:pointer}
-.footprint-category-body{min-height:0;overflow-y:auto;padding:15px 17px calc(18px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.footprint-category-close{position:absolute;right:15px;top:17px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:21px;cursor:pointer}
+.footprint-category-body{min-height:0;flex:1;display:flex;flex-direction:column;overflow:hidden}
+.footprint-category-create{flex:0 0 auto;display:grid;grid-template-columns:minmax(130px,.62fr) minmax(0,1.38fr);align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--card-border);background:color-mix(in srgb,var(--pink-light) 38%,var(--white))}
+.footprint-category-create-title{display:block;color:var(--text);font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700}
+.footprint-category-create-meta{display:block;margin-top:3px;color:var(--text-muted);font-size:9px}
 .footprint-category-add{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
-.footprint-category-input,.footprint-category-search{width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:12px;outline:none}
+.footprint-category-input,.footprint-category-search{width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:11px;outline:none}
 .footprint-category-input:focus,.footprint-category-search:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
 .footprint-category-add-btn{min-width:82px;height:42px;border:0;border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:900;cursor:pointer}
-.footprint-category-section-label{margin:15px 0 7px;color:var(--text-muted);font-size:10px;font-weight:900}
-.footprint-category-order{display:flex;flex-direction:column;gap:6px}
-.footprint-category-row{display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:52px;padding:7px 8px;border:1px solid var(--card-border);border-radius:8px;background:color-mix(in srgb,var(--white) 74%,var(--pink-light))}
-.footprint-category-row.is-pinned{opacity:.78}
-.footprint-category-order-no{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:9px;font-weight:900}
+.footprint-category-workspace{min-height:0;flex:1;display:grid;grid-template-columns:minmax(245px,.82fr) minmax(0,1.38fr)}
+.footprint-category-list-panel{min-height:0;display:flex;flex-direction:column;border-right:1px solid var(--card-border);background:color-mix(in srgb,var(--pink-light) 16%,var(--white))}
+.footprint-category-panel-head{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px 10px}
+.footprint-category-section-label{color:var(--text);font-size:11px;font-weight:900}
+.footprint-category-fixed{min-height:24px;display:inline-flex;align-items:center;padding:0 8px;border-radius:999px;background:color-mix(in srgb,#e1f2e8 76%,var(--white));color:#2b8258;font-size:8px;font-weight:900;white-space:nowrap}
+.footprint-category-order{min-height:0;display:flex;flex-direction:column;gap:5px;overflow-y:auto;padding:0 10px 13px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.footprint-category-row{position:relative;display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:7px 8px;min-height:68px;padding:8px;border:1px solid transparent;border-radius:8px;background:transparent;cursor:pointer;transition:background .18s ease,border-color .18s ease}
+.footprint-category-row:hover{background:color-mix(in srgb,var(--pink-light) 46%,var(--white))}
+.footprint-category-row.is-active{border-color:rgba(201,75,100,.24);background:var(--white);box-shadow:0 7px 18px rgba(69,37,47,.07)}
+.footprint-category-row.is-active::before{content:'';position:absolute;left:-1px;top:10px;bottom:10px;width:3px;border-radius:0 4px 4px 0;background:var(--rose)}
+.footprint-category-order-no{width:28px;height:28px;display:grid;place-items:center;border-radius:7px;background:var(--pink-light);color:var(--rose);font-family:'Noto Serif TC',serif;font-size:10px;font-weight:800}
+.footprint-category-row.is-active .footprint-category-order-no{background:var(--rose);color:#fff}
 .footprint-category-row-copy{min-width:0}
-.footprint-category-row-name{display:block;color:var(--text);font-size:12px;font-weight:900;overflow-wrap:anywhere}
-.footprint-category-row-meta{display:block;margin-top:2px;color:var(--text-muted);font-size:9px}
-.footprint-category-row-actions{display:flex;align-items:center;gap:4px}
-.footprint-category-icon-btn,.footprint-category-places-btn{height:30px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:6px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer}
-.footprint-category-icon-btn{width:30px}
-.footprint-category-icon-btn:disabled{opacity:.28;cursor:default}
-.footprint-category-places-btn{padding:0 9px;font-size:9px}
-.footprint-category-assign{margin-top:14px;padding:12px;border:1px solid var(--card-border);border-radius:9px;background:color-mix(in srgb,var(--pink-light) 42%,var(--white))}
+.footprint-category-row-name{display:block;color:var(--text);font-size:12px;font-weight:900;line-height:1.4;overflow-wrap:anywhere}
+.footprint-category-row-meta{display:block;margin-top:3px;color:var(--text-muted);font-size:8px}
+.footprint-category-row-actions{grid-column:2;display:flex;align-items:center;justify-content:flex-start;gap:4px}
+.footprint-category-icon-btn{width:29px;height:29px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:6px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer}
+.footprint-category-icon-btn:disabled{opacity:.25;cursor:default}
+.footprint-category-assign{min-height:0;display:flex;flex-direction:column;padding:14px 15px 0;background:var(--white)}
 .footprint-category-assign[hidden]{display:none}
-.footprint-category-assign-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
-.footprint-category-assign-title{color:var(--rose);font-size:12px;font-weight:900}
-.footprint-category-assign-count{color:var(--text-muted);font-size:9px;white-space:nowrap}
-.footprint-category-place-list{max-height:250px;overflow-y:auto;margin-top:8px;padding-right:2px;overscroll-behavior:contain}
-.footprint-category-place{display:grid;grid-template-columns:minmax(0,1fr) minmax(116px,152px);align-items:center;gap:9px;min-height:52px;padding:7px 5px;border-top:1px solid rgba(232,99,122,.1);color:var(--text);font-size:11px}
+.footprint-category-assign-head{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.footprint-category-assign-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700}
+.footprint-category-assign-count{min-height:25px;display:inline-flex;align-items:center;padding:0 8px;border-radius:999px;background:var(--pink-light);color:var(--rose);font-size:8px;font-weight:900;white-space:nowrap}
+.footprint-category-search-wrap{position:relative;flex:0 0 auto}
+.footprint-category-search-wrap::before{content:'⌕';position:absolute;z-index:1;left:11px;top:50%;color:var(--text-muted);font-size:16px;transform:translateY(-50%);pointer-events:none}
+.footprint-category-search{padding-left:32px;background:color-mix(in srgb,var(--pink-light) 38%,var(--white))}
+.footprint-category-place-list{min-height:0;flex:1;overflow-y:auto;margin-top:9px;padding:0 2px calc(14px + env(safe-area-inset-bottom));overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.footprint-category-place{display:grid;grid-template-columns:minmax(0,1fr) minmax(126px,156px);align-items:center;gap:10px;min-height:61px;padding:9px 5px;border-top:1px solid rgba(232,99,122,.1);color:var(--text);font-size:11px}
 .footprint-category-place:first-child{border-top:0}
-.footprint-category-place.is-active{border-radius:7px;background:color-mix(in srgb,var(--pink-light) 68%,transparent)}
+.footprint-category-place.is-active{margin:0 -4px;padding-right:9px;padding-left:9px;border-radius:7px;background:color-mix(in srgb,#e5f4eb 42%,var(--white))}
 .footprint-category-place-copy{min-width:0}
-.footprint-category-place-name{display:block;font-size:11px;font-weight:800;line-height:1.4;overflow-wrap:anywhere}
-.footprint-category-place-meta{display:block;margin-top:2px;color:var(--text-muted);font-size:9px;line-height:1.4}
-.footprint-category-place-select{width:100%;min-width:0;height:34px;padding:0 24px 0 8px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:800;outline:none;cursor:pointer}
+.footprint-category-place-name{display:block;font-size:11px;font-weight:800;line-height:1.45;overflow-wrap:anywhere}
+.footprint-category-place-meta{display:block;margin-top:3px;color:var(--text-muted);font-size:8px;line-height:1.4}
+.footprint-category-place-select{width:100%;min-width:0;height:36px;padding:0 25px 0 9px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:800;outline:none;cursor:pointer}
 .footprint-category-place-select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
-.footprint-category-empty{padding:22px 8px;color:var(--text-muted);font-size:11px;text-align:center}
+.footprint-category-empty{padding:38px 8px;color:var(--text-muted);font-size:11px;text-align:center}
+[data-theme="dark"] .footprint-category-head,[data-theme="dark"] .footprint-category-assign{background:var(--white)}
+[data-theme="dark"] .footprint-category-fixed{background:rgba(76,169,115,.15);color:#86d5a6}
 
 /* 每月重新選擇你 */
 .choose-page{padding-top:12px}
@@ -1631,6 +1645,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-map-shell{margin-right:12px;margin-left:12px}.footprint-map-shell #footprint-map{height:240px}.footprint-date-browser{grid-template-columns:minmax(0,1fr);gap:9px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
 @media(max-width:520px){.footprint-memory-head{align-items:flex-start;flex-wrap:wrap;gap:8px;padding:16px 14px 13px 18px}.footprint-memory-title{font-size:20px}.footprint-memory-sub{margin-left:32px}.footprint-memory-total{margin-left:32px}.footprint-memory-tools{align-items:flex-end;padding:10px 12px}.footprint-memory-filter{min-width:0}.footprint-category-manage-btn{min-width:84px;padding:0 8px}.footprint-ranking-list{padding:3px 11px 7px}.footprint-ranking-row{grid-template-columns:34px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:9px 4px}.footprint-ranking-row.is-rank-1{min-height:76px;padding:10px 7px}.footprint-ranking-rank{width:32px;height:32px}.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:35px;height:35px}.footprint-ranking-name{font-size:12px}.footprint-ranking-count strong{font-size:18px}.footprint-ranking-bar{left:46px;right:52px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
+@media(max-width:520px){.footprint-category-dialog{height:94dvh;max-height:94dvh}.footprint-category-head{padding:17px 58px 13px 17px}.footprint-category-title{font-size:21px}.footprint-category-copy{font-size:9px}.footprint-category-body{display:block;overflow-y:auto;padding:0}.footprint-category-create{grid-template-columns:minmax(0,1fr);gap:9px;padding:12px}.footprint-category-create-meta{display:none}.footprint-category-workspace{display:block}.footprint-category-list-panel{max-height:none;border-right:0;border-bottom:1px solid var(--card-border)}.footprint-category-panel-head{padding:12px 12px 8px}.footprint-category-order{max-height:270px;padding:0 8px 11px}.footprint-category-row{grid-template-columns:29px minmax(0,1fr);gap:8px;min-height:60px;padding:8px}.footprint-category-row-actions,.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2;justify-content:flex-start;flex-wrap:wrap}.footprint-category-assign{height:430px;min-height:430px;padding:13px 12px 0}.footprint-category-place-list{max-height:none}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,128px);gap:8px}.footprint-category-place.is-active{margin:0}.footprint-category-place-select{font-size:8px}}
 </style>
 </head>
 <body>
@@ -2048,20 +2063,27 @@ onclick="hideSpecialForToday()">
       <button type="button" class="footprint-category-close" onclick="footprintCloseCategoryManagerDirect()" aria-label="關閉類別管理">×</button>
     </header>
     <div class="footprint-category-body">
-      <div class="footprint-category-add">
-        <input class="footprint-category-input" id="footprint-category-name" type="text" maxlength="18" autocomplete="off" placeholder="輸入新類別名稱" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintAddCustomCategory();}">
-        <button type="button" class="footprint-category-add-btn" onclick="footprintAddCustomCategory()">＋ 新增</button>
-      </div>
-      <div class="footprint-category-section-label">顯示順序</div>
-      <div class="footprint-category-order" id="footprint-category-order"></div>
-      <section class="footprint-category-assign" id="footprint-category-assign" hidden>
-        <div class="footprint-category-assign-head">
-          <div class="footprint-category-assign-title" id="footprint-category-assign-title"></div>
-          <div class="footprint-category-assign-count" id="footprint-category-assign-count"></div>
+      <section class="footprint-category-create">
+        <div><span class="footprint-category-create-title">新增自訂分類</span><span class="footprint-category-create-meta">建立只屬於你們的地點收藏</span></div>
+        <div class="footprint-category-add">
+          <input class="footprint-category-input" id="footprint-category-name" type="text" maxlength="18" autocomplete="off" placeholder="例如：百貨公司" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintAddCustomCategory();}">
+          <button type="button" class="footprint-category-add-btn" onclick="footprintAddCustomCategory()">＋ 新增</button>
         </div>
-        <input class="footprint-category-search" id="footprint-category-search" type="search" autocomplete="off" placeholder="搜尋店名或地點" oninput="footprintCategorySearchChanged(this.value)">
-        <div class="footprint-category-place-list" id="footprint-category-place-list"></div>
       </section>
+      <div class="footprint-category-workspace">
+        <section class="footprint-category-list-panel">
+          <div class="footprint-category-panel-head"><span class="footprint-category-section-label">類別順序</span><span class="footprint-category-fixed">全部固定第一</span></div>
+          <div class="footprint-category-order" id="footprint-category-order"></div>
+        </section>
+        <section class="footprint-category-assign" id="footprint-category-assign" hidden>
+          <div class="footprint-category-assign-head">
+            <div class="footprint-category-assign-title" id="footprint-category-assign-title"></div>
+            <div class="footprint-category-assign-count" id="footprint-category-assign-count"></div>
+          </div>
+          <div class="footprint-category-search-wrap"><input class="footprint-category-search" id="footprint-category-search" type="search" autocomplete="off" placeholder="搜尋店名或地址" oninput="footprintCategorySearchChanged(this.value)"></div>
+          <div class="footprint-category-place-list" id="footprint-category-place-list"></div>
+        </section>
+      </div>
     </div>
   </section>
 </div>
@@ -6050,6 +6072,11 @@ async function saveDayData(){
   if(currentDayKey!==key) return;
   modalEditMode=false;
   applyModalMode(albumFirebaseData[key]||dayData);
+  if(typeof footprintSyncFromAlbumDay==='function'){
+    footprintSyncFromAlbumDay(key,dayData).then(count=>{
+      if(count>0) albumSetBadge(`已從行程自動加入 ${count} 個足跡`);
+    }).catch(error=>console.warn('相簿行程自動建立足跡失敗',error));
+  }
 }
 function closeDayModal(e){if(e.target===document.getElementById('day-modal-bg')) closeDayModalDirect();}
 function closeDayModalDirect(){
@@ -7000,6 +7027,12 @@ function pdHistoryToArray(val){
     .filter(Boolean)
     .sort((a,b)=>a.start.localeCompare(b.start) || (a.createdAt - b.createdAt));
 }
+function pdPeriodLength(startValue,endValue){
+  const start=new Date(`${String(startValue||'').slice(0,10)}T00:00:00`);
+  const end=new Date(`${String(endValue||'').slice(0,10)}T00:00:00`);
+  if(Number.isNaN(start.getTime())||Number.isNaN(end.getTime())||end.getTime()<start.getTime()) return 0;
+  return Math.floor((end.getTime()-start.getTime())/864e5)+1;
+}
 function pdLoad(){
   const {db,ref,onValue}=window._fb;
   let settingsReady=false;
@@ -7037,14 +7070,18 @@ function pdRenderHistory(val){
     el.innerHTML='<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:12px 0">還沒有記錄</div>';
     return;
   }
-  el.innerHTML = records.map(r=>`
+  el.innerHTML = records.map(r=>{
+    const completedDays=pdPeriodLength(r.start,r.end);
+    return `
     <div class="pd-history-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--card-border)">
-      <div>
+      <div style="min-width:0;display:flex;align-items:center;flex-wrap:wrap;gap:4px 0">
         <span style="font-size:14px">🩸</span>
         <span style="font-size:13px;margin-left:6px;color:var(--text)">${r.start} ～ ${r.end||'未記錄結束'}</span>
+        ${completedDays?`<span style="display:inline-flex;align-items:center;min-height:23px;margin-left:7px;padding:0 8px;border-radius:999px;background:var(--pink-light);color:var(--rose);font-size:9px;font-weight:800">第 ${completedDays} 天結束</span>`:''}
       </div>
       <button onclick="pdDeleteHistory('${r._key}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:15px">✕</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   pdRefresh();
 }
 
@@ -7217,8 +7254,13 @@ function pdRefresh(){
   const cycles=pdGetCycles(12);
   const t=today();
   const pendingPrediction=pdGetNextPredictionStatus(t);
+  const completedDays=pdSettings.completed===true?pdPeriodLength(pdSettings.start,pdSettings.end):0;
   let bannerEmoji='🌿',bannerTitle='安全期',bannerSub='';
-  if(pendingPrediction && pendingPrediction.daysTo<=0){
+  if(completedDays&&(!pendingPrediction||pendingPrediction.daysTo>0)){
+    bannerEmoji='✅';
+    bannerTitle='本次生理期已結束';
+    bannerSub=`生理期於第 ${completedDays} 天結束`;
+  }else if(pendingPrediction && pendingPrediction.daysTo<=0){
     bannerEmoji='😮';
     if(pendingPrediction.delayedDays===0){
       bannerTitle='預計今天來';
@@ -7250,7 +7292,7 @@ function pdRefresh(){
   document.getElementById('pd-banner-title').textContent=bannerTitle;
   document.getElementById('pd-banner-sub').textContent=bannerSub;
   const banner=document.getElementById('pd-status-banner');
-  const bannerColors={'🩸':'var(--pd-banner-period)','🥚':'var(--pd-banner-ovulate)','🌺':'var(--pd-banner-fertile)','😮':'var(--pd-banner-soon)','🌿':'var(--pd-banner-safe)'};
+  const bannerColors={'🩸':'var(--pd-banner-period)','🥚':'var(--pd-banner-ovulate)','🌺':'var(--pd-banner-fertile)','😮':'var(--pd-banner-soon)','🌿':'var(--pd-banner-safe)','✅':'color-mix(in srgb,var(--pd-banner-safe) 72%,#dff3e8)'};
   banner.style.background=bannerColors[bannerEmoji]||'var(--pd-banner-default,var(--white))';
   const fmt=d=>d.toLocaleDateString('zh-TW',{month:'2-digit',day:'2-digit'});
   let upHTML='';let shown=0;
@@ -7425,7 +7467,8 @@ function pdConfirmEnd(){
   if(!window._fb){alert('Firebase 尚未連線');return;}
   pdSaveSettingsWithHistory(newSettings).then(()=>{
     document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
-    alert(`已設定月經結束日：${endDate} ✅`);
+    pdApplySettings(newSettings);
+    alert(`已記錄，本次生理期於第 ${dur} 天結束。`);
   });
 }
 // ── Music Player ──
@@ -9026,12 +9069,11 @@ function footprintPersistCategorySettings(renderManager=true){
 function footprintOpenCategoryManager(){
   const overlay=document.getElementById('footprint-category-bg');
   if(!overlay) return;
-  if(!footprintCategoryExists(footprintCategoryManagerActive)||footprintCategoryManagerActive==='all') footprintCategoryManagerActive='';
+  if(!footprintCategoryExists(footprintCategoryManagerActive)||footprintCategoryManagerActive==='all') footprintCategoryManagerActive=footprintCategoryDefinitions(false)[0]?.id||'';
   footprintCategoryManagerQuery='';
   footprintRenderCategoryManager();
   overlay.classList.remove('hidden');
   document.body.style.overflow='hidden';
-  setTimeout(()=>document.getElementById('footprint-category-name')?.focus(),40);
 }
 function footprintCloseCategoryManager(event){
   if(event?.target===document.getElementById('footprint-category-bg')) footprintCloseCategoryManagerDirect();
@@ -9049,19 +9091,21 @@ function footprintRenderCategoryManager(){
   const search=document.getElementById('footprint-category-search');
   if(!orderWrap||!assign||!list||!search) return;
   const definitions=footprintCategoryDefinitions(false);
+  if(!definitions.some(item=>item.id===footprintCategoryManagerActive)) footprintCategoryManagerActive=definitions[0]?.id||'';
   const groups=footprintRankedGroups();
   const previousScroll=list.scrollTop;
-  const rows=[{id:'all',name:'全部',custom:false,pinned:true},...definitions];
-  orderWrap.innerHTML=rows.map((category,index)=>{
-    const orderedIndex=index-1;
-    const assignedCount=category.pinned?groups.length:groups.filter(group=>footprintEffectiveCategory(group)===category.id).length;
-    const meta=category.pinned?'固定顯示在第一個':`${category.custom?'自訂':'系統'}分類 · ${assignedCount} 個地點`;
-    const actions=category.pinned?'':`<div class="footprint-category-row-actions"><button type="button" class="footprint-category-icon-btn" data-category-up="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往上移" title="往上移"${orderedIndex===0?' disabled':''}>↑</button><button type="button" class="footprint-category-icon-btn" data-category-down="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往下移" title="往下移"${orderedIndex===definitions.length-1?' disabled':''}>↓</button><button type="button" class="footprint-category-places-btn" data-category-places="${footprintEscape(category.id)}">整理地點</button>${category.custom?`<button type="button" class="footprint-category-icon-btn" data-category-rename="${footprintEscape(category.id)}" aria-label="重新命名 ${footprintEscape(category.name)}" title="重新命名">✎</button><button type="button" class="footprint-category-icon-btn" data-category-delete="${footprintEscape(category.id)}" aria-label="刪除 ${footprintEscape(category.name)}" title="刪除">×</button>`:''}</div>`;
-    return `<div class="footprint-category-row${category.pinned?' is-pinned':''}${category.custom?' is-custom':''}"><span class="footprint-category-order-no">${category.pinned?'•':index}</span><span class="footprint-category-row-copy"><span class="footprint-category-row-name">${footprintEscape(category.name)}</span><span class="footprint-category-row-meta">${meta}</span></span>${actions}</div>`;
+  orderWrap.innerHTML=definitions.map((category,index)=>{
+    const assignedCount=groups.filter(group=>footprintEffectiveCategory(group)===category.id).length;
+    const meta=`${assignedCount} 個地點 · ${category.custom?'自訂':'系統'}`;
+    const actions=`<div class="footprint-category-row-actions"><button type="button" class="footprint-category-icon-btn" data-category-up="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往上移" title="往上移"${index===0?' disabled':''}>↑</button><button type="button" class="footprint-category-icon-btn" data-category-down="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往下移" title="往下移"${index===definitions.length-1?' disabled':''}>↓</button>${category.custom?`<button type="button" class="footprint-category-icon-btn" data-category-rename="${footprintEscape(category.id)}" aria-label="重新命名 ${footprintEscape(category.name)}" title="重新命名">✎</button><button type="button" class="footprint-category-icon-btn" data-category-delete="${footprintEscape(category.id)}" aria-label="刪除 ${footprintEscape(category.name)}" title="刪除">×</button>`:''}</div>`;
+    return `<div class="footprint-category-row${footprintCategoryManagerActive===category.id?' is-active':''}${category.custom?' is-custom':''}" data-category-card="${footprintEscape(category.id)}"><span class="footprint-category-order-no">${index+1}</span><span class="footprint-category-row-copy"><span class="footprint-category-row-name">${footprintEscape(category.name)}</span><span class="footprint-category-row-meta">${meta}</span></span>${actions}</div>`;
   }).join('');
+  orderWrap.querySelectorAll('[data-category-card]').forEach(row=>row.addEventListener('click',event=>{
+    if(event.target.closest('button')) return;
+    footprintChooseCategoryPlaces(row.dataset.categoryCard);
+  }));
   orderWrap.querySelectorAll('[data-category-up]').forEach(button=>button.addEventListener('click',()=>footprintMoveCategory(button.dataset.categoryUp,-1)));
   orderWrap.querySelectorAll('[data-category-down]').forEach(button=>button.addEventListener('click',()=>footprintMoveCategory(button.dataset.categoryDown,1)));
-  orderWrap.querySelectorAll('[data-category-places]').forEach(button=>button.addEventListener('click',()=>footprintChooseCategoryPlaces(button.dataset.categoryPlaces)));
   orderWrap.querySelectorAll('[data-category-rename]').forEach(button=>button.addEventListener('click',()=>footprintRenameCustomCategory(button.dataset.categoryRename)));
   orderWrap.querySelectorAll('[data-category-delete]').forEach(button=>button.addEventListener('click',()=>footprintDeleteCustomCategory(button.dataset.categoryDelete)));
   const active=definitions.find(item=>item.id===footprintCategoryManagerActive);
@@ -9222,13 +9266,23 @@ function footprintMergeSearchResults(...sets){
     seen.add(key);return true;
   }).slice(0,8);
 }
+function footprintExtractGoogleMapsLink(value){
+  const text=String(value||'').replace(/[\u200B-\u200D\uFEFF]/g,' ').replace(/&amp;/gi,'&').trim();
+  const candidates=text.match(/https?:\/\/[^\s<>"']+/gi)||[];
+  if(/^https?:\/\//i.test(text)) candidates.unshift(text);
+  for(const candidate of [...new Set(candidates)]){
+    const clean=candidate.trim().replace(/[\]\[(){}<>，。；、]+$/gu,'');
+    try{
+      const url=new URL(clean);
+      const host=url.hostname.toLowerCase();
+      const googleHost=host==='google.com'||host.endsWith('.google.com')||host==='google.com.tw'||host.endsWith('.google.com.tw');
+      if(host==='maps.app.goo.gl'||(host==='goo.gl'&&url.pathname.startsWith('/maps'))||googleHost) return url.href;
+    }catch(_){}
+  }
+  return '';
+}
 function footprintIsGoogleMapsLink(value){
-  try{
-    const url=new URL(String(value||'').trim());
-    const host=url.hostname.toLowerCase();
-    const googleHost=host==='google.com'||host.endsWith('.google.com')||host==='google.com.tw'||host.endsWith('.google.com.tw');
-    return host==='maps.app.goo.gl'||(host==='goo.gl'&&url.pathname.startsWith('/maps'))||googleHost;
-  }catch(_){return false;}
+  return Boolean(footprintExtractGoogleMapsLink(value));
 }
 function footprintPrepareMapLink(){
   const input=document.getElementById('footprint-search-input');
@@ -9241,23 +9295,24 @@ function footprintPrepareMapLink(){
 }
 function footprintHandleMapLinkPaste(event){
   const value=String(event.clipboardData?.getData('text')||'').trim();
+  const mapLink=footprintExtractGoogleMapsLink(value);
   const source=event.currentTarget?.id==='footprint-address'?'address':'search';
-  if(!footprintIsGoogleMapsLink(value)){
+  if(!mapLink){
     setTimeout(()=>footprintQueueMapLinkImport(event.currentTarget?.value||'',source),0);
     return;
   }
   event.preventDefault();
   const address=document.getElementById('footprint-address');
   const search=document.getElementById('footprint-search-input');
-  if(address) address.value=value;
-  if(search) search.value=value;
-  footprintQueueMapLinkImport(value,source);
+  if(address) address.value=mapLink;
+  if(search) search.value=mapLink;
+  footprintQueueMapLinkImport(mapLink,source);
 }
 function footprintHandleMapLinkInput(value,source='search'){
   footprintQueueMapLinkImport(value,source);
 }
 function footprintQueueMapLinkImport(value,source='search'){
-  const link=String(value||'').trim();
+  const link=footprintExtractGoogleMapsLink(value);
   const search=document.getElementById('footprint-search-input');
   if(!footprintIsGoogleMapsLink(link)){
     if(source==='search'&&search) delete search.dataset.mapLink;
@@ -9281,6 +9336,85 @@ async function footprintImportMapLink(url){
   const data=await response.json().catch(()=>({}));
   if(!response.ok||!data?.result) throw new Error(data?.error||'無法讀取這個 Google Maps 分享連結');
   return footprintNormalizeSearchResults([data.result])[0]||null;
+}
+function footprintItineraryKey(value){
+  return footprintNormalizeName(value)
+    .replace(/臺/g,'台')
+    .replace(/科技大學/g,'科大')
+    .replace(/[【】\[\]（）()「」『』·,，。:：;；/\\_\-]/g,'');
+}
+function footprintItineraryMentionsGroup(text,group){
+  const haystack=footprintItineraryKey(text);
+  if(!haystack) return false;
+  const names=[group?.name,...(group?.visits||[]).map(visit=>visit.placeName)].filter(Boolean);
+  const keys=new Set();
+  names.forEach(name=>{
+    const raw=String(name||'').replace(/^【[^】]+】/,'').trim();
+    [raw,...raw.split(/[|｜]/)].forEach(part=>{
+      const key=footprintItineraryKey(part);
+      if(key.length>=4) keys.add(key);
+    });
+  });
+  return [...keys].some(key=>haystack.includes(key));
+}
+function footprintStableAutoId(date,placeId){
+  let hash=2166136261;
+  for(const char of String(placeId||'')){
+    hash^=char.charCodeAt(0);
+    hash=Math.imul(hash,16777619);
+  }
+  return `album_${String(date||'').replace(/-/g,'')}_${(hash>>>0).toString(36)}`;
+}
+async function footprintSyncFromAlbumDay(date,dayData){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||''))) return 0;
+  const itinerary=[...(Array.isArray(dayData?.schedule)?dayData.schedule:[]),dayData?.note||''].map(value=>String(value||'').trim()).filter(Boolean).join('\n');
+  if(!itinerary) return 0;
+  const groups=footprintGetGroups();
+  const candidates=new Map();
+  groups.forEach(group=>{
+    if(group.visits.some(visit=>visit.date===date)||!footprintItineraryMentionsGroup(itinerary,group)) return;
+    const anchor=group.visits[0];
+    candidates.set(group.placeId,{placeId:group.placeId,placeName:group.name,address:anchor?.address||'',lat:group.lat,lng:group.lng});
+  });
+  const links=[...new Set((itinerary.match(/https?:\/\/[^\s<>"']+/gi)||[]).map(footprintExtractGoogleMapsLink).filter(Boolean))];
+  for(const link of links){
+    try{
+      const result=await footprintImportMapLink(link);
+      if(!result) continue;
+      const existing=groups.find(group=>group.placeId===result.placeId||footprintDistanceMeters(group.lat,group.lng,result.lat,result.lng)<=45);
+      const placeId=existing?.placeId||result.placeId||`place_auto_${Date.now().toString(36)}`;
+      if(existing?.visits.some(visit=>visit.date===date)) continue;
+      candidates.set(placeId,{placeId,placeName:existing?.name||result.name,address:result.displayName||existing?.visits?.[0]?.address||'',lat:existing?.lat??result.lat,lng:existing?.lng??result.lng});
+    }catch(error){
+      console.warn('行程中的 Google Maps 連結暫時無法建立足跡',link,error);
+    }
+  }
+  if(!candidates.size) return 0;
+  const stamp=Date.now();
+  const records=[];
+  candidates.forEach(candidate=>{
+    const id=footprintStableAutoId(date,candidate.placeId);
+    if(footprintVisitsData[id]) return;
+    const record={...candidate,date,note:'',source:'album-auto',createdAt:stamp,updatedAt:stamp};
+    footprintVisitsData[id]=record;
+    records.push([id,record]);
+  });
+  if(!records.length) return 0;
+  footprintWriteCache();
+  footprintRender();
+  if(!window._fb){
+    records.forEach(([id,record])=>queueFirebaseWrite(`footprintVisits/${id}`,record));
+    return records.length;
+  }
+  try{
+    const {db,ref,update}=window._fb;
+    const payload=Object.fromEntries(records.map(([id,record])=>[`footprintVisits/${id}`,record]));
+    await update(ref(db),payload);
+  }catch(error){
+    records.forEach(([id,record])=>queueFirebaseWrite(`footprintVisits/${id}`,record));
+    console.warn('自動足跡同步失敗，已排入待同步',error);
+  }
+  return records.length;
 }
 function footprintRenderSearchResults(results,message=''){
   const panel=document.getElementById('footprint-search-results');
@@ -9314,10 +9448,11 @@ async function footprintSearchLocation(){
   const rawQuery=String(input?.value||document.getElementById('footprint-address')?.value||placeName).trim();
   const savedMapLink=String(input?.dataset.mapLink||'').trim();
   const query=savedMapLink&&rawQuery===placeName?savedMapLink:rawQuery;
-  const importingMapLink=footprintIsGoogleMapsLink(query);
-  if(importingMapLink&&footprintMapLinkImporting===query) return;
+  const mapLink=footprintExtractGoogleMapsLink(query);
+  const importingMapLink=Boolean(mapLink);
+  if(importingMapLink&&footprintMapLinkImporting===mapLink) return;
   if(!importingMapLink&&query.length<2){footprintRenderSearchResults([], '請至少輸入兩個字');return;}
-  const cacheKey=footprintNormalizeName(query);
+  const cacheKey=footprintNormalizeName(mapLink||query);
   const cached=footprintReadSearchCache()[cacheKey];
   if(!importingMapLink&&cached&&Date.now()-Number(cached.savedAt)<90*864e5){
     footprintSearchResults=footprintNormalizeSearchResults(cached.results);
@@ -9325,19 +9460,19 @@ async function footprintSearchLocation(){
     return;
   }
   const requestId=++footprintSearchRequestId;
-  if(importingMapLink) footprintMapLinkImporting=query;
+  if(importingMapLink) footprintMapLinkImporting=mapLink;
   button.disabled=true;
   const originalLabel=button.textContent;
   button.textContent=importingMapLink?'匯入中':'搜尋中';
   footprintRenderSearchResults([], importingMapLink?'正在讀取 Google Maps 地點...':'正在搜尋地點...');
   try{
     if(importingMapLink){
-      const result=await footprintImportMapLink(query);
+      const result=await footprintImportMapLink(mapLink);
       if(requestId!==footprintSearchRequestId) return;
       if(!result) throw new Error('連結裡沒有可匯入的位置');
       footprintSearchResults=[result];
       footprintSelectSearchResult(0);
-      input.dataset.mapLink=query;
+      input.dataset.mapLink=mapLink;
       footprintRenderSearchResults([], `已匯入「${result.name}」，也可以繼續修改地點名稱與地址`);
       return;
     }
@@ -9358,7 +9493,7 @@ async function footprintSearchLocation(){
     console.warn('地點搜尋失敗',error);
     if(requestId===footprintSearchRequestId) footprintRenderSearchResults([], importingMapLink?(error?.message||'無法讀取這個分享連結'):'目前無法搜尋，請稍後再試，或直接點地圖選擇');
   }finally{
-    if(importingMapLink&&footprintMapLinkImporting===query) footprintMapLinkImporting='';
+    if(importingMapLink&&footprintMapLinkImporting===mapLink) footprintMapLinkImporting='';
     if(requestId===footprintSearchRequestId){button.disabled=false;button.textContent=originalLabel;}
   }
 }

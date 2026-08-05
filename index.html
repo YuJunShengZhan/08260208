@@ -758,6 +758,12 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .cohabiting-view-copy small{color:var(--text-muted);font-size:11px}
 .cohabiting-note-badge{display:inline-flex;align-items:center;gap:4px;margin-bottom:7px;padding:4px 8px;border-radius:999px;background:var(--pink-light);color:var(--rose);font-size:11px;font-weight:800}
 [data-theme="dark"] .cohabiting-toggle{border-color:rgba(255,158,178,.22)}
+.love-count-control{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;padding:9px 11px;border:1px solid var(--card-border);border-radius:11px;background:var(--pink-light);color:var(--text)}
+.love-count-control label{font-size:12px;font-weight:700;color:var(--rose)}
+.love-count-input{width:78px;padding:7px 8px;border:1px solid var(--card-border);border-radius:9px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;text-align:center;outline:none}
+.love-count-input:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.12)}
+.day-love-count-view{display:flex;align-items:center;justify-content:center;margin-bottom:8px;padding:8px 11px;border:1px solid rgba(232,99,122,.18);border-radius:11px;background:var(--pink-light);color:var(--rose);font-size:12px;font-weight:800}
+[data-theme="dark"] .love-count-input{background:#332028;border-color:rgba(255,158,178,.22)}
 
 .modal-photos-grid{
 display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;
@@ -1046,7 +1052,7 @@ background:var(--pink-light);margin-left:8px;
   align-items:center;
   gap:6px;
 }
-.intimacy-hidden #album-love-count,.intimacy-hidden #memories-love-legend{display:none!important}
+.intimacy-hidden #album-love-count,.intimacy-hidden #memories-love-legend,.intimacy-hidden .day-love-count-view,.intimacy-hidden .love-count-control{display:none!important}
 .memories-total-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .memories-total-grid.is-private{grid-template-columns:minmax(0,1fr)}
 .memories-total-card{background:var(--pink-light);border-radius:12px;padding:12px;text-align:center}
@@ -1966,6 +1972,10 @@ onclick="hideSpecialForToday()">
           </label>
         </div>
         <textarea class="modal-textarea" id="modal-note" rows="3" placeholder="記錄這天的行程、回憶..."></textarea>
+        <div class="love-count-control">
+          <label for="modal-love-count">💕 今天愛愛次數</label>
+          <input class="love-count-input" id="modal-love-count" type="number" min="0" max="99" step="1" inputmode="numeric" value="0" aria-label="今天愛愛次數">
+        </div>
       </div>
       <button class="modal-save-btn" onclick="saveDayData()">儲存 💾</button>
     </div>
@@ -4750,6 +4760,8 @@ let albumDownloadRunId=0;
 let albumStatsData={};
 let albumStatsReady=false;
 let albumStatsBackfillStarted=false;
+let albumLoveCountMigrationStarted=false;
+const LOVE_KEYWORDS = ['愛愛','做愛','房間','開房間','超市','操死','幹死','qtime','Qtime'];
 let albumActiveMedia='photos';
 let albumVideosData={};
 let albumVideosSyncStarted=false;
@@ -5391,20 +5403,34 @@ async function deleteAlbumVideo(encodedId){
 }
 
 
+function albumNormalizeLoveCount(value){
+  const n=Number(value);
+  if(!Number.isFinite(n) || n<=0) return 0;
+  return Math.min(99,Math.floor(n));
+}
+function albumLegacyLoveCount(dayData){
+  if(!dayData) return 0;
+  const note=String(dayData.note || '');
+  const scheduleText=Array.isArray(dayData.schedule) ? dayData.schedule.join(' ') : '';
+  const text=`${note} ${scheduleText}`;
+  return LOVE_KEYWORDS.some(kw=>text.includes(kw)) ? 1 : 0;
+}
+function albumGetLoveCount(dayData){
+  if(!dayData) return 0;
+  if(Object.prototype.hasOwnProperty.call(dayData,'loveCount')) return albumNormalizeLoveCount(dayData.loveCount);
+  return albumLegacyLoveCount(dayData);
+}
 function albumHasDayContent(dayData){
   if(!dayData) return false;
-  return !!(dayData.cohabiting || (dayData.photos && dayData.photos.length) || (dayData.note && String(dayData.note).trim()) || (dayData.schedule && dayData.schedule.length));
+  return !!(dayData.cohabiting || albumGetLoveCount(dayData)>0 || (dayData.photos && dayData.photos.length) || (dayData.note && String(dayData.note).trim()) || (dayData.schedule && dayData.schedule.length));
 }
 function albumBuildDayStats(dayData){
   const hasContent = albumHasDayContent(dayData);
-  const note = String(dayData?.note || '');
-  const scheduleText = Array.isArray(dayData?.schedule) ? dayData.schedule.join(' ') : '';
-  const text = `${note} ${scheduleText}`;
-  const love = typeof LOVE_KEYWORDS !== 'undefined' && LOVE_KEYWORDS.some(kw=>text.includes(kw));
+  const love = albumGetLoveCount(dayData);
   if(!hasContent && !love) return null;
   return {
     meet: hasContent ? 1 : 0,
-    love: love ? 1 : 0,
+    love,
     photos: Array.isArray(dayData?.photos) ? dayData.photos.length : 0,
     updatedAt: Date.now()
   };
@@ -5622,6 +5648,36 @@ function albumSetBadge(text){
 function albumMonthId(y,m){
   return `${y}-${String(m+1).padStart(2,'0')}`;
 }
+async function albumMigrateLegacyLoveCounts(){
+  if(albumLoveCountMigrationStarted || !window._fb || !albumAllDataReady) return;
+  albumLoveCountMigrationStarted=true;
+  const updates={};
+  let changed=0;
+  Object.entries(albumFirebaseData || {}).forEach(([key,dayData])=>{
+    if(!dayData || Object.prototype.hasOwnProperty.call(dayData,'loveCount')) return;
+    if(albumLegacyLoveCount(dayData)!==1) return;
+    dayData.loveCount=1;
+    const stat=albumBuildDayStats(dayData);
+    albumStatsData[key]=stat;
+    updates[`albumData/${key}/loveCount`]=1;
+    updates[`albumStats/${key}`]=stat;
+    changed++;
+  });
+  if(!changed) return;
+  albumWriteCachedData(albumFirebaseData);
+  albumRenderCal();
+  renderMemories();
+  renderMemoriesCharts();
+  renderMemoriesTotalStats();
+  const {db,ref,update}=window._fb;
+  try{
+    await update(ref(db),updates);
+    console.info(`已將 ${changed} 天舊關鍵字紀錄補成 loveCount=1`);
+  }catch(err){
+    console.warn('舊愛愛次數資料補寫失敗，已排入待同步',err);
+    Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+  }
+}
 function albumLoadMonth(){
   if(!window._fb) return;
   if(albumAllDataSyncStarted) return;
@@ -5634,6 +5690,7 @@ function albumLoadMonth(){
     albumFirebaseData=snap.val()||{};
     albumAllDataReady=true;
     albumRemoteDataReady=true;
+    albumMigrateLegacyLoveCounts();
     albumSetBadge('');
     albumWriteCachedData(albumFirebaseData);
     albumFinishDownloadProgress();
@@ -5730,24 +5787,12 @@ function albumRenderCal(){
   const countEl=document.getElementById('album-month-count');
   if(countEl){ countEl.textContent = outCount ? `🗓 這個月見面了 ${outCount} 天 💕` : '這個月還沒有見面記錄 🥺'; countEl.style.fontSize='12px'; }
 
-  // 統計本月愛愛次數（行程備注裡有「愛愛」或「做愛」關鍵字就算一次）
+  // 統計本月愛愛次數：新資料直接加總手動填寫次數；舊資料若尚未有欄位，命中舊關鍵字時先視為 1 次。
   let loveCount = 0;
-const keywords = ['愛愛','做愛','房間','開房間','開房間','超市','操死','幹死','qtime','Qtime'];
-
-for (let d = 1; d <= daysInMonth; d++) {
-  const key = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-  const dd = albumFirebaseData[key];
-
-  // 支援單一物件或陣列
-  const entries = Array.isArray(dd) ? dd : (dd ? [dd] : []);
-
-  // 只要這一天有任何一筆 note 含關鍵字，就算一次
-  const hasKeyword = entries.some(entry =>
-    entry.note && keywords.some(kw => entry.note.includes(kw))
-  );
-
-  if (hasKeyword) loveCount++;
-}
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    loveCount += albumGetLoveCount(albumFirebaseData[key]);
+  }
   const loveEl=document.getElementById('album-love-count');
   if(loveEl){ loveEl.textContent = loveCount ? `💕 這個月愛愛了 ${loveCount} 次` : '這個月沒有愛愛 🥲'; }
 
@@ -5775,13 +5820,14 @@ function applyModalMode(dayData){
     viewContent.classList.add('hidden');editContent.classList.remove('hidden');
     renderModalPhotosEdit(dayData.photos||[]);
     document.getElementById('modal-note').value=dayData.note||'';
+    document.getElementById('modal-love-count').value=albumGetLoveCount(dayData);
     document.getElementById('modal-cohabiting').checked=!!dayData.cohabiting;
     updateCloudinaryUiStatus();
   } else {
     editBtn.hidden=false;editBtn.style.display='';editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
     viewContent.classList.remove('hidden');editContent.classList.add('hidden');
     renderViewPhotos(dayData.photos||[]);
-    renderViewNote(dayData.note||'',!!dayData.cohabiting);
+    renderViewNote(dayData.note||'',!!dayData.cohabiting,albumGetLoveCount(dayData));
   }
 }
 
@@ -5806,14 +5852,20 @@ function renderViewSchedule(items){
   if(!list.length){el.innerHTML='<div class="view-empty">今天還沒有另外記下行程</div>';return;}
   el.innerHTML=list.map(item=>`<div class="view-schedule-item"><span class="view-schedule-text">${escapeHtml(item)}</span></div>`).join('');
 }
-function renderViewNote(note,cohabiting=false){
+function renderViewNote(note,cohabiting=false,loveCount=0){
   const el=document.getElementById('view-note');
+  const normalizedLoveCount=albumNormalizeLoveCount(loveCount);
+  const loveBadge=normalizedLoveCount>0 ? `<div class="day-love-count-view">💕 今天愛愛了 ${normalizedLoveCount} 次</div>` : '';
   if(!note||!note.trim()){
     if(cohabiting){
-      el.innerHTML=`<div class="cohabiting-view">
+      el.innerHTML=`${loveBadge}<div class="cohabiting-view">
         <span class="cohabiting-view-icon">🏠</span>
         <span class="cohabiting-view-copy"><strong>今天一起生活中</strong><small>同居日</small></span>
       </div>`;
+      return;
+    }
+    if(normalizedLoveCount>0){
+      el.innerHTML=loveBadge;
       return;
     }
     el.innerHTML=`<div class="album-empty-meeting">
@@ -5822,7 +5874,7 @@ function renderViewNote(note,cohabiting=false){
     </div>`;
     return;
   }
-  el.innerHTML=`${cohabiting?'<div class="cohabiting-note-badge">🏠 同居日</div>':''}<div class="view-note">${escapeHtml(note)}</div>`;
+  el.innerHTML=`${loveBadge}${cohabiting?'<div class="cohabiting-note-badge">🏠 同居日</div>':''}<div class="view-note">${escapeHtml(note)}</div>`;
 }
 function renderModalScheduleEdit(items){
   const list=document.getElementById('modal-schedule-list');
@@ -6055,6 +6107,7 @@ function saveDayDataSilent(){
   const key=currentDayKey;
   const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
   dayData.note=document.getElementById('modal-note').value;
+  dayData.loveCount=albumNormalizeLoveCount(document.getElementById('modal-love-count')?.value);
   dayData.cohabiting=!!document.getElementById('modal-cohabiting')?.checked;
   return albumSaveDay(key,dayData);
 }
@@ -6067,6 +6120,7 @@ async function saveDayData(){
   const note=document.getElementById('modal-note').value;
   const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
   dayData.note=note;
+  dayData.loveCount=albumNormalizeLoveCount(document.getElementById('modal-love-count')?.value);
   dayData.cohabiting=!!document.getElementById('modal-cohabiting')?.checked;
   await albumSaveDay(key,dayData);
   if(currentDayKey!==key) return;
@@ -6351,7 +6405,7 @@ function renderMemoriesTotalStats(){
   keys.forEach(key=>{
     const stat = albumGetDayStats(key);
     if(Number(stat.meet)>0) meetDays += 1;
-    if(Number(stat.love)>0) loveTimes += 1;
+    loveTimes += Math.max(0,Number(stat.love)||0);
   });
 
   el.innerHTML=`
@@ -6382,8 +6436,6 @@ function renderMemoriesTotalStats(){
 
 // ── 統計圖表：每月見面 & 愛愛次數 ──
 let memoriesChart = null;
-const LOVE_KEYWORDS = ['愛愛','做愛','房間','開房間','超市','操死','幹死','qtime','Qtime'];
-
 function renderMemoriesCharts(){
   const chartsEl = document.getElementById('memories-charts');
   if(!chartsEl) return;
@@ -6408,7 +6460,7 @@ function renderMemoriesCharts(){
       const key = `${mk}-${String(d).padStart(2,'0')}`;
       const stat = albumGetDayStats(key);
       if(Number(stat.meet)>0) meetCount++;
-      if(Number(stat.love)>0) loveCount++;
+      loveCount += Math.max(0,Number(stat.love)||0);
     }
     meetData.push(meetCount);
     loveData.push(loveCount);

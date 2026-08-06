@@ -8839,8 +8839,9 @@ if(window._fb) chooseInitFirebase();
 const FOOTPRINT_CACHE_KEY='footprint_visits_cache_v1';
 const FOOTPRINT_SEARCH_CACHE_KEY='footprint_place_search_cache_v5';
 const FOOTPRINT_CATEGORY_CACHE_KEY='footprint_category_settings_v1';
-const FOOTPRINT_BUILTIN_CATEGORY_IDS=['baseball','hotel','qtime','nightmarket','park','other'];
-const FOOTPRINT_BUILTIN_CATEGORY_LABELS={baseball:'棒球場',hotel:'飯店',qtime:'Qtime',nightmarket:'夜市',park:'公園',other:'其他'};
+const FOOTPRINT_BUILTIN_CATEGORY_IDS=['baseball','hotel','qtime','nightmarket','park'];
+const FOOTPRINT_BUILTIN_CATEGORY_LABELS={baseball:'棒球場',hotel:'飯店',qtime:'Qtime',nightmarket:'夜市',park:'公園'};
+const FOOTPRINT_ALLOWED_CATEGORY_IDS=new Set(FOOTPRINT_BUILTIN_CATEGORY_IDS);
 let footprintVisitsData={};
 let footprintSyncStarted=false;
 let footprintCategorySyncStarted=false;
@@ -8862,6 +8863,9 @@ let footprintCategorySettings={custom:[],order:[...FOOTPRINT_BUILTIN_CATEGORY_ID
 let footprintCategoryManagerActive='';
 let footprintCategoryManagerQuery='';
 let footprintCategoryWritePromise=Promise.resolve();
+let footprintVisitsRemoteReady=false;
+let footprintCategoriesRemoteReady=false;
+let footprintCleanupRunning=false;
 let footprintDateQuery='';
 let footprintExpensePlaceId='';
 
@@ -8917,8 +8921,8 @@ function footprintWriteCache(){
 }
 function footprintNormalizeCategorySettings(value){
   const raw=value&&typeof value==='object'?value:{};
-  // 類別固定只保留：棒球場、飯店、Qtime、夜市、公園、其他。
-  // 舊版的「學校」與所有自訂類別在載入時直接淘汰，不再出現在「去過的所有地方」。
+  // 類別固定只保留：棒球場、飯店、Qtime、夜市、公園。
+  // 其他未歸屬於這五類的地點會由清理程序從足跡與相簿地點行程中移除。
   const custom=[];
   const validIds=new Set(FOOTPRINT_BUILTIN_CATEGORY_IDS);
   const order=[];
@@ -9175,7 +9179,109 @@ function footprintEffectiveCategory(group){
   return footprintCategoryExists(override)&&override!=='all'?override:footprintPlaceCategory(group);
 }
 function footprintCategoryLabel(category){
-  return footprintCategoryDefinitions().find(item=>item.id===category)?.name||'其他';
+  return footprintCategoryDefinitions().find(item=>item.id===category)?.name||'';
+}
+function footprintCategoryForPlaceLike(place){
+  const placeId=String(place?.placeId||'').trim();
+  const override=String(footprintCategorySettings.overrides?.[placeId]||'').trim();
+  if(FOOTPRINT_ALLOWED_CATEGORY_IDS.has(override)) return override;
+  const name=String(place?.name||place?.placeName||'').trim();
+  const address=String(place?.address||'').trim();
+  return footprintPlaceCategory({name,visits:[{placeName:name,address}]});
+}
+function footprintIsAllowedPlaceLike(place){
+  return FOOTPRINT_ALLOWED_CATEGORY_IDS.has(footprintCategoryForPlaceLike(place));
+}
+async function footprintPurgeDisallowedAlbumPlaces(){
+  if(typeof albumAllDataReady==='undefined'||!albumAllDataReady) return 0;
+  if(typeof albumFirebaseData==='undefined'||typeof albumNormalizeMapPlaces!=='function') return 0;
+  const updates={};
+  let changedDays=0;
+  Object.entries(albumFirebaseData||{}).forEach(([date,rawDay])=>{
+    const dayData=rawDay&&typeof rawDay==='object'?JSON.parse(JSON.stringify(rawDay)):{};
+    const places=albumNormalizeMapPlaces(dayData.mapPlaces);
+    if(!places.length) return;
+    const kept=places.filter(footprintIsAllowedPlaceLike);
+    if(kept.length===places.length) return;
+    dayData.mapPlaces=kept;
+    albumFirebaseData[date]=dayData;
+    const stat=typeof albumBuildDayStats==='function'?albumBuildDayStats(dayData):null;
+    if(typeof albumStatsData!=='undefined'){
+      if(stat) albumStatsData[date]=stat;
+      else delete albumStatsData[date];
+    }
+    updates[`albumData/${date}`]=dayData;
+    updates[`albumStats/${date}`]=stat;
+    changedDays++;
+  });
+  if(!changedDays) return 0;
+  if(typeof albumWriteCachedData==='function') albumWriteCachedData(albumFirebaseData);
+  if(typeof albumRenderCal==='function') albumRenderCal();
+  if(typeof renderMemories==='function') renderMemories();
+  if(typeof renderMemoriesCharts==='function') renderMemoriesCharts();
+  if(typeof renderMemoriesTotalStats==='function') renderMemoriesTotalStats();
+  if(typeof currentDayKey!=='undefined'&&currentDayKey&&typeof modalEditMode!=='undefined'&&modalEditMode&&typeof renderModalMapPlacesEdit==='function'){
+    renderModalMapPlacesEdit(albumFirebaseData[currentDayKey]?.mapPlaces||[]);
+  }
+  if(window._fb){
+    try{
+      const {db,ref,update}=window._fb;
+      await update(ref(db),updates);
+    }catch(error){
+      Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+      console.warn('清理非指定類別的相簿地點失敗，已排入待同步',error);
+    }
+  }else{
+    Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+  }
+  return changedDays;
+}
+async function footprintPurgeDisallowedVisits(){
+  if(footprintCleanupRunning) return 0;
+  footprintCleanupRunning=true;
+  try{
+    const groups=footprintGetGroups();
+    const rejected=new Set(
+      groups
+        .filter(group=>!FOOTPRINT_ALLOWED_CATEGORY_IDS.has(footprintEffectiveCategory(group)))
+        .map(group=>group.placeId)
+    );
+    const stale=Object.entries(footprintVisitsData||{}).filter(([id,raw])=>{
+      const visit=footprintNormalizeVisit(id,raw);
+      if(!visit) return false;
+      const placeId=visit.placeId||`legacy_${footprintNormalizeName(visit.placeName)}`;
+      return rejected.has(placeId);
+    });
+    if(stale.length){
+      stale.forEach(([id])=>delete footprintVisitsData[id]);
+      rejected.forEach(placeId=>{
+        if(footprintCategorySettings.overrides) delete footprintCategorySettings.overrides[placeId];
+      });
+      footprintWriteCache();
+      footprintWriteCategoryCache();
+      footprintRender();
+      const updates=Object.fromEntries(stale.map(([id])=>[`footprintVisits/${id}`,null]));
+      if(window._fb){
+        try{
+          const {db,ref,update}=window._fb;
+          await update(ref(db),updates);
+        }catch(error){
+          Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+          console.warn('清理非指定類別足跡失敗，已排入待同步',error);
+        }
+      }else{
+        Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+      }
+    }
+    await footprintPurgeDisallowedAlbumPlaces();
+    return stale.length;
+  }finally{
+    footprintCleanupRunning=false;
+  }
+}
+function footprintMaybePurgeDisallowed(){
+  if(!footprintVisitsRemoteReady||!footprintCategoriesRemoteReady) return;
+  footprintPurgeDisallowedVisits().catch(error=>console.warn('地點清理失敗',error));
 }
 function footprintFormatMoney(value){
   return new Intl.NumberFormat('zh-TW',{maximumFractionDigits:0}).format(Math.max(0,Math.round(Number(value)||0)));
@@ -9681,7 +9787,7 @@ function footprintStableAutoId(date,placeId){
 async function footprintSyncFromAlbumDay(date,dayData){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||''))) return 0;
   const itinerary=[...(Array.isArray(dayData?.schedule)?dayData.schedule:[]),dayData?.note||''].map(value=>String(value||'').trim()).filter(Boolean).join('\n');
-  const storedPlaces=typeof albumNormalizeMapPlaces==='function'?albumNormalizeMapPlaces(dayData?.mapPlaces):[];
+  const storedPlaces=typeof albumNormalizeMapPlaces==='function'?albumNormalizeMapPlaces(dayData?.mapPlaces).filter(footprintIsAllowedPlaceLike):[];
   if(!itinerary&&!storedPlaces.length){
     const stale=Object.entries(footprintVisitsData).filter(([,record])=>record?.source==='album-map'&&record?.date===date);
     if(stale.length){
@@ -9765,9 +9871,16 @@ async function footprintImportAllVisitsToAlbumDays(){
   if(typeof albumAllDataReady==='undefined'||!albumAllDataReady) return 0;
   if(typeof albumFirebaseData==='undefined'||typeof albumNormalizeMapPlaces!=='function') return 0;
   const visitsByDate=new Map();
+  const allowedPlaceIds=new Set(
+    footprintGetGroups()
+      .filter(group=>FOOTPRINT_ALLOWED_CATEGORY_IDS.has(footprintEffectiveCategory(group)))
+      .map(group=>group.placeId)
+  );
   Object.entries(footprintVisitsData||{}).forEach(([id,raw])=>{
     const visit=footprintNormalizeVisit(id,raw);
     if(!visit) return;
+    const placeId=visit.placeId||`legacy_${footprintNormalizeName(visit.placeName)}`;
+    if(!allowedPlaceIds.has(placeId)) return;
     const date=visit.date;
     if(!visitsByDate.has(date)) visitsByDate.set(date,[]);
     visitsByDate.get(date).push({
@@ -10082,8 +10195,10 @@ function footprintInitFirebase(){
     footprintSyncStarted=true;
     onValue(ref(db,'footprintVisits'),snapshot=>{
       footprintVisitsData=snapshot.val()||{};
+      footprintVisitsRemoteReady=true;
       footprintWriteCache();
       footprintRender();
+      footprintMaybePurgeDisallowed();
       footprintScheduleAlbumImport();
     },error=>{
       footprintSyncStarted=false;
@@ -10103,6 +10218,8 @@ function footprintInitFirebase(){
           footprintRefreshCategoryViews();
         }
       }
+      footprintCategoriesRemoteReady=true;
+      footprintMaybePurgeDisallowed();
     },error=>{
       footprintCategorySyncStarted=false;
       console.warn('地點類別同步失敗',error);
@@ -10115,6 +10232,9 @@ footprintLoadCategoryCache();
 footprintRender();
 window.addEventListener('albumDataReady',()=>{
   footprintRender();
+  if(footprintVisitsRemoteReady&&footprintCategoriesRemoteReady){
+    footprintPurgeDisallowedAlbumPlaces().catch(error=>console.warn('相簿地點清理失敗',error));
+  }
   footprintScheduleAlbumImport();
   const picker=document.getElementById('choose-album-picker-bg');
   if(picker&&!picker.classList.contains('hidden')){

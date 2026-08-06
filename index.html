@@ -246,9 +246,12 @@ transition:background .3s;
 font-family:'Noto Serif TC',serif;
 font-size:28px;font-weight:700;color:var(--rose);
 }
+button.countdown-num{display:inline-flex;align-items:baseline;justify-content:center;min-width:74px;margin:0 auto;padding:3px 9px;border:0;border-radius:12px;background:transparent;font:inherit;font-family:'Noto Serif TC',serif;font-size:28px;font-weight:700;color:var(--rose);cursor:pointer;touch-action:manipulation;transition:transform .18s ease,background .18s ease,box-shadow .18s ease}
+button.countdown-num:hover,button.countdown-num:focus-visible{outline:none;background:color-mix(in srgb,var(--white) 68%,transparent);box-shadow:0 0 0 1px rgba(232,99,122,.12)}
+button.countdown-num:active{transform:scale(.95);background:var(--white)}
 .countdown-desc{font-size:11px;color:var(--text-muted);margin-top:3px;}
-.countdown-effect-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:8px}
-.countdown-preview{min-width:0;padding:6px 3px;border:1px solid rgba(232,99,122,.25);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:800;line-height:1.2;white-space:nowrap;cursor:pointer;touch-action:manipulation;transition:transform .18s,background .18s,color .18s}
+.countdown-effect-actions{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:8px}
+.countdown-preview{min-width:92px;padding:6px 13px;border:1px solid rgba(232,99,122,.25);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:800;line-height:1.2;white-space:nowrap;cursor:pointer;touch-action:manipulation;transition:transform .18s,background .18s,color .18s}
 .countdown-preview.previous{background:transparent;color:var(--text-muted)}
 .countdown-preview:active{transform:scale(.96);background:var(--pink);color:#fff}
 [data-theme="dark"] .countdown-preview{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
@@ -1759,6 +1762,50 @@ body.choose-letterbox-open{overflow:hidden}
   .footprint-category-row{min-height:82px!important}
 }
 
+
+/* 2026-08-06 v4：類別管理改為兩階段。先看分類，點入後才顯示該分類的地點。 */
+.footprint-category-dialog{height:auto;max-height:min(88dvh,760px)}
+.footprint-category-dialog.is-detail{height:min(88dvh,760px)}
+.footprint-category-workspace{grid-template-columns:1fr}
+.footprint-category-workspace.has-active{grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr)}
+.footprint-category-workspace:not(.has-active) .footprint-category-list-panel{border-right:0}
+.footprint-category-order{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:0 12px 15px;overflow-y:auto}
+.footprint-category-row{grid-template-columns:38px minmax(0,1fr) 20px;gap:8px;min-height:66px;padding:10px 11px;border:1px solid rgba(232,99,122,.12);border-radius:12px;background:var(--white);box-shadow:0 5px 14px rgba(69,37,47,.045);font-family:'Noto Sans TC',sans-serif;text-align:left;color:var(--text)}
+.footprint-category-row:hover{border-color:rgba(201,75,100,.26);background:color-mix(in srgb,var(--pink-light) 28%,var(--white))}
+.footprint-category-row.is-active{border-color:rgba(201,75,100,.4);background:color-mix(in srgb,var(--pink-light) 42%,var(--white));box-shadow:0 7px 18px rgba(201,75,100,.08)}
+.footprint-category-row.is-active::before{display:none}
+.footprint-category-order-no{width:36px;height:36px;border-radius:11px;font-family:'Noto Sans TC',sans-serif;font-size:17px}
+.footprint-category-row-name{font-size:13px}
+.footprint-category-row-meta{font-size:9px}
+.footprint-category-row-actions{display:none!important}
+.footprint-category-row-chevron{display:grid;place-items:center;color:var(--rose);font-size:21px;line-height:1}
+.footprint-category-assign-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px}
+.footprint-category-back{min-height:31px;padding:0 9px;border:1px solid var(--card-border);border-radius:999px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:900;cursor:pointer;white-space:nowrap}
+.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(120px,150px)}
+.footprint-category-empty{padding:34px 12px;border:1px dashed rgba(232,99,122,.2);border-radius:12px;background:color-mix(in srgb,var(--pink-light) 18%,var(--white));line-height:1.7}
+@media(max-width:900px){
+  .footprint-category-dialog{height:auto!important;max-height:91dvh!important}
+  .footprint-category-dialog.is-detail{height:93dvh!important;max-height:93dvh!important}
+  .footprint-category-body{display:block!important;overflow:hidden!important;padding:0!important}
+  .footprint-category-workspace,.footprint-category-workspace.has-active{display:block!important;min-height:0!important;overflow:hidden!important}
+  .footprint-category-list-panel{display:block!important;border:0!important;background:var(--white)!important}
+  .footprint-category-workspace.has-active .footprint-category-list-panel{display:none!important}
+  .footprint-category-panel-head{padding:13px 15px 9px!important}
+  .footprint-category-order{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;max-height:min(58dvh,500px)!important;overflow-y:auto!important;padding:0 12px calc(15px + env(safe-area-inset-bottom))!important}
+  .footprint-category-row{grid-template-columns:38px minmax(0,1fr) 18px!important;min-height:70px!important;padding:10px!important;border-radius:13px!important}
+  .footprint-category-row-actions{display:none!important}
+  .footprint-category-assign{height:100%!important;min-height:0!important;padding:0 12px!important;overflow:hidden!important}
+  .footprint-category-assign-head{position:sticky!important;top:0!important;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;gap:8px!important;margin:0 -12px 10px!important;padding:11px 12px!important;background:var(--white)!important}
+  .footprint-category-back{display:inline-flex!important;align-items:center!important;justify-content:center!important;height:32px!important}
+  .footprint-category-search-wrap{margin-bottom:9px!important}
+  .footprint-category-place-list{display:block!important;max-height:calc(93dvh - 205px)!important;overflow-y:auto!important;padding:0 0 calc(18px + env(safe-area-inset-bottom))!important}
+  .footprint-category-place{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;margin-bottom:8px!important;padding:11px!important;border:1px solid rgba(232,99,122,.13)!important;border-radius:12px!important;background:color-mix(in srgb,var(--pink-light) 24%,var(--white))!important}
+  .footprint-category-place-select{height:40px!important;font-size:11px!important}
+}
+@media(max-width:390px){
+  .footprint-category-order{grid-template-columns:minmax(0,1fr)!important}
+  .footprint-category-row{min-height:64px!important}
+}
 </style>
 </head>
 <body>
@@ -1866,24 +1913,24 @@ onclick="hideSpecialForToday()">
     <div class="card-title">📅 重要倒數</div>
     <div class="countdown-grid">
       <div class="countdown-item">
-        <div class="countdown-num" id="annivDays">—</div>
+        <button type="button" class="countdown-num" id="annivDays" onclick="previewOccasionEffect('anniversary')" aria-label="預覽週年紀念日特效">—</button>
         <div class="countdown-desc" id="annivLabel">下個週年紀念日</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('anniversary')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('anniversary')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('anniversary')">歷史特效</button></div>
       </div>
       <div class="countdown-item">
-        <div class="countdown-num" id="vdDays">—</div>
+        <button type="button" class="countdown-num" id="vdDays" onclick="previewOccasionEffect('valentine')" aria-label="預覽情人節特效">—</button>
         <div class="countdown-desc" id="vdLabel">下個情人節</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('valentine')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('valentine')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('valentine')">歷史特效</button></div>
       </div>
       <div class="countdown-item">
-        <div class="countdown-num" id="bd1Days">—</div>
+        <button type="button" class="countdown-num" id="bd1Days" onclick="previewOccasionEffect('shengzhan')" aria-label="預覽聖展生日特效">—</button>
         <div class="countdown-desc">聖展生日 (2/8)</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('shengzhan')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('shengzhan')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('shengzhan')">歷史特效</button></div>
       </div>
       <div class="countdown-item">
-        <div class="countdown-num" id="bd2Days">—</div>
+        <button type="button" class="countdown-num" id="bd2Days" onclick="previewOccasionEffect('yujun')" aria-label="預覽予君生日特效">—</button>
         <div class="countdown-desc">予君生日 (8/26)</div>
-        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('yujun')">歷史特效</button><button type="button" class="countdown-preview" onclick="previewOccasionEffect('yujun')">預覽特效</button></div>
+        <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('yujun')">歷史特效</button></div>
       </div>
     </div>
   </div>
@@ -2188,32 +2235,26 @@ onclick="hideSpecialForToday()">
 </div>
 
 <div class="footprint-category-bg hidden" id="footprint-category-bg" onclick="footprintCloseCategoryManager(event)">
-  <section class="footprint-category-dialog" role="dialog" aria-modal="true" aria-labelledby="footprint-category-title" onclick="event.stopPropagation()">
+  <section class="footprint-category-dialog" id="footprint-category-dialog" role="dialog" aria-modal="true" aria-labelledby="footprint-category-title" onclick="event.stopPropagation()">
     <header class="footprint-category-head">
       <div class="footprint-category-kicker">PLACE COLLECTIONS</div>
       <div class="footprint-category-title" id="footprint-category-title">管理地點類別</div>
-      <div class="footprint-category-copy">固定六大類別，可調整順序與每個地點的類別歸屬。</div>
+      <div class="footprint-category-copy">先選一個分類，再整理該分類裡的地點；不會一打開就把所有地點全部列出來。</div>
       <button type="button" class="footprint-category-close" onclick="footprintCloseCategoryManagerDirect()" aria-label="關閉類別管理">×</button>
     </header>
     <div class="footprint-category-body">
-      <section class="footprint-category-create">
-        <div><span class="footprint-category-create-title">新增自訂分類</span><span class="footprint-category-create-meta">建立只屬於你們的地點收藏</span></div>
-        <div class="footprint-category-add">
-          <input class="footprint-category-input" id="footprint-category-name" type="text" maxlength="18" autocomplete="off" placeholder="例如：百貨公司" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintAddCustomCategory();}">
-          <button type="button" class="footprint-category-add-btn" onclick="footprintAddCustomCategory()">＋ 新增</button>
-        </div>
-      </section>
-      <div class="footprint-category-workspace">
+      <div class="footprint-category-workspace" id="footprint-category-workspace">
         <section class="footprint-category-list-panel">
-          <div class="footprint-category-panel-head"><span class="footprint-category-section-label">類別順序</span><span class="footprint-category-fixed">全部固定第一</span></div>
+          <div class="footprint-category-panel-head"><span class="footprint-category-section-label">分類管理</span><span class="footprint-category-fixed">共 5 類</span></div>
           <div class="footprint-category-order" id="footprint-category-order"></div>
         </section>
         <section class="footprint-category-assign" id="footprint-category-assign" hidden>
           <div class="footprint-category-assign-head">
+            <button type="button" class="footprint-category-back" onclick="footprintBackCategoryOverview()">‹ 分類</button>
             <div class="footprint-category-assign-title" id="footprint-category-assign-title"></div>
             <div class="footprint-category-assign-count" id="footprint-category-assign-count"></div>
           </div>
-          <div class="footprint-category-search-wrap"><input class="footprint-category-search" id="footprint-category-search" type="search" autocomplete="off" placeholder="搜尋店名或地址" oninput="footprintCategorySearchChanged(this.value)"></div>
+          <div class="footprint-category-search-wrap"><input class="footprint-category-search" id="footprint-category-search" type="search" autocomplete="off" placeholder="搜尋這個分類裡的地點" oninput="footprintCategorySearchChanged(this.value)"></div>
           <div class="footprint-category-place-list" id="footprint-category-place-list"></div>
         </section>
       </div>
@@ -9488,7 +9529,7 @@ function footprintPersistCategorySettings(renderManager=true){
 function footprintOpenCategoryManager(){
   const overlay=document.getElementById('footprint-category-bg');
   if(!overlay) return;
-  if(!footprintCategoryExists(footprintCategoryManagerActive)||footprintCategoryManagerActive==='all') footprintCategoryManagerActive=footprintCategoryDefinitions(false)[0]?.id||'';
+  footprintCategoryManagerActive='';
   footprintCategoryManagerQuery='';
   footprintRenderCategoryManager();
   overlay.classList.remove('hidden');
@@ -9508,71 +9549,52 @@ function footprintRenderCategoryManager(){
   const assign=document.getElementById('footprint-category-assign');
   const list=document.getElementById('footprint-category-place-list');
   const search=document.getElementById('footprint-category-search');
+  const workspace=document.getElementById('footprint-category-workspace');
+  const dialog=document.getElementById('footprint-category-dialog');
   if(!orderWrap||!assign||!list||!search) return;
   const definitions=footprintCategoryDefinitions(false);
-  if(!definitions.some(item=>item.id===footprintCategoryManagerActive)) footprintCategoryManagerActive=definitions[0]?.id||'';
+  if(!definitions.some(item=>item.id===footprintCategoryManagerActive)) footprintCategoryManagerActive='';
   const groups=footprintRankedGroups();
-  const previousScroll=list.scrollTop;
-  orderWrap.innerHTML=definitions.map((category,index)=>{
+  const active=definitions.find(item=>item.id===footprintCategoryManagerActive)||null;
+  workspace?.classList.toggle('has-active',!!active);
+  dialog?.classList.toggle('is-detail',!!active);
+  const categoryIcons={baseball:'⚾',hotel:'🏨',qtime:'🛋️',nightmarket:'🏮',park:'🌳'};
+  orderWrap.innerHTML=definitions.map(category=>{
     const assignedCount=groups.filter(group=>footprintEffectiveCategory(group)===category.id).length;
-    const meta=`${assignedCount} 個地點 · ${category.custom?'自訂':'系統'}`;
-    const actions=`<div class="footprint-category-row-actions"><button type="button" class="footprint-category-icon-btn" data-category-up="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往上移" title="往上移"${index===0?' disabled':''}>↑</button><button type="button" class="footprint-category-icon-btn" data-category-down="${footprintEscape(category.id)}" aria-label="${footprintEscape(category.name)}往下移" title="往下移"${index===definitions.length-1?' disabled':''}>↓</button>${category.custom?`<button type="button" class="footprint-category-icon-btn" data-category-rename="${footprintEscape(category.id)}" aria-label="重新命名 ${footprintEscape(category.name)}" title="重新命名">✎</button><button type="button" class="footprint-category-icon-btn" data-category-delete="${footprintEscape(category.id)}" aria-label="刪除 ${footprintEscape(category.name)}" title="刪除">×</button>`:''}</div>`;
-    return `<div class="footprint-category-row${footprintCategoryManagerActive===category.id?' is-active':''}${category.custom?' is-custom':''}" data-category-card="${footprintEscape(category.id)}"><span class="footprint-category-order-no">${index+1}</span><span class="footprint-category-row-copy"><span class="footprint-category-row-name">${footprintEscape(category.name)}</span><span class="footprint-category-row-meta">${meta}</span></span>${actions}</div>`;
+    const icon=categoryIcons[category.id]||'📍';
+    return `<button type="button" class="footprint-category-row${active?.id===category.id?' is-active':''}" data-category-card="${footprintEscape(category.id)}"><span class="footprint-category-order-no" aria-hidden="true">${icon}</span><span class="footprint-category-row-copy"><span class="footprint-category-row-name">${footprintEscape(category.name)}</span><span class="footprint-category-row-meta">${assignedCount} 個地點</span></span><span class="footprint-category-row-chevron" aria-hidden="true">›</span></button>`;
   }).join('');
-  orderWrap.querySelectorAll('[data-category-card]').forEach(row=>row.addEventListener('click',event=>{
-    if(event.target.closest('button')) return;
-    footprintChooseCategoryPlaces(row.dataset.categoryCard);
-  }));
-  orderWrap.querySelectorAll('[data-category-up]').forEach(button=>button.addEventListener('click',()=>footprintMoveCategory(button.dataset.categoryUp,-1)));
-  orderWrap.querySelectorAll('[data-category-down]').forEach(button=>button.addEventListener('click',()=>footprintMoveCategory(button.dataset.categoryDown,1)));
-  orderWrap.querySelectorAll('[data-category-rename]').forEach(button=>button.addEventListener('click',()=>footprintRenameCustomCategory(button.dataset.categoryRename)));
-  orderWrap.querySelectorAll('[data-category-delete]').forEach(button=>button.addEventListener('click',()=>footprintDeleteCustomCategory(button.dataset.categoryDelete)));
-  const active=definitions.find(item=>item.id===footprintCategoryManagerActive);
+  orderWrap.querySelectorAll('[data-category-card]').forEach(row=>row.addEventListener('click',()=>footprintChooseCategoryPlaces(row.dataset.categoryCard)));
   assign.hidden=!active;
-  if(!active) return;
+  if(!active){
+    search.value='';
+    list.innerHTML='';
+    return;
+  }
   search.value=footprintCategoryManagerQuery;
-  document.getElementById('footprint-category-assign-title').textContent=`整理「${active.name}」`;
+  document.getElementById('footprint-category-assign-title').textContent=active.name;
   const query=footprintNormalizeName(footprintCategoryManagerQuery);
-  const places=groups.filter(group=>!query||footprintNormalizeName([group.name,...group.visits.map(visit=>visit.address)].join(' ')).includes(query)).sort((a,b)=>Number(footprintEffectiveCategory(b)===active.id)-Number(footprintEffectiveCategory(a)===active.id));
-  const activeCount=groups.filter(group=>footprintEffectiveCategory(group)===active.id).length;
-  document.getElementById('footprint-category-assign-count').textContent=`目前 ${activeCount} 個`;
+  const allInCategory=groups.filter(group=>footprintEffectiveCategory(group)===active.id);
+  const places=allInCategory.filter(group=>!query||footprintNormalizeName([group.name,...group.visits.map(visit=>visit.address)].join(' ')).includes(query));
+  document.getElementById('footprint-category-assign-count').textContent=query?`${places.length} / ${allInCategory.length}`:`${allInCategory.length} 個`;
   list.innerHTML=places.length?places.map(group=>{
     const automatic=footprintPlaceCategory(group);
     const override=String(footprintCategorySettings.overrides[group.placeId]||'');
-    const effective=footprintEffectiveCategory(group);
-    const options=`<option value=""${override?'':' selected'}>自動：${footprintEscape(footprintCategoryLabel(automatic))}</option>${definitions.map(category=>`<option value="${footprintEscape(category.id)}"${override===category.id?' selected':''}>${footprintEscape(category.name)}</option>`).join('')}`;
-    return `<div class="footprint-category-place${effective===active.id?' is-active':''}"><span class="footprint-category-place-copy"><span class="footprint-category-place-name">${footprintEscape(group.name)}</span><span class="footprint-category-place-meta">目前：${footprintEscape(footprintCategoryLabel(effective))} · ${group.visits.length} 次</span></span><select class="footprint-category-place-select" data-category-place-select="${footprintEscape(group.placeId)}" aria-label="設定 ${footprintEscape(group.name)} 的類別">${options}</select></div>`;
-  }).join(''):'<div class="footprint-category-empty">找不到符合的地點</div>';
+    const options=`<option value=""${override?'':' selected'}>自動：${footprintEscape(footprintCategoryLabel(automatic))}</option>${definitions.map(category=>`<option value="${footprintEscape(category.id)}"${override===category.id?' selected':''}>移到 ${footprintEscape(category.name)}</option>`).join('')}`;
+    return `<div class="footprint-category-place is-active"><span class="footprint-category-place-copy"><span class="footprint-category-place-name">${footprintEscape(group.name)}</span><span class="footprint-category-place-meta">造訪 ${group.visits.length} 次 · 目前：${footprintEscape(active.name)}</span></span><select class="footprint-category-place-select" data-category-place-select="${footprintEscape(group.placeId)}" aria-label="設定 ${footprintEscape(group.name)} 的類別">${options}</select></div>`;
+  }).join(''):`<div class="footprint-category-empty">${query?'這個分類找不到符合搜尋的地點':'這個分類目前沒有地點'}</div>`;
   list.querySelectorAll('[data-category-place-select]').forEach(select=>select.addEventListener('change',()=>footprintSetPlaceCategory(select.dataset.categoryPlaceSelect,select.value)));
-  requestAnimationFrame(()=>{list.scrollTop=previousScroll;});
-}
-function footprintAddCustomCategory(){
-  const input=document.getElementById('footprint-category-name');
-  const name=String(input?.value||'').trim().slice(0,18);
-  if(!name){input?.focus();return;}
-  if(footprintCategoryDefinitions().some(item=>item.name.toLowerCase()===name.toLowerCase())){alert('這個類別名稱已經存在');return;}
-  if(footprintCategorySettings.custom.length>=20){alert('自訂類別最多 20 個');return;}
-  const id=`custom_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`;
-  footprintCategorySettings.custom.push({id,name});
-  footprintCategorySettings.order.push(id);
-  footprintCategoryManagerActive=id;
-  footprintCategoryManagerQuery='';
-  if(input) input.value='';
-  footprintPersistCategorySettings();
-}
-function footprintMoveCategory(id,direction){
-  const index=footprintCategorySettings.order.indexOf(id);
-  const target=index+direction;
-  if(index<0||target<0||target>=footprintCategorySettings.order.length) return;
-  [footprintCategorySettings.order[index],footprintCategorySettings.order[target]]=[footprintCategorySettings.order[target],footprintCategorySettings.order[index]];
-  footprintPersistCategorySettings();
 }
 function footprintChooseCategoryPlaces(id){
   if(!footprintCategoryExists(id)||id==='all') return;
   footprintCategoryManagerActive=id;
   footprintCategoryManagerQuery='';
   footprintRenderCategoryManager();
-  setTimeout(()=>document.getElementById('footprint-category-search')?.focus(),20);
+}
+function footprintBackCategoryOverview(){
+  footprintCategoryManagerActive='';
+  footprintCategoryManagerQuery='';
+  footprintRenderCategoryManager();
 }
 function footprintRenameCustomCategory(id){
   const item=footprintCategorySettings.custom.find(category=>category.id===id);

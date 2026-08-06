@@ -758,12 +758,30 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .cohabiting-view-copy small{color:var(--text-muted);font-size:11px}
 .cohabiting-note-badge{display:inline-flex;align-items:center;gap:4px;margin-bottom:7px;padding:4px 8px;border-radius:999px;background:var(--pink-light);color:var(--rose);font-size:11px;font-weight:800}
 [data-theme="dark"] .cohabiting-toggle{border-color:rgba(255,158,178,.22)}
-.love-count-control{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;padding:9px 11px;border:1px solid var(--card-border);border-radius:11px;background:var(--pink-light);color:var(--text)}
-.love-count-control label{font-size:12px;font-weight:700;color:var(--rose)}
-.love-count-input{width:78px;padding:7px 8px;border:1px solid var(--card-border);border-radius:9px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;text-align:center;outline:none}
+.love-count-control{width:max-content;max-width:100%;min-height:32px;display:inline-flex;align-items:center;justify-content:flex-end;gap:6px;margin:10px 0 0 auto;padding:5px 7px 5px 9px;border:1px solid var(--card-border);border-radius:10px;background:var(--pink-light);color:var(--text)}
+.love-count-control label{font-size:11px;font-weight:800;color:var(--rose);white-space:nowrap}
+.love-count-input{width:46px;height:28px;padding:3px 5px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;text-align:center;outline:none}
 .love-count-input:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.12)}
-.day-love-count-view{display:flex;align-items:center;justify-content:center;margin-bottom:8px;padding:8px 11px;border:1px solid rgba(232,99,122,.18);border-radius:11px;background:var(--pink-light);color:var(--rose);font-size:12px;font-weight:800}
+.day-love-count-view{width:max-content;max-width:100%;display:flex;align-items:center;justify-content:center;margin:10px 0 0 auto;padding:5px 9px;border:1px solid rgba(232,99,122,.18);border-radius:10px;background:var(--pink-light);color:var(--rose);font-size:10px;font-weight:800}
 [data-theme="dark"] .love-count-input{background:#332028;border-color:rgba(255,158,178,.22)}
+.album-place-editor{margin-top:12px;padding-top:11px;border-top:1px dashed rgba(232,99,122,.2)}
+.album-place-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:7px}
+.album-place-editor-title{color:var(--rose);font-size:11px;font-weight:900}
+.album-place-editor-hint{margin-top:2px;color:var(--text-muted);font-size:9px;line-height:1.45}
+.album-place-link-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:stretch}
+.album-place-link-input{width:100%;min-width:0;min-height:64px;resize:vertical;padding:8px 9px;border:1px solid var(--card-border);border-radius:10px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;line-height:1.5;outline:none}
+.album-place-link-input:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.1)}
+.album-place-import-btn{min-width:70px;padding:0 10px;border:0;border-radius:10px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:900;cursor:pointer}
+.album-place-import-btn:disabled{opacity:.55;cursor:wait}
+.album-place-status{min-height:17px;margin-top:6px;color:var(--text-muted);font-size:9px;line-height:1.45}
+.album-place-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.album-place-empty{padding:8px 9px;border:1px dashed rgba(232,99,122,.2);border-radius:9px;color:var(--text-muted);font-size:9px;text-align:center}
+.album-place-item{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 9px;border:1px solid rgba(232,99,122,.16);border-radius:10px;background:color-mix(in srgb,var(--pink-light) 55%,var(--white))}
+.album-place-item-copy{min-width:0}
+.album-place-item-name{display:block;color:var(--text);font-size:10px;font-weight:900;line-height:1.35;overflow-wrap:anywhere}
+.album-place-item-address{display:block;margin-top:2px;color:var(--text-muted);font-size:8px;line-height:1.35;overflow-wrap:anywhere}
+.album-place-item-del{width:29px;height:29px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:8px;background:var(--white);color:var(--rose);font-size:12px;cursor:pointer}
+[data-theme="dark"] .album-place-link-input,[data-theme="dark"] .album-place-item-del{background:#332028}
 
 .modal-photos-grid{
 display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;
@@ -1652,6 +1670,53 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
 @media(max-width:520px){.footprint-memory-head{align-items:flex-start;flex-wrap:wrap;gap:8px;padding:16px 14px 13px 18px}.footprint-memory-title{font-size:20px}.footprint-memory-sub{margin-left:32px}.footprint-memory-total{margin-left:32px}.footprint-memory-tools{align-items:flex-end;padding:10px 12px}.footprint-memory-filter{min-width:0}.footprint-category-manage-btn{min-width:84px;padding:0 8px}.footprint-ranking-list{padding:3px 11px 7px}.footprint-ranking-row{grid-template-columns:34px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:9px 4px}.footprint-ranking-row.is-rank-1{min-height:76px;padding:10px 7px}.footprint-ranking-rank{width:32px;height:32px}.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:35px;height:35px}.footprint-ranking-name{font-size:12px}.footprint-ranking-count strong{font-size:18px}.footprint-ranking-bar{left:46px;right:52px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
 @media(max-width:520px){.footprint-category-dialog{height:94dvh;max-height:94dvh}.footprint-category-head{padding:17px 58px 13px 17px}.footprint-category-title{font-size:21px}.footprint-category-copy{font-size:9px}.footprint-category-body{display:block;overflow-y:auto;padding:0}.footprint-category-create{grid-template-columns:minmax(0,1fr);gap:9px;padding:12px}.footprint-category-create-meta{display:none}.footprint-category-workspace{display:block}.footprint-category-list-panel{max-height:none;border-right:0;border-bottom:1px solid var(--card-border)}.footprint-category-panel-head{padding:12px 12px 8px}.footprint-category-order{max-height:270px;padding:0 8px 11px}.footprint-category-row{grid-template-columns:29px minmax(0,1fr);gap:8px;min-height:60px;padding:8px}.footprint-category-row-actions,.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2;justify-content:flex-start;flex-wrap:wrap}.footprint-category-assign{height:430px;min-height:430px;padding:13px 12px 0}.footprint-category-place-list{max-height:none}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,128px);gap:8px}.footprint-category-place.is-active{margin:0}.footprint-category-place-select{font-size:8px}}
+@media(max-width:520px){
+  .footprint-category-bg{align-items:flex-end;padding:0;background:rgba(35,19,26,.5);backdrop-filter:blur(5px)}
+  .footprint-category-dialog{width:100%;height:min(91dvh,760px);max-height:min(91dvh,760px);border-radius:22px 22px 0 0;box-shadow:0 -18px 55px rgba(42,19,28,.28)}
+  .footprint-category-head{padding:18px 58px 14px 18px;background:linear-gradient(180deg,color-mix(in srgb,var(--pink-light) 35%,var(--white)),var(--white))}
+  .footprint-category-head::before{height:3px}
+  .footprint-category-kicker{font-size:8px}
+  .footprint-category-title{font-size:20px;line-height:1.3}
+  .footprint-category-copy{max-width:270px;font-size:9px}
+  .footprint-category-close{right:15px;top:16px;width:36px;height:36px}
+  .footprint-category-body{min-height:0;display:flex;flex-direction:column;overflow:hidden;padding:0}
+  .footprint-category-create{grid-template-columns:minmax(0,1fr);gap:8px;padding:11px 13px;background:color-mix(in srgb,var(--pink-light) 42%,var(--white))}
+  .footprint-category-create-title{font-size:12px}
+  .footprint-category-create-meta{display:none}
+  .footprint-category-add{grid-template-columns:minmax(0,1fr) 76px;gap:7px}
+  .footprint-category-input{height:39px;font-size:11px}
+  .footprint-category-add-btn{min-width:0;height:39px}
+  .footprint-category-workspace{min-height:0;flex:1;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
+  .footprint-category-list-panel{min-height:0;max-height:238px;border-right:0;border-bottom:1px solid var(--card-border);background:color-mix(in srgb,var(--pink-light) 22%,var(--white))}
+  .footprint-category-panel-head{padding:10px 12px 7px}
+  .footprint-category-order{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:190px;padding:0 10px 10px;overflow-y:auto}
+  .footprint-category-row{grid-template-columns:28px minmax(0,1fr);gap:6px 7px;min-height:80px;padding:8px;border-color:rgba(232,99,122,.08);border-radius:11px;background:var(--white);box-shadow:0 4px 14px rgba(69,37,47,.04)}
+  .footprint-category-row.is-active{border-color:rgba(201,75,100,.34);box-shadow:0 6px 18px rgba(201,75,100,.09)}
+  .footprint-category-row.is-active::before{top:9px;bottom:9px}
+  .footprint-category-order-no{width:27px;height:27px}
+  .footprint-category-row-name{font-size:11px}
+  .footprint-category-row-meta{font-size:7.5px}
+  .footprint-category-row-actions,.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:4px;flex-wrap:nowrap}
+  .footprint-category-icon-btn{width:28px;height:27px;border-radius:7px;font-size:10px}
+  .footprint-category-assign{min-height:0;height:auto;padding:11px 12px 0;overflow:hidden;background:var(--white)}
+  .footprint-category-assign-head{margin-bottom:8px}
+  .footprint-category-assign-title{font-size:15px}
+  .footprint-category-search{height:39px;font-size:10px}
+  .footprint-category-place-list{min-height:0;max-height:none;overflow-y:auto;margin-top:8px;padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+  .footprint-category-place{grid-template-columns:minmax(0,1fr) 112px;gap:7px;min-height:58px;padding:8px 2px}
+  .footprint-category-place-name{font-size:10px}
+  .footprint-category-place-meta{font-size:7.5px}
+  .footprint-category-place-select{height:34px;padding-left:8px;font-size:8px}
+}
+
+
+@media(max-width:520px){
+  .album-place-link-row{grid-template-columns:minmax(0,1fr) 64px}
+  .album-place-link-input{min-height:60px;font-size:9.5px}
+  .album-place-import-btn{min-width:64px;padding:0 7px}
+  .album-place-item{padding:7px 8px}
+  .love-count-control{margin-top:9px}
+}
 </style>
 </head>
 <body>
@@ -1972,9 +2037,25 @@ onclick="hideSpecialForToday()">
           </label>
         </div>
         <textarea class="modal-textarea" id="modal-note" rows="3" placeholder="記錄這天的行程、回憶..."></textarea>
-        <div class="love-count-control">
-          <label for="modal-love-count">💕 今天愛愛次數</label>
-          <input class="love-count-input" id="modal-love-count" type="number" min="0" max="99" step="1" inputmode="numeric" value="0" aria-label="今天愛愛次數">
+        <div class="album-place-editor">
+          <div class="album-place-editor-head">
+            <div>
+              <div class="album-place-editor-title">📍 今日去過的地點</div>
+              <div class="album-place-editor-hint">可貼 1 個或多個 Google Maps 分享連結；匯入後會轉成地點名稱並加入「常去的地方」。</div>
+            </div>
+          </div>
+          <div class="album-place-link-row">
+            <textarea class="album-place-link-input" id="modal-map-link-input" rows="2" inputmode="url" autocomplete="off" placeholder="貼上 Google Maps 分享連結，多個連結可分行貼上" oninput="albumQueueMapLinkImport()" onpaste="setTimeout(albumQueueMapLinkImport,0)"></textarea>
+            <button type="button" class="album-place-import-btn" id="modal-map-link-btn" onclick="albumImportMapLinks(true)">加入</button>
+          </div>
+          <div class="album-place-status" id="modal-map-link-status"></div>
+          <div class="album-place-list" id="modal-map-place-list"></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <div class="love-count-control">
+            <label for="modal-love-count">💕 愛愛次數</label>
+            <input class="love-count-input" id="modal-love-count" type="number" min="0" max="99" step="1" inputmode="numeric" value="0" aria-label="今天愛愛次數">
+          </div>
         </div>
       </div>
       <button class="modal-save-btn" onclick="saveDayData()">儲存 💾</button>
@@ -2233,7 +2314,7 @@ onclick="hideSpecialForToday()">
       <div class="footprint-page-title">我們的足跡</div>
       <div class="footprint-page-sub">把一起到過的地方，慢慢留在地圖上</div>
     </div>
-    <button type="button" class="footprint-add-btn" onclick="footprintOpenEditor()">＋ 新增足跡</button>
+    <button type="button" class="footprint-add-btn" onclick="footprintGoToAlbum()">📸 到相簿行程新增</button>
   </div>
   <div class="footprint-summary" aria-label="足跡統計">
     <div class="footprint-stat"><strong id="footprint-place-total">0</strong><span>去過的地點</span></div>
@@ -2257,7 +2338,7 @@ onclick="hideSpecialForToday()">
   <div class="footprint-empty" id="footprint-empty">
     <div class="footprint-empty-icon">📍</div>
     <div class="footprint-empty-title">第一個足跡會從這裡開始</div>
-    <div class="footprint-empty-copy">新增日期、地點和回憶，再到地圖上點選位置。</div>
+    <div class="footprint-empty-copy">到「相簿 → 當天行程」貼上 Google Maps 連結，地點就會自動收進足跡。</div>
   </div>
   <section class="footprint-detail" id="footprint-detail" hidden aria-live="polite">
     <div class="footprint-detail-head">
@@ -2266,7 +2347,7 @@ onclick="hideSpecialForToday()">
         <div class="footprint-detail-meta" id="footprint-detail-meta"></div>
         <div class="footprint-detail-address" id="footprint-detail-address"></div>
       </div>
-      <button type="button" class="footprint-revisit-btn" id="footprint-revisit-btn">＋ 再記一次</button>
+      <button type="button" class="footprint-revisit-btn" id="footprint-revisit-btn">📸 到相簿記錄</button>
     </div>
     <div class="footprint-timeline" id="footprint-timeline"></div>
   </section>
@@ -4732,6 +4813,13 @@ function showPage(id,btn){
   if(id==='footprints') footprintShowPage();
 }
 
+function footprintGoToAlbum(){
+  const albumBtn=[...document.querySelectorAll('.nav-btn')].find(btn=>String(btn.getAttribute('onclick')||'').includes("showPage('album'"));
+  showPage('album',albumBtn||null);
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(()=>albumSetBadge('📍 點選日期 → 編輯，即可加入 Google Maps 地點'),120);
+}
+
 // ── Letter ──
 function toggleLetter(btn){
   const l=document.getElementById('letter');
@@ -5422,7 +5510,7 @@ function albumGetLoveCount(dayData){
 }
 function albumHasDayContent(dayData){
   if(!dayData) return false;
-  return !!(dayData.cohabiting || albumGetLoveCount(dayData)>0 || (dayData.photos && dayData.photos.length) || (dayData.note && String(dayData.note).trim()) || (dayData.schedule && dayData.schedule.length));
+  return !!(dayData.cohabiting || albumGetLoveCount(dayData)>0 || (dayData.photos && dayData.photos.length) || (dayData.note && String(dayData.note).trim()) || (dayData.schedule && dayData.schedule.length) || (Array.isArray(dayData.mapPlaces) && dayData.mapPlaces.length));
 }
 function albumBuildDayStats(dayData){
   const hasContent = albumHasDayContent(dayData);
@@ -5822,12 +5910,17 @@ function applyModalMode(dayData){
     document.getElementById('modal-note').value=dayData.note||'';
     document.getElementById('modal-love-count').value=albumGetLoveCount(dayData);
     document.getElementById('modal-cohabiting').checked=!!dayData.cohabiting;
+    const mapInput=document.getElementById('modal-map-link-input');
+    if(mapInput) mapInput.value='';
+    const mapStatus=document.getElementById('modal-map-link-status');
+    if(mapStatus) mapStatus.textContent='';
+    renderModalMapPlacesEdit(dayData.mapPlaces||[]);
     updateCloudinaryUiStatus();
   } else {
     editBtn.hidden=false;editBtn.style.display='';editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
     viewContent.classList.remove('hidden');editContent.classList.add('hidden');
     renderViewPhotos(dayData.photos||[]);
-    renderViewNote(dayData.note||'',!!dayData.cohabiting,albumGetLoveCount(dayData));
+    renderViewNote(dayData.note||'',!!dayData.cohabiting,albumGetLoveCount(dayData),albumNormalizeMapPlaces(dayData.mapPlaces).length);
   }
 }
 
@@ -5852,30 +5945,125 @@ function renderViewSchedule(items){
   if(!list.length){el.innerHTML='<div class="view-empty">今天還沒有另外記下行程</div>';return;}
   el.innerHTML=list.map(item=>`<div class="view-schedule-item"><span class="view-schedule-text">${escapeHtml(item)}</span></div>`).join('');
 }
-function renderViewNote(note,cohabiting=false,loveCount=0){
+function renderViewNote(note,cohabiting=false,loveCount=0,mapPlaceCount=0){
   const el=document.getElementById('view-note');
   const normalizedLoveCount=albumNormalizeLoveCount(loveCount);
-  const loveBadge=normalizedLoveCount>0 ? `<div class="day-love-count-view">💕 今天愛愛了 ${normalizedLoveCount} 次</div>` : '';
+  const loveBadge=normalizedLoveCount>0 ? `<div class="day-love-count-view">💕 愛愛 ${normalizedLoveCount} 次</div>` : '';
+  let body='';
   if(!note||!note.trim()){
     if(cohabiting){
-      el.innerHTML=`${loveBadge}<div class="cohabiting-view">
+      body=`<div class="cohabiting-view">
         <span class="cohabiting-view-icon">🏠</span>
         <span class="cohabiting-view-copy"><strong>今天一起生活中</strong><small>同居日</small></span>
       </div>`;
-      return;
+    }else if(Number(mapPlaceCount)>0){
+      body='<div class="view-empty">📍 今日地點已收錄，點「編輯」可查看</div>';
+    }else if(!normalizedLoveCount){
+      body=`<div class="album-empty-meeting">
+        <div class="album-empty-meeting-bubble">今天還沒有見面</div>
+        <img src="assets/album-empty-puppy.png?v=2" alt="水汪汪眼睛的小狗狗">
+      </div>`;
     }
-    if(normalizedLoveCount>0){
-      el.innerHTML=loveBadge;
-      return;
-    }
-    el.innerHTML=`<div class="album-empty-meeting">
-      <div class="album-empty-meeting-bubble">今天還沒有見面</div>
-      <img src="assets/album-empty-puppy.png?v=2" alt="水汪汪眼睛的小狗狗">
-    </div>`;
+  }else{
+    body=`${cohabiting?'<div class="cohabiting-note-badge">🏠 同居日</div>':''}<div class="view-note">${escapeHtml(note)}</div>`;
+  }
+  el.innerHTML=`${body}${loveBadge}`;
+}
+
+function albumNormalizeMapPlaces(items){
+  const rows=Array.isArray(items)?items:[];
+  const seen=new Set();
+  return rows.map((item,index)=>{
+    if(!item||typeof item!=='object') return null;
+    const name=String(item.name||item.placeName||'').trim().slice(0,60);
+    const address=String(item.address||item.displayName||'').trim().slice(0,500);
+    const url=String(item.url||item.mapUrl||'').trim();
+    const lat=Number(item.lat),lng=Number(item.lng);
+    const validCoords=Number.isFinite(lat)&&Number.isFinite(lng);
+    if(!name&&!validCoords) return null;
+    const placeId=String(item.placeId||'').trim() || (validCoords?`album_${lat.toFixed(5)}_${lng.toFixed(5)}`:`album_place_${index}`);
+    const key=placeId||`${name}|${validCoords?lat.toFixed(5):''}|${validCoords?lng.toFixed(5):''}`;
+    if(seen.has(key)) return null;
+    seen.add(key);
+    return {placeId,name:name||'Google Maps 地點',address,url,lat:validCoords?lat:null,lng:validCoords?lng:null};
+  }).filter(Boolean);
+}
+function renderModalMapPlacesEdit(items){
+  const list=document.getElementById('modal-map-place-list');
+  if(!list) return;
+  const places=albumNormalizeMapPlaces(items);
+  if(!places.length){
+    list.innerHTML='<div class="album-place-empty">尚未加入地點。貼上 Google Maps 分享連結即可。</div>';
     return;
   }
-  el.innerHTML=`${loveBadge}${cohabiting?'<div class="cohabiting-note-badge">🏠 同居日</div>':''}<div class="view-note">${escapeHtml(note)}</div>`;
+  list.innerHTML=places.map((place,index)=>`<div class="album-place-item"><span class="album-place-item-copy"><span class="album-place-item-name">${escapeHtml(place.name)}</span>${place.address?`<span class="album-place-item-address">${escapeHtml(place.address)}</span>`:''}</span><button type="button" class="album-place-item-del" onclick="albumRemoveMapPlace(${index})" aria-label="移除 ${escapeHtml(place.name)}">✕</button></div>`).join('');
 }
+function albumExtractGoogleMapsLinks(value){
+  const raw=String(value||'');
+  const candidates=raw.match(/https?:\/\/[^\s<>"']+/gi)||[];
+  return [...new Set(candidates.map(link=>typeof footprintExtractGoogleMapsLink==='function'?footprintExtractGoogleMapsLink(link):'').filter(Boolean))];
+}
+function albumQueueMapLinkImport(){
+  clearTimeout(window._albumMapLinkImportTimer);
+  const input=document.getElementById('modal-map-link-input');
+  if(!input) return;
+  const links=albumExtractGoogleMapsLinks(input.value);
+  if(!links.length) return;
+  window._albumMapLinkImportTimer=setTimeout(()=>albumImportMapLinks(false),420);
+}
+async function albumImportMapLinks(force=false){
+  const input=document.getElementById('modal-map-link-input');
+  const button=document.getElementById('modal-map-link-btn');
+  const status=document.getElementById('modal-map-link-status');
+  if(!input||!currentDayKey) return;
+  if(button?.dataset.loading==='1') return;
+  const links=albumExtractGoogleMapsLinks(input.value);
+  if(!links.length){
+    if(force&&status) status.textContent='請先貼上 Google Maps 分享連結。';
+    return;
+  }
+  if(button){button.dataset.loading='1';button.disabled=true;button.textContent='匯入中';}
+  if(status) status.textContent=`正在讀取 ${links.length} 個地點...`;
+  const key=currentDayKey;
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
+  const places=albumNormalizeMapPlaces(dayData.mapPlaces);
+  let added=0,failed=0;
+  for(const link of links){
+    try{
+      const result=await footprintImportMapLink(link);
+      if(!result) throw new Error('找不到地點');
+      const duplicate=places.find(place=>place.url===link || (place.placeId&&result.placeId&&place.placeId===result.placeId) || (Number.isFinite(place.lat)&&Number.isFinite(place.lng)&&typeof footprintDistanceMeters==='function'&&footprintDistanceMeters(place.lat,place.lng,result.lat,result.lng)<=35));
+      if(duplicate) continue;
+      places.push({placeId:String(result.placeId||`album_${Number(result.lat).toFixed(5)}_${Number(result.lng).toFixed(5)}`),name:String(result.name||'Google Maps 地點').trim(),address:String(result.displayName||'').trim(),url:link,lat:Number(result.lat),lng:Number(result.lng)});
+      added++;
+    }catch(error){
+      failed++;
+      console.warn('相簿 Google Maps 地點匯入失敗',link,error);
+    }
+  }
+  dayData.mapPlaces=albumNormalizeMapPlaces(places);
+  await albumSaveDay(key,dayData);
+  if(currentDayKey===key&&modalEditMode) renderModalMapPlacesEdit(dayData.mapPlaces);
+  if(typeof footprintSyncFromAlbumDay==='function') await footprintSyncFromAlbumDay(key,dayData);
+  input.value='';
+  if(status) status.textContent=failed?`已加入 ${added} 個地點，${failed} 個連結讀取失敗。`:(added?`已加入 ${added} 個地點，並同步到「常去的地方」。`:'這些地點今天已經加入過了。');
+  if(button){delete button.dataset.loading;button.disabled=false;button.textContent='加入';}
+}
+async function albumRemoveMapPlace(index){
+  const key=currentDayKey;
+  if(!key) return;
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
+  const places=albumNormalizeMapPlaces(dayData.mapPlaces);
+  if(index<0||index>=places.length) return;
+  places.splice(index,1);
+  dayData.mapPlaces=places;
+  await albumSaveDay(key,dayData);
+  if(currentDayKey===key&&modalEditMode) renderModalMapPlacesEdit(places);
+  if(typeof footprintSyncFromAlbumDay==='function') await footprintSyncFromAlbumDay(key,dayData);
+  const status=document.getElementById('modal-map-link-status');
+  if(status) status.textContent='已移除這個地點。';
+}
+
 function renderModalScheduleEdit(items){
   const list=document.getElementById('modal-schedule-list');
   if(!list) return;
@@ -7293,8 +7481,16 @@ function pdDayType(dateObj,cycles){
   }
   return 'safe';
 }
+function pdPregnancyChanceLabel(t,cycle){
+  if(!cycle) return '低';
+  const ms=t.getTime();
+  if(ms>=cycle.fertileStart.getTime()&&ms<=cycle.fertileEnd.getTime()) return ms===cycle.ovulate.getTime()?'較高':'較高';
+  return '低';
+}
 function pdRefresh(){
   pdUpdateRecordAction();
+  const recordButton=document.getElementById('pd-record-action');
+  if(recordButton){recordButton.hidden=false;recordButton.style.display='inline-block';}
   if(!pdSettings.start){
     document.getElementById('pd-banner-title').textContent='尚未設定週期';
     document.getElementById('pd-banner-sub').textContent='請先到下方設定生理期資訊';
@@ -7304,40 +7500,68 @@ function pdRefresh(){
     pdRenderCal();pdSyncHomeBroadcast();return;
   }
   const cycles=pdGetCycles(12);
-  const t=today();
+  const t=today(),tMs=t.getTime();
   const pendingPrediction=pdGetNextPredictionStatus(t);
   const completedDays=pdSettings.completed===true?pdPeriodLength(pdSettings.start,pdSettings.end):0;
-  let bannerEmoji='🌿',bannerTitle='安全期',bannerSub='';
-  if(completedDays&&(!pendingPrediction||pendingPrediction.daysTo>0)){
+  const endDate=pdSettings.end?new Date(pdSettings.end+'T00:00:00'):null;
+  const isCompletionDay=completedDays&&endDate&&!Number.isNaN(endDate.getTime())&&endDate.getTime()===tMs;
+  let bannerEmoji='🌿',bannerTitle='週期預測',bannerSub='';
+  let chanceCycle=null;
+
+  if(isCompletionDay){
     bannerEmoji='✅';
     bannerTitle='本次生理期已結束';
-    bannerSub=`生理期於第 ${completedDays} 天結束`;
-  }else if(pendingPrediction && pendingPrediction.daysTo<=0){
+    bannerSub=`生理期於第 ${completedDays} 天結束｜懷孕機率預測：低`;
+  }else if(pdIsCurrentPeriodActive()){
+    const active=cycles.find(c=>!c.isForecast&&tMs>=c.pStart.getTime()&&tMs<=c.pEnd.getTime())||cycles.find(c=>!c.isForecast&&c.isOpen);
+    const day=active?Math.floor((tMs-active.pStart.getTime())/864e5)+1:1;
+    bannerEmoji='🩸';
+    bannerTitle='生理期中';
+    bannerSub=`第 ${Math.max(1,day)} 天，月經結束時請按「設定月經結束日」｜懷孕機率預測：低`;
+    chanceCycle=active||null;
+  }else if(pendingPrediction&&pendingPrediction.daysTo<=0){
     bannerEmoji='😮';
     if(pendingPrediction.delayedDays===0){
       bannerTitle='預計今天來';
-      bannerSub='目前還沒有記錄經期開始，實際來了再按下方按鈕記錄';
+      bannerSub='目前還沒有記錄經期開始｜懷孕機率預測：低';
     }else{
       bannerTitle=`經期推遲第 ${pendingPrediction.delayedDays} 天`;
-      bannerSub='';
+      bannerSub='實際開始後再按下方按鈕記錄｜懷孕機率預測：低';
     }
   }else{
-    for(const c of cycles){
-      const pStartMs=c.pStart.getTime(),pEndMs=c.pEnd.getTime(),tMs=t.getTime();
-      if(tMs>=pStartMs&&tMs<=pEndMs){
-        const day=Math.floor((tMs-pStartMs)/864e5)+1;
-        if(c.isForecast){
-          bannerEmoji='😮';
-          bannerTitle=day===1?'預計今天來':'可能延後';
-          bannerSub=day===1?'這是系統預測，實際開始後再按下方按鈕記錄':`比預測開始日晚 ${day-1} 天，實際開始後再按下方按鈕記錄`;
-        }else{
-          bannerEmoji='🩸';bannerTitle='生理期中';bannerSub=c.isOpen?`第 ${day} 天，月經結束時請按「設定月經結束日」`:`第 ${day} 天，預計還有 ${Math.floor((pEndMs-tMs)/864e5)+1} 天結束`;
-        }
-        break;
+    // 先找「目前這個週期」：今天位於本次月經開始與下一次預測開始之間。
+    let currentCycle=null,nextCycle=null;
+    for(let i=0;i<cycles.length;i++){
+      const c=cycles[i];
+      const next=cycles[i+1];
+      const windowEnd=next?next.pStart.getTime():Number.POSITIVE_INFINITY;
+      if(tMs>=c.pStart.getTime()&&tMs<windowEnd){currentCycle=c;nextCycle=next||null;break;}
+    }
+    if(!currentCycle){
+      currentCycle=cycles.find(c=>tMs<c.pStart.getTime())||cycles[cycles.length-1]||null;
+      nextCycle=currentCycle&&cycles[cycles.indexOf(currentCycle)+1]||null;
+    }
+    chanceCycle=currentCycle;
+    if(currentCycle){
+      const ovMs=currentCycle.ovulate.getTime();
+      const fertileEndMs=currentCycle.fertileEnd.getTime();
+      const chance=pdPregnancyChanceLabel(t,currentCycle);
+      if(tMs<ovMs){
+        const days=Math.max(1,Math.ceil((ovMs-tMs)/864e5));
+        bannerEmoji=tMs>=currentCycle.fertileStart.getTime()?'🌺':'🥚';
+        bannerTitle=`距離預測排卵日還有 ${days} 天`;
+        bannerSub=`排卵日為週期預測｜懷孕機率預測：${chance}`;
+      }else if(tMs===ovMs){
+        bannerEmoji='🥚';
+        bannerTitle='預測今天為排卵日';
+        bannerSub=`目前位於易孕期｜懷孕機率預測：${chance}`;
+      }else{
+        const nextStart=nextCycle?.pStart || (pendingPrediction?.predictedStart??null);
+        const days=nextStart?Math.max(0,Math.ceil((nextStart.getTime()-tMs)/864e5)):0;
+        bannerEmoji=tMs<=fertileEndMs?'🌺':'🌿';
+        bannerTitle=days>0?`距離下次生理期還有 ${days} 天`:'等待下次生理期';
+        bannerSub=`排卵日已過｜懷孕機率預測：${chance}`;
       }
-      if(tMs===c.ovulate.getTime()){bannerEmoji='🥚';bannerTitle='排卵日';bannerSub='今天是排卵日，易孕期！';break;}
-      if(tMs>=c.fertileStart.getTime()&&tMs<=c.fertileEnd.getTime()){bannerEmoji='🌺';bannerTitle='易孕期';bannerSub=`距離排卵日還有 ${Math.ceil((c.ovulate.getTime()-tMs)/864e5)} 天`;break;}
-      if(tMs<c.pStart.getTime()){const daysTo=Math.ceil((c.pStart.getTime()-tMs)/864e5);if(daysTo<=7){bannerEmoji='😮';bannerTitle='快來了';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}else{bannerEmoji='🌿';bannerTitle='安全期';bannerSub=`距離下次生理期還有 ${daysTo} 天`;}break;}
     }
   }
   document.getElementById('pd-banner-emoji').textContent=bannerEmoji;
@@ -7433,6 +7657,8 @@ function pdIsCurrentPeriodActive(){
 function pdUpdateRecordAction(){
   const button = document.getElementById('pd-record-action');
   if(!button) return;
+  button.hidden=false;
+  button.style.display='inline-block';
   button.textContent = pdIsCurrentPeriodActive() ? '✅ 設定月經結束日' : '🩸 月經來了，記錄今天';
 }
 
@@ -8854,7 +9080,7 @@ function footprintRenderDetail(group){
   document.getElementById('footprint-detail-meta').textContent=`去過 ${group.visits.length} 次 · 最近一次 ${footprintFormatDate(group.latestDate)}`;
   const latestAddress=group.visits.find(visit=>visit.address)?.address||'';
   document.getElementById('footprint-detail-address').textContent=latestAddress;
-  document.getElementById('footprint-revisit-btn').onclick=()=>footprintOpenEditor('',group.placeId);
+  document.getElementById('footprint-revisit-btn').onclick=()=>footprintGoToAlbum();
   const timeline=document.getElementById('footprint-timeline');
   timeline.innerHTML=group.visits.map(visit=>{
     const dayData=(typeof albumFirebaseData!=='undefined'&&albumFirebaseData)?albumFirebaseData[visit.date]:null;
@@ -9420,50 +9646,73 @@ function footprintStableAutoId(date,placeId){
 async function footprintSyncFromAlbumDay(date,dayData){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||''))) return 0;
   const itinerary=[...(Array.isArray(dayData?.schedule)?dayData.schedule:[]),dayData?.note||''].map(value=>String(value||'').trim()).filter(Boolean).join('\n');
-  if(!itinerary) return 0;
+  const storedPlaces=typeof albumNormalizeMapPlaces==='function'?albumNormalizeMapPlaces(dayData?.mapPlaces):[];
+  if(!itinerary&&!storedPlaces.length){
+    const stale=Object.entries(footprintVisitsData).filter(([,record])=>record?.source==='album-map'&&record?.date===date);
+    if(stale.length){
+      stale.forEach(([id])=>delete footprintVisitsData[id]);
+      footprintWriteCache();footprintRender();
+      if(window._fb){
+        try{const {db,ref,update}=window._fb;await update(ref(db),Object.fromEntries(stale.map(([id])=>[`footprintVisits/${id}`,null])));}
+        catch(error){stale.forEach(([id])=>queueFirebaseWrite(`footprintVisits/${id}`,null));}
+      }else stale.forEach(([id])=>queueFirebaseWrite(`footprintVisits/${id}`,null));
+    }
+    return 0;
+  }
   const groups=footprintGetGroups();
   const candidates=new Map();
-  groups.forEach(group=>{
-    if(group.visits.some(visit=>visit.date===date)||!footprintItineraryMentionsGroup(itinerary,group)) return;
-    const anchor=group.visits[0];
-    candidates.set(group.placeId,{placeId:group.placeId,placeName:group.name,address:anchor?.address||'',lat:group.lat,lng:group.lng});
+  storedPlaces.forEach(place=>{
+    const existing=groups.find(group=>(place.placeId&&group.placeId===place.placeId)||(Number.isFinite(place.lat)&&Number.isFinite(place.lng)&&footprintDistanceMeters(group.lat,group.lng,place.lat,place.lng)<=45));
+    const placeId=existing?.placeId||place.placeId||`place_album_${Date.now().toString(36)}`;
+    candidates.set(placeId,{placeId,placeName:existing?.name||place.name,address:place.address||existing?.visits?.[0]?.address||'',lat:existing?.lat??place.lat,lng:existing?.lng??place.lng,source:'album-map'});
   });
-  const links=[...new Set((itinerary.match(/https?:\/\/[^\s<>"']+/gi)||[]).map(footprintExtractGoogleMapsLink).filter(Boolean))];
-  for(const link of links){
-    try{
-      const result=await footprintImportMapLink(link);
-      if(!result) continue;
-      const existing=groups.find(group=>group.placeId===result.placeId||footprintDistanceMeters(group.lat,group.lng,result.lat,result.lng)<=45);
-      const placeId=existing?.placeId||result.placeId||`place_auto_${Date.now().toString(36)}`;
-      if(existing?.visits.some(visit=>visit.date===date)) continue;
-      candidates.set(placeId,{placeId,placeName:existing?.name||result.name,address:result.displayName||existing?.visits?.[0]?.address||'',lat:existing?.lat??result.lat,lng:existing?.lng??result.lng});
-    }catch(error){
-      console.warn('行程中的 Google Maps 連結暫時無法建立足跡',link,error);
+  if(itinerary){
+    groups.forEach(group=>{
+      if(group.visits.some(visit=>visit.date===date)||!footprintItineraryMentionsGroup(itinerary,group)) return;
+      const anchor=group.visits[0];
+      if(!candidates.has(group.placeId)) candidates.set(group.placeId,{placeId:group.placeId,placeName:group.name,address:anchor?.address||'',lat:group.lat,lng:group.lng,source:'album-auto'});
+    });
+    const links=[...new Set((itinerary.match(/https?:\/\/[^\s<>"']+/gi)||[]).map(footprintExtractGoogleMapsLink).filter(Boolean))];
+    for(const link of links){
+      try{
+        const result=await footprintImportMapLink(link);
+        if(!result) continue;
+        const existing=groups.find(group=>group.placeId===result.placeId||footprintDistanceMeters(group.lat,group.lng,result.lat,result.lng)<=45);
+        const placeId=existing?.placeId||result.placeId||`place_auto_${Date.now().toString(36)}`;
+        if(existing?.visits.some(visit=>visit.date===date)||candidates.has(placeId)) continue;
+        candidates.set(placeId,{placeId,placeName:existing?.name||result.name,address:result.displayName||existing?.visits?.[0]?.address||'',lat:existing?.lat??result.lat,lng:existing?.lng??result.lng,source:'album-auto'});
+      }catch(error){
+        console.warn('行程中的 Google Maps 連結暫時無法建立足跡',link,error);
+      }
     }
   }
-  if(!candidates.size) return 0;
+  const desiredAlbumMapIds=new Set([...candidates.values()].filter(candidate=>candidate.source==='album-map').map(candidate=>footprintStableAutoId(date,candidate.placeId)));
+  const stale=Object.entries(footprintVisitsData).filter(([id,record])=>record?.source==='album-map'&&record?.date===date&&!desiredAlbumMapIds.has(id));
+  stale.forEach(([id])=>delete footprintVisitsData[id]);
   const stamp=Date.now();
   const records=[];
   candidates.forEach(candidate=>{
     const id=footprintStableAutoId(date,candidate.placeId);
     if(footprintVisitsData[id]) return;
-    const record={...candidate,date,note:'',source:'album-auto',createdAt:stamp,updatedAt:stamp};
+    const record={placeId:candidate.placeId,placeName:candidate.placeName,address:candidate.address,lat:candidate.lat,lng:candidate.lng,date,note:'',source:candidate.source||'album-auto',createdAt:stamp,updatedAt:stamp};
     footprintVisitsData[id]=record;
     records.push([id,record]);
   });
-  if(!records.length) return 0;
+  if(!records.length&&!stale.length) return 0;
   footprintWriteCache();
   footprintRender();
+  const updates={};
+  stale.forEach(([id])=>updates[`footprintVisits/${id}`]=null);
+  records.forEach(([id,record])=>updates[`footprintVisits/${id}`]=record);
   if(!window._fb){
-    records.forEach(([id,record])=>queueFirebaseWrite(`footprintVisits/${id}`,record));
+    Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
     return records.length;
   }
   try{
     const {db,ref,update}=window._fb;
-    const payload=Object.fromEntries(records.map(([id,record])=>[`footprintVisits/${id}`,record]));
-    await update(ref(db),payload);
+    await update(ref(db),updates);
   }catch(error){
-    records.forEach(([id,record])=>queueFirebaseWrite(`footprintVisits/${id}`,record));
+    Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
     console.warn('自動足跡同步失敗，已排入待同步',error);
   }
   return records.length;

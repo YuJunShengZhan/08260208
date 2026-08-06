@@ -1717,6 +1717,48 @@ body.choose-letterbox-open{overflow:hidden}
   .album-place-item{padding:7px 8px}
   .love-count-control{margin-top:9px}
 }
+
+/* 2026-08-06：管理地點類別手機／平板版重新排版。避免左右分欄造成欄位過窄。 */
+@media(max-width:900px){
+  .footprint-category-bg{align-items:flex-end!important;padding:0!important;background:rgba(35,19,26,.52)!important;backdrop-filter:blur(6px)!important}
+  .footprint-category-dialog{width:100%!important;height:96dvh!important;max-height:96dvh!important;border-right:0!important;border-bottom:0!important;border-left:0!important;border-radius:22px 22px 0 0!important;overflow:hidden!important}
+  .footprint-category-head{padding:17px 58px 13px 16px!important}
+  .footprint-category-title{font-size:21px!important}
+  .footprint-category-copy{max-width:none!important;font-size:10px!important;line-height:1.5!important}
+  .footprint-category-close{right:14px!important;top:14px!important;width:38px!important;height:38px!important}
+  .footprint-category-body{display:block!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;padding:0 0 calc(22px + env(safe-area-inset-bottom))!important}
+  .footprint-category-create{display:none!important}
+  .footprint-category-workspace{display:block!important;overflow:visible!important;min-height:auto!important}
+  .footprint-category-list-panel{display:block!important;max-height:none!important;border-right:0!important;border-bottom:1px solid var(--card-border)!important;background:color-mix(in srgb,var(--pink-light) 24%,var(--white))!important}
+  .footprint-category-panel-head{padding:12px 14px 8px!important}
+  .footprint-category-order{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;max-height:none!important;overflow:visible!important;padding:0 12px 13px!important}
+  .footprint-category-row{grid-template-columns:32px minmax(0,1fr)!important;gap:7px 9px!important;min-height:94px!important;padding:10px!important;border:1px solid rgba(232,99,122,.13)!important;border-radius:13px!important;background:var(--white)!important;box-shadow:0 5px 15px rgba(69,37,47,.05)!important}
+  .footprint-category-row.is-active{border-color:rgba(201,75,100,.42)!important;box-shadow:0 7px 20px rgba(201,75,100,.10)!important}
+  .footprint-category-row.is-active::before{top:11px!important;bottom:11px!important;width:4px!important}
+  .footprint-category-order-no{width:31px!important;height:31px!important;border-radius:9px!important;font-size:11px!important}
+  .footprint-category-row-name{font-size:13px!important;line-height:1.25!important}
+  .footprint-category-row-meta{font-size:9px!important}
+  .footprint-category-row-actions,.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:1/-1!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;justify-content:stretch!important}
+  .footprint-category-icon-btn{width:100%!important;height:32px!important;border-radius:9px!important;font-size:13px!important}
+  .footprint-category-assign{display:block!important;height:auto!important;min-height:0!important;padding:15px 12px 4px!important;overflow:visible!important;background:var(--white)!important}
+  .footprint-category-assign[hidden]{display:none!important}
+  .footprint-category-assign-head{position:sticky!important;top:0!important;z-index:2!important;margin:0 -12px 10px!important;padding:10px 12px!important;background:color-mix(in srgb,var(--white) 94%,transparent)!important;backdrop-filter:blur(8px)!important;border-bottom:1px solid rgba(232,99,122,.1)!important}
+  .footprint-category-assign-title{font-size:17px!important}
+  .footprint-category-assign-count{font-size:9px!important}
+  .footprint-category-search-wrap{margin-bottom:10px!important}
+  .footprint-category-search{height:44px!important;font-size:12px!important;border-radius:11px!important}
+  .footprint-category-place-list{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important;max-height:none!important;overflow:visible!important;margin-top:0!important;padding:0!important}
+  .footprint-category-place{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:9px!important;min-height:0!important;padding:12px!important;border:1px solid rgba(232,99,122,.13)!important;border-radius:13px!important;background:color-mix(in srgb,var(--pink-light) 26%,var(--white))!important}
+  .footprint-category-place.is-active{margin:0!important;border-color:rgba(59,157,112,.24)!important;background:color-mix(in srgb,#eaf7ef 72%,var(--white))!important}
+  .footprint-category-place-name{font-size:12px!important;line-height:1.4!important}
+  .footprint-category-place-meta{font-size:9px!important;margin-top:3px!important}
+  .footprint-category-place-select{width:100%!important;height:42px!important;padding:0 11px!important;border-radius:10px!important;font-size:11px!important}
+}
+@media(max-width:390px){
+  .footprint-category-order{grid-template-columns:minmax(0,1fr)!important}
+  .footprint-category-row{min-height:82px!important}
+}
+
 </style>
 </head>
 <body>
@@ -2150,7 +2192,7 @@ onclick="hideSpecialForToday()">
     <header class="footprint-category-head">
       <div class="footprint-category-kicker">PLACE COLLECTIONS</div>
       <div class="footprint-category-title" id="footprint-category-title">管理地點類別</div>
-      <div class="footprint-category-copy">自訂分類、顯示順序與每個地點的類別歸屬。</div>
+      <div class="footprint-category-copy">固定六大類別，可調整順序與每個地點的類別歸屬。</div>
       <button type="button" class="footprint-category-close" onclick="footprintCloseCategoryManagerDirect()" aria-label="關閉類別管理">×</button>
     </header>
     <div class="footprint-category-body">
@@ -7584,7 +7626,7 @@ function pdRefresh(){
     shown=1;
   }
   for(const c of cycles){
-    if(pendingPrediction && c.isForecast && c.pStart.getTime()===pendingPrediction.predictedStart.getTime()) continue;
+    if(pendingPrediction && pendingPrediction.daysTo<=0 && c.isForecast && c.pStart.getTime()===pendingPrediction.predictedStart.getTime()) continue;
     if(c.pEnd.getTime()<t.getTime()) continue;
     if(shown>=3) break;shown++;
     const daysTo=Math.ceil((c.pStart.getTime()-t.getTime())/864e5);
@@ -8797,8 +8839,8 @@ if(window._fb) chooseInitFirebase();
 const FOOTPRINT_CACHE_KEY='footprint_visits_cache_v1';
 const FOOTPRINT_SEARCH_CACHE_KEY='footprint_place_search_cache_v5';
 const FOOTPRINT_CATEGORY_CACHE_KEY='footprint_category_settings_v1';
-const FOOTPRINT_BUILTIN_CATEGORY_IDS=['qtime','school','park','hotel','nightmarket','baseball','other'];
-const FOOTPRINT_BUILTIN_CATEGORY_LABELS={qtime:'Qtime',school:'學校',park:'公園',hotel:'飯店',nightmarket:'夜市',baseball:'棒球場',other:'其他'};
+const FOOTPRINT_BUILTIN_CATEGORY_IDS=['baseball','hotel','qtime','nightmarket','park','other'];
+const FOOTPRINT_BUILTIN_CATEGORY_LABELS={baseball:'棒球場',hotel:'飯店',qtime:'Qtime',nightmarket:'夜市',park:'公園',other:'其他'};
 let footprintVisitsData={};
 let footprintSyncStarted=false;
 let footprintCategorySyncStarted=false;
@@ -8875,17 +8917,10 @@ function footprintWriteCache(){
 }
 function footprintNormalizeCategorySettings(value){
   const raw=value&&typeof value==='object'?value:{};
-  const usedIds=new Set();
-  const usedNames=new Set(Object.values(FOOTPRINT_BUILTIN_CATEGORY_LABELS).map(name=>name.toLowerCase()));
-  const custom=(Array.isArray(raw.custom)?raw.custom:[]).map(item=>{
-    const id=String(item?.id||'').trim();
-    const name=String(item?.name||'').trim().slice(0,18);
-    if(!/^custom_[a-z0-9_]+$/i.test(id)||!name||usedIds.has(id)||usedNames.has(name.toLowerCase())) return null;
-    usedIds.add(id);
-    usedNames.add(name.toLowerCase());
-    return {id,name};
-  }).filter(Boolean);
-  const validIds=new Set([...FOOTPRINT_BUILTIN_CATEGORY_IDS,...custom.map(item=>item.id)]);
+  // 類別固定只保留：棒球場、飯店、Qtime、夜市、公園、其他。
+  // 舊版的「學校」與所有自訂類別在載入時直接淘汰，不再出現在「去過的所有地方」。
+  const custom=[];
+  const validIds=new Set(FOOTPRINT_BUILTIN_CATEGORY_IDS);
   const order=[];
   (Array.isArray(raw.order)?raw.order:[]).forEach(id=>{
     const normalized=String(id||'');
@@ -9131,7 +9166,7 @@ function footprintPlaceCategory(group){
   if(/飯店|旅店|旅館|商旅|民宿|旅宿|住宿|汽車旅館|清翼居|motel|hotel|\binn\b/i.test(searchable)) return 'hotel';
   if(/夜市/i.test(searchable)) return 'nightmarket';
   if(/棒球場|大巨蛋/i.test(searchable)) return 'baseball';
-  if(/大學|學院|學校|高中|高職|國中|國小|校區/i.test(placeNames)) return 'school';
+  if(/大學|學院|學校|高中|高職|國中|國小|校區/i.test(placeNames)) return 'other';
   if(/公園|河濱|綠地|森林|步道|風景區|國家公園|海水浴場|沙崙|擎天崗|碧潭|草原|植物園|河岸/i.test(searchable)) return 'park';
   return 'other';
 }
@@ -9717,6 +9752,91 @@ async function footprintSyncFromAlbumDay(date,dayData){
   }
   return records.length;
 }
+
+let footprintAlbumImportRunning=false;
+let footprintAlbumImportPending=false;
+let footprintAlbumImportTimer=0;
+function footprintScheduleAlbumImport(){
+  clearTimeout(footprintAlbumImportTimer);
+  footprintAlbumImportTimer=setTimeout(()=>footprintImportAllVisitsToAlbumDays(),120);
+}
+async function footprintImportAllVisitsToAlbumDays(){
+  if(footprintAlbumImportRunning){footprintAlbumImportPending=true;return 0;}
+  if(typeof albumAllDataReady==='undefined'||!albumAllDataReady) return 0;
+  if(typeof albumFirebaseData==='undefined'||typeof albumNormalizeMapPlaces!=='function') return 0;
+  const visitsByDate=new Map();
+  Object.entries(footprintVisitsData||{}).forEach(([id,raw])=>{
+    const visit=footprintNormalizeVisit(id,raw);
+    if(!visit) return;
+    const date=visit.date;
+    if(!visitsByDate.has(date)) visitsByDate.set(date,[]);
+    visitsByDate.get(date).push({
+      placeId:visit.placeId||`legacy_${footprintNormalizeName(visit.placeName)}`,
+      name:visit.placeName,
+      address:visit.address||'',
+      url:'',
+      lat:visit.lat,
+      lng:visit.lng
+    });
+  });
+  if(!visitsByDate.size) return 0;
+  footprintAlbumImportRunning=true;
+  let changedDays=0;
+  try{
+    const updates={};
+    for(const [date,footPlaces] of visitsByDate){
+      const dayData=JSON.parse(JSON.stringify(albumFirebaseData[date]||{photos:[],schedule:[],note:''}));
+      const merged=albumNormalizeMapPlaces(dayData.mapPlaces);
+      let changed=false;
+      for(const place of footPlaces){
+        const duplicate=merged.some(existing=>{
+          if(place.placeId&&existing.placeId===place.placeId) return true;
+          if(Number.isFinite(existing.lat)&&Number.isFinite(existing.lng)&&Number.isFinite(place.lat)&&Number.isFinite(place.lng)&&footprintDistanceMeters(existing.lat,existing.lng,place.lat,place.lng)<=45) return true;
+          return footprintNormalizeName(existing.name)===footprintNormalizeName(place.name)&&footprintNormalizeName(existing.address||'')===footprintNormalizeName(place.address||'');
+        });
+        if(duplicate) continue;
+        merged.push(place);
+        changed=true;
+      }
+      if(!changed) continue;
+      dayData.mapPlaces=albumNormalizeMapPlaces(merged);
+      albumFirebaseData[date]=dayData;
+      const stat=albumBuildDayStats(dayData);
+      if(stat) albumStatsData[date]=stat; else delete albumStatsData[date];
+      updates[`albumData/${date}`]=dayData;
+      updates[`albumStats/${date}`]=stat;
+      changedDays++;
+    }
+    if(!changedDays) return 0;
+    albumWriteCachedData(albumFirebaseData);
+    albumRenderCal();
+    renderMemories();
+    renderMemoriesCharts();
+    renderMemoriesTotalStats();
+    if(window._fb){
+      try{
+        const {db,ref,update}=window._fb;
+        await update(ref(db),updates);
+      }catch(error){
+        Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+        console.warn('足跡匯入相簿行程同步失敗，已排入待同步',error);
+      }
+    }else{
+      Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+    }
+    if(currentDayKey&&modalEditMode&&visitsByDate.has(currentDayKey)){
+      renderModalMapPlacesEdit(albumFirebaseData[currentDayKey]?.mapPlaces||[]);
+    }
+    return changedDays;
+  }finally{
+    footprintAlbumImportRunning=false;
+    if(footprintAlbumImportPending){
+      footprintAlbumImportPending=false;
+      footprintScheduleAlbumImport();
+    }
+  }
+}
+
 function footprintRenderSearchResults(results,message=''){
   const panel=document.getElementById('footprint-search-results');
   if(!panel) return;
@@ -9964,6 +10084,7 @@ function footprintInitFirebase(){
       footprintVisitsData=snapshot.val()||{};
       footprintWriteCache();
       footprintRender();
+      footprintScheduleAlbumImport();
     },error=>{
       footprintSyncStarted=false;
       console.warn('足跡同步失敗',error);
@@ -9994,6 +10115,7 @@ footprintLoadCategoryCache();
 footprintRender();
 window.addEventListener('albumDataReady',()=>{
   footprintRender();
+  footprintScheduleAlbumImport();
   const picker=document.getElementById('choose-album-picker-bg');
   if(picker&&!picker.classList.contains('hidden')){
     chooseAlbumPickerPhotos=chooseGetAlbumPhotos();

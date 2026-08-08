@@ -2528,98 +2528,6 @@ onclick="hideSpecialForToday()">
   </section>
 </div>
 
-<!-- FOOTPRINTS -->
-<div id="page-footprints" class="page">
-  <div class="footprint-page-head">
-    <div>
-      <div class="footprint-page-title">我們的足跡</div>
-      <div class="footprint-page-sub">把一起到過的地方，慢慢留在地圖上</div>
-    </div>
-    <button type="button" class="footprint-add-btn" onclick="footprintGoToAlbum()">📸 到相簿行程新增</button>
-  </div>
-  <div class="footprint-summary" aria-label="足跡統計">
-    <div class="footprint-stat"><strong id="footprint-place-total">0</strong><span>去過的地點</span></div>
-    <div class="footprint-stat"><strong id="footprint-visit-total">0</strong><span>留下的回憶</span></div>
-  </div>
-  <div class="footprint-map-shell">
-    <div id="footprint-map" aria-label="足跡地圖"></div>
-    <div class="footprint-map-status" id="footprint-map-status">載入地圖中...</div>
-  </div>
-  <section class="footprint-date-browser" id="footprint-date-browser" aria-label="依日期查詢足跡">
-    <div>
-      <label class="footprint-date-query-label" for="footprint-date-query">依日期查詢</label>
-      <div class="footprint-date-query-controls">
-        <input class="footprint-date-query-input" id="footprint-date-query" type="date" onchange="footprintQueryDate()">
-        <button type="button" class="footprint-date-query-btn" onclick="footprintQueryDate()">查看</button>
-        <button type="button" class="footprint-date-query-clear" id="footprint-date-query-clear" onclick="footprintClearDateQuery()" hidden>全部</button>
-      </div>
-    </div>
-    <div class="footprint-date-place-list" id="footprint-date-place-list" aria-label="這天去過的所有地點" hidden></div>
-  </section>
-  <div class="footprint-empty" id="footprint-empty">
-    <div class="footprint-empty-icon">📍</div>
-    <div class="footprint-empty-title">第一個足跡會從這裡開始</div>
-    <div class="footprint-empty-copy">到「相簿 → 當天行程」貼上 Google Maps 連結，地點就會自動收進足跡。</div>
-  </div>
-  <section class="footprint-detail" id="footprint-detail" hidden aria-live="polite">
-    <div class="footprint-detail-head">
-      <div>
-        <div class="footprint-detail-name" id="footprint-detail-name"></div>
-        <div class="footprint-detail-meta" id="footprint-detail-meta"></div>
-        <div class="footprint-detail-address" id="footprint-detail-address"></div>
-      </div>
-      <button type="button" class="footprint-revisit-btn" id="footprint-revisit-btn">📸 到相簿記錄</button>
-    </div>
-    <div class="footprint-timeline" id="footprint-timeline"></div>
-  </section>
-</div>
-
-<div class="footprint-editor-bg hidden" id="footprint-editor-bg" onclick="footprintCloseEditor(event)">
-  <section class="footprint-editor" role="dialog" aria-modal="true" aria-labelledby="footprint-editor-title" onclick="event.stopPropagation()">
-    <div class="footprint-editor-head">
-      <div class="footprint-editor-title" id="footprint-editor-title">新增足跡</div>
-      <button type="button" class="footprint-editor-close" onclick="footprintCloseEditorDirect()" aria-label="關閉">×</button>
-    </div>
-    <form class="footprint-editor-form" id="footprint-editor-form" onsubmit="footprintSaveVisit(event)">
-      <input type="hidden" id="footprint-edit-id">
-      <input type="hidden" id="footprint-place-id">
-      <input type="hidden" id="footprint-lat">
-      <input type="hidden" id="footprint-lng">
-      <div class="footprint-form-grid">
-        <label class="footprint-field">日期
-          <span class="footprint-date-row"><input class="footprint-input" id="footprint-date" type="date"><button type="button" class="footprint-date-add" id="footprint-date-add" onclick="footprintAddSelectedDate()">＋ 加入</button></span>
-          <span class="footprint-date-chips" id="footprint-date-chips"></span>
-        </label>
-        <label class="footprint-field">地點名稱
-          <input class="footprint-input" id="footprint-place-name" type="text" maxlength="60" autocomplete="off" placeholder="例如：淡水老街" oninput="footprintMirrorPlaceQuery(this.value)" required>
-        </label>
-        <label class="footprint-field full">地址
-          <input class="footprint-input" id="footprint-address" type="text" maxlength="500" autocomplete="street-address" placeholder="可輸入地址，也可直接貼 Google Maps 分享連結" onpaste="footprintHandleMapLinkPaste(event)" oninput="footprintHandleMapLinkInput(this.value,'address')">
-        </label>
-      </div>
-      <div class="footprint-search-wrap">
-        <label class="footprint-search-label" for="footprint-search-input">搜尋地點或地址</label>
-        <div class="footprint-search-bar">
-          <input class="footprint-search-input" id="footprint-search-input" type="search" maxlength="500" autocomplete="off" placeholder="輸入店名、地址或 Google Maps 分享連結" onpaste="footprintHandleMapLinkPaste(event)" oninput="footprintHandleMapLinkInput(this.value,'search')" onkeydown="if(event.key==='Enter'){event.preventDefault();footprintSearchLocation()}">
-          <button type="button" class="footprint-search-btn" id="footprint-search-btn" onclick="footprintSearchLocation()">搜尋</button>
-        </div>
-        <div class="footprint-search-results" id="footprint-search-results" hidden aria-live="polite"></div>
-        <button type="button" class="footprint-map-link-btn" onclick="footprintPrepareMapLink()">找不到店家？貼上 Google Maps 分享連結</button>
-      </div>
-      <div class="footprint-picker-head">
-        <span>點地圖選擇位置</span>
-        <button type="button" class="footprint-location-btn" onclick="footprintUseCurrentLocation()">定位目前位置</button>
-      </div>
-      <div id="footprint-editor-map" aria-label="選擇足跡位置"></div>
-      <div class="footprint-coordinate" id="footprint-coordinate">尚未選擇位置</div>
-      <div class="footprint-editor-actions">
-        <button type="button" class="footprint-editor-action" onclick="footprintCloseEditorDirect()">取消</button>
-        <button type="submit" class="footprint-editor-action primary" id="footprint-save-btn">儲存足跡</button>
-      </div>
-    </form>
-  </section>
-</div>
-
 <!-- PERIOD -->
 <div id="page-period" class="page">
   <div id="pd-status-banner" style="border-radius:20px;padding:20px;margin-bottom:16px;text-align:center;background:var(--pd-banner-default,var(--white));border:1px solid var(--card-border)">
@@ -2710,7 +2618,6 @@ onclick="hideSpecialForToday()">
   <button class="nav-btn" onclick="showPage('album',this)"><span class="nav-icon">📸</span>相簿</button>
   <button class="nav-btn" onclick="showPage('memories',this)"><span class="nav-icon">🎞️</span>回憶</button>
   <button class="nav-btn" onclick="showPage('choose',this)"><span class="nav-icon">💌</span>心約</button>
-  <button class="nav-btn" onclick="showPage('footprints',this)"><span class="nav-icon">📍</span>足跡</button>
   <button class="nav-btn" onclick="showPage('period',this)"><span class="nav-icon">🌸</span>生理期</button>
 </nav>
 
@@ -5031,7 +4938,6 @@ function showPage(id,btn){
   }else{
     chooseStopSong();
   }
-  if(id==='footprints') footprintShowPage();
 }
 
 function footprintGoToAlbum(){
@@ -10056,11 +9962,9 @@ function footprintSetPlaceCategory(placeId,categoryId){
   footprintPersistCategorySettings();
 }
 function footprintOpenFromMemory(placeId){
-  footprintDateQuery='';
-  footprintMapHasFit=false;
-  const button=[...document.querySelectorAll('.nav-btn')].find(item=>(item.getAttribute('onclick')||'').includes("'footprints'"));
-  showPage('footprints',button||null);
-  setTimeout(()=>footprintFocusPlace(placeId,true),80);
+  const group=footprintGetGroups().find(item=>item.placeId===String(placeId||''));
+  const latestVisit=group?.visits?.[0];
+  if(latestVisit?.date) footprintOpenAlbumDay(latestVisit.date);
 }
 document.addEventListener('keydown',event=>{
   if(event.key!=='Escape') return;

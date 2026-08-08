@@ -801,6 +801,80 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .album-place-or::before,.album-place-or::after{content:'';height:1px;flex:1;background:var(--card-border)}
 [data-theme="dark"] .album-place-previous-search,[data-theme="dark"] .album-place-previous-btn{background:#332028}
 
+/* 可收合的「以前去過」地點 */
+.album-place-previous{padding:0;overflow:hidden}
+.album-place-previous-toggle{
+  width:100%;min-height:42px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 11px;border:0;background:transparent;color:var(--rose);
+  font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:900;text-align:left;cursor:pointer;
+}
+.album-place-previous-toggle:hover{background:color-mix(in srgb,var(--pink-light) 62%,transparent)}
+.album-place-previous-toggle:focus-visible{outline:2px solid var(--pink);outline-offset:-2px}
+.album-place-previous-arrow{font-size:15px;line-height:1;transition:transform .2s ease}
+.album-place-previous-toggle[aria-expanded="true"] .album-place-previous-arrow{transform:rotate(180deg)}
+.album-place-previous-panel{padding:0 9px 9px;border-top:1px solid rgba(232,99,122,.11)}
+.album-place-previous-panel[hidden]{display:none}
+.album-place-previous-panel .album-place-previous-head{padding-top:8px}
+[data-theme="dark"] .album-place-previous-toggle:hover{background:rgba(255,255,255,.035)}
+
+/* 相簿／回憶共用年月選擇器 */
+.year-month-trigger{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 7px;border:0;border-radius:9px;
+  background:transparent;color:var(--text);font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;
+  cursor:pointer;transition:background .18s ease,color .18s ease,transform .18s ease;
+}
+.year-month-trigger::after{content:'⌄';color:var(--pink);font-family:'Noto Sans TC',sans-serif;font-size:12px;transform:translateY(1px)}
+.year-month-trigger:hover{background:var(--pink-light);color:var(--rose)}
+.year-month-trigger:active{transform:scale(.97)}
+.year-month-trigger:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+
+.ymp-overlay{
+  position:fixed;inset:0;z-index:12000;display:flex;align-items:center;justify-content:center;padding:18px;
+  background:rgba(45,26,32,.48);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+}
+.ymp-overlay[hidden]{display:none!important}
+.ymp-panel{
+  width:min(92vw,420px);overflow:hidden;border:1px solid var(--card-border);border-radius:20px;
+  background:var(--white);box-shadow:0 24px 70px rgba(66,31,43,.28);animation:ympPop .22s ease both;
+}
+.ymp-head{display:flex;align-items:center;justify-content:space-between;padding:15px 17px 12px;border-bottom:1px solid var(--card-border)}
+.ymp-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700}
+.ymp-close{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:19px;cursor:pointer}
+.ymp-wheels{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 22px}
+.ymp-wheels::before{
+  content:'';position:absolute;z-index:0;left:22px;right:22px;top:50%;height:42px;
+  transform:translateY(-50%);border-top:1px solid rgba(232,99,122,.18);border-bottom:1px solid rgba(232,99,122,.18);
+  border-radius:8px;background:color-mix(in srgb,var(--pink-light) 48%,transparent);pointer-events:none;
+}
+.ymp-column-wrap{position:relative;z-index:1;min-width:0}
+.ymp-column-label{text-align:center;color:var(--text-muted);font-size:10px;font-weight:800;margin-bottom:5px}
+.ymp-wheel{
+  height:210px;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;
+  padding:84px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 25%,#000 75%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 25%,#000 75%,transparent 100%);
+}
+.ymp-wheel::-webkit-scrollbar{display:none}
+.ymp-item{
+  height:42px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;
+  border:0;background:transparent;color:var(--text-muted);font-family:'Noto Serif TC',serif;
+  font-size:18px;line-height:42px;cursor:pointer;transition:color .15s ease,font-size .15s ease,font-weight .15s ease;
+}
+.ymp-item.selected{color:var(--rose);font-size:21px;font-weight:700}
+.ymp-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 17px 17px}
+.ymp-action{min-height:43px;border:1px solid var(--card-border);border-radius:11px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.ymp-action.primary{border-color:var(--pink);background:var(--pink);color:#fff}
+[data-theme="dark"] .ymp-overlay{background:rgba(8,5,7,.7)}
+@keyframes ympPop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:600px){
+  .ymp-overlay{align-items:flex-end;padding:0}
+  .ymp-panel{width:100%;border-radius:22px 22px 0 0;animation:ympSheet .25s cubic-bezier(.2,.8,.25,1) both}
+  .ymp-wheels{padding-left:18px;padding-right:18px}
+  .ymp-wheels::before{left:18px;right:18px}
+  .ymp-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}
+  @keyframes ympSheet{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:none}}
+}
+
 .modal-photos-grid{
 display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;
 }
@@ -2009,7 +2083,7 @@ onclick="hideSpecialForToday()">
     <div class="album-cal-header">
       <button class="album-cal-nav" onclick="albumCalPrev()">‹</button>
       <div>
-        <span class="album-cal-title" id="album-cal-title"></span>
+        <button type="button" class="album-cal-title year-month-trigger" id="album-cal-title" onclick="openYearMonthPicker('album')" aria-label="選擇相簿年份與月份"></button>
         <span class="album-sync-badge" id="album-sync-badge" hidden></span>
       </div>
       <button class="album-cal-nav" onclick="albumCalNext()">›</button>
@@ -2156,9 +2230,14 @@ onclick="hideSpecialForToday()">
             </div>
           </div>
           <div class="album-place-previous" id="album-place-previous" hidden>
-            <div class="album-place-previous-head"><span>🕘 以前去過</span><small>點一下直接加入今天</small></div>
-            <input class="album-place-previous-search" id="album-place-previous-search" type="search" autocomplete="off" placeholder="搜尋以前去過的地點" oninput="albumRenderPreviousPlaces(this.value)">
-            <div class="album-place-previous-list" id="album-place-previous-list"></div>
+            <button type="button" class="album-place-previous-toggle" id="album-place-previous-toggle" onclick="albumTogglePreviousPlaces()" aria-expanded="false" aria-controls="album-place-previous-panel">
+              <span>🕘 選擇以前去過的地點</span><span class="album-place-previous-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="album-place-previous-panel" id="album-place-previous-panel" hidden>
+              <div class="album-place-previous-head"><span>以前去過</span><small>點一下直接加入今天</small></div>
+              <input class="album-place-previous-search" id="album-place-previous-search" type="search" autocomplete="off" placeholder="搜尋以前去過的地點" oninput="albumRenderPreviousPlaces(this.value)">
+              <div class="album-place-previous-list" id="album-place-previous-list"></div>
+            </div>
           </div>
           <div class="album-place-or">或貼新地點</div>
           <div class="album-place-link-row">
@@ -2180,6 +2259,30 @@ onclick="hideSpecialForToday()">
   </div>
 </div>
 
+<!-- 相簿／回憶共用年月滾輪選擇器 -->
+<div class="ymp-overlay" id="year-month-picker" hidden onclick="yearMonthPickerBackdrop(event)">
+  <section class="ymp-panel" role="dialog" aria-modal="true" aria-labelledby="year-month-picker-title" onclick="event.stopPropagation()">
+    <div class="ymp-head">
+      <div class="ymp-title" id="year-month-picker-title">選擇年月</div>
+      <button type="button" class="ymp-close" onclick="closeYearMonthPicker()" aria-label="關閉年月選擇器">×</button>
+    </div>
+    <div class="ymp-wheels">
+      <div class="ymp-column-wrap">
+        <div class="ymp-column-label">年份</div>
+        <div class="ymp-wheel" id="ymp-year-wheel" aria-label="年份"></div>
+      </div>
+      <div class="ymp-column-wrap">
+        <div class="ymp-column-label">月份</div>
+        <div class="ymp-wheel" id="ymp-month-wheel" aria-label="月份"></div>
+      </div>
+    </div>
+    <div class="ymp-actions">
+      <button type="button" class="ymp-action" onclick="closeYearMonthPicker()">取消</button>
+      <button type="button" class="ymp-action primary" onclick="confirmYearMonthPicker()">確定</button>
+    </div>
+  </section>
+</div>
+
 <!-- MEMORIES -->
 <div id="page-memories" class="page">
   <div class="card">
@@ -2187,7 +2290,7 @@ onclick="hideSpecialForToday()">
       <button class="album-cal-nav" onclick="memoriesPrev()">‹</button>
       <div style="display:flex;align-items:center;gap:6px">
         <span style="font-size:20px">🎞️</span>
-        <span class="album-cal-title" id="memories-month-title"></span>
+        <button type="button" class="album-cal-title year-month-trigger" id="memories-month-title" onclick="openYearMonthPicker('memories')" aria-label="選擇回憶年份與月份"></button>
       </div>
       <button class="album-cal-nav" onclick="memoriesNext()">›</button>
     </div>
@@ -5999,6 +6102,126 @@ function albumRenderCal(){
 function albumCalPrev(){albumMonth--;if(albumMonth<0){albumMonth=11;albumYear--;}albumRenderCal();}
 function albumCalNext(){albumMonth++;if(albumMonth>11){albumMonth=0;albumYear++;}albumRenderCal();}
 
+/* 相簿與回憶共用的年月滾輪選擇器 */
+const YEAR_MONTH_PICKER_ITEM_HEIGHT=42;
+const YEAR_MONTH_PICKER_MIN_YEAR=1970;
+const YEAR_MONTH_PICKER_MAX_YEAR=2100;
+let yearMonthPickerState={target:'album',year:new Date().getFullYear(),month:new Date().getMonth()};
+let yearMonthPickerBuilt=false;
+let yearMonthPickerPreviousOverflow='';
+let yearMonthPickerScrollFrame=0;
+
+function yearMonthPickerBuild(){
+  if(yearMonthPickerBuilt) return;
+  const yearWheel=document.getElementById('ymp-year-wheel');
+  const monthWheel=document.getElementById('ymp-month-wheel');
+  if(!yearWheel||!monthWheel) return;
+  let years='';
+  for(let year=YEAR_MONTH_PICKER_MIN_YEAR;year<=YEAR_MONTH_PICKER_MAX_YEAR;year++){
+    years+=`<button type="button" class="ymp-item" data-ymp-value="${year}" onclick="yearMonthPickerChoose('year',${year},true)">${year}</button>`;
+  }
+  let months='';
+  for(let month=0;month<12;month++){
+    months+=`<button type="button" class="ymp-item" data-ymp-value="${month}" onclick="yearMonthPickerChoose('month',${month},true)">${month+1} 月</button>`;
+  }
+  yearWheel.innerHTML=years;
+  monthWheel.innerHTML=months;
+  yearWheel.addEventListener('scroll',()=>yearMonthPickerQueueScroll('year'),{passive:true});
+  monthWheel.addEventListener('scroll',()=>yearMonthPickerQueueScroll('month'),{passive:true});
+  yearMonthPickerBuilt=true;
+}
+
+function yearMonthPickerWheel(type){
+  return document.getElementById(type==='year'?'ymp-year-wheel':'ymp-month-wheel');
+}
+function yearMonthPickerBounds(type){
+  return type==='year'
+    ? {min:YEAR_MONTH_PICKER_MIN_YEAR,max:YEAR_MONTH_PICKER_MAX_YEAR}
+    : {min:0,max:11};
+}
+function yearMonthPickerValueFromScroll(type){
+  const wheel=yearMonthPickerWheel(type);
+  if(!wheel) return type==='year'?yearMonthPickerState.year:yearMonthPickerState.month;
+  const bounds=yearMonthPickerBounds(type);
+  const index=Math.round(wheel.scrollTop/YEAR_MONTH_PICKER_ITEM_HEIGHT);
+  return Math.max(bounds.min,Math.min(bounds.max,bounds.min+index));
+}
+function yearMonthPickerUpdateSelected(type,value){
+  const wheel=yearMonthPickerWheel(type);
+  if(!wheel) return;
+  wheel.querySelectorAll('.ymp-item').forEach(item=>{
+    item.classList.toggle('selected',Number(item.dataset.ympValue)===Number(value));
+  });
+}
+function yearMonthPickerQueueScroll(type){
+  cancelAnimationFrame(yearMonthPickerScrollFrame);
+  yearMonthPickerScrollFrame=requestAnimationFrame(()=>{
+    const value=yearMonthPickerValueFromScroll(type);
+    if(type==='year') yearMonthPickerState.year=value;
+    else yearMonthPickerState.month=value;
+    yearMonthPickerUpdateSelected(type,value);
+  });
+}
+function yearMonthPickerScrollTo(type,value,smooth=false){
+  const wheel=yearMonthPickerWheel(type);
+  if(!wheel) return;
+  const bounds=yearMonthPickerBounds(type);
+  const safe=Math.max(bounds.min,Math.min(bounds.max,Number(value)));
+  wheel.scrollTo({top:(safe-bounds.min)*YEAR_MONTH_PICKER_ITEM_HEIGHT,behavior:smooth?'smooth':'auto'});
+  yearMonthPickerUpdateSelected(type,safe);
+}
+function yearMonthPickerChoose(type,value,smooth=true){
+  if(type==='year') yearMonthPickerState.year=Number(value);
+  else yearMonthPickerState.month=Number(value);
+  yearMonthPickerScrollTo(type,value,smooth);
+}
+function openYearMonthPicker(target='album'){
+  yearMonthPickerBuild();
+  const overlay=document.getElementById('year-month-picker');
+  if(!overlay) return;
+  const isMemories=target==='memories';
+  yearMonthPickerState={
+    target:isMemories?'memories':'album',
+    year:isMemories?memoriesYear:albumYear,
+    month:isMemories?memoriesMonth:albumMonth
+  };
+  const title=document.getElementById('year-month-picker-title');
+  if(title) title.textContent=isMemories?'選擇回憶年月':'選擇相簿年月';
+  yearMonthPickerPreviousOverflow=document.body.style.overflow;
+  document.body.style.overflow='hidden';
+  overlay.hidden=false;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    yearMonthPickerScrollTo('year',yearMonthPickerState.year,false);
+    yearMonthPickerScrollTo('month',yearMonthPickerState.month,false);
+  }));
+}
+function closeYearMonthPicker(){
+  const overlay=document.getElementById('year-month-picker');
+  if(overlay) overlay.hidden=true;
+  document.body.style.overflow=yearMonthPickerPreviousOverflow;
+}
+function yearMonthPickerBackdrop(event){
+  if(event.target===event.currentTarget) closeYearMonthPicker();
+}
+function confirmYearMonthPicker(){
+  yearMonthPickerState.year=yearMonthPickerValueFromScroll('year');
+  yearMonthPickerState.month=yearMonthPickerValueFromScroll('month');
+  if(yearMonthPickerState.target==='memories'){
+    memoriesYear=yearMonthPickerState.year;
+    memoriesMonth=yearMonthPickerState.month;
+    memoriesPage=0;
+    renderMemories();
+  }else{
+    albumYear=yearMonthPickerState.year;
+    albumMonth=yearMonthPickerState.month;
+    albumRenderCal();
+  }
+  closeYearMonthPicker();
+}
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&!document.getElementById('year-month-picker')?.hidden) closeYearMonthPicker();
+});
+
 function openDayModal(key,day){
   currentDayKey=key;
   const [y,m,d]=key.split('-');
@@ -6029,6 +6252,7 @@ function applyModalMode(dayData){
     renderModalMapPlacesEdit(dayData.mapPlaces||[]);
     const previousSearch=document.getElementById('album-place-previous-search');
     if(previousSearch) previousSearch.value='';
+    albumSetPreviousPlacesOpen(false);
     albumRenderPreviousPlaces('');
     updateCloudinaryUiStatus();
   } else {
@@ -6118,6 +6342,22 @@ function albumPreviousPlaceGroups(){
   const groups=footprintGetGroups();
   return groups.filter(group=>group&&group.placeId&&group.name&&Number.isFinite(Number(group.lat))&&Number.isFinite(Number(group.lng)));
 }
+function albumSetPreviousPlacesOpen(open){
+  const toggle=document.getElementById('album-place-previous-toggle');
+  const panel=document.getElementById('album-place-previous-panel');
+  if(!toggle||!panel) return;
+  const isOpen=!!open;
+  toggle.setAttribute('aria-expanded',isOpen?'true':'false');
+  panel.hidden=!isOpen;
+  if(isOpen){
+    const search=document.getElementById('album-place-previous-search');
+    setTimeout(()=>search?.focus({preventScroll:true}),60);
+  }
+}
+function albumTogglePreviousPlaces(){
+  const toggle=document.getElementById('album-place-previous-toggle');
+  albumSetPreviousPlacesOpen(toggle?.getAttribute('aria-expanded')!=='true');
+}
 function albumRenderPreviousPlaces(query=''){
   const section=document.getElementById('album-place-previous');
   const list=document.getElementById('album-place-previous-list');
@@ -6164,6 +6404,7 @@ async function albumAddPreviousPlace(placeId){
     albumRenderPreviousPlaces(document.getElementById('album-place-previous-search')?.value||'');
   }
   if(typeof footprintSyncFromAlbumDay==='function') await footprintSyncFromAlbumDay(key,dayData);
+  albumSetPreviousPlacesOpen(false);
   if(status) status.textContent=`已加入「${group.name}」。`;
 }
 

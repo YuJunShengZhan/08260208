@@ -715,10 +715,12 @@ background:var(--white);
 border-radius:24px 24px 0 0;
 box-sizing:border-box;
 padding:20px 20px calc(36px + env(safe-area-inset-bottom));
-width:100%;max-width:480px;
-max-height:85vh;max-height:85dvh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+width:100%;max-width:520px;
+max-height:88vh;max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
 animation:slideUp .25s ease;
+transition:max-width .2s ease,max-height .2s ease;
 }
+.day-modal.editing{max-width:720px;max-height:94vh;max-height:94dvh;}
 @keyframes slideUp{from{transform:translateY(60px);opacity:0;}to{transform:translateY(0);opacity:1;}}
 .day-modal-title{
 font-family:'Noto Serif TC',serif;
@@ -785,6 +787,19 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .album-place-item-address{display:block;margin-top:2px;color:var(--text-muted);font-size:8px;line-height:1.35;overflow-wrap:anywhere}
 .album-place-item-del{width:29px;height:29px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:8px;background:var(--white);color:var(--rose);font-size:12px;cursor:pointer}
 [data-theme="dark"] .album-place-link-input,[data-theme="dark"] .album-place-item-del{background:#332028}
+.album-place-previous{margin:9px 0 10px;padding:9px;border:1px solid rgba(232,99,122,.14);border-radius:11px;background:color-mix(in srgb,var(--pink-light) 38%,var(--white))}
+.album-place-previous[hidden]{display:none}
+.album-place-previous-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;color:var(--rose);font-size:10px;font-weight:900}
+.album-place-previous-head small{color:var(--text-muted);font-size:8.5px;font-weight:500}
+.album-place-previous-search{width:100%;height:34px;padding:7px 9px;border:1px solid var(--card-border);border-radius:9px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;outline:none}
+.album-place-previous-search:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.1)}
+.album-place-previous-list{display:flex;flex-wrap:wrap;gap:6px;max-height:126px;margin-top:7px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.album-place-previous-btn{max-width:100%;padding:7px 9px;border:1px solid rgba(232,99,122,.2);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:9.5px;font-weight:800;line-height:1.2;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.album-place-previous-btn:active{transform:scale(.97);background:var(--pink-light)}
+.album-place-previous-empty{width:100%;padding:6px 0;color:var(--text-muted);font-size:9px;text-align:center}
+.album-place-or{display:flex;align-items:center;gap:8px;margin:8px 0;color:var(--text-muted);font-size:8.5px}
+.album-place-or::before,.album-place-or::after{content:'';height:1px;flex:1;background:var(--card-border)}
+[data-theme="dark"] .album-place-previous-search,[data-theme="dark"] .album-place-previous-btn{background:#332028}
 
 .modal-photos-grid{
 display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;
@@ -874,12 +889,14 @@ background:var(--pink-light);color:var(--text);
 margin-bottom:8px;
 }
 .modal-textarea{
-width:100%;padding:10px;
-border:1px solid var(--card-border);border-radius:10px;
-font-size:13px;font-family:'Noto Sans TC',sans-serif;
+width:100%;min-height:180px;padding:12px;
+border:1px solid var(--card-border);border-radius:12px;
+font-size:14px;line-height:1.65;font-family:'Noto Sans TC',sans-serif;
 background:var(--pink-light);color:var(--text);
-resize:none;
+resize:vertical;
+outline:none;
 }
+.modal-textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.10)}
 .modal-save-btn{
 width:100%;padding:12px;
 background:var(--pink);color:white;
@@ -1714,10 +1731,15 @@ body.choose-letterbox-open{overflow:hidden}
 
 
 @media(max-width:520px){
+  .day-modal.editing{max-height:97vh;max-height:97dvh;padding:17px 15px calc(30px + env(safe-area-inset-bottom))}
+  .modal-textarea{min-height:220px;font-size:16px;padding:12px}
   .album-place-link-row{grid-template-columns:minmax(0,1fr) 64px}
-  .album-place-link-input{min-height:60px;font-size:9.5px}
-  .album-place-import-btn{min-width:64px;padding:0 7px}
-  .album-place-item{padding:7px 8px}
+  .album-place-link-input{min-height:72px;font-size:16px}
+  .album-place-import-btn{min-width:64px;padding:0 7px;font-size:11px}
+  .album-place-item{padding:8px}
+  .album-place-previous-search{height:40px;font-size:16px}
+  .album-place-previous-list{max-height:154px}
+  .album-place-previous-btn{padding:8px 10px;font-size:11px}
   .love-count-control{margin-top:9px}
 }
 
@@ -2130,9 +2152,15 @@ onclick="hideSpecialForToday()">
           <div class="album-place-editor-head">
             <div>
               <div class="album-place-editor-title">📍 今日去過的地點</div>
-              <div class="album-place-editor-hint">可貼 1 個或多個 Google Maps 分享連結；匯入後會轉成地點名稱並加入「常去的地方」。</div>
+              <div class="album-place-editor-hint">以前去過的地點可直接點選；新地點再貼 Google Maps 分享連結。</div>
             </div>
           </div>
+          <div class="album-place-previous" id="album-place-previous" hidden>
+            <div class="album-place-previous-head"><span>🕘 以前去過</span><small>點一下直接加入今天</small></div>
+            <input class="album-place-previous-search" id="album-place-previous-search" type="search" autocomplete="off" placeholder="搜尋以前去過的地點" oninput="albumRenderPreviousPlaces(this.value)">
+            <div class="album-place-previous-list" id="album-place-previous-list"></div>
+          </div>
+          <div class="album-place-or">或貼新地點</div>
           <div class="album-place-link-row">
             <textarea class="album-place-link-input" id="modal-map-link-input" rows="2" inputmode="url" autocomplete="off" placeholder="貼上 Google Maps 分享連結，多個連結可分行貼上" oninput="albumQueueMapLinkImport()" onpaste="setTimeout(albumQueueMapLinkImport,0)"></textarea>
             <button type="button" class="album-place-import-btn" id="modal-map-link-btn" onclick="albumImportMapLinks(true)">加入</button>
@@ -5986,6 +6014,7 @@ function applyModalMode(dayData){
   const editBtn=document.getElementById('modal-edit-btn');
   const viewContent=document.getElementById('modal-view-content');
   const editContent=document.getElementById('modal-edit-content');
+  document.getElementById('day-modal')?.classList.toggle('editing',!!modalEditMode);
   if(modalEditMode){
     editBtn.hidden=true;editBtn.style.display='none';editBtn.classList.remove('editing');
     viewContent.classList.add('hidden');editContent.classList.remove('hidden');
@@ -5998,6 +6027,9 @@ function applyModalMode(dayData){
     const mapStatus=document.getElementById('modal-map-link-status');
     if(mapStatus) mapStatus.textContent='';
     renderModalMapPlacesEdit(dayData.mapPlaces||[]);
+    const previousSearch=document.getElementById('album-place-previous-search');
+    if(previousSearch) previousSearch.value='';
+    albumRenderPreviousPlaces('');
     updateCloudinaryUiStatus();
   } else {
     editBtn.hidden=false;editBtn.style.display='';editBtn.textContent='✏️ 編輯';editBtn.classList.remove('editing');
@@ -6076,11 +6108,65 @@ function renderModalMapPlacesEdit(items){
   if(!list) return;
   const places=albumNormalizeMapPlaces(items);
   if(!places.length){
-    list.innerHTML='<div class="album-place-empty">尚未加入地點。貼上 Google Maps 分享連結即可。</div>';
+    list.innerHTML='<div class="album-place-empty">尚未加入地點。可從「以前去過」直接點選，或貼 Google Maps 分享連結。</div>';
     return;
   }
   list.innerHTML=places.map((place,index)=>`<div class="album-place-item"><span class="album-place-item-copy"><span class="album-place-item-name">${escapeHtml(place.name)}</span>${place.address?`<span class="album-place-item-address">${escapeHtml(place.address)}</span>`:''}</span><button type="button" class="album-place-item-del" onclick="albumRemoveMapPlace(${index})" aria-label="移除 ${escapeHtml(place.name)}">✕</button></div>`).join('');
 }
+function albumPreviousPlaceGroups(){
+  if(typeof footprintGetGroups!=='function') return [];
+  const groups=footprintGetGroups();
+  return groups.filter(group=>group&&group.placeId&&group.name&&Number.isFinite(Number(group.lat))&&Number.isFinite(Number(group.lng)));
+}
+function albumRenderPreviousPlaces(query=''){
+  const section=document.getElementById('album-place-previous');
+  const list=document.getElementById('album-place-previous-list');
+  if(!section||!list) return;
+  const groups=albumPreviousPlaceGroups();
+  section.hidden=!groups.length;
+  if(!groups.length){list.innerHTML='';return;}
+  const current=albumNormalizeMapPlaces(albumFirebaseData[currentDayKey]?.mapPlaces);
+  const normalizedQuery=String(query||'').trim().toLowerCase().replace(/[\s　]+/g,'');
+  const isAlreadyAdded=group=>current.some(place=>(place.placeId&&place.placeId===group.placeId)||(Number.isFinite(place.lat)&&Number.isFinite(place.lng)&&typeof footprintDistanceMeters==='function'&&footprintDistanceMeters(place.lat,place.lng,group.lat,group.lng)<=35));
+  const filtered=groups.filter(group=>{
+    if(isAlreadyAdded(group)) return false;
+    if(!normalizedQuery) return true;
+    const anchor=group.visits?.[0]||{};
+    return `${group.name||''}${anchor.address||''}`.toLowerCase().replace(/[\s　]+/g,'').includes(normalizedQuery);
+  }).slice(0,30);
+  if(!filtered.length){
+    list.innerHTML=`<div class="album-place-previous-empty">${current.length?'沒有其他符合的舊地點':'找不到符合的舊地點'}</div>`;
+    return;
+  }
+  list.innerHTML=filtered.map(group=>`<button type="button" class="album-place-previous-btn" data-album-previous-place="${escapeHtml(group.placeId)}" title="${escapeHtml(group.name)}">＋ ${escapeHtml(group.name)}</button>`).join('');
+  list.querySelectorAll('[data-album-previous-place]').forEach(button=>button.addEventListener('click',()=>albumAddPreviousPlace(button.dataset.albumPreviousPlace)));
+}
+async function albumAddPreviousPlace(placeId){
+  const key=currentDayKey;
+  if(!key||typeof footprintGetGroups!=='function') return;
+  const group=footprintGetGroups().find(item=>item.placeId===placeId);
+  if(!group) return;
+  const anchor=group.visits?.[0]||{};
+  const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
+  const places=albumNormalizeMapPlaces(dayData.mapPlaces);
+  const duplicate=places.some(place=>(place.placeId&&place.placeId===group.placeId)||(Number.isFinite(place.lat)&&Number.isFinite(place.lng)&&typeof footprintDistanceMeters==='function'&&footprintDistanceMeters(place.lat,place.lng,group.lat,group.lng)<=35));
+  const status=document.getElementById('modal-map-link-status');
+  if(duplicate){
+    if(status) status.textContent=`「${group.name}」今天已經加入過了。`;
+    albumRenderPreviousPlaces(document.getElementById('album-place-previous-search')?.value||'');
+    return;
+  }
+  places.push({placeId:group.placeId,name:group.name,address:String(anchor.address||''),url:'',lat:Number(group.lat),lng:Number(group.lng)});
+  dayData.mapPlaces=albumNormalizeMapPlaces(places);
+  await albumSaveDay(key,dayData);
+  if(currentDayKey===key&&modalEditMode){
+    renderModalMapPlacesEdit(dayData.mapPlaces);
+    albumRenderPreviousPlaces(document.getElementById('album-place-previous-search')?.value||'');
+  }
+  if(typeof footprintSyncFromAlbumDay==='function') await footprintSyncFromAlbumDay(key,dayData);
+  if(status) status.textContent=`已加入「${group.name}」。`;
+}
+
 function albumExtractGoogleMapsLinks(value){
   const raw=String(value||'');
   const candidates=raw.match(/https?:\/\/[^\s<>"']+/gi)||[];
@@ -6126,10 +6212,13 @@ async function albumImportMapLinks(force=false){
   }
   dayData.mapPlaces=albumNormalizeMapPlaces(places);
   await albumSaveDay(key,dayData);
-  if(currentDayKey===key&&modalEditMode) renderModalMapPlacesEdit(dayData.mapPlaces);
+  if(currentDayKey===key&&modalEditMode){
+    renderModalMapPlacesEdit(dayData.mapPlaces);
+    albumRenderPreviousPlaces(document.getElementById('album-place-previous-search')?.value||'');
+  }
   if(typeof footprintSyncFromAlbumDay==='function') await footprintSyncFromAlbumDay(key,dayData);
   input.value='';
-  if(status) status.textContent=failed?`已加入 ${added} 個地點，${failed} 個連結讀取失敗。`:(added?`已加入 ${added} 個地點，並同步到「常去的地方」。`:'這些地點今天已經加入過了。');
+  if(status) status.textContent=failed?`已加入 ${added} 個地點，${failed} 個連結仍無法辨識。手機短網址若失敗，可改貼完整 Google Maps 網址。`:(added?`已加入 ${added} 個地點，並同步到「常去的地方」。`:'這些地點今天已經加入過了。');
   if(button){delete button.dataset.loading;button.disabled=false;button.textContent='加入';}
 }
 async function albumRemoveMapPlace(index){
@@ -6141,7 +6230,10 @@ async function albumRemoveMapPlace(index){
   places.splice(index,1);
   dayData.mapPlaces=places;
   await albumSaveDay(key,dayData);
-  if(currentDayKey===key&&modalEditMode) renderModalMapPlacesEdit(places);
+  if(currentDayKey===key&&modalEditMode){
+    renderModalMapPlacesEdit(places);
+    albumRenderPreviousPlaces(document.getElementById('album-place-previous-search')?.value||'');
+  }
   if(typeof footprintSyncFromAlbumDay==='function') await footprintSyncFromAlbumDay(key,dayData);
   const status=document.getElementById('modal-map-link-status');
   if(status) status.textContent='已移除這個地點。';
@@ -9711,16 +9803,46 @@ function footprintExtractGoogleMapsLink(value){
   const text=String(value||'').replace(/[\u200B-\u200D\uFEFF]/g,' ').replace(/&amp;/gi,'&').trim();
   const candidates=text.match(/https?:\/\/[^\s<>"']+/gi)||[];
   if(/^https?:\/\//i.test(text)) candidates.unshift(text);
+  const bare=text.match(/(?:^|\s)((?:maps\.app\.goo\.gl|maps\.google\.(?:com|com\.tw)|www\.google\.(?:com|com\.tw)\/maps)\/[^\s<>"']+)/i)?.[1];
+  if(bare) candidates.unshift(`https://${bare}`);
   for(const candidate of [...new Set(candidates)]){
     const clean=candidate.trim().replace(/[\]\[(){}<>，。；、]+$/gu,'');
     try{
       const url=new URL(clean);
-      const host=url.hostname.toLowerCase();
+      const host=url.hostname.toLowerCase().replace(/^www\./,'');
       const googleHost=host==='google.com'||host.endsWith('.google.com')||host==='google.com.tw'||host.endsWith('.google.com.tw');
       if(host==='maps.app.goo.gl'||(host==='goo.gl'&&url.pathname.startsWith('/maps'))||googleHost) return url.href;
     }catch(_){}
   }
   return '';
+}
+function footprintMapLinkHints(url){
+  const hints={lat:null,lng:null,name:''};
+  try{
+    const parsed=new URL(url);
+    const decodedPath=decodeURIComponent(parsed.pathname.replace(/\+/g,' '));
+    const at=decodedPath.match(/@(-?\d{1,2}(?:\.\d+)?),(-?\d{1,3}(?:\.\d+)?)/);
+    const data=decodeURIComponent(`${parsed.pathname}${parsed.search}${parsed.hash}`).match(/!3d(-?\d{1,2}(?:\.\d+)?)[^!]*!4d(-?\d{1,3}(?:\.\d+)?)/);
+    const queryValue=['q','query','ll','destination'].map(key=>parsed.searchParams.get(key)).find(Boolean)||'';
+    const queryCoords=String(queryValue).match(/^\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)\s*$/);
+    const coordMatch=at||data||queryCoords;
+    if(coordMatch){
+      const lat=Number(coordMatch[1]),lng=Number(coordMatch[2]);
+      if(Number.isFinite(lat)&&Number.isFinite(lng)&&Math.abs(lat)<=90&&Math.abs(lng)<=180){hints.lat=lat;hints.lng=lng;}
+    }
+    const placeMatch=decodedPath.match(/\/maps\/place\/([^/@]+)/i);
+    const queryName=queryValue&&!queryCoords?queryValue:'';
+    hints.name=decodeURIComponent(String(placeMatch?.[1]||queryName||'').replace(/\+/g,' ')).trim().slice(0,80);
+  }catch(_){}
+  return hints;
+}
+async function footprintReverseOpenStreetMap(lat,lng){
+  const params=new URLSearchParams({format:'jsonv2',lat:String(lat),lon:String(lng),zoom:'18',addressdetails:'1','accept-language':'zh-TW'});
+  const response=await fetch(`https://nominatim.openstreetmap.org/reverse?${params.toString()}`,{headers:{Accept:'application/json'}});
+  if(!response.ok) throw new Error(`Nominatim HTTP ${response.status}`);
+  const item=await response.json();
+  const normalized=footprintNormalizeSearchResults([item]);
+  return normalized[0]||null;
 }
 function footprintIsGoogleMapsLink(value){
   return Boolean(footprintExtractGoogleMapsLink(value));
@@ -9773,10 +9895,41 @@ async function footprintSearchServer(query){
   return footprintNormalizeSearchResults(data?.results);
 }
 async function footprintImportMapLink(url){
-  const response=await fetch(`/api/map-link?url=${encodeURIComponent(url)}`,{headers:{Accept:'application/json'}});
-  const data=await response.json().catch(()=>({}));
-  if(!response.ok||!data?.result) throw new Error(data?.error||'無法讀取這個 Google Maps 分享連結');
-  return footprintNormalizeSearchResults([data.result])[0]||null;
+  const original=footprintExtractGoogleMapsLink(url)||String(url||'').trim();
+  const variants=[];
+  if(original) variants.push(original);
+  try{
+    const stripped=new URL(original);
+    ['g_st','g_ep','utm_source','utm_medium','utm_campaign','entry'].forEach(key=>stripped.searchParams.delete(key));
+    if(stripped.href!==original) variants.push(stripped.href);
+  }catch(_){}
+  let lastError=null;
+  for(const candidate of [...new Set(variants)]){
+    try{
+      const response=await fetch(`/api/map-link?url=${encodeURIComponent(candidate)}`,{headers:{Accept:'application/json'}});
+      const data=await response.json().catch(()=>({}));
+      if(response.ok&&data?.result){
+        const normalized=footprintNormalizeSearchResults([data.result])[0]||null;
+        if(normalized) return normalized;
+      }
+      lastError=new Error(data?.error||`地點服務 HTTP ${response.status}`);
+    }catch(error){lastError=error;}
+  }
+  const hints=footprintMapLinkHints(original);
+  if(Number.isFinite(hints.lat)&&Number.isFinite(hints.lng)){
+    try{
+      const reverse=await footprintReverseOpenStreetMap(hints.lat,hints.lng);
+      if(reverse) return reverse;
+    }catch(error){lastError=error;}
+    return {name:hints.name||'Google Maps 地點',displayName:hints.name||`${hints.lat.toFixed(6)}, ${hints.lng.toFixed(6)}`,lat:hints.lat,lng:hints.lng,placeId:`gmaps_${hints.lat.toFixed(5)}_${hints.lng.toFixed(5)}`,provider:'google-url'};
+  }
+  if(hints.name){
+    try{
+      const results=typeof footprintSearchServer==='function'?await footprintSearchServer(hints.name):[];
+      if(results?.length) return results[0];
+    }catch(error){lastError=error;}
+  }
+  throw lastError||new Error('無法讀取這個 Google Maps 分享連結');
 }
 function footprintItineraryKey(value){
   return footprintNormalizeName(value)

@@ -105,6 +105,42 @@ font-size:12px;
 color:var(--text-muted);
 margin-top:4px;
 }
+.header-sub-trigger{
+appearance:none;
+-webkit-appearance:none;
+display:inline-block;
+padding:1px 5px;
+border:0;
+background:transparent;
+color:var(--text-muted);
+font:inherit;
+font-size:12px;
+line-height:1.45;
+cursor:pointer;
+touch-action:manipulation;
+}
+.header-sub-trigger:active{opacity:.62}
+.header-sub-trigger:focus-visible{border-radius:5px;outline:2px solid var(--pink);outline-offset:2px}
+.immersive-guide-bg{position:fixed;inset:0;z-index:4600;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(35,19,26,.58);backdrop-filter:blur(7px)}
+.immersive-guide-bg.hidden{display:none}
+.immersive-guide{position:relative;width:min(100%,390px);overflow:hidden;border:1px solid var(--card-border);border-radius:10px;background:var(--white);box-shadow:0 26px 78px rgba(54,25,35,.34)}
+.immersive-guide-head{padding:21px 56px 15px 19px;border-bottom:1px solid var(--card-border);background:color-mix(in srgb,var(--pink-light) 32%,var(--white))}
+.immersive-guide-mark{width:38px;height:38px;display:grid;place-items:center;margin-bottom:10px;border:1px solid color-mix(in srgb,#3b9d70 30%,var(--card-border));border-radius:9px;background:var(--white);color:#2f8f62;font-family:Georgia,serif;font-size:21px}
+.immersive-guide-kicker{color:#2f8f62;font-size:8px;font-weight:900;letter-spacing:0}
+.immersive-guide-title{margin:4px 0 0;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:21px;font-weight:700;line-height:1.4}
+.immersive-guide-copy{margin-top:6px;color:var(--text-muted);font-size:10px;line-height:1.65}
+.immersive-guide-close{position:absolute;right:13px;top:13px;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--white);color:var(--rose);font-size:20px;cursor:pointer}
+.immersive-guide-steps{display:flex;flex-direction:column;padding:6px 18px}
+.immersive-guide-step{display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:10px;min-height:58px;padding:9px 0;border-bottom:1px solid color-mix(in srgb,var(--card-border) 74%,transparent)}
+.immersive-guide-step:last-child{border-bottom:0}
+.immersive-guide-step-no{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:10px;font-weight:900}
+.immersive-guide-step strong{display:block;color:var(--text);font-size:11px;line-height:1.45}
+.immersive-guide-step small{display:block;margin-top:2px;color:var(--text-muted);font-size:9px;line-height:1.45}
+.immersive-guide-action{width:calc(100% - 36px);height:43px;margin:5px 18px 18px;border:0;border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:900;cursor:pointer}
+.immersive-toast{position:fixed;z-index:4700;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));max-width:min(88vw,360px);padding:9px 13px;border:1px solid var(--card-border);border-radius:999px;background:color-mix(in srgb,var(--white) 94%,transparent);box-shadow:0 10px 28px rgba(52,25,35,.2);color:var(--text);font-size:10px;font-weight:800;text-align:center;transform:translateX(-50%);backdrop-filter:blur(10px)}
+.immersive-toast[hidden]{display:none}
+[data-theme="dark"] .immersive-guide-head{background:color-mix(in srgb,var(--pink-light) 18%,var(--white))}
+@media(max-width:520px){.immersive-guide-bg{align-items:flex-end;padding:0}.immersive-guide{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom)}.immersive-guide-head{padding:19px 56px 14px 17px}.immersive-guide-steps{padding-right:16px;padding-left:16px}.immersive-guide-action{width:calc(100% - 32px);margin-right:16px;margin-left:16px}}
 .heart-pulse{
 display:inline-grid;
 place-items:center;
@@ -2039,7 +2075,7 @@ body.choose-letterbox-open{overflow:hidden}
 
 <header class="header" style="position:sticky;top:0;z-index:100;">
   <div class="header-names">林聖展 <button type="button" class="heart-pulse" id="intimacy-visibility-toggle" onclick="toggleIntimacyVisibility()" aria-label="暫時隱藏親密統計" aria-pressed="false">♡</button> 蘇予君</div>
-  <div class="header-sub">要永遠在一起</div>
+  <button type="button" class="header-sub header-sub-trigger" id="immersive-mode-trigger" onclick="toggleImmersiveMode()" aria-label="切換全螢幕模式" title="切換全螢幕模式">要永遠在一起</button>
   <div class="header-dogs-stage" aria-hidden="true">
     <span class="line-dog white"><span class="line-dog-tail"></span><span class="line-dog-body"></span><span class="line-dog-head"><i class="line-dog-ear left"></i><i class="line-dog-ear right"></i><i class="line-dog-eye left"></i><i class="line-dog-eye right"></i><i class="line-dog-nose"></i><i class="line-dog-mouth"></i></span><i class="line-dog-paw left"></i><i class="line-dog-paw right"></i></span>
     <span class="line-dog brown"><span class="line-dog-tail"></span><span class="line-dog-body"></span><span class="line-dog-head"><i class="line-dog-ear left"></i><i class="line-dog-ear right"></i><i class="line-dog-eye left"></i><i class="line-dog-eye right"></i><i class="line-dog-nose"></i><i class="line-dog-mouth"></i></span><i class="line-dog-paw left"></i><i class="line-dog-paw right"></i></span>
@@ -2047,6 +2083,25 @@ body.choose-letterbox-open{overflow:hidden}
   </div>
   <button class="dark-toggle" onclick="toggleDark()" id="dark-btn" title="切換深色模式">🌙</button>
 </header>
+
+<div class="immersive-guide-bg hidden" id="immersive-guide-bg" onclick="immersiveCloseGuide(event)">
+  <section class="immersive-guide" role="dialog" aria-modal="true" aria-labelledby="immersive-guide-title" onclick="event.stopPropagation()">
+    <div class="immersive-guide-head">
+      <div class="immersive-guide-mark" aria-hidden="true">⌂</div>
+      <div class="immersive-guide-kicker">IPHONE FULL SCREEN</div>
+      <h2 class="immersive-guide-title" id="immersive-guide-title">從主畫面開啟</h2>
+      <p class="immersive-guide-copy">Safari 本身不允許網站按鈕永久移除網址列；加入 iPhone 主畫面後再開啟，就會以沒有網址列的全螢幕模式顯示。</p>
+      <button type="button" class="immersive-guide-close" onclick="immersiveCloseGuideDirect()" aria-label="關閉全螢幕說明">×</button>
+    </div>
+    <div class="immersive-guide-steps">
+      <div class="immersive-guide-step"><span class="immersive-guide-step-no">1</span><span><strong>點 Safari 的分享按鈕</strong><small>位於瀏覽器工具列的方框向上箭頭。</small></span></div>
+      <div class="immersive-guide-step"><span class="immersive-guide-step-no">2</span><span><strong>選擇「加入主畫面」</strong><small>名稱會顯示為「要永遠在一起」。</small></span></div>
+      <div class="immersive-guide-step"><span class="immersive-guide-step-no">3</span><span><strong>從桌面圖示重新開啟</strong><small>之後就不會顯示 Safari 網址列與底部工具列。</small></span></div>
+    </div>
+    <button type="button" class="immersive-guide-action" onclick="immersiveCloseGuideDirect()">知道了</button>
+  </section>
+</div>
+<div class="immersive-toast" id="immersive-toast" role="status" aria-live="polite" hidden></div>
 
 <div class="music-player collapsed" id="music-player">
   <button type="button" class="music-disc" id="music-disc" onclick="toggleMusicPlayerDock()" title="展開音樂播放器" aria-label="展開音樂播放器" aria-expanded="false">🎵</button>
@@ -2869,6 +2924,84 @@ function toggleDark(){
   document.documentElement.setAttribute('data-theme',t);
   document.getElementById('dark-btn').textContent=t==='dark'?'☀️':'🌙';
 })();
+
+let immersiveToastTimer=0;
+function immersiveIsStandalone(){
+  return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;
+}
+function immersiveIsIOS(){
+  return /iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+}
+function immersiveFullscreenElement(){
+  return document.fullscreenElement||document.webkitFullscreenElement||null;
+}
+function immersiveShowToast(message){
+  const toast=document.getElementById('immersive-toast');
+  if(!toast) return;
+  clearTimeout(immersiveToastTimer);
+  toast.textContent=message;
+  toast.hidden=false;
+  immersiveToastTimer=setTimeout(()=>{toast.hidden=true;},2600);
+}
+function immersiveOpenGuide(){
+  const overlay=document.getElementById('immersive-guide-bg');
+  if(!overlay) return;
+  overlay.classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>overlay.querySelector('.immersive-guide-close')?.focus(),40);
+}
+function immersiveCloseGuide(event){
+  if(event?.target===document.getElementById('immersive-guide-bg')) immersiveCloseGuideDirect();
+}
+function immersiveCloseGuideDirect(){
+  const overlay=document.getElementById('immersive-guide-bg');
+  if(!overlay) return;
+  overlay.classList.add('hidden');
+  document.body.style.overflow='';
+}
+async function immersiveRequestFullscreen(){
+  const root=document.documentElement;
+  if(root.requestFullscreen){
+    try{await root.requestFullscreen({navigationUI:'hide'});}
+    catch(_){await root.requestFullscreen();}
+    return true;
+  }
+  if(root.webkitRequestFullscreen){await root.webkitRequestFullscreen();return true;}
+  return false;
+}
+async function immersiveExitFullscreen(){
+  if(document.exitFullscreen){await document.exitFullscreen();return true;}
+  if(document.webkitExitFullscreen){await document.webkitExitFullscreen();return true;}
+  if(document.webkitCancelFullScreen){await document.webkitCancelFullScreen();return true;}
+  return false;
+}
+async function toggleImmersiveMode(){
+  if(immersiveIsStandalone()){
+    immersiveShowToast('目前已經是全螢幕模式');
+    return;
+  }
+  if(immersiveFullscreenElement()){
+    try{await immersiveExitFullscreen();immersiveShowToast('已離開全螢幕模式');}catch(_){immersiveShowToast('暫時無法離開全螢幕');}
+    return;
+  }
+  try{
+    const requested=await immersiveRequestFullscreen();
+    if(requested&&immersiveFullscreenElement()){
+      immersiveShowToast('已進入全螢幕，再點一次可退出');
+      return;
+    }
+  }catch(_){/* Safari falls back to Home Screen guidance. */}
+  if(immersiveIsIOS()) immersiveOpenGuide();
+  else immersiveShowToast('這個瀏覽器目前不支援網頁全螢幕');
+}
+function immersiveSyncFullscreenState(){
+  document.documentElement.classList.toggle('is-browser-fullscreen',Boolean(immersiveFullscreenElement()));
+}
+document.addEventListener('fullscreenchange',immersiveSyncFullscreenState);
+document.addEventListener('webkitfullscreenchange',immersiveSyncFullscreenState);
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&!document.getElementById('immersive-guide-bg')?.classList.contains('hidden')) immersiveCloseGuideDirect();
+});
 
 // ── Dates ──
 function today(){

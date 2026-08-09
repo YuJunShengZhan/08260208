@@ -1459,6 +1459,20 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-category-manage-btn:hover{border-color:var(--pink);background:var(--pink-light)}
 .footprint-category-manage-btn:active{transform:scale(.94)}
 .footprint-category-manage-btn span[aria-hidden="true"]{display:block;font-size:17px;line-height:1}
+.footprint-memory-expense-panel{display:grid;grid-template-columns:minmax(150px,.58fr) minmax(0,1.42fr);align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid color-mix(in srgb,#d1a352 26%,var(--card-border));background:color-mix(in srgb,#fff3d8 42%,var(--white))}
+.footprint-memory-expense-panel[hidden]{display:none}
+.footprint-memory-expense-summary{min-width:0;display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:10px}
+.footprint-memory-expense-mark{width:34px;height:34px;display:grid;place-items:center;border:1px solid color-mix(in srgb,#d1a352 42%,var(--card-border));border-radius:9px;background:var(--white);color:#9a6b23;font-family:Georgia,serif;font-size:16px;font-weight:800}
+.footprint-memory-expense-copy{min-width:0;display:flex;flex-direction:column;gap:2px}
+.footprint-memory-expense-name{color:#8b6121;font-size:9px;font-weight:900}
+.footprint-memory-expense-total{color:var(--text);font-family:'Noto Serif TC',serif;font-size:20px;font-weight:800;line-height:1.15;white-space:nowrap}
+.footprint-memory-expense-days{color:var(--text-muted);font-size:8px;line-height:1.4}
+.footprint-memory-expense-controls{min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px}
+.footprint-memory-expense-place{min-width:0;display:flex;flex-direction:column;gap:4px;color:var(--text-muted);font-size:8px;font-weight:800}
+.footprint-memory-expense-select{width:100%;min-width:0;height:38px;padding:0 28px 0 10px;border:1px solid color-mix(in srgb,#d1a352 32%,var(--card-border));border-radius:7px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;outline:none}
+.footprint-memory-expense-select:focus{border-color:#d0a04a;box-shadow:0 0 0 3px rgba(208,160,74,.12)}
+.footprint-memory-expense-add{height:38px;padding:0 13px;border:1px solid #c9973d;border-radius:7px;background:#c9973d;color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:900;cursor:pointer;white-space:nowrap}
+.footprint-memory-expense-add:hover{background:#b98931}
 .footprint-ranking-list{display:flex;flex-direction:column;padding:4px 16px 8px}
 .footprint-ranking-row{position:relative;width:100%;min-height:68px;display:grid;grid-template-columns:38px minmax(0,1fr) 52px;align-items:center;gap:11px;overflow:hidden;padding:10px 5px;border:0;border-bottom:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer;transition:background .18s ease}
 .footprint-ranking-row:hover{background:color-mix(in srgb,var(--pink-light) 38%,transparent)}
@@ -1473,6 +1487,8 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-ranking-copy{min-width:0;display:flex;flex-direction:column;gap:4px}
 .footprint-ranking-name{font-size:13px;font-weight:800;line-height:1.45;overflow-wrap:anywhere}
 .footprint-ranking-date{color:var(--text-muted);font-size:9px;line-height:1.4}
+.footprint-ranking-date{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.footprint-ranking-inline-expense{display:inline-flex;align-items:center;min-height:20px;padding:2px 7px;border-radius:999px;background:color-mix(in srgb,#fff0cf 72%,var(--white));color:#95641e;font-size:8px;font-weight:900;white-space:nowrap}
 .footprint-ranking-count{display:flex;align-items:baseline;justify-content:flex-end;gap:2px;color:var(--rose);white-space:nowrap}
 .footprint-ranking-count strong{font-family:'Noto Serif TC',serif;font-size:20px;line-height:1}
 .footprint-ranking-count small{font-size:9px;font-weight:800}
@@ -1513,6 +1529,10 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 [data-theme="dark"] .footprint-ranking-dialog-head{background:linear-gradient(135deg,color-mix(in srgb,var(--pink-light) 62%,var(--white)),color-mix(in srgb,var(--white) 90%,#183429))}
 [data-theme="dark"] .footprint-ranking-dialog-tag{background:rgba(77,173,119,.15);color:#8bd8aa}
 [data-theme="dark"] .footprint-ranking-expense-btn{background:rgba(208,160,74,.12);color:#efc878}
+[data-theme="dark"] .footprint-memory-expense-panel{background:rgba(208,160,74,.09)}
+[data-theme="dark"] .footprint-memory-expense-name,
+[data-theme="dark"] .footprint-ranking-inline-expense{color:#efc878}
+[data-theme="dark"] .footprint-ranking-inline-expense{background:rgba(208,160,74,.12)}
 
 .footprint-expense-bg{position:fixed;inset:0;z-index:2810;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(35,19,26,.62);backdrop-filter:blur(6px)}
 .footprint-expense-bg.hidden{display:none}
@@ -1785,6 +1805,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
 @media(max-width:520px){.footprint-memory-head{align-items:flex-start;flex-wrap:wrap;gap:8px;padding:16px 14px 13px 18px}.footprint-memory-title{font-size:20px}.footprint-memory-sub{margin-left:32px}.footprint-memory-total{margin-left:32px}.footprint-memory-tools{align-items:flex-end;padding:10px 12px}.footprint-memory-filter{min-width:0}.footprint-category-manage-btn{width:38px;min-width:38px;padding:0}.footprint-ranking-list{padding:3px 11px 7px}.footprint-ranking-row{grid-template-columns:34px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:9px 4px}.footprint-ranking-row.is-rank-1{min-height:76px;padding:10px 7px}.footprint-ranking-rank{width:32px;height:32px}.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:35px;height:35px}.footprint-ranking-name{font-size:12px}.footprint-ranking-count strong{font-size:18px}.footprint-ranking-bar{left:46px;right:52px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
 @media(max-width:520px){.footprint-category-dialog{height:94dvh;max-height:94dvh}.footprint-category-head{padding:17px 58px 13px 17px}.footprint-category-title{font-size:21px}.footprint-category-copy{font-size:9px}.footprint-category-body{display:block;overflow-y:auto;padding:0}.footprint-category-create{grid-template-columns:minmax(0,1fr);gap:9px;padding:12px}.footprint-category-create-meta{display:none}.footprint-category-workspace{display:block}.footprint-category-list-panel{max-height:none;border-right:0;border-bottom:1px solid var(--card-border)}.footprint-category-panel-head{padding:12px 12px 8px}.footprint-category-order{max-height:270px;padding:0 8px 11px}.footprint-category-row{grid-template-columns:29px minmax(0,1fr);gap:8px;min-height:60px;padding:8px}.footprint-category-row-actions,.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2;justify-content:flex-start;flex-wrap:wrap}.footprint-category-assign{height:430px;min-height:430px;padding:13px 12px 0}.footprint-category-place-list{max-height:none}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,128px);gap:8px}.footprint-category-place.is-active{margin:0}.footprint-category-place-select{font-size:8px}}
+@media(max-width:520px){.footprint-memory-expense-panel{grid-template-columns:minmax(0,1fr);gap:10px;padding:11px 12px}.footprint-memory-expense-controls{grid-template-columns:minmax(0,1fr) auto}.footprint-memory-expense-total{font-size:18px}.footprint-ranking-inline-expense{font-size:8px}}
 @media(max-width:520px){
   .footprint-category-bg{align-items:flex-end;padding:0;background:rgba(35,19,26,.5);backdrop-filter:blur(5px)}
   .footprint-category-dialog{width:100%;height:min(91dvh,760px);max-height:min(91dvh,760px);border-radius:22px 22px 0 0;box-shadow:0 -18px 55px rgba(42,19,28,.28)}
@@ -2422,6 +2443,22 @@ onclick="hideSpecialForToday()">
         <select class="footprint-memory-category" id="footprint-memory-category" aria-label="選擇地點類別" onchange="footprintMemoryCategoryChanged(this.value)"></select>
       </label>
       <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()" aria-label="管理地點類別" title="管理地點類別"><span aria-hidden="true">⚙</span></button>
+    </div>
+    <div class="footprint-memory-expense-panel" id="footprint-memory-expense-panel" hidden>
+      <div class="footprint-memory-expense-summary">
+        <span class="footprint-memory-expense-mark" aria-hidden="true">$</span>
+        <span class="footprint-memory-expense-copy">
+          <span class="footprint-memory-expense-name" id="footprint-memory-expense-name"></span>
+          <strong class="footprint-memory-expense-total" id="footprint-memory-expense-total"></strong>
+          <span class="footprint-memory-expense-days" id="footprint-memory-expense-days"></span>
+        </span>
+      </div>
+      <div class="footprint-memory-expense-controls">
+        <label class="footprint-memory-expense-place"><span>選擇地點</span>
+          <select class="footprint-memory-expense-select" id="footprint-memory-expense-place" aria-label="選擇要記錄花費的地點"></select>
+        </label>
+        <button type="button" class="footprint-memory-expense-add" onclick="footprintOpenMemoryExpense()">記錄花費</button>
+      </div>
     </div>
     <div class="footprint-ranking-list" id="footprint-ranking-list"></div>
     <button type="button" class="footprint-ranking-all-btn" id="footprint-ranking-all-btn" onclick="footprintOpenAllRanking()">
@@ -9929,8 +9966,10 @@ function renderFootprintMemoryStats(groups=footprintGetGroups()){
   const list=document.getElementById('footprint-ranking-list');
   const allButton=document.getElementById('footprint-ranking-all-btn');
   const select=document.getElementById('footprint-memory-category');
+  const expensePanel=document.getElementById('footprint-memory-expense-panel');
+  const expensePlace=document.getElementById('footprint-memory-expense-place');
   if(!section||!list||!select) return;
-  if(!groups.length){section.hidden=true;list.innerHTML='';if(allButton)allButton.hidden=true;return;}
+  if(!groups.length){section.hidden=true;list.innerHTML='';if(allButton)allButton.hidden=true;if(expensePanel)expensePanel.hidden=true;return;}
   const definitions=footprintCategoryDefinitions();
   if(!footprintCategoryExists(footprintMemoryCategory)) footprintMemoryCategory='all';
   const allRanked=footprintRankedGroups(groups);
@@ -9944,13 +9983,32 @@ function renderFootprintMemoryStats(groups=footprintGetGroups()){
   section.hidden=false;
   if(allButton) allButton.hidden=false;
   document.getElementById('footprint-memory-total').textContent=footprintMemoryCategory==='all'?`共 ${groups.length} 個地點`:`${filtered.length} 個地點`;
+  const showExpensePanel=['hotel','baseball'].includes(footprintMemoryCategory)&&filtered.length>0;
+  if(expensePanel) expensePanel.hidden=!showExpensePanel;
+  if(showExpensePanel&&expensePanel&&expensePlace){
+    const previousPlace=expensePlace.value;
+    const expenseVisits=filtered.flatMap(group=>footprintExpenseVisits(group));
+    const expenseTotal=expenseVisits.reduce((sum,visit)=>sum+visit.expense,0);
+    document.getElementById('footprint-memory-expense-name').textContent=`${footprintCategoryLabel(footprintMemoryCategory)}花費`;
+    document.getElementById('footprint-memory-expense-total').textContent=`$${footprintFormatMoney(expenseTotal)}`;
+    document.getElementById('footprint-memory-expense-days').textContent=expenseVisits.length?`已記錄 ${expenseVisits.length} 天`:'尚未記錄花費';
+    expensePlace.innerHTML=filtered.map(group=>`<option value="${footprintEscape(group.placeId)}">${footprintEscape(group.name)}（${group.visits.length} 次）</option>`).join('');
+    if(filtered.some(group=>group.placeId===previousPlace)) expensePlace.value=previousPlace;
+  }
   list.innerHTML=ranked.length?ranked.map(group=>{
     const rank=categoryRanks.get(group.placeId);
     const rankClass=rank<=3?` is-rank-${rank}`:'';
     const progress=Math.max(8,Math.round(group.visits.length/maxCount*100));
-    return `<button type="button" class="footprint-ranking-row${rankClass}" data-footprint-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-bar" style="--rank-progress:${progress}%"></span><span class="footprint-ranking-rank">${rank}</span><span class="footprint-ranking-copy"><span class="footprint-ranking-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-date">最近造訪 · ${footprintFormatDate(group.latestDate)}</span></span><span class="footprint-ranking-count"><strong>${group.visits.length}</strong><small>次</small></span></button>`;
+    const expenseVisits=showExpensePanel?footprintExpenseVisits(group):[];
+    const expenseTotal=expenseVisits.reduce((sum,visit)=>sum+visit.expense,0);
+    const expenseMeta=showExpensePanel?`<span class="footprint-ranking-inline-expense">${expenseVisits.length?`花費 $${footprintFormatMoney(expenseTotal)} · ${expenseVisits.length} 天`:'尚未記錄花費'}</span>`:'';
+    return `<button type="button" class="footprint-ranking-row${rankClass}" data-footprint-ranking="${footprintEscape(group.placeId)}"><span class="footprint-ranking-bar" style="--rank-progress:${progress}%"></span><span class="footprint-ranking-rank">${rank}</span><span class="footprint-ranking-copy"><span class="footprint-ranking-name">${footprintEscape(group.name)}</span><span class="footprint-ranking-date"><span>最近造訪 · ${footprintFormatDate(group.latestDate)}</span>${expenseMeta}</span></span><span class="footprint-ranking-count"><strong>${group.visits.length}</strong><small>次</small></span></button>`;
   }).join(''):'<div class="footprint-ranking-empty">這個類別還沒有收錄地點，可以到「管理類別」加入。</div>';
   list.querySelectorAll('[data-footprint-ranking]').forEach(button=>button.addEventListener('click',()=>footprintOpenFromMemory(button.dataset.footprintRanking)));
+}
+function footprintOpenMemoryExpense(){
+  const placeId=document.getElementById('footprint-memory-expense-place')?.value||'';
+  if(placeId) footprintOpenExpense(placeId);
 }
 function footprintMemoryCategoryChanged(category){
   footprintMemoryCategory=footprintCategoryExists(category)?category:'all';

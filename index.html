@@ -1924,6 +1924,65 @@ body.choose-letterbox-open{overflow:hidden}
   .footprint-category-order{grid-template-columns:minmax(0,1fr)!important}
   .footprint-category-row{min-height:64px!important}
 }
+
+/* Category detail view */
+.footprint-category-dialog.is-detail{width:min(100%,720px)}
+.footprint-category-dialog.is-detail .footprint-category-head{min-height:62px;display:flex;align-items:center;padding:14px 60px 13px 20px;background:color-mix(in srgb,var(--pink-light) 24%,var(--white))}
+.footprint-category-dialog.is-detail .footprint-category-kicker,
+.footprint-category-dialog.is-detail .footprint-category-copy{display:none}
+.footprint-category-dialog.is-detail .footprint-category-title{margin:0;font-size:18px;line-height:1.35}
+.footprint-category-dialog.is-detail .footprint-category-close{top:12px;right:14px;width:36px;height:36px;background:var(--white);font-size:19px}
+.footprint-category-dialog.is-detail .footprint-category-body{display:flex!important;overflow:hidden!important}
+.footprint-category-dialog.is-detail .footprint-category-workspace.has-active{display:block!important;width:100%;height:100%;overflow:hidden!important}
+.footprint-category-dialog.is-detail .footprint-category-list-panel{display:none!important}
+.footprint-category-dialog.is-detail .footprint-category-assign{height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;padding:0 18px 16px!important;overflow:hidden!important;background:var(--white)!important}
+.footprint-category-dialog.is-detail .footprint-category-assign-head{position:relative!important;top:auto!important;display:grid!important;grid-template-columns:38px minmax(0,1fr) auto!important;align-items:center!important;gap:10px!important;margin:0!important;padding:14px 0 12px!important;border:0!important;background:transparent!important;backdrop-filter:none!important}
+.footprint-category-dialog.is-detail .footprint-category-back{width:36px!important;height:36px!important;min-height:36px!important;display:grid!important;place-items:center!important;padding:0!important;border:1px solid var(--card-border)!important;border-radius:10px!important;background:var(--white)!important;box-shadow:0 5px 14px rgba(69,37,47,.06);color:var(--rose)!important;font-size:17px!important;line-height:1!important}
+.footprint-category-dialog.is-detail .footprint-category-back:hover{border-color:color-mix(in srgb,var(--rose) 42%,var(--card-border));background:var(--pink-light)!important}
+.footprint-category-dialog.is-detail .footprint-category-assign-title{min-width:0;display:flex;align-items:center;gap:9px;color:var(--text);font-size:17px;line-height:1.35}
+.footprint-category-assign-icon{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border:1px solid color-mix(in srgb,#319a68 22%,var(--card-border));border-radius:10px;background:color-mix(in srgb,#e4f5ec 72%,var(--white));font-family:'Noto Sans TC',sans-serif;font-size:16px}
+.footprint-category-dialog.is-detail .footprint-category-assign-count{min-height:27px;padding:0 10px;background:color-mix(in srgb,var(--pink-light) 72%,var(--white));font-size:9px}
+.footprint-category-dialog.is-detail .footprint-category-search-wrap{flex:0 0 auto;margin:0 0 12px!important}
+.footprint-category-dialog.is-detail .footprint-category-search-wrap::before{left:13px;color:color-mix(in srgb,var(--text-muted) 82%,var(--rose));font-size:15px}
+.footprint-category-dialog.is-detail .footprint-category-search{height:44px;padding-left:38px;border-radius:10px;background:color-mix(in srgb,var(--pink-light) 24%,var(--white));font-size:11px}
+.footprint-category-dialog.is-detail .footprint-category-place-list{min-height:0!important;max-height:none!important;flex:1!important;display:block!important;overflow-y:auto!important;margin:0!important;padding:0 0 env(safe-area-inset-bottom)!important;border:1px solid var(--card-border);border-radius:12px;background:var(--white);box-shadow:0 10px 28px rgba(69,37,47,.055);overscroll-behavior:contain}
+.footprint-category-dialog.is-detail .footprint-category-place{min-height:74px!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(178px,220px)!important;align-items:center!important;gap:16px!important;margin:0!important;padding:12px 14px!important;border:0!important;border-bottom:1px solid color-mix(in srgb,var(--card-border) 72%,transparent)!important;border-radius:0!important;background:transparent!important;transition:background .18s ease}
+.footprint-category-dialog.is-detail .footprint-category-place:last-child{border-bottom:0!important}
+.footprint-category-dialog.is-detail .footprint-category-place:hover,
+.footprint-category-dialog.is-detail .footprint-category-place:focus-within{background:color-mix(in srgb,var(--pink-light) 22%,var(--white))!important}
+.footprint-category-place-copy{min-width:0;display:flex;flex-direction:column;gap:5px}
+.footprint-category-place-heading{min-width:0;display:flex;align-items:center;gap:9px}
+.footprint-category-place-mark{width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;border-radius:9px;background:color-mix(in srgb,var(--pink-light) 66%,var(--white));color:var(--rose);font-size:13px}
+.footprint-category-dialog.is-detail .footprint-category-place-name{min-width:0;color:var(--text);font-size:12px;font-weight:900;line-height:1.5}
+.footprint-category-dialog.is-detail .footprint-category-place-meta{margin:0 0 0 37px;color:var(--text-muted);font-size:9px;line-height:1.45}
+.footprint-category-place-meta strong{color:#2f9465;font-size:10px;font-weight:900}
+.footprint-category-place-status{white-space:nowrap}
+.footprint-category-place-control{min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px}
+.footprint-category-place-control-label{color:var(--text-muted);font-size:8px;font-weight:900;white-space:nowrap}
+.footprint-category-dialog.is-detail .footprint-category-place-select{height:38px!important;padding:0 28px 0 10px!important;border-radius:9px!important;background:color-mix(in srgb,var(--pink-light) 20%,var(--white))!important;font-size:10px!important;font-weight:800!important}
+.footprint-category-dialog.is-detail .footprint-category-empty{margin:12px;padding:34px 14px;border:1px dashed color-mix(in srgb,var(--rose) 24%,var(--card-border));border-radius:10px;background:color-mix(in srgb,var(--pink-light) 15%,var(--white))}
+[data-theme="dark"] .footprint-category-dialog.is-detail .footprint-category-head,
+[data-theme="dark"] .footprint-category-dialog.is-detail .footprint-category-search,
+[data-theme="dark"] .footprint-category-dialog.is-detail .footprint-category-place:hover,
+[data-theme="dark"] .footprint-category-dialog.is-detail .footprint-category-place:focus-within{background:color-mix(in srgb,var(--pink-light) 18%,var(--white))!important}
+[data-theme="dark"] .footprint-category-assign-icon{background:rgba(71,163,111,.14)}
+@media(max-width:600px){
+  .footprint-category-dialog.is-detail .footprint-category-head{min-height:58px;padding:12px 56px 11px 16px!important}
+  .footprint-category-dialog.is-detail .footprint-category-title{font-size:17px}
+  .footprint-category-dialog.is-detail .footprint-category-close{top:10px;right:12px}
+  .footprint-category-dialog.is-detail .footprint-category-assign{padding:0 12px 12px!important}
+  .footprint-category-dialog.is-detail .footprint-category-assign-head{grid-template-columns:36px minmax(0,1fr) auto!important;padding:12px 0 10px!important}
+  .footprint-category-dialog.is-detail .footprint-category-assign-title{font-size:15px}
+  .footprint-category-assign-icon{width:32px;height:32px;flex-basis:32px;font-size:15px}
+  .footprint-category-dialog.is-detail .footprint-category-place{grid-template-columns:minmax(0,1fr) 162px!important;gap:10px!important;padding:11px 12px!important}
+  .footprint-category-place-control{grid-template-columns:minmax(0,1fr)}
+  .footprint-category-place-control-label{display:none}
+}
+@media(max-width:460px){
+  .footprint-category-dialog.is-detail .footprint-category-place{grid-template-columns:minmax(0,1fr)!important;gap:9px!important}
+  .footprint-category-place-control{margin-left:37px}
+  .footprint-category-dialog.is-detail .footprint-category-place-select{height:37px!important}
+}
 </style>
 </head>
 <body>
@@ -2402,7 +2461,7 @@ onclick="hideSpecialForToday()">
         </section>
         <section class="footprint-category-assign" id="footprint-category-assign" hidden>
           <div class="footprint-category-assign-head">
-            <button type="button" class="footprint-category-back" onclick="footprintBackCategoryOverview()">‹ 分類</button>
+            <button type="button" class="footprint-category-back" onclick="footprintBackCategoryOverview()" aria-label="返回分類列表" title="返回分類列表">←</button>
             <div class="footprint-category-assign-title" id="footprint-category-assign-title"></div>
             <div class="footprint-category-assign-count" id="footprint-category-assign-count"></div>
           </div>
@@ -9962,7 +10021,9 @@ function footprintRenderCategoryManager(){
     return;
   }
   search.value=footprintCategoryManagerQuery;
-  document.getElementById('footprint-category-assign-title').textContent=active.name;
+  const activeIcon=categoryIcons[active.id]||'📍';
+  document.getElementById('footprint-category-assign-title').innerHTML=`<span class="footprint-category-assign-icon" aria-hidden="true">${activeIcon}</span><span>${footprintEscape(active.name)}</span>`;
+  search.placeholder=`搜尋「${active.name}」裡的地點`;
   const query=footprintNormalizeName(footprintCategoryManagerQuery);
   const allInCategory=groups.filter(group=>footprintEffectiveCategory(group)===active.id);
   const places=allInCategory.filter(group=>!query||footprintNormalizeName([group.name,...group.visits.map(visit=>visit.address)].join(' ')).includes(query));
@@ -9970,8 +10031,9 @@ function footprintRenderCategoryManager(){
   list.innerHTML=places.length?places.map(group=>{
     const automatic=footprintPlaceCategory(group);
     const override=String(footprintCategorySettings.overrides[group.placeId]||'');
-    const options=`<option value=""${override?'':' selected'}>自動：${footprintEscape(footprintCategoryLabel(automatic))}</option>${definitions.map(category=>`<option value="${footprintEscape(category.id)}"${override===category.id?' selected':''}>移到 ${footprintEscape(category.name)}</option>`).join('')}`;
-    return `<div class="footprint-category-place is-active"><span class="footprint-category-place-copy"><span class="footprint-category-place-name">${footprintEscape(group.name)}</span><span class="footprint-category-place-meta">造訪 ${group.visits.length} 次 · 目前：${footprintEscape(active.name)}</span></span><select class="footprint-category-place-select" data-category-place-select="${footprintEscape(group.placeId)}" aria-label="設定 ${footprintEscape(group.name)} 的類別">${options}</select></div>`;
+    const options=`<option value=""${override?'':' selected'}>自動分類 · ${footprintEscape(footprintCategoryLabel(automatic))}</option>${definitions.map(category=>`<option value="${footprintEscape(category.id)}"${override===category.id?' selected':''}>${footprintEscape(category.name)}</option>`).join('')}`;
+    const status=override?'手動分類':`自動 · ${footprintCategoryLabel(automatic)}`;
+    return `<div class="footprint-category-place is-active"><span class="footprint-category-place-copy"><span class="footprint-category-place-heading"><span class="footprint-category-place-mark" aria-hidden="true">●</span><span class="footprint-category-place-name">${footprintEscape(group.name)}</span></span><span class="footprint-category-place-meta"><strong>${group.visits.length}</strong> 次造訪 · <span class="footprint-category-place-status">${footprintEscape(status)}</span></span></span><label class="footprint-category-place-control"><span class="footprint-category-place-control-label">歸類至</span><select class="footprint-category-place-select" data-category-place-select="${footprintEscape(group.placeId)}" aria-label="設定 ${footprintEscape(group.name)} 的類別">${options}</select></label></div>`;
   }).join(''):`<div class="footprint-category-empty">${query?'這個分類找不到符合搜尋的地點':'這個分類目前沒有地點'}</div>`;
   list.querySelectorAll('[data-category-place-select]').forEach(select=>select.addEventListener('change',()=>footprintSetPlaceCategory(select.dataset.categoryPlaceSelect,select.value)));
 }

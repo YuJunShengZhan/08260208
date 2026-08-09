@@ -1526,6 +1526,34 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-ranking-expense-btn{min-width:67px;min-height:38px;margin-right:7px;padding:0 9px;border:1px solid color-mix(in srgb,#d8b36a 58%,var(--card-border));border-radius:7px;background:color-mix(in srgb,var(--white) 72%,#fff2d8);color:#98651f;font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:900;cursor:pointer;white-space:nowrap}
 .footprint-ranking-expense-btn:hover{border-color:#d0a04a;background:#fff0cf}
 .footprint-ranking-empty{padding:44px 14px;color:var(--text-muted);font-size:12px;line-height:1.7;text-align:center}
+.footprint-history-bg{position:fixed;inset:0;z-index:2800;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(39,22,29,.56);backdrop-filter:blur(6px)}
+.footprint-history-bg.hidden{display:none}
+.footprint-history-dialog{width:min(100%,540px);max-height:min(86vh,760px);max-height:min(86dvh,760px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:14px;background:var(--white);box-shadow:0 26px 78px rgba(64,28,40,.3)}
+.footprint-history-head{position:relative;flex:0 0 auto;padding:18px 58px 15px 19px;border-bottom:1px solid var(--card-border);background:color-mix(in srgb,var(--pink-light) 30%,var(--white))}
+.footprint-history-head::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--rose) 0 62%,#369768 62% 100%)}
+.footprint-history-kicker{color:#2f8f62;font-size:8px;font-weight:900;letter-spacing:0}
+.footprint-history-title{margin:4px 0 0;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
+.footprint-history-summary{margin-top:4px;color:var(--text-muted);font-size:10px;line-height:1.5}
+.footprint-history-address{margin-top:3px;color:var(--text-muted);font-size:9px;line-height:1.45;overflow-wrap:anywhere}
+.footprint-history-close{position:absolute;right:14px;top:14px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--white);color:var(--rose);font-size:21px;line-height:1;cursor:pointer}
+.footprint-history-body{min-height:0;display:flex;flex-direction:column;padding:13px 15px 15px}
+.footprint-history-hint{flex:0 0 auto;margin:0 1px 10px;color:var(--text-muted);font-size:10px;line-height:1.5}
+.footprint-history-list{min-height:0;overflow-y:auto;border:1px solid var(--card-border);border-radius:10px;background:var(--white);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.footprint-history-item{width:100%;min-height:70px;display:grid;grid-template-columns:44px minmax(0,1fr) 18px;align-items:center;gap:11px;padding:10px 12px;border:0;border-bottom:1px solid color-mix(in srgb,var(--card-border) 76%,transparent);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer;transition:background .18s ease}
+.footprint-history-item:last-child{border-bottom:0}
+.footprint-history-item:hover,.footprint-history-item:focus-visible{background:color-mix(in srgb,var(--pink-light) 28%,var(--white));outline:none}
+.footprint-history-date-badge{width:42px;height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid color-mix(in srgb,var(--rose) 22%,var(--card-border));border-radius:9px;background:color-mix(in srgb,var(--pink-light) 58%,var(--white));color:var(--rose);line-height:1}
+.footprint-history-date-badge strong{font-family:'Noto Serif TC',serif;font-size:17px}
+.footprint-history-date-badge small{margin-top:4px;font-size:8px;font-weight:800}
+.footprint-history-item-copy{min-width:0;display:flex;flex-direction:column;gap:5px}
+.footprint-history-item-title{font-size:12px;font-weight:900;line-height:1.45}
+.footprint-history-item-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;color:var(--text-muted);font-size:8px;line-height:1.4}
+.footprint-history-item-tag{display:inline-flex;align-items:center;min-height:19px;padding:2px 6px;border-radius:999px;background:color-mix(in srgb,#e3f3ea 74%,var(--white));color:#2e875d;font-weight:900}
+.footprint-history-item-tag.expense{background:color-mix(in srgb,#fff0cf 72%,var(--white));color:#95641e}
+.footprint-history-item-arrow{color:var(--rose);font-size:21px;line-height:1;text-align:right}
+[data-theme="dark"] .footprint-history-head{background:color-mix(in srgb,var(--pink-light) 16%,var(--white))}
+[data-theme="dark"] .footprint-history-item-tag{background:rgba(72,166,113,.14);color:#8bd8aa}
+[data-theme="dark"] .footprint-history-item-tag.expense{background:rgba(208,160,74,.12);color:#efc878}
 [data-theme="dark"] .footprint-ranking-dialog-head{background:linear-gradient(135deg,color-mix(in srgb,var(--pink-light) 62%,var(--white)),color-mix(in srgb,var(--white) 90%,#183429))}
 [data-theme="dark"] .footprint-ranking-dialog-tag{background:rgba(77,173,119,.15);color:#8bd8aa}
 [data-theme="dark"] .footprint-ranking-expense-btn{background:rgba(208,160,74,.12);color:#efc878}
@@ -1802,6 +1830,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:620px){.choose-answer-grid{grid-template-columns:1fr}.choose-letterbox-bg{align-items:flex-end;padding:0}.choose-letterbox{max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-letterbox-body{padding:16px 13px calc(22px + env(safe-area-inset-bottom))}.choose-answer{min-height:270px;padding:22px 18px}}
 @media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-brand{min-width:0;font-size:10px}.choose-brand span:last-child{overflow-wrap:anywhere}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
 @media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-map-shell{margin-right:12px;margin-left:12px}.footprint-map-shell #footprint-map{height:240px}.footprint-date-browser{grid-template-columns:minmax(0,1fr);gap:9px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
+@media(max-width:520px){.footprint-history-bg{align-items:flex-end;padding:0}.footprint-history-dialog{width:100%;max-height:calc(91dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-history-head{padding:17px 57px 14px 17px}.footprint-history-title{font-size:20px}.footprint-history-body{padding:11px 12px calc(14px + env(safe-area-inset-bottom))}.footprint-history-item{grid-template-columns:42px minmax(0,1fr) 16px;gap:9px;padding:9px 10px}.footprint-history-date-badge{width:40px;height:46px}}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
 @media(max-width:520px){.footprint-memory-head{align-items:flex-start;flex-wrap:wrap;gap:8px;padding:16px 14px 13px 18px}.footprint-memory-title{font-size:20px}.footprint-memory-sub{margin-left:32px}.footprint-memory-total{margin-left:32px}.footprint-memory-tools{align-items:flex-end;padding:10px 12px}.footprint-memory-filter{min-width:0}.footprint-category-manage-btn{width:38px;min-width:38px;padding:0}.footprint-ranking-list{padding:3px 11px 7px}.footprint-ranking-row{grid-template-columns:34px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:9px 4px}.footprint-ranking-row.is-rank-1{min-height:76px;padding:10px 7px}.footprint-ranking-rank{width:32px;height:32px}.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:35px;height:35px}.footprint-ranking-name{font-size:12px}.footprint-ranking-count strong{font-size:18px}.footprint-ranking-bar{left:46px;right:52px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
 @media(max-width:520px){.footprint-category-dialog{height:94dvh;max-height:94dvh}.footprint-category-head{padding:17px 58px 13px 17px}.footprint-category-title{font-size:21px}.footprint-category-copy{font-size:9px}.footprint-category-body{display:block;overflow-y:auto;padding:0}.footprint-category-create{grid-template-columns:minmax(0,1fr);gap:9px;padding:12px}.footprint-category-create-meta{display:none}.footprint-category-workspace{display:block}.footprint-category-list-panel{max-height:none;border-right:0;border-bottom:1px solid var(--card-border)}.footprint-category-panel-head{padding:12px 12px 8px}.footprint-category-order{max-height:270px;padding:0 8px 11px}.footprint-category-row{grid-template-columns:29px minmax(0,1fr);gap:8px;min-height:60px;padding:8px}.footprint-category-row-actions,.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2;justify-content:flex-start;flex-wrap:wrap}.footprint-category-assign{height:430px;min-height:430px;padding:13px 12px 0}.footprint-category-place-list{max-height:none}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,128px);gap:8px}.footprint-category-place.is-active{margin:0}.footprint-category-place-select{font-size:8px}}
@@ -2478,6 +2507,22 @@ onclick="hideSpecialForToday()">
     <div class="footprint-ranking-dialog-body">
       <div class="footprint-ranking-categories" id="footprint-ranking-categories" role="tablist" aria-label="地點分類"></div>
       <div class="footprint-ranking-dialog-list" id="footprint-ranking-dialog-list"></div>
+    </div>
+  </section>
+</div>
+
+<div class="footprint-history-bg hidden" id="footprint-history-bg" onclick="footprintCloseVisitHistory(event)">
+  <section class="footprint-history-dialog" role="dialog" aria-modal="true" aria-labelledby="footprint-history-title" onclick="event.stopPropagation()">
+    <header class="footprint-history-head">
+      <div class="footprint-history-kicker">VISIT HISTORY</div>
+      <h2 class="footprint-history-title" id="footprint-history-title"></h2>
+      <div class="footprint-history-summary" id="footprint-history-summary"></div>
+      <div class="footprint-history-address" id="footprint-history-address"></div>
+      <button type="button" class="footprint-history-close" onclick="footprintCloseVisitHistoryDirect()" aria-label="關閉造訪紀錄">×</button>
+    </header>
+    <div class="footprint-history-body">
+      <div class="footprint-history-hint">選擇一個日期，再查看當天的照片與行程。</div>
+      <div class="footprint-history-list" id="footprint-history-list"></div>
     </div>
   </section>
 </div>
@@ -10143,13 +10188,55 @@ function footprintSetPlaceCategory(placeId,categoryId){
   footprintPersistCategorySettings();
 }
 function footprintOpenFromMemory(placeId){
+  footprintOpenVisitHistory(placeId);
+}
+function footprintOpenVisitHistory(placeId){
   const group=footprintGetGroups().find(item=>item.placeId===String(placeId||''));
-  const latestVisit=group?.visits?.[0];
-  if(latestVisit?.date) footprintOpenAlbumDay(latestVisit.date);
+  const overlay=document.getElementById('footprint-history-bg');
+  const list=document.getElementById('footprint-history-list');
+  if(!group||!overlay||!list) return;
+  const visitsByDate=new Map();
+  group.visits.forEach(visit=>{
+    if(!visitsByDate.has(visit.date)) visitsByDate.set(visit.date,[]);
+    visitsByDate.get(visit.date).push(visit);
+  });
+  const entries=[...visitsByDate.entries()].sort((a,b)=>b[0].localeCompare(a[0]));
+  document.getElementById('footprint-history-title').textContent=group.name;
+  document.getElementById('footprint-history-summary').textContent=`共 ${group.visits.length} 次造訪 · ${entries.length} 個日期`;
+  document.getElementById('footprint-history-address').textContent=group.visits.find(visit=>visit.address)?.address||'';
+  const weekdays=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+  list.innerHTML=entries.map(([date,visits])=>{
+    const parts=date.split('-');
+    const dayData=(typeof albumFirebaseData!=='undefined'&&albumFirebaseData)?albumFirebaseData[date]:null;
+    const photoCount=Array.isArray(dayData?.photos)?dayData.photos.length:0;
+    const hasSchedule=Boolean(String(dayData?.note||'').trim()||visits.some(visit=>footprintDisplayVisitNote(visit.note)));
+    const expenseTotal=visits.reduce((sum,visit)=>sum+(Number(visit.expense)||0),0);
+    const weekday=weekdays[new Date(`${date}T12:00:00`).getDay()]||'';
+    const tags=[visits.length>1?`<span class="footprint-history-item-tag">${visits.length} 筆足跡</span>`:'',photoCount?`<span class="footprint-history-item-tag">${photoCount} 張照片</span>`:'',hasSchedule?'<span class="footprint-history-item-tag">有行程</span>':'',expenseTotal?`<span class="footprint-history-item-tag expense">花費 $${footprintFormatMoney(expenseTotal)}</span>`:''].filter(Boolean).join('');
+    return `<button type="button" class="footprint-history-item" data-footprint-history-date="${footprintEscape(date)}" aria-label="查看 ${footprintFormatDate(date)} 的行程"><span class="footprint-history-date-badge"><strong>${Number(parts[2])}</strong><small>${Number(parts[1])} 月</small></span><span class="footprint-history-item-copy"><span class="footprint-history-item-title">${footprintFormatDate(date)} · ${weekday}</span><span class="footprint-history-item-meta">${tags||'<span>查看當天行程</span>'}</span></span><span class="footprint-history-item-arrow" aria-hidden="true">›</span></button>`;
+  }).join('');
+  list.querySelectorAll('[data-footprint-history-date]').forEach(button=>button.addEventListener('click',()=>footprintOpenVisitHistoryDay(button.dataset.footprintHistoryDate)));
+  overlay.classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>overlay.querySelector('.footprint-history-close')?.focus(),40);
+}
+function footprintOpenVisitHistoryDay(date){
+  footprintCloseVisitHistoryDirect();
+  footprintOpenAlbumDay(date);
+}
+function footprintCloseVisitHistory(event){
+  if(event?.target===document.getElementById('footprint-history-bg')) footprintCloseVisitHistoryDirect();
+}
+function footprintCloseVisitHistoryDirect(){
+  const overlay=document.getElementById('footprint-history-bg');
+  if(!overlay) return;
+  overlay.classList.add('hidden');
+  document.body.style.overflow='';
 }
 document.addEventListener('keydown',event=>{
   if(event.key!=='Escape') return;
-  if(!document.getElementById('footprint-category-bg')?.classList.contains('hidden')) footprintCloseCategoryManagerDirect();
+  if(!document.getElementById('footprint-history-bg')?.classList.contains('hidden')) footprintCloseVisitHistoryDirect();
+  else if(!document.getElementById('footprint-category-bg')?.classList.contains('hidden')) footprintCloseCategoryManagerDirect();
   else if(!document.getElementById('footprint-expense-bg')?.classList.contains('hidden')) footprintCloseExpenseDirect();
   else if(!document.getElementById('footprint-ranking-dialog-bg')?.classList.contains('hidden')) footprintCloseAllRankingDirect();
 });

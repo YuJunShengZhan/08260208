@@ -773,10 +773,15 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .album-place-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:7px}
 .album-place-editor-title{color:var(--rose);font-size:11px;font-weight:900}
 .album-place-editor-hint{margin-top:2px;color:var(--text-muted);font-size:9px;line-height:1.45}
-.album-place-link-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:stretch}
-.album-place-link-input{width:100%;min-width:0;min-height:64px;resize:vertical;padding:8px 9px;border:1px solid var(--card-border);border-radius:10px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:10px;line-height:1.5;outline:none}
+.album-place-link-list{display:flex;flex-direction:column;gap:7px}
+.album-place-link-row{display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:7px;align-items:center}
+.album-place-link-input{width:100%;min-width:0;height:42px;padding:0 11px;border:1px solid var(--card-border);border-radius:10px;background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:11px;line-height:1.4;outline:none}
 .album-place-link-input:focus{border-color:var(--pink);box-shadow:0 0 0 2px rgba(232,99,122,.1)}
-.album-place-import-btn{min-width:70px;padding:0 10px;border:0;border-radius:10px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:900;cursor:pointer}
+.album-place-link-action{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--pink);border-radius:10px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:24px;font-weight:500;line-height:1;cursor:pointer;transition:transform .16s ease,background-color .16s ease,color .16s ease}
+.album-place-link-action:hover{background:var(--pink);color:#fff}
+.album-place-link-action:active{transform:scale(.94)}
+.album-place-link-action.remove{border-color:var(--card-border);background:var(--white);color:var(--text-muted);font-size:19px}
+.album-place-import-btn{width:100%;min-height:42px;margin-top:8px;padding:0 12px;border:0;border-radius:10px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:900;cursor:pointer}
 .album-place-import-btn:disabled{opacity:.55;cursor:wait}
 .album-place-status{min-height:17px;margin-top:6px;color:var(--text-muted);font-size:9px;line-height:1.45}
 .album-place-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
@@ -786,7 +791,7 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .album-place-item-name{display:block;color:var(--text);font-size:10px;font-weight:900;line-height:1.35;overflow-wrap:anywhere}
 .album-place-item-address{display:block;margin-top:2px;color:var(--text-muted);font-size:8px;line-height:1.35;overflow-wrap:anywhere}
 .album-place-item-del{width:29px;height:29px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:8px;background:var(--white);color:var(--rose);font-size:12px;cursor:pointer}
-[data-theme="dark"] .album-place-link-input,[data-theme="dark"] .album-place-item-del{background:#332028}
+[data-theme="dark"] .album-place-link-input,[data-theme="dark"] .album-place-link-action.remove,[data-theme="dark"] .album-place-item-del{background:#332028}
 .album-place-previous{margin:9px 0 10px;padding:9px;border:1px solid rgba(232,99,122,.14);border-radius:11px;background:color-mix(in srgb,var(--pink-light) 38%,var(--white))}
 .album-place-previous[hidden]{display:none}
 .album-place-previous-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;color:var(--rose);font-size:10px;font-weight:900}
@@ -846,27 +851,30 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .ymp-head{display:flex;align-items:center;justify-content:space-between;padding:15px 17px 12px;border-bottom:1px solid var(--card-border)}
 .ymp-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700}
 .ymp-close{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:19px;cursor:pointer}
-.ymp-wheels{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px 22px}
+.ymp-wheels{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:12px;padding:12px 22px}
 .ymp-wheels::before{
   content:'';position:absolute;z-index:0;left:22px;right:22px;top:50%;height:42px;
   transform:translateY(-50%);border-top:1px solid rgba(232,99,122,.18);border-bottom:1px solid rgba(232,99,122,.18);
   border-radius:8px;background:color-mix(in srgb,var(--pink-light) 48%,transparent);pointer-events:none;
 }
-.ymp-column-wrap{position:relative;z-index:1;min-width:0}
+.ymp-column-wrap{position:relative;z-index:1;min-width:0;display:flex;flex-direction:column;align-items:stretch}
 .ymp-column-label{text-align:center;color:var(--text-muted);font-size:10px;font-weight:800;margin-bottom:5px}
 .ymp-wheel{
-  height:210px;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;
+  width:100%;height:210px;overflow-y:auto;overscroll-behavior:contain;scroll-snap-type:y mandatory;
   padding:84px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  touch-action:pan-y;contain:layout paint;
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 25%,#000 75%,transparent 100%);
   mask-image:linear-gradient(to bottom,transparent 0,#000 25%,#000 75%,transparent 100%);
 }
 .ymp-wheel::-webkit-scrollbar{display:none}
 .ymp-item{
-  height:42px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;
+  width:100%;min-width:0;height:42px;min-height:42px;display:grid;place-items:center;padding:0;margin:0;
+  scroll-snap-align:center;scroll-snap-stop:always;text-align:center;
   border:0;background:transparent;color:var(--text-muted);font-family:'Noto Serif TC',serif;
-  font-size:18px;line-height:42px;cursor:pointer;transition:color .15s ease,font-size .15s ease,font-weight .15s ease;
+  font-size:19px;line-height:1;font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;
+  cursor:pointer;transition:color .15s ease,opacity .15s ease,background-color .15s ease;
 }
-.ymp-item.selected{color:var(--rose);font-size:21px;font-weight:700}
+.ymp-item.selected{color:var(--rose);font-size:19px;font-weight:700}
 .ymp-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 17px 17px}
 .ymp-action{min-height:43px;border:1px solid var(--card-border);border-radius:11px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
 .ymp-action.primary{border-color:var(--pink);background:var(--pink);color:#fff}
@@ -1056,6 +1064,10 @@ scrollbar-color:var(--pink) transparent;
 #pd-history-list::-webkit-scrollbar{width:5px;}
 #pd-history-list::-webkit-scrollbar-thumb{background:var(--pink);border-radius:999px;}
 .pd-history-row{min-height:49px;box-sizing:border-box;}
+.pd-calendar-day{position:relative;z-index:0;min-height:34px;display:grid;place-items:center;padding:5px 2px;border-radius:8px;font-size:13px}
+.pd-calendar-day.is-today{z-index:2;font-weight:800}
+.pd-calendar-day.is-today::after{content:'';position:absolute;inset:1px;border:2px solid #eb4f70;border-radius:7px;box-shadow:0 0 0 1px var(--white);pointer-events:none}
+[data-theme="dark"] .pd-calendar-day.is-today::after{border-color:#ff8fa7;box-shadow:0 0 0 1px #24171c}
 
 .music-player{
 position:fixed;
@@ -1442,8 +1454,10 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-memory-filter{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px;color:var(--text-muted);font-size:9px;font-weight:800}
 .footprint-memory-category{width:100%;height:38px;padding:0 30px 0 11px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;outline:none;cursor:pointer}
 .footprint-memory-category:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.1)}
-.footprint-category-manage-btn{width:auto;min-width:92px;height:38px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 10px;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}
-.footprint-category-manage-btn span[aria-hidden="true"]{font-size:14px}
+.footprint-category-manage-btn{width:38px;min-width:38px;height:38px;display:grid;place-items:center;padding:0;border:1px solid var(--card-border);border-radius:7px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:17px;font-weight:800;cursor:pointer;transition:color .16s ease,background-color .16s ease,border-color .16s ease,transform .16s ease}
+.footprint-category-manage-btn:hover{border-color:var(--pink);background:var(--pink-light)}
+.footprint-category-manage-btn:active{transform:scale(.94)}
+.footprint-category-manage-btn span[aria-hidden="true"]{display:block;font-size:17px;line-height:1}
 .footprint-ranking-list{display:flex;flex-direction:column;padding:4px 16px 8px}
 .footprint-ranking-row{position:relative;width:100%;min-height:68px;display:grid;grid-template-columns:38px minmax(0,1fr) 52px;align-items:center;gap:11px;overflow:hidden;padding:10px 5px;border:0;border-bottom:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer;transition:background .18s ease}
 .footprint-ranking-row:hover{background:color-mix(in srgb,var(--pink-light) 38%,transparent)}
@@ -1768,7 +1782,7 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:560px){.choose-page{padding:8px}.choose-topbar{min-height:52px;padding:10px 13px}.choose-brand{min-width:0;font-size:10px}.choose-brand span:last-child{overflow-wrap:anywhere}.choose-period{gap:6px;font-size:10px}.choose-period-mark{display:none}.choose-layout{display:block;padding:12px}.choose-compose{padding:20px 16px}.choose-letter-title{font-size:29px}.choose-letter-copy{font-size:12px}.choose-textarea{min-height:154px}.choose-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-album-picker-bg,.choose-submit-preview-bg{align-items:flex-end;padding:0}.choose-album-picker,.choose-submit-preview{max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.choose-album-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:min(132px,calc((100vw - 42px)/3))}.choose-submit-preview-photos{grid-template-columns:repeat(3,minmax(0,1fr))}.choose-compose-actions{display:block}.choose-save-btn{width:100%;min-width:0}.choose-lock-copy{justify-content:center;margin-top:9px}.choose-side{display:block;margin-top:14px}.choose-seal-visual{height:200px}.choose-envelope-art{transform:scale(.9) rotate(-1.5deg)}.choose-seal-body{padding:15px}.choose-history{margin-top:14px}}
 @media(max-width:520px){.footprint-editor-bg,.footprint-ranking-dialog-bg{align-items:flex-end;padding:0}.footprint-editor{width:100%;max-height:88dvh;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-ranking-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-ranking-dialog-head{padding:17px 57px 14px 17px}.footprint-ranking-dialog-title{font-size:22px}.footprint-ranking-dialog-body{padding:12px 12px calc(16px + env(safe-area-inset-bottom))}.footprint-ranking-dialog-row{grid-template-columns:32px minmax(0,1fr) auto;padding-right:5px;padding-left:5px}.footprint-editor-form{padding-bottom:calc(16px + env(safe-area-inset-bottom))}.footprint-form-grid{grid-template-columns:minmax(0,1fr)}.footprint-field{grid-column:1/-1}.footprint-date-row{grid-template-columns:minmax(0,1fr) 86px}.footprint-map-shell{margin-right:12px;margin-left:12px}.footprint-map-shell #footprint-map{height:240px}.footprint-date-browser{grid-template-columns:minmax(0,1fr);gap:9px}.footprint-detail-head{padding:14px 13px}.footprint-timeline{padding-right:13px;padding-left:13px}.footprint-visit{grid-template-columns:11px minmax(0,1fr);gap:9px}.footprint-visit-actions{grid-column:2;justify-content:flex-end;margin-top:2px}.footprint-page-title{font-size:21px}}
 @media(max-width:520px){.footprint-expense-bg{align-items:flex-end;padding:0}.footprint-expense-dialog{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:14px 14px 0 0}.footprint-expense-actions{padding-bottom:calc(17px + env(safe-area-inset-bottom))}}
-@media(max-width:520px){.footprint-memory-head{align-items:flex-start;flex-wrap:wrap;gap:8px;padding:16px 14px 13px 18px}.footprint-memory-title{font-size:20px}.footprint-memory-sub{margin-left:32px}.footprint-memory-total{margin-left:32px}.footprint-memory-tools{align-items:flex-end;padding:10px 12px}.footprint-memory-filter{min-width:0}.footprint-category-manage-btn{min-width:84px;padding:0 8px}.footprint-ranking-list{padding:3px 11px 7px}.footprint-ranking-row{grid-template-columns:34px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:9px 4px}.footprint-ranking-row.is-rank-1{min-height:76px;padding:10px 7px}.footprint-ranking-rank{width:32px;height:32px}.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:35px;height:35px}.footprint-ranking-name{font-size:12px}.footprint-ranking-count strong{font-size:18px}.footprint-ranking-bar{left:46px;right:52px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
+@media(max-width:520px){.footprint-memory-head{align-items:flex-start;flex-wrap:wrap;gap:8px;padding:16px 14px 13px 18px}.footprint-memory-title{font-size:20px}.footprint-memory-sub{margin-left:32px}.footprint-memory-total{margin-left:32px}.footprint-memory-tools{align-items:flex-end;padding:10px 12px}.footprint-memory-filter{min-width:0}.footprint-category-manage-btn{width:38px;min-width:38px;padding:0}.footprint-ranking-list{padding:3px 11px 7px}.footprint-ranking-row{grid-template-columns:34px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:9px 4px}.footprint-ranking-row.is-rank-1{min-height:76px;padding:10px 7px}.footprint-ranking-rank{width:32px;height:32px}.footprint-ranking-row.is-rank-1 .footprint-ranking-rank{width:35px;height:35px}.footprint-ranking-name{font-size:12px}.footprint-ranking-count strong{font-size:18px}.footprint-ranking-bar{left:46px;right:52px}.footprint-category-bg{align-items:flex-end;padding:0}.footprint-category-dialog{width:100%;max-height:92dvh;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0}.footprint-category-body{padding-right:12px;padding-left:12px}.footprint-category-row{grid-template-columns:25px minmax(0,1fr) auto}.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2/4;justify-content:flex-end}.footprint-category-place-list{max-height:235px}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,132px)}}
 @media(max-width:520px){.footprint-category-dialog{height:94dvh;max-height:94dvh}.footprint-category-head{padding:17px 58px 13px 17px}.footprint-category-title{font-size:21px}.footprint-category-copy{font-size:9px}.footprint-category-body{display:block;overflow-y:auto;padding:0}.footprint-category-create{grid-template-columns:minmax(0,1fr);gap:9px;padding:12px}.footprint-category-create-meta{display:none}.footprint-category-workspace{display:block}.footprint-category-list-panel{max-height:none;border-right:0;border-bottom:1px solid var(--card-border)}.footprint-category-panel-head{padding:12px 12px 8px}.footprint-category-order{max-height:270px;padding:0 8px 11px}.footprint-category-row{grid-template-columns:29px minmax(0,1fr);gap:8px;min-height:60px;padding:8px}.footprint-category-row-actions,.footprint-category-row.is-custom .footprint-category-row-actions{grid-column:2;justify-content:flex-start;flex-wrap:wrap}.footprint-category-assign{height:430px;min-height:430px;padding:13px 12px 0}.footprint-category-place-list{max-height:none}.footprint-category-place{grid-template-columns:minmax(0,1fr) minmax(108px,128px);gap:8px}.footprint-category-place.is-active{margin:0}.footprint-category-place-select{font-size:8px}}
 @media(max-width:520px){
   .footprint-category-bg{align-items:flex-end;padding:0;background:rgba(35,19,26,.5);backdrop-filter:blur(5px)}
@@ -1813,9 +1827,10 @@ body.choose-letterbox-open{overflow:hidden}
 @media(max-width:520px){
   .day-modal.editing{max-height:97vh;max-height:97dvh;padding:17px 15px calc(30px + env(safe-area-inset-bottom))}
   .modal-textarea{min-height:220px;font-size:16px;padding:12px}
-  .album-place-link-row{grid-template-columns:minmax(0,1fr) 64px}
-  .album-place-link-input{min-height:72px;font-size:16px}
-  .album-place-import-btn{min-width:64px;padding:0 7px;font-size:11px}
+  .album-place-link-row{grid-template-columns:minmax(0,1fr) 46px}
+  .album-place-link-input{height:46px;font-size:16px}
+  .album-place-link-action{width:46px;height:46px}
+  .album-place-import-btn{min-height:46px;padding:0 10px;font-size:12px}
   .album-place-item{padding:8px}
   .album-place-previous-search{height:40px;font-size:16px}
   .album-place-previous-list{max-height:154px}
@@ -2247,10 +2262,8 @@ onclick="hideSpecialForToday()">
             </div>
           </div>
           <div class="album-place-or">或貼新地點</div>
-          <div class="album-place-link-row">
-            <textarea class="album-place-link-input" id="modal-map-link-input" rows="2" inputmode="url" autocomplete="off" placeholder="貼上 Google Maps 分享連結，多個連結可分行貼上" oninput="albumQueueMapLinkImport()" onpaste="setTimeout(albumQueueMapLinkImport,0)"></textarea>
-            <button type="button" class="album-place-import-btn" id="modal-map-link-btn" onclick="albumImportMapLinks(true)">加入</button>
-          </div>
+          <div class="album-place-link-list" id="modal-map-link-list" aria-label="Google Maps 地點連結"></div>
+          <button type="button" class="album-place-import-btn" id="modal-map-link-btn" onclick="albumImportMapLinks(true)">加入</button>
           <div class="album-place-status" id="modal-map-link-status"></div>
           <div class="album-place-list" id="modal-map-place-list"></div>
         </div>
@@ -2348,7 +2361,7 @@ onclick="hideSpecialForToday()">
       <label class="footprint-memory-filter"><span>地點分類</span>
         <select class="footprint-memory-category" id="footprint-memory-category" aria-label="選擇地點類別" onchange="footprintMemoryCategoryChanged(this.value)"></select>
       </label>
-      <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()"><span aria-hidden="true">⚙</span><span>管理類別</span></button>
+      <button type="button" class="footprint-category-manage-btn" onclick="footprintOpenCategoryManager()" aria-label="管理地點類別" title="管理地點類別"><span aria-hidden="true">⚙</span></button>
     </div>
     <div class="footprint-ranking-list" id="footprint-ranking-list"></div>
     <button type="button" class="footprint-ranking-all-btn" id="footprint-ranking-all-btn" onclick="footprintOpenAllRanking()">
@@ -6207,8 +6220,7 @@ function applyModalMode(dayData){
     document.getElementById('modal-note').value=dayData.note||'';
     document.getElementById('modal-love-count').value=albumGetLoveCount(dayData);
     document.getElementById('modal-cohabiting').checked=!!dayData.cohabiting;
-    const mapInput=document.getElementById('modal-map-link-input');
-    if(mapInput) mapInput.value='';
+    albumResetMapLinkInputs();
     const mapStatus=document.getElementById('modal-map-link-status');
     if(mapStatus) mapStatus.textContent='';
     renderModalMapPlacesEdit(dayData.mapPlaces||[]);
@@ -6409,21 +6421,67 @@ function albumExtractGoogleMapsLinks(value){
   const candidates=raw.match(/https?:\/\/[^\s<>"']+/gi)||[];
   return [...new Set(candidates.map(link=>typeof footprintExtractGoogleMapsLink==='function'?footprintExtractGoogleMapsLink(link):'').filter(Boolean))];
 }
-function albumQueueMapLinkImport(){
-  clearTimeout(window._albumMapLinkImportTimer);
-  const input=document.getElementById('modal-map-link-input');
-  if(!input) return;
-  const links=albumExtractGoogleMapsLinks(input.value);
-  if(!links.length) return;
-  window._albumMapLinkImportTimer=setTimeout(()=>albumImportMapLinks(false),420);
+function albumMapLinkInputs(){
+  return [...document.querySelectorAll('#modal-map-link-list .album-place-link-input')];
+}
+function albumCreateMapLinkRow(value=''){
+  const row=document.createElement('div');
+  row.className='album-place-link-row';
+  const input=document.createElement('input');
+  input.className='album-place-link-input';
+  input.type='url';
+  input.inputMode='url';
+  input.autocomplete='off';
+  input.placeholder='貼上 Google Maps 分享連結';
+  input.value=String(value||'');
+  const action=document.createElement('button');
+  action.type='button';
+  action.className='album-place-link-action';
+  row.append(input,action);
+  return row;
+}
+function albumRefreshMapLinkActions(){
+  const rows=[...document.querySelectorAll('#modal-map-link-list .album-place-link-row')];
+  rows.forEach((row,index)=>{
+    const action=row.querySelector('.album-place-link-action');
+    if(!action) return;
+    const isLast=index===rows.length-1;
+    action.classList.toggle('remove',!isLast);
+    action.textContent=isLast?'＋':'×';
+    action.setAttribute('aria-label',isLast?'新增另一個連結':'移除這一行');
+    action.title=isLast?'新增另一個連結':'移除這一行';
+    action.onclick=isLast?albumAddMapLinkInput:()=>albumRemoveMapLinkInput(row);
+  });
+}
+function albumResetMapLinkInputs(values=['']){
+  const list=document.getElementById('modal-map-link-list');
+  if(!list) return;
+  const clean=(Array.isArray(values)?values:[values]).map(value=>String(value||'').trim()).filter(Boolean);
+  list.replaceChildren(...(clean.length?clean:['']).map(albumCreateMapLinkRow));
+  albumRefreshMapLinkActions();
+}
+function albumAddMapLinkInput(){
+  const list=document.getElementById('modal-map-link-list');
+  if(!list) return;
+  const row=albumCreateMapLinkRow();
+  list.appendChild(row);
+  albumRefreshMapLinkActions();
+  row.querySelector('.album-place-link-input')?.focus();
+}
+function albumRemoveMapLinkInput(row){
+  const list=document.getElementById('modal-map-link-list');
+  if(!list||!row) return;
+  row.remove();
+  if(!list.children.length) list.appendChild(albumCreateMapLinkRow());
+  albumRefreshMapLinkActions();
 }
 async function albumImportMapLinks(force=false){
-  const input=document.getElementById('modal-map-link-input');
+  const inputs=albumMapLinkInputs();
   const button=document.getElementById('modal-map-link-btn');
   const status=document.getElementById('modal-map-link-status');
-  if(!input||!currentDayKey) return;
+  if(!inputs.length||!currentDayKey) return;
   if(button?.dataset.loading==='1') return;
-  const links=albumExtractGoogleMapsLinks(input.value);
+  const links=albumExtractGoogleMapsLinks(inputs.map(input=>input.value).join('\n'));
   if(!links.length){
     if(force&&status) status.textContent='請先貼上 Google Maps 分享連結。';
     return;
@@ -6434,6 +6492,7 @@ async function albumImportMapLinks(force=false){
   const dayData=JSON.parse(JSON.stringify(albumFirebaseData[key]||{photos:[],schedule:[],note:''}));
   const places=albumNormalizeMapPlaces(dayData.mapPlaces);
   let added=0,failed=0;
+  const failedLinks=[];
   for(const link of links){
     try{
       const result=await footprintImportMapLink(link);
@@ -6444,6 +6503,7 @@ async function albumImportMapLinks(force=false){
       added++;
     }catch(error){
       failed++;
+      failedLinks.push(link);
       console.warn('相簿 Google Maps 地點匯入失敗',link,error);
     }
   }
@@ -6454,7 +6514,7 @@ async function albumImportMapLinks(force=false){
     albumRenderPreviousPlaces(document.getElementById('album-place-previous-search')?.value||'');
   }
   if(typeof footprintSyncFromAlbumDay==='function') await footprintSyncFromAlbumDay(key,dayData);
-  input.value='';
+  albumResetMapLinkInputs(failedLinks.length?failedLinks:['']);
   if(status) status.textContent=failed?`已加入 ${added} 個地點，${failed} 個連結仍無法辨識。手機短網址若失敗，可改貼完整 Google Maps 網址。`:(added?`已加入 ${added} 個地點，並同步到「常去的地方」。`:'這些地點今天已經加入過了。');
   if(button){delete button.dataset.loading;button.disabled=false;button.textContent='加入';}
 }
@@ -8028,7 +8088,7 @@ function pdRenderCal(){
     const type=pdDayType(date,cycles);
     const isToday=date.getTime()===t.getTime();
     const colors={period:'background:var(--pink);color:white;', 'period-estimated':'background:var(--pd-estimated-bg);color:var(--pd-estimated-text);border:1px dashed var(--pd-estimated-border);', ovulate:'background:#ff9800;color:white;',fertile:'background:#fce8ec;color:var(--rose);border:1px solid var(--pink-soft);',safe:'background:#e3f2fd;color:#1565c0;'};
-    html+=`<div style="padding:5px 2px;border-radius:8px;font-size:13px;${colors[type]||''}${isToday?'outline:2px solid var(--pink);outline-offset:1px;font-weight:700;':''}">${d}</div>`;
+    html+=`<div class="pd-calendar-day${isToday?' is-today':''}" style="${colors[type]||''}">${d}</div>`;
   }
   document.getElementById('pd-cal-grid').innerHTML=html;
 }
@@ -10665,5 +10725,3 @@ window.addEventListener('firebaseReady',()=>{
 
 </body>
 </html>
-
-

@@ -1,5 +1,9 @@
 const APP_ORIGIN = 'https://shengzhan-yujun-site.vercel.app';
 const GOOGLE_DOMAINS = ['google.com', 'google.com.tw'];
+const BROWSER_HEADERS = {
+  'Accept-Language': 'zh-TW,zh;q=0.9,en;q=0.7',
+  'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1'
+};
 
 function sendJson(response, status, payload) {
   response.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -21,6 +25,23 @@ function safeDecode(value) {
   try { return decodeURIComponent(value); } catch (_) { return value; }
 }
 
+function extractInputUrl(value) {
+  const text = String(value || '')
+    .replace(/[\u200B-\u200D\uFEFF]/g, ' ')
+    .replace(/&amp;/gi, '&')
+    .trim();
+  const candidates = text.match(/https?:\/\/[^\s<>"']+/gi) || [];
+  if (/^https?:\/\//i.test(text)) candidates.unshift(text);
+  for (const candidate of [...new Set(candidates)]) {
+    const clean = candidate.trim().replace(/[\]\[(){}<>，。；、]+$/gu, '');
+    try {
+      const url = new URL(clean);
+      if (isAllowedMapUrl(url)) return url;
+    } catch (_) {}
+  }
+  return null;
+}
+
 function coordinateCandidates(value) {
   const raw = String(value || '');
   return [...new Set([
@@ -37,6 +58,12 @@ function parseCoordinates(value) {
     /[?&](?:q|query|ll|center)=(?:loc:)?(-?\d{1,2}(?:\.\d+)?)[,\s]+(-?\d{1,3}(?:\.\d+)?)/i
   ];
   for (const candidate of coordinateCandidates(value)) {
+    const longitudeFirst = candidate.match(/!2d(-?\d{1,3}(?:\.\d+)?)!3d(-?\d{1,2}(?:\.\d+)?)/i);
+    if (longitudeFirst) {
+      const lat = Number(longitudeFirst[2]);
+      const lng = Number(longitudeFirst[1]);
+      if (Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180) return { lat, lng };
+    }
     for (const pattern of patterns) {
       const match = candidate.match(pattern);
       if (!match) continue;
@@ -44,6 +71,51 @@ function parseCoordinates(value) {
       const lng = Number(match[2]);
       if (Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180) return { lat, lng };
     }
+  }
+  return null;
+}
+
+function extractPlaceToken(value) {
+  for (const candidate of coordinateCandidates(value)) {
+    try {
+      const url = new URL(candidate);
+      const queryPlaceId = url.searchParams.get('query_place_id') || url.searchParams.get('place_id') || url.searchParams.get('ftid');
+      if (queryPlaceId) return queryPlaceId.trim();
+    } catch (_) {}
+    const dataMatch = candidate.match(/!1s((?:0x[\da-f]+:0x[\da-f]+)|(?:ChI[A-Za-z0-9_-]+))/i);
+    if (dataMatch) return safeDecode(dataMatch[1]);
+  }
+  return '';
+}
+
+function extractHtmlRedirect(html, currentUrl) {
+  const source = String(html || '')
+    .replace(/\\u003d/gi, '=')
+    .replace(/\\u0026/gi, '&')
+    .replace(/\\u002f/gi, '/')
+    .replace(/\\\//g, '/')
+    .replace(/&amp;/gi, '&');
+  const patterns = [
+    /<meta[^>]+http-equiv=["']?refresh["']?[^>]+content=["'][^"']*url=([^"']+)["']/i,
+    /<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i,
+    /<meta[^>]+property=["']og:url["'][^>]+content=["']([^"']+)["']/i,
+    /(?:window\.)?location(?:\.href)?\s*=\s*["']([^"']+)["']/i,
+    /(?:window\.)?location\.replace\(\s*["']([^"']+)["']\s*\)/i
+  ];
+  for (const pattern of patterns) {
+    const match = source.match(pattern);
+    if (!match) continue;
+    try {
+      const next = new URL(match[1].trim(), currentUrl);
+      if (isAllowedMapUrl(next) && next.href !== currentUrl.href) return next;
+    } catch (_) {}
+  }
+  const embedded = source.match(/https?:\/\/(?:www\.)?google\.(?:com|com\.tw)\/maps\/[^\s"'<>]+/i);
+  if (embedded) {
+    try {
+      const next = new URL(embedded[0]);
+      if (isAllowedMapUrl(next) && next.href !== currentUrl.href) return next;
+    } catch (_) {}
   }
   return null;
 }
@@ -115,10 +187,7 @@ async function resolveMapUrl(initialUrl) {
       result = await fetch(current, {
         redirect: 'manual',
         signal: controller.signal,
-        headers: {
-          'Accept-Language': 'zh-TW,zh;q=0.9',
-          'User-Agent': 'Mozilla/5.0 (compatible; ShengzhanYujunSite/1.0)'
-        }
+        headers: BROWSER_HEADERS
       });
     } finally {
       clearTimeout(timeout);
@@ -131,6 +200,11 @@ async function resolveMapUrl(initialUrl) {
       continue;
     }
     html = (await result.text()).slice(0, 400000);
+    const htmlRedirect = extractHtmlRedirect(html, current);
+    if (htmlRedirect) {
+      current = htmlRedirect;
+      continue;
+    }
     return { url: current, html };
   }
   return { url: current, html };
@@ -148,10 +222,7 @@ async function fetchEmbedEntity(query, ftid = '') {
   try {
     const result = await fetch(embedUrl, {
       signal: controller.signal,
-      headers: {
-        'Accept-Language': 'zh-TW,zh;q=0.9',
-        'User-Agent': 'Mozilla/5.0 (compatible; ShengzhanYujunSite/1.0)'
-      }
+      headers: BROWSER_HEADERS
     });
     if (!result.ok) return null;
     return parseEmbedEntity((await result.text()).slice(0, 400000));
@@ -192,10 +263,8 @@ module.exports = async function mapLink(request, response) {
   }
 
   const rawValue = Array.isArray(request.query?.url) ? request.query.url[0] : request.query?.url;
-  let initialUrl;
-  try { initialUrl = new URL(String(rawValue || '').trim()); }
-  catch (_) { sendJson(response, 400, { error: '請貼上完整的 Google Maps 分享連結' }); return; }
-  if (!isAllowedMapUrl(initialUrl)) {
+  const initialUrl = extractInputUrl(rawValue);
+  if (!initialUrl) {
     sendJson(response, 400, { error: '只支援 Google Maps 的分享連結' });
     return;
   }
@@ -203,15 +272,18 @@ module.exports = async function mapLink(request, response) {
   try {
     const resolved = await resolveMapUrl(initialUrl);
     const directCoordinates = parseCoordinates(resolved.url.href) || parseCoordinates(resolved.html);
-    const query = resolved.url.searchParams.get('query') || resolved.url.searchParams.get('q') || '';
-    const embedEntity = directCoordinates ? null : await fetchEmbedEntity(query, resolved.url.searchParams.get('ftid') || '');
+    const placeToken = extractPlaceToken(resolved.url.href) || extractPlaceToken(resolved.html);
+    const pathName = parsePlaceName(resolved.url.href, resolved.html);
+    const query = resolved.url.searchParams.get('query') || resolved.url.searchParams.get('q') || pathName || (placeToken ? `place_id:${placeToken}` : '');
+    const ftid = resolved.url.searchParams.get('ftid') || (/^0x[\da-f]+:0x[\da-f]+$/i.test(placeToken) ? placeToken : '');
+    const embedEntity = directCoordinates ? null : await fetchEmbedEntity(query, ftid);
     const coordinates = directCoordinates || embedEntity?.coordinates;
     if (!coordinates) {
       sendJson(response, 422, { error: '連結沒有帶入地點位置，請在 Google Maps 開啟店家後按「分享」再複製連結' });
       return;
     }
     const reverse = await reverseAddress(coordinates.lat, coordinates.lng);
-    const name = embedEntity?.name || parsePlaceName(resolved.url.href, resolved.html)
+    const name = embedEntity?.name || pathName
       || String(reverse?.name || reverse?.display_name || 'Google Maps 地點').split(',')[0].trim().slice(0, 60);
     const displayName = String(embedEntity?.address || reverse?.display_name || embedEntity?.query || name).trim().slice(0, 180);
     sendJson(response, 200, {

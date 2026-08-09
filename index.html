@@ -874,6 +874,7 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
   font-size:19px;line-height:1;font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;
   cursor:pointer;transition:color .15s ease,opacity .15s ease,background-color .15s ease;
 }
+.ymp-item>span{display:block;transform:translateY(-2px);pointer-events:none}
 .ymp-item.selected{color:var(--rose);font-size:19px;font-weight:700}
 .ymp-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 17px 17px}
 .ymp-action{min-height:43px;border:1px solid var(--card-border);border-radius:11px;background:var(--pink-light);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:13px;font-weight:800;cursor:pointer}
@@ -6064,7 +6065,7 @@ function yearMonthPickerBuildYearWheel(){
   const wheel=yearMonthPickerWheel('year');
   if(!wheel) return;
   const years=yearMonthPickerYears();
-  wheel.innerHTML=years.map(year=>`<button type="button" class="ymp-item" data-ymp-value="${year}" onclick="yearMonthPickerChoose('year',${year},true)">${year}</button>`).join('');
+  wheel.innerHTML=years.map(year=>`<button type="button" class="ymp-item" data-ymp-value="${year}" onclick="yearMonthPickerChoose('year',${year},true)"><span>${year}</span></button>`).join('');
   wheel.onscroll=()=>yearMonthPickerQueueScroll('year');
 }
 function yearMonthPickerBuildMonthWheel(year=yearMonthPickerState.year){
@@ -6074,7 +6075,7 @@ function yearMonthPickerBuildMonthWheel(year=yearMonthPickerState.year){
   if(!months.includes(yearMonthPickerState.month)){
     yearMonthPickerState.month=months.length?months.reduce((best,m)=>Math.abs(m-yearMonthPickerState.month)<Math.abs(best-yearMonthPickerState.month)?m:best,months[0]):0;
   }
-  wheel.innerHTML=months.map(month=>`<button type="button" class="ymp-item" data-ymp-value="${month}" onclick="yearMonthPickerChoose('month',${month},true)">${month+1} 月</button>`).join('');
+  wheel.innerHTML=months.map(month=>`<button type="button" class="ymp-item" data-ymp-value="${month}" onclick="yearMonthPickerChoose('month',${month},true)"><span>${month+1} 月</span></button>`).join('');
   wheel.onscroll=()=>yearMonthPickerQueueScroll('month');
 }
 function yearMonthPickerOptions(type){

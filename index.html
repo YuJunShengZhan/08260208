@@ -28,7 +28,8 @@ overflow-x:hidden;
 }
 
 :root{
---bottom-nav-height:68px;
+--bottom-nav-height:calc(68px + env(safe-area-inset-bottom));
+--music-nav-gap:16px;
 --pink:#e8637a;
 --pink-light:#fce8ec;
 --pink-soft:#f7d0d8;
@@ -1192,7 +1193,7 @@ scrollbar-color:var(--pink) transparent;
 
 .music-player{
 position:fixed;
-bottom:calc(var(--bottom-nav-height) + 8px);
+bottom:calc(var(--bottom-nav-height) + var(--music-nav-gap));
 right:14px;
 z-index:1600;
 background:var(--white);
@@ -1229,7 +1230,7 @@ transition:transform .25s ease,background .2s ease;
 }
 .music-btns{display:flex;gap:1px;flex-shrink:0;transition:opacity .2s ease,transform .25s ease;}
 .music-btn{background:none;border:none;cursor:pointer;font-size:16px;padding:1px;color:var(--pink);}
-.music-library{--music-library-max-height:min(560px,calc(100dvh - var(--bottom-nav-height) - 88px));display:none;position:fixed;bottom:calc(var(--bottom-nav-height) + 68px);right:14px;z-index:1601;width:min(320px,calc(100vw - 28px));max-height:var(--music-library-max-height);overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
+.music-library{--music-library-max-height:min(560px,calc(100dvh - var(--bottom-nav-height) - 102px));display:none;position:fixed;bottom:calc(var(--bottom-nav-height) + var(--music-nav-gap) + 62px);right:14px;z-index:1601;width:min(320px,calc(100vw - 28px));max-height:var(--music-library-max-height);overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
 .music-library-head{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:12px 13px;background:var(--pink);color:#fff}
 .music-library-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1;font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
 .music-library-head-btn{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.36);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:22px;line-height:1;cursor:pointer}

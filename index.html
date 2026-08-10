@@ -28,6 +28,7 @@ overflow-x:hidden;
 }
 
 :root{
+--bottom-nav-height:68px;
 --pink:#e8637a;
 --pink-light:#fce8ec;
 --pink-soft:#f7d0d8;
@@ -311,13 +312,80 @@ button.countdown-num:active{transform:scale(.95);background:var(--white)}
 .surprise-history-btn{padding:7px 11px;border:1px solid rgba(232,99,122,.22);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;transition:transform .18s,background .18s,color .18s}
 .surprise-history-btn:active{transform:scale(.96);background:var(--pink);color:#fff}
 [data-theme="dark"] .surprise-history-btn{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
-.surprise-history-overlay{position:fixed;inset:0;z-index:11500;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(49,28,36,.52);backdrop-filter:blur(7px)}
-.surprise-history-dialog{width:min(520px,100%);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:22px;background:var(--white);box-shadow:0 24px 70px rgba(70,30,45,.3);animation:popIn .28s cubic-bezier(.2,1,.35,1)}
-.surprise-history-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 17px 13px;border-bottom:1px solid var(--card-border)}
-.surprise-history-title{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;color:var(--rose)}
-.surprise-history-close{width:36px;height:36px;display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:18px;cursor:pointer}
-.surprise-history-list{display:flex;flex-direction:column;gap:10px;min-height:120px;padding:14px 15px 18px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-[data-theme="dark"] .surprise-history-overlay{background:rgba(8,5,7,.7)}
+.surprise-history-overlay{position:fixed;inset:0;z-index:11500;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(49,28,36,.52);backdrop-filter:blur(8px)}
+.surprise-history-dialog{width:min(620px,100%);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(232,99,122,.2);border-radius:20px;background:#fffafa;box-shadow:0 24px 70px rgba(70,30,45,.3);animation:popIn .28s cubic-bezier(.2,1,.35,1)}
+.surprise-history-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:19px 20px 16px;border-bottom:1px solid rgba(232,99,122,.14);background:#fff}
+.surprise-history-heading{min-width:0}
+.surprise-history-kicker{margin-bottom:3px;color:#26905d;font-size:9px;font-weight:900;letter-spacing:0}
+.surprise-history-title{margin:0;font-family:'Noto Serif TC',serif;font-size:24px;font-weight:700;color:var(--rose)}
+.surprise-history-summary{margin-top:3px;color:var(--text-muted);font-size:10px}
+.surprise-history-close{width:40px;height:40px;display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:20px;cursor:pointer;transition:transform .16s ease,background-color .16s ease}
+.surprise-history-close:active{transform:scale(.94);background:var(--pink-soft)}
+.surprise-history-list{display:flex;flex-direction:column;gap:11px;min-height:150px;padding:15px 16px 19px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.surprise-history-item{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 40px;align-items:stretch;overflow:hidden;border:1px solid rgba(232,99,122,.16);border-radius:12px;background:#fff;box-shadow:0 8px 24px rgba(100,45,62,.06);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.surprise-history-item::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:#d75b75}
+.surprise-history-item:hover{transform:translateY(-1px);border-color:rgba(232,99,122,.3);box-shadow:0 12px 28px rgba(100,45,62,.1)}
+.surprise-history-open{min-width:0;display:grid;grid-template-columns:76px minmax(0,1fr) 22px;align-items:center;gap:12px;padding:11px 7px 11px 13px;border:0;background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer}
+.surprise-history-thumb{position:relative;width:76px;height:76px;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(232,99,122,.14);border-radius:10px;background:#f9ecef;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:27px}
+.surprise-history-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.surprise-history-thumb.is-envelope::before{content:'♡';position:relative;z-index:1;width:48px;height:34px;display:grid;place-items:center;border:1px solid rgba(201,75,100,.28);border-radius:4px;background:#fff;color:var(--rose);font-size:18px;box-shadow:0 5px 12px rgba(104,45,62,.08)}
+.surprise-history-thumb.is-envelope::after{content:'';position:absolute;left:20px;top:26px;width:35px;height:35px;border-right:1px solid rgba(201,75,100,.22);border-bottom:1px solid rgba(201,75,100,.22);transform:rotate(45deg)}
+.surprise-history-copy{min-width:0;display:flex;flex-direction:column;gap:6px}
+.surprise-history-time{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:11px;font-weight:700}
+.surprise-history-preview{display:-webkit-box;overflow:hidden;color:var(--text);font-size:13px;line-height:1.7;word-break:break-word;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.surprise-history-more{align-self:center;color:#2f9565;font-size:22px;line-height:1}
+.surprise-history-delete{align-self:stretch;width:40px;display:grid;place-items:center;border:0;border-left:1px solid rgba(232,99,122,.12);background:transparent;color:var(--text-muted);font-size:18px;cursor:pointer;transition:background-color .16s ease,color .16s ease}
+.surprise-history-delete:hover{background:var(--pink-light);color:var(--rose)}
+.surprise-history-empty{display:grid;place-items:center;gap:10px;min-height:210px;padding:24px;color:var(--text-muted);text-align:center}
+.surprise-history-empty-mark{width:68px;height:52px;display:grid;place-items:center;border:1px solid rgba(232,99,122,.22);border-radius:6px;background:#fff;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:24px;box-shadow:0 10px 22px rgba(95,43,58,.08)}
+.surprise-history-detail-overlay{position:fixed;inset:0;z-index:11520;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(45,26,33,.64);backdrop-filter:blur(10px)}
+.surprise-history-detail-card{position:relative;width:min(560px,100%);max-height:calc(100dvh - 32px);overflow-y:auto;border:1px solid rgba(232,99,122,.25);border-radius:20px;background:#fffafa;box-shadow:0 28px 90px rgba(56,24,36,.38);animation:popIn .3s cubic-bezier(.2,1,.35,1);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.surprise-history-detail-back{position:sticky;z-index:4;top:13px;left:13px;width:40px;height:40px;display:grid;place-items:center;margin:13px 0 -53px 13px;border:1px solid rgba(232,99,122,.22);border-radius:50%;background:rgba(255,250,250,.94);color:var(--rose);font-size:22px;cursor:pointer;box-shadow:0 7px 18px rgba(71,30,43,.12);backdrop-filter:blur(8px)}
+.surprise-history-detail-visual{min-height:168px;display:grid;place-items:center;overflow:hidden;background:#f5e4e8}
+.surprise-history-detail-visual.has-photo{background:#1f1519}
+.surprise-history-detail-photo{display:block;width:100%;max-height:min(46dvh,430px);object-fit:contain}
+.surprise-history-detail-envelope{position:relative;width:124px;height:84px;display:grid;place-items:center;border:1px solid rgba(201,75,100,.28);border-radius:7px;background:#fff;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:36px;box-shadow:0 16px 35px rgba(96,42,58,.13);transform:rotate(-2deg)}
+.surprise-history-detail-envelope::after{content:'';position:absolute;left:32px;top:27px;width:58px;height:58px;border-right:1px solid rgba(201,75,100,.22);border-bottom:1px solid rgba(201,75,100,.22);transform:rotate(45deg)}
+.surprise-history-detail-content{position:relative;padding:25px 28px 29px;background:#fffafa}
+.surprise-history-detail-content::before{content:'SURPRISE ARCHIVE';display:block;margin-bottom:5px;color:#2a9463;font-size:9px;font-weight:900;letter-spacing:0}
+.surprise-history-detail-date{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700;line-height:1.4}
+.surprise-history-detail-message{margin-top:17px;padding-top:17px;border-top:1px solid rgba(232,99,122,.18);color:var(--text);font-family:'Noto Serif TC',serif;font-size:15px;line-height:1.95;white-space:pre-wrap;word-break:break-word}
+.surprise-history-detail-signature{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:22px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700}
+.surprise-history-detail-signature::before{content:'';width:34px;height:1px;background:#2f9868}
+[data-theme="dark"] .surprise-history-overlay,[data-theme="dark"] .surprise-history-detail-overlay{background:rgba(8,5,7,.76)}
+[data-theme="dark"] .surprise-history-dialog,[data-theme="dark"] .surprise-history-detail-card{border-color:rgba(255,139,163,.22);background:#211319;box-shadow:0 28px 90px rgba(0,0,0,.48)}
+[data-theme="dark"] .surprise-history-head{border-bottom-color:rgba(255,139,163,.14);background:#26161d}
+[data-theme="dark"] .surprise-history-kicker,[data-theme="dark"] .surprise-history-detail-content::before{color:#75c79d}
+[data-theme="dark"] .surprise-history-list{background:#1d1116}
+[data-theme="dark"] .surprise-history-item{border-color:rgba(255,139,163,.17);background:#2a1820;box-shadow:none}
+[data-theme="dark"] .surprise-history-item::before{background:#b94d65}
+[data-theme="dark"] .surprise-history-thumb{border-color:rgba(255,139,163,.18);background:#351d27}
+[data-theme="dark"] .surprise-history-thumb.is-envelope::before{border-color:rgba(255,139,163,.28);background:#3a212b;color:#ff9eb2;box-shadow:none}
+[data-theme="dark"] .surprise-history-thumb.is-envelope::after{border-color:rgba(255,139,163,.22)}
+[data-theme="dark"] .surprise-history-time,[data-theme="dark"] .surprise-history-detail-date{color:#ff9eb2}
+[data-theme="dark"] .surprise-history-more{color:#71c79b}
+[data-theme="dark"] .surprise-history-delete{border-left-color:rgba(255,139,163,.12)}
+[data-theme="dark"] .surprise-history-delete:hover{background:#3a202a;color:#ff9eb2}
+[data-theme="dark"] .surprise-history-empty-mark{border-color:rgba(255,139,163,.22);background:#2d1922;color:#ff9eb2;box-shadow:none}
+[data-theme="dark"] .surprise-history-detail-back{border-color:rgba(255,139,163,.24);background:rgba(44,24,32,.94);color:#ff9eb2}
+[data-theme="dark"] .surprise-history-detail-visual{background:#321c25}
+[data-theme="dark"] .surprise-history-detail-visual.has-photo{background:#100b0d}
+[data-theme="dark"] .surprise-history-detail-envelope{border-color:rgba(255,139,163,.26);background:#3a202a;color:#ff9eb2;box-shadow:0 16px 35px rgba(0,0,0,.22)}
+[data-theme="dark"] .surprise-history-detail-envelope::after{border-color:rgba(255,139,163,.22)}
+[data-theme="dark"] .surprise-history-detail-content{background:#211319}
+[data-theme="dark"] .surprise-history-detail-message{border-top-color:rgba(255,139,163,.17)}
+@media(max-width:520px){
+  .surprise-history-overlay,.surprise-history-detail-overlay{padding:8px}
+  .surprise-history-dialog,.surprise-history-detail-card{max-height:calc(100dvh - 16px);border-radius:15px}
+  .surprise-history-head{padding:16px 15px 13px}
+  .surprise-history-title{font-size:22px}
+  .surprise-history-list{padding:11px 10px 14px}
+  .surprise-history-open{grid-template-columns:66px minmax(0,1fr) 18px;gap:10px;padding:9px 5px 9px 11px}
+  .surprise-history-thumb{width:66px;height:66px}
+  .surprise-history-detail-content{padding:22px 20px 25px}
+  .surprise-history-detail-date{font-size:18px}
+  .surprise-history-detail-message{font-size:14px;line-height:1.9}
+}
 .birthday-fireworks{
 position:fixed;inset:0;z-index:12000;background:rgba(20,16,28,.9);overflow:hidden;display:flex;align-items:center;justify-content:center;
 animation:birthdayNightIn .7s ease both;contain:layout paint style;isolation:isolate;
@@ -992,11 +1060,11 @@ color:var(--text-muted);
 font-size:13px;
 padding:16px 0;
 }
-.album-empty-meeting{position:relative;width:min(210px,100%);aspect-ratio:1;margin:2px auto 0;overflow:hidden;border:0;border-radius:18px;background:#fff;box-shadow:none}
-.album-empty-meeting img{display:block;width:100%;height:100%;object-fit:cover}
+.album-empty-meeting{position:relative;width:min(210px,100%);aspect-ratio:1;margin:2px auto 0;overflow:hidden;border:0;border-radius:18px;background:transparent;box-shadow:none}
+.album-empty-meeting img{display:block;width:100%;height:100%;object-fit:contain}
 .album-empty-meeting-bubble{position:absolute;z-index:2;top:17px;left:50%;transform:translateX(-50%);min-width:148px;padding:9px 13px;border:0;border-radius:15px;background:rgba(255,255,255,.94);box-shadow:0 7px 18px rgba(143,69,86,.13);color:var(--rose);font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;text-align:center;white-space:nowrap}
 .album-empty-meeting-bubble::after{content:'';position:absolute;left:50%;bottom:-8px;width:14px;height:14px;transform:translateX(-50%) rotate(45deg);border:0;background:rgba(255,255,255,.94)}
-[data-theme="dark"] .album-empty-meeting{background:#fff;box-shadow:none}
+[data-theme="dark"] .album-empty-meeting{background:transparent;box-shadow:none}
 [data-theme="dark"] .album-empty-meeting img{filter:none}
 [data-theme="dark"] .album-empty-meeting-bubble{background:#342128;color:#ffb1c1}
 [data-theme="dark"] .album-empty-meeting-bubble::after{background:#342128}
@@ -1124,9 +1192,9 @@ scrollbar-color:var(--pink) transparent;
 
 .music-player{
 position:fixed;
-bottom:68px;
+bottom:calc(var(--bottom-nav-height) + 8px);
 right:14px;
-z-index:200;
+z-index:1600;
 background:var(--white);
 border:1px solid var(--card-border);
 border-radius:16px;
@@ -1161,12 +1229,12 @@ transition:transform .25s ease,background .2s ease;
 }
 .music-btns{display:flex;gap:1px;flex-shrink:0;transition:opacity .2s ease,transform .25s ease;}
 .music-btn{background:none;border:none;cursor:pointer;font-size:16px;padding:1px;color:var(--pink);}
-.music-library{display:none;position:fixed;bottom:130px;right:14px;z-index:201;width:min(320px,calc(100vw - 28px));max-height:min(560px,calc(100dvh - 170px));overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
+.music-library{--music-library-max-height:min(560px,calc(100dvh - var(--bottom-nav-height) - 88px));display:none;position:fixed;bottom:calc(var(--bottom-nav-height) + 68px);right:14px;z-index:1601;width:min(320px,calc(100vw - 28px));max-height:var(--music-library-max-height);overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
 .music-library-head{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:12px 13px;background:var(--pink);color:#fff}
 .music-library-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1;font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
 .music-library-head-btn{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.36);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:22px;line-height:1;cursor:pointer}
 .music-library-head-btn:active{background:rgba(255,255,255,.28)}
-.music-library-scroll{max-height:calc(min(560px,calc(100dvh - 170px)) - 59px);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.music-library-scroll{max-height:calc(var(--music-library-max-height) - 59px);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .music-add-form{padding:12px;background:var(--pink-light);border-bottom:1px solid var(--card-border)}
 .music-add-form[hidden]{display:none!important}
 .music-add-label{display:block;margin-bottom:8px;color:var(--text);font-size:12px;font-weight:700}
@@ -1529,6 +1597,8 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .footprint-ranking-row{position:relative;width:100%;min-height:68px;display:grid;grid-template-columns:38px minmax(0,1fr) 52px;align-items:center;gap:11px;overflow:hidden;padding:10px 5px;border:0;border-bottom:1px solid rgba(232,99,122,.1);background:transparent;color:var(--text);font-family:'Noto Sans TC',sans-serif;text-align:left;cursor:pointer;transition:background .18s ease}
 .footprint-ranking-row:hover{background:color-mix(in srgb,var(--pink-light) 38%,transparent)}
 .footprint-ranking-row.is-rank-1{min-height:82px;margin:5px 0 4px;padding:12px 10px;border:1px solid rgba(207,164,75,.25);border-radius:7px;background:color-mix(in srgb,#fff4d8 42%,var(--white))}
+[data-theme="dark"] .footprint-ranking-row.is-rank-1{border-color:rgba(207,164,75,.27);background:#3a2c28}
+[data-theme="dark"] .footprint-ranking-row.is-rank-1:hover{background:#41302b}
 .footprint-ranking-bar{position:absolute;z-index:0;left:54px;right:64px;bottom:7px;height:3px;overflow:hidden;border-radius:999px;background:rgba(232,99,122,.08);pointer-events:none}
 .footprint-ranking-bar::after{content:'';display:block;width:var(--rank-progress,0%);height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--rose),#46a878)}
 .footprint-ranking-rank,.footprint-ranking-copy,.footprint-ranking-count{position:relative;z-index:1}
@@ -2090,7 +2160,7 @@ body.choose-letterbox-open{overflow:hidden}
 <body>
 
 <header class="header" style="position:sticky;top:0;z-index:100;">
-  <div class="header-names">林聖展 <button type="button" class="heart-pulse" id="intimacy-visibility-toggle" onclick="toggleIntimacyVisibility()" aria-label="暫時隱藏親密統計" aria-pressed="false">♡</button> 蘇予君</div>
+  <div class="header-names">聖展 <button type="button" class="heart-pulse" id="intimacy-visibility-toggle" onclick="toggleIntimacyVisibility()" aria-label="暫時隱藏親密統計" aria-pressed="false">♡</button> 予君</div>
   <button type="button" class="header-sub header-sub-trigger" id="immersive-mode-trigger" onclick="toggleImmersiveMode()" aria-label="切換全螢幕模式" title="切換全螢幕模式">要永遠在一起</button>
   <div class="header-dogs-stage" aria-hidden="true">
     <span class="line-dog white"><span class="line-dog-tail"></span><span class="line-dog-body"></span><span class="line-dog-head"><i class="line-dog-ear left"></i><i class="line-dog-ear right"></i><i class="line-dog-eye left"></i><i class="line-dog-eye right"></i><i class="line-dog-nose"></i><i class="line-dog-mouth"></i></span><i class="line-dog-paw left"></i><i class="line-dog-paw right"></i></span>
@@ -2267,11 +2337,21 @@ onclick="hideSpecialForToday()">
 <div class="surprise-history-overlay hidden" id="surprise-history-panel" onclick="closeLoveSurpriseHistory(event)">
   <section class="surprise-history-dialog" role="dialog" aria-modal="true" aria-labelledby="surprise-history-title" onclick="event.stopPropagation()">
     <div class="surprise-history-head">
-      <h2 class="surprise-history-title" id="surprise-history-title">歷史驚喜</h2>
+      <div class="surprise-history-heading">
+        <div class="surprise-history-kicker">LOVE ARCHIVE</div>
+        <h2 class="surprise-history-title" id="surprise-history-title">歷史驚喜</h2>
+        <div class="surprise-history-summary" id="surprise-history-summary">收藏過的每一份心意</div>
+      </div>
       <button type="button" class="surprise-history-close" onclick="toggleLoveSurpriseHistory(false)" aria-label="關閉歷史驚喜">✕</button>
     </div>
     <div class="surprise-history-list" id="surprise-history-list"></div>
   </section>
+</div>
+<div class="surprise-history-detail-overlay hidden" id="surprise-history-detail" onclick="closeLoveSurpriseHistoryDetail(event)">
+  <article class="surprise-history-detail-card" role="dialog" aria-modal="true" aria-label="驚喜卡片" onclick="event.stopPropagation()">
+    <button type="button" class="surprise-history-detail-back" onclick="closeLoveSurpriseHistoryDetail()" aria-label="返回歷史驚喜">←</button>
+    <div id="surprise-history-detail-body"></div>
+  </article>
 </div>
 
 <!-- ALBUM -->
@@ -3727,6 +3807,7 @@ function toggleLoveSurpriseHistory(force){
     document.body.style.overflow='hidden';
     renderLoveSurpriseHistory();
   }else{
+    closeLoveSurpriseHistoryDetail();
     document.body.style.overflow=panel.dataset.previousOverflow||'';
     delete panel.dataset.previousOverflow;
   }
@@ -3745,23 +3826,59 @@ function formatLoveSurpriseTime(value){
 
 function renderLoveSurpriseHistory(){
   const list=document.getElementById('surprise-history-list');
+  const summary=document.getElementById('surprise-history-summary');
   if(!list) return;
   const rows=Object.entries(loveSurprisesCache||{})
     .map(([key,value])=>({...value,_key:key}))
     .sort((a,b)=>(Number(b.createdAt)||0)-(Number(a.createdAt)||0));
+  if(summary) summary.textContent=rows.length ? `珍藏了 ${rows.length} 份心意` : '收藏過的每一份心意';
   if(!rows.length){
-    list.innerHTML='<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:14px 0">目前還沒有歷史驚喜</div>';
+    list.innerHTML='<div class="surprise-history-empty"><div class="surprise-history-empty-mark">♡</div><div>目前還沒有歷史驚喜</div></div>';
     return;
   }
   list.innerHTML=rows.map(item=>{
     const safeKey=escapeHtml(item._key||'');
     const safeText=escapeHtml(item.text||'');
-    return `<div style="background:var(--pink-light);border:1px solid var(--card-border);border-radius:16px;padding:12px;display:grid;grid-template-columns:${item.photo?'58px ':''}1fr auto;gap:10px;align-items:start">
-      ${item.photo?`<img src="${item.photo}" alt="歷史驚喜照片" style="width:58px;height:58px;object-fit:cover;border-radius:12px;background:var(--white)">`:''}
-      <div style="min-width:0"><div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">${formatLoveSurpriseTime(item.time)}</div><div style="font-size:13px;color:var(--text);line-height:1.65;white-space:pre-wrap;word-break:break-word">${safeText}</div></div>
-      <button type="button" onclick="deleteLoveSurprise('${safeKey}')" aria-label="刪除歷史驚喜" style="border:none;background:none;color:var(--rose);font-size:18px;cursor:pointer;padding:2px 4px">✕</button>
-    </div>`;
+    const safePhoto=escapeHtml(item.photo||'');
+    return `<article class="surprise-history-item">
+      <button type="button" class="surprise-history-open" data-key="${safeKey}" onclick="openLoveSurpriseHistoryDetail(this.dataset.key)" aria-label="打開這則歷史驚喜">
+        <span class="surprise-history-thumb${safePhoto?'':' is-envelope'}">${safePhoto?`<img src="${safePhoto}" alt="歷史驚喜照片" loading="lazy">`:''}</span>
+        <span class="surprise-history-copy">
+          <span class="surprise-history-time">${formatLoveSurpriseTime(item.time)}</span>
+          <span class="surprise-history-preview">${safeText||'一份沒有留下文字的驚喜'}</span>
+        </span>
+        <span class="surprise-history-more" aria-hidden="true">›</span>
+      </button>
+      <button type="button" class="surprise-history-delete" data-key="${safeKey}" onclick="deleteLoveSurprise(this.dataset.key)" aria-label="刪除歷史驚喜">✕</button>
+    </article>`;
   }).join('');
+}
+
+function openLoveSurpriseHistoryDetail(key){
+  const item=(loveSurprisesCache||{})[key];
+  const detail=document.getElementById('surprise-history-detail');
+  const body=document.getElementById('surprise-history-detail-body');
+  if(!item || !detail || !body) return;
+  const safeText=escapeHtml(item.text||'');
+  const safePhoto=escapeHtml(item.photo||'');
+  body.innerHTML=`
+    <div class="surprise-history-detail-visual${safePhoto?' has-photo':''}">
+      ${safePhoto?`<img class="surprise-history-detail-photo" src="${safePhoto}" alt="驚喜照片">`:'<div class="surprise-history-detail-envelope">♡</div>'}
+    </div>
+    <div class="surprise-history-detail-content">
+      <div class="surprise-history-detail-date">${formatLoveSurpriseTime(item.time)}</div>
+      <div class="surprise-history-detail-message">${safeText||'這份驚喜沒有留下文字，心意仍然被好好收藏。'}</div>
+      <div class="surprise-history-detail-signature">聖展 ♡ 予君</div>
+    </div>`;
+  detail.classList.remove('hidden');
+  detail.querySelector('.surprise-history-detail-card')?.scrollTo({top:0});
+}
+
+function closeLoveSurpriseHistoryDetail(event){
+  const detail=document.getElementById('surprise-history-detail');
+  if(!detail) return;
+  if(event && event.target!==detail) return;
+  detail.classList.add('hidden');
 }
 
 function deleteLoveSurprise(key){
@@ -5316,13 +5433,18 @@ function updateAlbumTabsStickyOffset(){
   const header=document.querySelector('.header');
   const height=header?Math.ceil(header.getBoundingClientRect().height):0;
   document.documentElement.style.setProperty('--album-tabs-top',`${height}px`);
+  const nav=document.querySelector('.bottom-nav');
+  const navHeight=nav?Math.ceil(nav.getBoundingClientRect().height):68;
+  document.documentElement.style.setProperty('--bottom-nav-height',`${navHeight}px`);
 }
 function initAlbumTabsSticky(){
   updateAlbumTabsStickyOffset();
   const header=document.querySelector('.header');
+  const nav=document.querySelector('.bottom-nav');
   if(header && 'ResizeObserver' in window){
     albumTabsResizeObserver=new ResizeObserver(updateAlbumTabsStickyOffset);
     albumTabsResizeObserver.observe(header);
+    if(nav) albumTabsResizeObserver.observe(nav);
   }
   window.addEventListener('resize',updateAlbumTabsStickyOffset,{passive:true});
 }
@@ -6583,7 +6705,7 @@ function renderViewNote(note,cohabiting=false,loveCount=0,mapPlaceCount=0){
     }else if(!normalizedLoveCount){
       body=`<div class="album-empty-meeting">
         <div class="album-empty-meeting-bubble">今天還沒有見面</div>
-        <img src="assets/album-empty-puppy.png?v=2" alt="水汪汪眼睛的小狗狗">
+        <img src="assets/album-empty-puppy-transparent.png?v=1" alt="水汪汪眼睛的小狗狗">
       </div>`;
     }
   }else{

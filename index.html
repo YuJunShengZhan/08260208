@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-title" content="要永遠在一起">
 <meta name="format-detection" content="telephone=no">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/app-icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/app-icon-couple-180.png">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <title>林聖展 ♡ 蘇予君</title>
@@ -21,8 +21,10 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 
 html{
+width:100%;
 min-height:100%;
 background:var(--cream);
+overflow-x:hidden;
 }
 
 :root{
@@ -79,11 +81,14 @@ body{
 background:var(--cream);
 color:var(--text);
 font-family:'Noto Sans TC',sans-serif;
+width:100%;
 min-height:100vh;
 min-height:100dvh;
 padding-bottom:calc(80px + env(safe-area-inset-bottom));
+overflow-x:hidden;
 transition:background .3s,color .3s;
 }
+@supports(overflow:clip){body{overflow-x:clip}}
 
 .header{
 background:var(--white);
@@ -238,6 +243,17 @@ background:var(--pink);margin-top:1px;
 
 .page{display:none;padding:16px;}
 .page.active{display:block;}
+@media(display-mode:standalone){
+  body{padding-bottom:calc(68px + env(safe-area-inset-bottom));}
+  .header{padding-top:max(18px,env(safe-area-inset-top));}
+  .bottom-nav{padding-bottom:max(12px,env(safe-area-inset-bottom));}
+  .page{width:100%;max-width:100%;min-width:0;}
+}
+html.is-standalone body{padding-bottom:calc(68px + env(safe-area-inset-bottom));}
+html.is-standalone .header{padding-top:max(18px,env(safe-area-inset-top));}
+html.is-standalone .bottom-nav{padding-bottom:max(12px,env(safe-area-inset-bottom));}
+html.is-standalone .page,
+html.is-browser-fullscreen .page{width:100%;max-width:100%;min-width:0;}
 .home-countdown-broadcast{position:relative;height:50px;margin:0 0 12px;border:1px solid rgba(232,99,122,.2);border-radius:15px;background:var(--white);display:grid;grid-template-columns:86px minmax(0,1fr);align-items:center;overflow:hidden;box-shadow:0 8px 22px rgba(201,75,100,.1),inset 0 0 0 1px rgba(255,255,255,.7)}
 .home-countdown-broadcast[hidden]{display:none}
 .home-countdown-broadcast::before{content:'';position:absolute;z-index:3;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),#2f9a68,var(--pink))}
@@ -2927,8 +2943,12 @@ function toggleDark(){
 })();
 
 let immersiveToastTimer=0;
+let immersiveSavedScrollY=window.scrollY||0;
 function immersiveIsStandalone(){
   return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;
+}
+function immersiveSyncStandaloneState(){
+  document.documentElement.classList.toggle('is-standalone',immersiveIsStandalone());
 }
 function immersiveIsIOS(){
   return /iPad|iPhone|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
@@ -2982,9 +3002,11 @@ async function toggleImmersiveMode(){
     return;
   }
   if(immersiveFullscreenElement()){
+    immersiveSavedScrollY=window.scrollY||0;
     try{await immersiveExitFullscreen();immersiveShowToast('已離開全螢幕模式');}catch(_){immersiveShowToast('暫時無法離開全螢幕');}
     return;
   }
+  immersiveSavedScrollY=window.scrollY||0;
   try{
     const requested=await immersiveRequestFullscreen();
     if(requested&&immersiveFullscreenElement()){
@@ -2996,8 +3018,18 @@ async function toggleImmersiveMode(){
   else immersiveShowToast('這個瀏覽器目前不支援網頁全螢幕');
 }
 function immersiveSyncFullscreenState(){
-  document.documentElement.classList.toggle('is-browser-fullscreen',Boolean(immersiveFullscreenElement()));
+  const active=Boolean(immersiveFullscreenElement());
+  document.documentElement.classList.toggle('is-browser-fullscreen',active);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    window.scrollTo({top:immersiveSavedScrollY,left:0,behavior:'auto'});
+    if(typeof updateAlbumTabsStickyOffset==='function') updateAlbumTabsStickyOffset();
+  }));
 }
+immersiveSyncStandaloneState();
+const immersiveDisplayMode=window.matchMedia?.('(display-mode: standalone)');
+if(immersiveDisplayMode?.addEventListener) immersiveDisplayMode.addEventListener('change',immersiveSyncStandaloneState);
+else immersiveDisplayMode?.addListener?.(immersiveSyncStandaloneState);
+window.addEventListener('pageshow',immersiveSyncStandaloneState);
 document.addEventListener('fullscreenchange',immersiveSyncFullscreenState);
 document.addEventListener('webkitfullscreenchange',immersiveSyncFullscreenState);
 document.addEventListener('keydown',event=>{

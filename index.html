@@ -2276,6 +2276,14 @@ body.choose-letterbox-open{overflow:hidden}
           <div class="site-sync-metric-value"><strong id="site-sync-cloudinary-storage">--</strong><small id="site-sync-cloudinary-storage-detail">正在讀取</small></div>
         </div>
         <div class="site-sync-metric">
+          <div class="site-sync-metric-label"><span class="site-sync-metric-icon" aria-hidden="true">F</span><span class="site-sync-metric-copy"><b>Firebase 儲存</b><small>Realtime Database 官方用量</small></span></div>
+          <div class="site-sync-metric-value"><strong id="site-sync-firebase-storage">--</strong><small id="site-sync-firebase-storage-detail">正在讀取</small></div>
+        </div>
+        <div class="site-sync-metric">
+          <div class="site-sync-metric-label"><span class="site-sync-metric-icon" aria-hidden="true">↓</span><span class="site-sync-metric-copy"><b>Firebase 本月下載</b><small>含通訊協定與加密流量</small></span></div>
+          <div class="site-sync-metric-value"><strong id="site-sync-firebase-downloads">--</strong><small id="site-sync-firebase-downloads-detail">正在讀取</small></div>
+        </div>
+        <div class="site-sync-metric">
           <div class="site-sync-metric-label"><span class="site-sync-metric-icon" aria-hidden="true">↥</span><span class="site-sync-metric-copy"><b>Firebase 待同步</b><small>離線時暫存在此裝置</small></span></div>
           <div class="site-sync-metric-value"><strong id="site-sync-pending">--</strong><small id="site-sync-pending-detail">正在計算</small></div>
         </div>
@@ -3263,6 +3271,10 @@ async function siteSyncRenderLocalState(){
   siteSyncSetText('site-sync-pending-detail',pending.length?`${siteSyncFormatBytes(pendingBytes)} 等待補同步`:'全部已同步');
 
   const firebaseBytes=siteSyncCurrentFirebaseBytes();
+  siteSyncSetText('site-sync-firebase-storage',`約 ${siteSyncFormatBytes(firebaseBytes)}`);
+  siteSyncSetText('site-sync-firebase-storage-detail','此裝置已載入資料估算');
+  siteSyncSetText('site-sync-firebase-downloads','--');
+  siteSyncSetText('site-sync-firebase-downloads-detail','等待官方用量');
   if(!navigator.onLine){
     siteSyncSetService('firebase','目前離線','offline');
   }else if(window._fb&&typeof albumRemoteDataReady!=='undefined'&&albumRemoteDataReady){
@@ -3294,6 +3306,16 @@ async function siteSyncFetchCloudinaryUsage(){
   if(!response.ok) throw Object.assign(new Error(data?.error||`HTTP ${response.status}`),{status:response.status,configured:data?.configured});
   return data;
 }
+async function siteSyncFetchFirebaseUsage(){
+  const params=new URLSearchParams();
+  if(typeof firebaseConfig!=='undefined'&&firebaseConfig?.projectId) params.set('projectId',firebaseConfig.projectId);
+  const query=params.toString();
+  const response=await fetch(`/api/firebase-usage${query?`?${query}`:''}`,{headers:{Accept:'application/json'},cache:'no-store'});
+  let data=null;
+  try{data=await response.json();}catch(_){ }
+  if(!response.ok) throw Object.assign(new Error(data?.error||`HTTP ${response.status}`),{status:response.status,configured:data?.configured});
+  return data;
+}
 async function refreshSiteSyncStatus(){
   const panel=document.getElementById('site-sync-bg');
   if(!panel||panel.hidden) return;
@@ -3311,6 +3333,9 @@ async function refreshSiteSyncStatus(){
     siteSyncSetText('site-sync-cloudinary-storage','--');
     siteSyncSetText('site-sync-cloudinary-storage-detail','連線後重新讀取');
     siteSyncSetText('site-sync-bandwidth','目前離線');
+    siteSyncSetText('site-sync-firebase-storage-detail','目前離線，顯示裝置估算');
+    siteSyncSetText('site-sync-firebase-downloads','--');
+    siteSyncSetText('site-sync-firebase-downloads-detail','恢復連線後重新讀取');
     siteSyncSetText('site-sync-updated','目前離線');
     return;
   }
@@ -3343,6 +3368,31 @@ async function refreshSiteSyncStatus(){
     siteSyncSetText('site-sync-cloudinary-storage-detail',uploadConnected?'上傳功能仍可使用':'上傳設定未完成');
     siteSyncSetText('site-sync-bandwidth','尚未取得');
     siteSyncSetService('cloudinary',uploadConnected?'上傳已連線，用量待設定':'尚未設定','waiting');
+  }
+
+  try{
+    const firebaseUsage=await siteSyncFetchFirebaseUsage();
+    if(token!==siteSyncRefreshToken||panel.hidden) return;
+    const storage=firebaseUsage.storage||{};
+    const downloads=firebaseUsage.downloads||{};
+    const storageUsage=Number(storage.usage)||0;
+    const storageLimit=Number(storage.limit)||0;
+    const storageRemaining=storageLimit?Math.max(0,Number(storage.remaining)||storageLimit-storageUsage):0;
+    const downloadUsage=Number(downloads.usage)||0;
+    const downloadLimit=Number(downloads.limit)||0;
+    const downloadRemaining=downloadLimit?Math.max(0,Number(downloads.remaining)||downloadLimit-downloadUsage):0;
+    siteSyncSetText('site-sync-firebase-storage',storageLimit?`${siteSyncFormatBytes(storageUsage)} / ${siteSyncFormatBytes(storageLimit)}`:siteSyncFormatBytes(storageUsage));
+    siteSyncSetText('site-sync-firebase-storage-detail',storageLimit?`剩餘 ${siteSyncFormatBytes(storageRemaining)}`:'官方未提供上限');
+    siteSyncSetText('site-sync-firebase-downloads',downloadLimit?`${siteSyncFormatBytes(downloadUsage)} / ${siteSyncFormatBytes(downloadLimit)}`:siteSyncFormatBytes(downloadUsage));
+    siteSyncSetText('site-sync-firebase-downloads-detail',downloadLimit?`剩餘 ${siteSyncFormatBytes(downloadRemaining)}`:'官方未提供上限');
+    const usedPercent=storageLimit?Math.max(0,Math.min(100,storageUsage/storageLimit*100)):0;
+    siteSyncSetService('firebase',`官方用量 ${siteSyncFormatValue(usedPercent,1)}%`);
+  }catch(error){
+    if(token!==siteSyncRefreshToken||panel.hidden) return;
+    const needsSetup=error?.status===503||error?.configured===false;
+    siteSyncSetText('site-sync-firebase-storage-detail',needsSetup?'裝置估算・官方用量尚未連接':'裝置估算・官方用量暫時無法讀取');
+    siteSyncSetText('site-sync-firebase-downloads','尚未取得');
+    siteSyncSetText('site-sync-firebase-downloads-detail',needsSetup?'Monitoring API 尚未設定':'稍後可重新整理');
   }
   const stamp=new Intl.DateTimeFormat('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());
   siteSyncSetText('site-sync-updated',`更新時間 ${stamp}`);

@@ -29,7 +29,7 @@ overflow-x:hidden;
 
 :root{
 --bottom-nav-height:calc(68px + env(safe-area-inset-bottom));
---music-nav-gap:16px;
+--music-nav-gap:8px;
 --pink:#e8637a;
 --pink-light:#fce8ec;
 --pink-soft:#f7d0d8;
@@ -148,6 +148,67 @@ touch-action:manipulation;
 .immersive-toast[hidden]{display:none}
 [data-theme="dark"] .immersive-guide-head{background:color-mix(in srgb,var(--pink-light) 18%,var(--white))}
 @media(max-width:520px){.immersive-guide-bg{align-items:flex-end;padding:0}.immersive-guide{width:100%;border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom)}.immersive-guide-head{padding:19px 56px 14px 17px}.immersive-guide-steps{padding-right:16px;padding-left:16px}.immersive-guide-action{width:calc(100% - 32px);margin-right:16px;margin-left:16px}}
+.site-sync-bg{position:fixed;inset:0;z-index:4550;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(35,19,26,.58);backdrop-filter:blur(8px)}
+.site-sync-bg[hidden]{display:none}
+.site-sync-dialog{position:relative;width:min(100%,430px);max-height:calc(100dvh - 36px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--card-border);border-radius:12px;background:var(--white);box-shadow:0 28px 82px rgba(54,25,35,.36)}
+.site-sync-head{position:relative;flex:0 0 auto;padding:20px 58px 16px 19px;border-bottom:1px solid var(--card-border);background:color-mix(in srgb,var(--pink-light) 26%,var(--white))}
+.site-sync-kicker{color:#2d9465;font-size:8px;font-weight:900;letter-spacing:0}
+.site-sync-title{margin:4px 0 0;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;line-height:1.35}
+.site-sync-updated{margin-top:5px;color:var(--text-muted);font-size:9px;font-variant-numeric:tabular-nums}
+.site-sync-close{position:absolute;right:13px;top:13px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--white);color:var(--rose);font-size:20px;cursor:pointer}
+.site-sync-body{min-height:0;overflow-y:auto;padding:17px 19px 19px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.site-sync-overview{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding-bottom:15px;border-bottom:1px solid var(--card-border)}
+.site-sync-state{display:flex;align-items:center;gap:9px;color:var(--text);font-size:13px;font-weight:900;line-height:1.4}
+.site-sync-state-dot{width:10px;height:10px;flex:0 0 auto;border-radius:50%;background:#35a46f;box-shadow:0 0 0 5px rgba(53,164,111,.12)}
+.site-sync-state.is-working .site-sync-state-dot{background:#d49b3f;box-shadow:0 0 0 5px rgba(212,155,63,.12);animation:siteSyncPulse 1.25s ease-in-out infinite}
+.site-sync-state.is-offline .site-sync-state-dot{background:#c94b64;box-shadow:0 0 0 5px rgba(201,75,100,.12)}
+.site-sync-remaining{text-align:right}
+.site-sync-remaining strong{display:block;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.site-sync-remaining small{display:block;margin-top:2px;color:var(--text-muted);font-size:8px}
+.site-sync-meter{height:5px;margin:13px 0 3px;overflow:hidden;border-radius:999px;background:color-mix(in srgb,var(--pink-light) 70%,var(--white))}
+.site-sync-meter i{display:block;width:var(--site-sync-progress,0%);height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--rose),#3aa16f);transition:width .3s ease}
+.site-sync-metrics{margin-top:6px}
+.site-sync-metric{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;min-height:60px;padding:11px 0;border-bottom:1px solid color-mix(in srgb,var(--card-border) 75%,transparent)}
+.site-sync-metric:last-child{border-bottom:0}
+.site-sync-metric-label{display:flex;align-items:center;gap:10px;min-width:0}
+.site-sync-metric-icon{width:34px;height:34px;display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--card-border);border-radius:9px;background:color-mix(in srgb,var(--pink-light) 48%,var(--white));color:var(--rose);font-size:15px}
+.site-sync-metric-copy{min-width:0}
+.site-sync-metric-copy b{display:block;color:var(--text);font-size:11px;line-height:1.45}
+.site-sync-metric-copy small{display:block;margin-top:2px;color:var(--text-muted);font-size:8px;line-height:1.45}
+.site-sync-metric-value{text-align:right;white-space:nowrap}
+.site-sync-metric-value strong{display:block;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:15px;font-variant-numeric:tabular-nums}
+.site-sync-metric-value small{display:block;margin-top:2px;color:var(--text-muted);font-size:8px}
+.site-sync-dataset{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:3px -4px 0;padding:11px 4px 0;border-top:1px solid var(--card-border);color:var(--text-muted);font-size:9px;line-height:1.5}
+.site-sync-dataset b{color:#2e9364;font-weight:900;text-align:right}
+.site-sync-services{margin-top:14px;padding-top:13px;border-top:1px solid var(--card-border)}
+.site-sync-services-title{margin-bottom:7px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700}
+.site-sync-service{display:grid;grid-template-columns:9px minmax(0,1fr) auto;align-items:center;gap:9px;min-height:47px;padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--card-border) 70%,transparent)}
+.site-sync-service:last-child{border-bottom:0}
+.site-sync-service-dot{width:7px;height:7px;border-radius:50%;background:#35a46f}
+.site-sync-service-dot.is-waiting{background:#d49b3f}
+.site-sync-service-dot.is-offline{background:#c94b64}
+.site-sync-service-copy{min-width:0}
+.site-sync-service-copy b{display:block;color:var(--text);font-size:10px;line-height:1.4}
+.site-sync-service-copy small{display:block;margin-top:2px;color:var(--text-muted);font-size:8px;line-height:1.45}
+.site-sync-service-status{max-width:116px;color:#2e9364;font-size:8px;font-weight:900;line-height:1.4;text-align:right}
+.site-sync-service-status.is-waiting{color:#a87422}
+.site-sync-service-status.is-offline{color:var(--rose)}
+.site-sync-actions{display:grid;grid-template-columns:44px minmax(0,1fr);gap:9px;margin-top:15px}
+.site-sync-action{height:43px;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:900;cursor:pointer}
+.site-sync-action.primary{border-color:var(--rose);background:var(--rose);color:#fff}
+.site-sync-action:disabled{opacity:.55;cursor:default}
+@keyframes siteSyncPulse{0%,100%{opacity:.58;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
+[data-theme="dark"] .site-sync-bg{background:rgba(8,5,7,.76)}
+[data-theme="dark"] .site-sync-dialog{box-shadow:0 28px 82px rgba(0,0,0,.52)}
+[data-theme="dark"] .site-sync-head{background:color-mix(in srgb,var(--pink-light) 14%,var(--white))}
+[data-theme="dark"] .site-sync-meter{background:rgba(255,255,255,.07)}
+@media(max-width:520px){
+  :root{--music-nav-gap:0px}
+  .site-sync-bg{align-items:flex-end;padding:0}
+  .site-sync-dialog{width:100%;max-height:calc(92dvh - env(safe-area-inset-top));border-right:0;border-bottom:0;border-left:0;border-radius:16px 16px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+  .site-sync-head{padding:18px 56px 14px 17px}
+  .site-sync-body{padding:15px 17px 17px}
+}
 .heart-pulse{
 display:inline-grid;
 place-items:center;
@@ -2162,7 +2223,7 @@ body.choose-letterbox-open{overflow:hidden}
 
 <header class="header" style="position:sticky;top:0;z-index:100;">
   <div class="header-names">聖展 <button type="button" class="heart-pulse" id="intimacy-visibility-toggle" onclick="toggleIntimacyVisibility()" aria-label="暫時隱藏親密統計" aria-pressed="false">♡</button> 予君</div>
-  <button type="button" class="header-sub header-sub-trigger" id="immersive-mode-trigger" onclick="toggleImmersiveMode()" aria-label="切換全螢幕模式" title="切換全螢幕模式">要永遠在一起</button>
+  <button type="button" class="header-sub header-sub-trigger" id="immersive-mode-trigger" onclick="openSiteSyncStatus()" aria-label="查看儲存空間總覽" title="查看儲存空間總覽">要永遠在一起</button>
   <div class="header-dogs-stage" aria-hidden="true">
     <span class="line-dog white"><span class="line-dog-tail"></span><span class="line-dog-body"></span><span class="line-dog-head"><i class="line-dog-ear left"></i><i class="line-dog-ear right"></i><i class="line-dog-eye left"></i><i class="line-dog-eye right"></i><i class="line-dog-nose"></i><i class="line-dog-mouth"></i></span><i class="line-dog-paw left"></i><i class="line-dog-paw right"></i></span>
     <span class="line-dog brown"><span class="line-dog-tail"></span><span class="line-dog-body"></span><span class="line-dog-head"><i class="line-dog-ear left"></i><i class="line-dog-ear right"></i><i class="line-dog-eye left"></i><i class="line-dog-eye right"></i><i class="line-dog-nose"></i><i class="line-dog-mouth"></i></span><i class="line-dog-paw left"></i><i class="line-dog-paw right"></i></span>
@@ -2190,6 +2251,50 @@ body.choose-letterbox-open{overflow:hidden}
   </section>
 </div>
 <div class="immersive-toast" id="immersive-toast" role="status" aria-live="polite" hidden></div>
+
+<div class="site-sync-bg" id="site-sync-bg" onclick="closeSiteSyncStatus(event)" hidden>
+  <section class="site-sync-dialog" role="dialog" aria-modal="true" aria-labelledby="site-sync-title" onclick="event.stopPropagation()">
+    <header class="site-sync-head">
+      <div class="site-sync-kicker">STORAGE STATUS</div>
+      <h2 class="site-sync-title" id="site-sync-title">儲存空間總覽</h2>
+      <div class="site-sync-updated" id="site-sync-updated">正在讀取資料</div>
+      <button type="button" class="site-sync-close" onclick="closeSiteSyncStatus()" aria-label="關閉同步狀態">×</button>
+    </header>
+    <div class="site-sync-body">
+      <div class="site-sync-overview">
+        <div class="site-sync-state is-working" id="site-sync-state"><span class="site-sync-state-dot"></span><span id="site-sync-state-text">正在取得 Cloudinary 用量</span></div>
+        <div class="site-sync-remaining"><strong id="site-sync-remaining">--</strong><small>剩餘 Cloudinary 點數</small></div>
+      </div>
+      <div class="site-sync-meter" aria-hidden="true"><i id="site-sync-meter"></i></div>
+      <div class="site-sync-metrics">
+        <div class="site-sync-metric">
+          <div class="site-sync-metric-label"><span class="site-sync-metric-icon" aria-hidden="true">C</span><span class="site-sync-metric-copy"><b>Cloudinary 點數</b><small>儲存、流量與轉檔合計</small></span></div>
+          <div class="site-sync-metric-value"><strong id="site-sync-cloudinary-credits">--</strong><small id="site-sync-cloudinary-credits-detail">正在讀取</small></div>
+        </div>
+        <div class="site-sync-metric">
+          <div class="site-sync-metric-label"><span class="site-sync-metric-icon" aria-hidden="true">▣</span><span class="site-sync-metric-copy"><b>Cloudinary 儲存</b><small>照片、影片與上傳的 MP3</small></span></div>
+          <div class="site-sync-metric-value"><strong id="site-sync-cloudinary-storage">--</strong><small id="site-sync-cloudinary-storage-detail">正在讀取</small></div>
+        </div>
+        <div class="site-sync-metric">
+          <div class="site-sync-metric-label"><span class="site-sync-metric-icon" aria-hidden="true">↥</span><span class="site-sync-metric-copy"><b>Firebase 待同步</b><small>離線時暫存在此裝置</small></span></div>
+          <div class="site-sync-metric-value"><strong id="site-sync-pending">--</strong><small id="site-sync-pending-detail">正在計算</small></div>
+        </div>
+      </div>
+      <div class="site-sync-dataset"><span>Cloudinary 本期流量</span><b id="site-sync-bandwidth">--</b></div>
+      <div class="site-sync-services">
+        <div class="site-sync-services-title">網站資料存放位置</div>
+        <div class="site-sync-service"><span class="site-sync-service-dot" id="site-sync-cloudinary-dot"></span><span class="site-sync-service-copy"><b>Cloudinary</b><small>相簿照片、影片、自行上傳的 MP3</small></span><span class="site-sync-service-status" id="site-sync-cloudinary-status">檢查中</span></div>
+        <div class="site-sync-service"><span class="site-sync-service-dot" id="site-sync-firebase-dot"></span><span class="site-sync-service-copy"><b>Firebase Realtime Database</b><small>行程、足跡、生理期、心約、驚喜與各功能文字資料</small></span><span class="site-sync-service-status" id="site-sync-firebase-status">檢查中</span></div>
+        <div class="site-sync-service"><span class="site-sync-service-dot"></span><span class="site-sync-service-copy"><b>Vercel 靜態檔案</b><small>網站程式、內建音樂、圖示與特效素材</small></span><span class="site-sync-service-status">已載入</span></div>
+        <div class="site-sync-service"><span class="site-sync-service-dot" id="site-sync-device-dot"></span><span class="site-sync-service-copy"><b>此裝置快取</b><small>相簿快照、偏好設定與離線待同步資料</small></span><span class="site-sync-service-status" id="site-sync-device-status">檢查中</span></div>
+      </div>
+      <div class="site-sync-actions">
+        <button type="button" class="site-sync-action" onclick="refreshSiteSyncStatus()" aria-label="重新整理同步狀態" title="重新整理">↻</button>
+        <button type="button" class="site-sync-action primary" id="site-sync-fullscreen" onclick="siteSyncStatusToggleFullscreen()">切換全螢幕</button>
+      </div>
+    </div>
+  </section>
+</div>
 
 <div class="music-player collapsed" id="music-player">
   <button type="button" class="music-disc" id="music-disc" onclick="toggleMusicPlayerDock()" title="展開音樂播放器" aria-label="展開音樂播放器" aria-expanded="false">🎵</button>
@@ -3025,6 +3130,8 @@ function toggleDark(){
 
 let immersiveToastTimer=0;
 let immersiveSavedScrollY=window.scrollY||0;
+let siteSyncStatusTimer=0;
+let siteSyncRefreshToken=0;
 function immersiveIsStandalone(){
   return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;
 }
@@ -3098,6 +3205,178 @@ async function toggleImmersiveMode(){
   if(immersiveIsIOS()) immersiveOpenGuide();
   else immersiveShowToast('這個瀏覽器目前不支援網頁全螢幕');
 }
+
+function siteSyncFormatBytes(value){
+  const bytes=Math.max(0,Number(value)||0);
+  if(bytes<1024) return `${Math.round(bytes)} B`;
+  const units=['KB','MB','GB','TB'];
+  let amount=bytes/1024;
+  let index=0;
+  while(amount>=1024&&index<units.length-1){amount/=1024;index+=1;}
+  const digits=amount>=100?0:(amount>=10?1:2);
+  return `${amount.toFixed(digits)} ${units[index]}`;
+}
+function siteSyncFormatValue(value,maxDigits=2){
+  const number=Number(value)||0;
+  return new Intl.NumberFormat('zh-TW',{maximumFractionDigits:maxDigits}).format(number);
+}
+function siteSyncPayloadBytes(value){
+  try{return new Blob([JSON.stringify(value??null)]).size;}catch(_){return 0;}
+}
+function siteSyncSetText(id,value){
+  const element=document.getElementById(id);
+  if(element) element.textContent=String(value??'');
+}
+function siteSyncSetService(name,status,tone='ready'){
+  const dot=document.getElementById(`site-sync-${name}-dot`);
+  const text=document.getElementById(`site-sync-${name}-status`);
+  const toneClass=tone==='offline'?'is-offline':(tone==='waiting'?'is-waiting':'');
+  if(dot) dot.className=`site-sync-service-dot${toneClass?` ${toneClass}`:''}`;
+  if(text){
+    text.className=`site-sync-service-status${toneClass?` ${toneClass}`:''}`;
+    text.textContent=status;
+  }
+}
+function siteSyncSetOverview(message,tone='ready',remaining='--',usedPercent=0){
+  const state=document.getElementById('site-sync-state');
+  if(state) state.className=`site-sync-state${tone==='offline'?' is-offline':(tone==='working'?' is-working':'')}`;
+  siteSyncSetText('site-sync-state-text',message);
+  siteSyncSetText('site-sync-remaining',remaining);
+  const meter=document.getElementById('site-sync-meter');
+  if(meter) meter.style.width=`${Math.max(0,Math.min(100,Number(usedPercent)||0))}%`;
+}
+function siteSyncCurrentFirebaseBytes(){
+  const snapshot={};
+  try{snapshot.albumData=albumFirebaseData||{};}catch(_){}
+  try{snapshot.albumVideos=albumVideosData||{};}catch(_){}
+  try{snapshot.albumPlans=albumPlansData||{};}catch(_){}
+  try{snapshot.surprises=loveSurprisesCache||{};}catch(_){}
+  try{snapshot.footprints=footprintVisitsData||{};}catch(_){}
+  try{snapshot.footprintCategories=footprintCategorySettings||{};}catch(_){}
+  try{snapshot.monthlyLetters=chooseEntriesData||{};}catch(_){}
+  return siteSyncPayloadBytes(snapshot);
+}
+async function siteSyncRenderLocalState(){
+  const pending=typeof getAlbumPendingWrites==='function'?getAlbumPendingWrites():[];
+  const pendingBytes=siteSyncPayloadBytes(pending);
+  siteSyncSetText('site-sync-pending',`${pending.length} 筆`);
+  siteSyncSetText('site-sync-pending-detail',pending.length?`${siteSyncFormatBytes(pendingBytes)} 等待補同步`:'全部已同步');
+
+  const firebaseBytes=siteSyncCurrentFirebaseBytes();
+  if(!navigator.onLine){
+    siteSyncSetService('firebase','目前離線','offline');
+  }else if(window._fb&&typeof albumRemoteDataReady!=='undefined'&&albumRemoteDataReady){
+    siteSyncSetService('firebase',`已同步 · 約 ${siteSyncFormatBytes(firebaseBytes)}`);
+  }else if(window._fb){
+    siteSyncSetService('firebase','正在連線','waiting');
+  }else{
+    siteSyncSetService('firebase','尚未連線','waiting');
+  }
+
+  let deviceStatus='快取可用';
+  try{
+    if(navigator.storage?.estimate){
+      const estimate=await navigator.storage.estimate();
+      deviceStatus=`已用 ${siteSyncFormatBytes(estimate.usage||0)}`;
+    }
+  }catch(_){}
+  siteSyncSetService('device',deviceStatus);
+}
+async function siteSyncFetchCloudinaryUsage(){
+  const cfg=typeof getCloudinarySettings==='function'?getCloudinarySettings():null;
+  const params=new URLSearchParams();
+  if(cfg?.cloudName) params.set('cloudName',cfg.cloudName);
+  const query=params.toString();
+  const url=`/api/cloudinary-usage${query?`?${query}`:''}`;
+  const response=await fetch(url,{headers:{Accept:'application/json'},cache:'no-store'});
+  let data=null;
+  try{data=await response.json();}catch(_){}
+  if(!response.ok) throw Object.assign(new Error(data?.error||`HTTP ${response.status}`),{status:response.status,configured:data?.configured});
+  return data;
+}
+async function refreshSiteSyncStatus(){
+  const panel=document.getElementById('site-sync-bg');
+  if(!panel||panel.hidden) return;
+  const token=++siteSyncRefreshToken;
+  siteSyncSetText('site-sync-updated','正在更新用量資料');
+  await siteSyncRenderLocalState();
+  if(token!==siteSyncRefreshToken||panel.hidden) return;
+
+  const uploadConnected=typeof hasCloudinarySettings==='function'&&hasCloudinarySettings();
+  if(!navigator.onLine){
+    siteSyncSetOverview('目前離線，無法取得 Cloudinary 用量','offline','--',0);
+    siteSyncSetService('cloudinary',uploadConnected?'上傳設定已保存':'尚未設定','offline');
+    siteSyncSetText('site-sync-cloudinary-credits','--');
+    siteSyncSetText('site-sync-cloudinary-credits-detail','連線後重新讀取');
+    siteSyncSetText('site-sync-cloudinary-storage','--');
+    siteSyncSetText('site-sync-cloudinary-storage-detail','連線後重新讀取');
+    siteSyncSetText('site-sync-bandwidth','目前離線');
+    siteSyncSetText('site-sync-updated','目前離線');
+    return;
+  }
+
+  siteSyncSetOverview('正在取得 Cloudinary 用量','working','--',0);
+  try{
+    const data=await siteSyncFetchCloudinaryUsage();
+    if(token!==siteSyncRefreshToken||panel.hidden) return;
+    const credits=data.credits||{};
+    const storage=data.storage||{};
+    const bandwidth=data.bandwidth||{};
+    const used=Number(credits.usage)||0;
+    const limit=Number(credits.limit)||0;
+    const percent=Math.max(0,Math.min(100,Number(credits.usedPercent)||(limit?used/limit*100:0)));
+    const remaining=limit?Math.max(0,limit-used):0;
+    siteSyncSetOverview('Cloudinary 用量已更新','ready',limit?`${siteSyncFormatValue(remaining)} 點`:'未提供',percent);
+    siteSyncSetText('site-sync-cloudinary-credits',limit?`${siteSyncFormatValue(used)} / ${siteSyncFormatValue(limit)}`:siteSyncFormatValue(used));
+    siteSyncSetText('site-sync-cloudinary-credits-detail',`${data.plan||'Cloudinary'} · 已用 ${siteSyncFormatValue(percent,1)}%`);
+    siteSyncSetText('site-sync-cloudinary-storage',storage.limit?`${siteSyncFormatBytes(storage.usage)} / ${siteSyncFormatBytes(storage.limit)}`:siteSyncFormatBytes(storage.usage));
+    siteSyncSetText('site-sync-cloudinary-storage-detail',`${siteSyncFormatValue(data.resources||0,0)} 個資源`);
+    siteSyncSetText('site-sync-bandwidth',bandwidth.limit?`${siteSyncFormatBytes(bandwidth.usage)} / ${siteSyncFormatBytes(bandwidth.limit)}`:siteSyncFormatBytes(bandwidth.usage));
+    siteSyncSetService('cloudinary',`${data.plan||'已連線'} · ${siteSyncFormatValue(percent,1)}%`);
+  }catch(error){
+    if(token!==siteSyncRefreshToken||panel.hidden) return;
+    const needsSetup=error?.status===503||error?.configured===false;
+    siteSyncSetOverview(needsSetup?'Cloudinary 用量尚未連接':'Cloudinary 用量暫時無法讀取','working','--',0);
+    siteSyncSetText('site-sync-cloudinary-credits','尚未取得');
+    siteSyncSetText('site-sync-cloudinary-credits-detail',needsSetup?'Usage API 尚未設定':'稍後可重新整理');
+    siteSyncSetText('site-sync-cloudinary-storage','尚未取得');
+    siteSyncSetText('site-sync-cloudinary-storage-detail',uploadConnected?'上傳功能仍可使用':'上傳設定未完成');
+    siteSyncSetText('site-sync-bandwidth','尚未取得');
+    siteSyncSetService('cloudinary',uploadConnected?'上傳已連線，用量待設定':'尚未設定','waiting');
+  }
+  const stamp=new Intl.DateTimeFormat('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());
+  siteSyncSetText('site-sync-updated',`更新時間 ${stamp}`);
+}
+function openSiteSyncStatus(){
+  const panel=document.getElementById('site-sync-bg');
+  if(!panel) return;
+  panel.dataset.previousOverflow=document.body.style.overflow||'';
+  document.body.style.overflow='hidden';
+  panel.hidden=false;
+  const fullscreen=document.getElementById('site-sync-fullscreen');
+  if(fullscreen) fullscreen.textContent=immersiveIsStandalone()?'已是全螢幕':(immersiveFullscreenElement()?'離開全螢幕':'切換全螢幕');
+  refreshSiteSyncStatus();
+  clearInterval(siteSyncStatusTimer);
+  siteSyncStatusTimer=setInterval(refreshSiteSyncStatus,60000);
+  setTimeout(()=>panel.querySelector('.site-sync-close')?.focus(),40);
+}
+function closeSiteSyncStatus(event){
+  const panel=document.getElementById('site-sync-bg');
+  if(!panel) return;
+  if(event&&event.target!==panel) return;
+  panel.hidden=true;
+  clearInterval(siteSyncStatusTimer);
+  siteSyncStatusTimer=0;
+  siteSyncRefreshToken+=1;
+  document.body.style.overflow=panel.dataset.previousOverflow||'';
+  delete panel.dataset.previousOverflow;
+}
+function siteSyncStatusToggleFullscreen(){
+  const standalone=immersiveIsStandalone();
+  closeSiteSyncStatus();
+  if(standalone){immersiveShowToast('目前已經是全螢幕模式');return;}
+  setTimeout(toggleImmersiveMode,80);
+}
 function immersiveSyncFullscreenState(){
   const active=Boolean(immersiveFullscreenElement());
   document.documentElement.classList.toggle('is-browser-fullscreen',active);
@@ -3115,7 +3394,10 @@ document.addEventListener('fullscreenchange',immersiveSyncFullscreenState);
 document.addEventListener('webkitfullscreenchange',immersiveSyncFullscreenState);
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'&&!document.getElementById('immersive-guide-bg')?.classList.contains('hidden')) immersiveCloseGuideDirect();
+  if(event.key==='Escape'&&!document.getElementById('site-sync-bg')?.hidden) closeSiteSyncStatus();
 });
+window.addEventListener('online',()=>{if(!document.getElementById('site-sync-bg')?.hidden) refreshSiteSyncStatus();});
+window.addEventListener('offline',()=>{if(!document.getElementById('site-sync-bg')?.hidden) refreshSiteSyncStatus();});
 
 // ── Dates ──
 function today(){

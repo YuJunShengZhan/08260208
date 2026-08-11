@@ -1,2 +1,5 @@
 work/
 outputs/
+
+.vercel
+.env*

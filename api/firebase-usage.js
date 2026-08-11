@@ -3,7 +3,7 @@ const crypto = require('crypto');
 function sendJson(response, status, payload, cache = false) {
   response.setHeader('Content-Type', 'application/json; charset=utf-8');
   response.setHeader('Cache-Control', cache
-    ? 'private, max-age=60, s-maxage=300, stale-while-revalidate=900'
+    ? 'private, max-age=15, s-maxage=30, stale-while-revalidate=60'
     : 'no-store');
   response.status(status).json(payload);
 }
@@ -114,6 +114,64 @@ function usageMetric(usage, limit) {
   };
 }
 
+const FIREBASE_SPARK_STORAGE_LIMIT = 1024 * 1024 * 1024;
+const FIREBASE_SPARK_DOWNLOAD_LIMIT = 10 * 1024 * 1024 * 1024;
+
+function cleanDatabaseUrl(value, projectId) {
+  try {
+    const url = new URL(String(value || ''));
+    const host = url.hostname.toLowerCase();
+    const safeHost = host.endsWith('.firebasedatabase.app') || host.endsWith('.firebaseio.com');
+    const belongsToProject = host === `${projectId}.firebaseio.com` || host.startsWith(`${projectId}-`);
+    if (url.protocol !== 'https:' || !safeHost || !belongsToProject) return '';
+    return `${url.origin}/.json`;
+  } catch (_) {
+    return '';
+  }
+}
+
+async function readDatabasePayloadSize(databaseUrl) {
+  if (!databaseUrl) throw new Error('Firebase Database URL is unavailable');
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  try {
+    const upstream = await fetch(databaseUrl, {
+      headers: {
+        Accept: 'application/json',
+        'Accept-Encoding': 'identity'
+      },
+      signal: controller.signal
+    });
+    const contentLength = Number(upstream.headers.get('content-length'));
+    if (upstream.body) await upstream.body.cancel().catch(() => {});
+    if (!upstream.ok) throw new Error(`Firebase Database HTTP ${upstream.status}`);
+    if (!Number.isFinite(contentLength) || contentLength <= 0) {
+      throw new Error('Firebase Database did not return a payload size');
+    }
+    return contentLength;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function estimatedUsagePayload(projectId, storageUsage, officialError = '') {
+  return {
+    configured: true,
+    projectId,
+    source: 'payload-estimate',
+    storage: usageMetric(storageUsage, FIREBASE_SPARK_STORAGE_LIMIT),
+    downloads: {
+      available: false,
+      usage: null,
+      limit: FIREBASE_SPARK_DOWNLOAD_LIMIT,
+      remaining: null,
+      usedPercent: null
+    },
+    officialError,
+    updatedAt: new Date().toISOString()
+  };
+}
+
 module.exports = async function firebaseUsage(request, response) {
   if (request.method !== 'GET') {
     response.setHeader('Allow', 'GET');
@@ -128,35 +186,57 @@ module.exports = async function firebaseUsage(request, response) {
   const projectId = account.projectId || (/^[a-z][a-z0-9-]{3,60}$/i.test(String(requestedProject || ''))
     ? String(requestedProject)
     : '');
+  const requestedDatabaseUrl = Array.isArray(request.query?.databaseUrl)
+    ? request.query.databaseUrl[0]
+    : request.query?.databaseUrl;
+  const databaseUrl = cleanDatabaseUrl(
+    requestedDatabaseUrl || process.env.FIREBASE_DATABASE_URL,
+    projectId
+  );
 
-  if (!projectId || !account.clientEmail || !account.privateKey) {
-    sendJson(response, 503, {
-      configured: false,
-      error: 'Firebase Monitoring API 尚未設定'
-    });
+  if (!projectId) {
+    sendJson(response, 503, { configured: false, error: 'Firebase project is not configured' });
     return;
   }
 
+  let officialError = '';
+  const monitoringEnabled = process.env.FIREBASE_MONITORING_ENABLED === 'true';
+  if (monitoringEnabled && account.clientEmail && account.privateKey) {
+    try {
+      const token = await getAccessToken(account);
+      const prefix = 'firebasedatabase.googleapis.com/';
+      const [storageUsage, storageLimit, downloadUsage, downloadLimit] = await Promise.all([
+        readLatestMetric(projectId, token, `${prefix}storage/total_bytes`),
+        readLatestMetric(projectId, token, `${prefix}storage/limit`),
+        readLatestMetric(projectId, token, `${prefix}network/monthly_sent`),
+        readLatestMetric(projectId, token, `${prefix}network/monthly_sent_limit`)
+      ]);
+      sendJson(response, 200, {
+        configured: true,
+        projectId,
+        source: 'cloud-monitoring',
+        storage: usageMetric(storageUsage, storageLimit),
+        downloads: { available: true, ...usageMetric(downloadUsage, downloadLimit) },
+        updatedAt: new Date().toISOString()
+      }, true);
+      return;
+    } catch (error) {
+      officialError = error?.message || 'Firebase official usage is unavailable';
+    }
+  } else if (!monitoringEnabled) {
+    officialError = 'Firebase Monitoring is unavailable on the current plan';
+  } else {
+    officialError = 'Firebase Monitoring credentials are not configured';
+  }
+
   try {
-    const token = await getAccessToken(account);
-    const prefix = 'firebasedatabase.googleapis.com/';
-    const [storageUsage, storageLimit, downloadUsage, downloadLimit] = await Promise.all([
-      readLatestMetric(projectId, token, `${prefix}storage/total_bytes`),
-      readLatestMetric(projectId, token, `${prefix}storage/limit`),
-      readLatestMetric(projectId, token, `${prefix}network/monthly_sent`),
-      readLatestMetric(projectId, token, `${prefix}network/monthly_sent_limit`)
-    ]);
-    sendJson(response, 200, {
-      configured: true,
-      projectId,
-      storage: usageMetric(storageUsage, storageLimit),
-      downloads: usageMetric(downloadUsage, downloadLimit),
-      updatedAt: new Date().toISOString()
-    }, true);
+    const storageUsage = await readDatabasePayloadSize(databaseUrl);
+    sendJson(response, 200, estimatedUsagePayload(projectId, storageUsage, officialError), true);
   } catch (error) {
     sendJson(response, 502, {
       configured: true,
-      error: error?.message || 'Firebase 官方用量讀取失敗'
+      error: error?.message || 'Firebase usage is unavailable',
+      officialError
     });
   }
 };

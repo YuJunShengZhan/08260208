@@ -193,8 +193,9 @@ touch-action:manipulation;
 .site-sync-service-status{max-width:116px;color:#2e9364;font-size:8px;font-weight:900;line-height:1.4;text-align:right}
 .site-sync-service-status.is-waiting{color:#a87422}
 .site-sync-service-status.is-offline{color:var(--rose)}
-.site-sync-actions{display:flex;align-items:center;margin-top:15px}
+.site-sync-actions{display:grid;grid-template-columns:44px minmax(0,1fr);gap:9px;margin-top:15px}
 .site-sync-action{width:44px;height:43px;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:900;cursor:pointer}
+.site-sync-action.primary{width:100%;border-color:var(--rose);background:var(--rose);color:#fff}
 .site-sync-action:disabled{opacity:.55;cursor:default}
 @keyframes siteSyncPulse{0%,100%{opacity:.58;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
 [data-theme="dark"] .site-sync-bg{background:rgba(8,5,7,.76)}
@@ -2289,6 +2290,7 @@ body.choose-letterbox-open{overflow:hidden}
       </div>
       <div class="site-sync-actions">
         <button type="button" class="site-sync-action" onclick="refreshSiteSyncStatus()" aria-label="重新整理同步狀態" title="重新整理">↻</button>
+        <button type="button" class="site-sync-action primary" onclick="closeSiteSyncStatus()">關閉</button>
       </div>
     </div>
   </section>

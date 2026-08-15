@@ -30,6 +30,7 @@ overflow-x:hidden;
 :root{
 --bottom-nav-height:calc(68px + env(safe-area-inset-bottom));
 --music-nav-gap:8px;
+--music-player-height:50px;
 --pink:#e8637a;
 --pink-light:#fce8ec;
 --pink-soft:#f7d0d8;
@@ -933,7 +934,12 @@ max-height:88vh;max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;-we
 animation:slideUp .25s ease;
 transition:max-width .2s ease,max-height .2s ease;
 }
-.day-modal.editing{max-width:720px;max-height:94vh;max-height:94dvh;}
+.day-modal.editing{max-width:720px;max-height:94vh;max-height:94dvh;display:flex;flex-direction:column;overflow:hidden;}
+.day-modal.editing .day-modal-title{flex:0 0 auto}
+.day-modal.editing #modal-edit-content:not(.hidden){min-height:0;flex:1;display:flex;flex-direction:column}
+.modal-edit-scroll{min-height:0;flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-gutter:stable}
+.modal-save-bar{position:relative;z-index:3;flex:0 0 auto;padding-top:9px;background:var(--white)}
+.modal-save-bar::before{content:'';position:absolute;left:0;right:0;top:-12px;height:12px;background:linear-gradient(to bottom,transparent,var(--white));pointer-events:none}
 @keyframes slideUp{from{transform:translateY(60px);opacity:0;}to{transform:translateY(0);opacity:1;}}
 .day-modal-title{
 font-family:'Noto Serif TC',serif;
@@ -994,7 +1000,9 @@ font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:8px;
 .album-place-link-action:hover{background:var(--pink);color:#fff}
 .album-place-link-action:active{transform:scale(.94)}
 .album-place-link-action.remove{border-color:var(--card-border);background:var(--white);color:var(--text-muted);font-size:19px}
-.album-place-import-btn{width:100%;min-height:42px;margin-top:8px;padding:0 12px;border:0;border-radius:10px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:900;cursor:pointer}
+.album-place-import-btn{width:100%;min-height:38px;margin-top:7px;padding:0 12px;border:1px solid var(--card-border);border-radius:10px;background:color-mix(in srgb,var(--pink-light) 58%,var(--white));color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.album-place-import-btn:hover{border-color:var(--pink);background:var(--pink-light)}
+.album-place-import-btn:active{transform:scale(.985)}
 .album-place-import-btn:disabled{opacity:.55;cursor:wait}
 .album-place-status{min-height:17px;margin-top:6px;color:var(--text-muted);font-size:9px;line-height:1.45}
 .album-place-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
@@ -1203,9 +1211,9 @@ outline:none;
 width:100%;padding:12px;
 background:var(--pink);color:white;
 border:none;border-radius:12px;
-font-size:14px;cursor:pointer;
+font-size:14px;font-weight:900;cursor:pointer;
 font-family:'Noto Sans TC',sans-serif;
-margin-top:12px;
+margin:0;box-shadow:0 8px 20px rgba(201,75,100,.18);
 }
 
 .schedule-list{display:flex;flex-direction:column;gap:6px;}
@@ -1286,7 +1294,7 @@ scrollbar-color:var(--pink) transparent;
 .music-player{
 position:fixed;
 bottom:calc(var(--bottom-nav-height) + var(--music-nav-gap));
-right:14px;
+right:max(14px,env(safe-area-inset-right));
 z-index:1600;
 background:var(--white);
 border:1px solid var(--card-border);
@@ -1294,12 +1302,13 @@ border-radius:16px;
 padding:8px 10px;
 display:flex;align-items:center;gap:8px;
 box-shadow:0 4px 20px rgba(232,99,122,0.2);
-width:224px;
+width:min(224px,calc(100vw - 28px - env(safe-area-inset-left) - env(safe-area-inset-right)));
+min-height:var(--music-player-height);
 box-sizing:border-box;
 transition:background .3s,transform .3s cubic-bezier(.22,.8,.25,1),right .3s ease,box-shadow .3s ease;
 will-change:transform;
 }
-.music-player.collapsed{right:0;transform:translateX(calc(100% - 49px));box-shadow:-5px 5px 22px rgba(201,75,100,.2)}
+.music-player.collapsed{right:max(0px,env(safe-area-inset-right));transform:translateX(calc(100% - 49px));box-shadow:-5px 5px 22px rgba(201,75,100,.2)}
 .music-player.collapsed .music-info,.music-player.collapsed .music-btns{opacity:0;pointer-events:none;transform:translateX(8px)}
 .music-disc{
 width:32px;height:32px;border-radius:50%;
@@ -1322,7 +1331,7 @@ transition:transform .25s ease,background .2s ease;
 }
 .music-btns{display:flex;gap:1px;flex-shrink:0;transition:opacity .2s ease,transform .25s ease;}
 .music-btn{background:none;border:none;cursor:pointer;font-size:16px;padding:1px;color:var(--pink);}
-.music-library{--music-library-max-height:min(560px,calc(100dvh - var(--bottom-nav-height) - 102px));display:none;position:fixed;bottom:calc(var(--bottom-nav-height) + var(--music-nav-gap) + 62px);right:14px;z-index:1601;width:min(320px,calc(100vw - 28px));max-height:var(--music-library-max-height);overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
+.music-library{--music-library-max-height:min(560px,calc(100dvh - var(--bottom-nav-height) - 102px));display:none;position:fixed;bottom:calc(var(--bottom-nav-height) + var(--music-nav-gap) + var(--music-player-height) + 10px);right:max(14px,env(safe-area-inset-right));z-index:1601;width:min(320px,calc(100vw - 28px - env(safe-area-inset-left) - env(safe-area-inset-right)));max-height:var(--music-library-max-height);overflow:hidden;background:var(--white);border:1px solid var(--card-border);border-radius:16px;box-shadow:0 12px 38px rgba(110,45,62,.24)}
 .music-library-head{position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:8px;padding:12px 13px;background:var(--pink);color:#fff}
 .music-library-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1;font-family:'Noto Serif TC',serif;font-size:17px;font-weight:700}
 .music-library-head-btn{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.36);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:22px;line-height:1;cursor:pointer}
@@ -2091,17 +2100,30 @@ body.choose-letterbox-open{overflow:hidden}
 
 
 @media(max-width:520px){
-  .day-modal.editing{max-height:97vh;max-height:97dvh;padding:17px 15px calc(30px + env(safe-area-inset-bottom))}
-  .modal-textarea{min-height:220px;font-size:16px;padding:12px}
-  .album-place-link-row{grid-template-columns:minmax(0,1fr) 46px}
-  .album-place-link-input{height:46px;font-size:16px}
-  .album-place-link-action{width:46px;height:46px}
-  .album-place-import-btn{min-height:46px;padding:0 10px;font-size:12px}
+  .day-modal.editing{height:min(94dvh,760px);max-height:calc(100dvh - max(8px,env(safe-area-inset-top)));padding:14px 14px calc(12px + env(safe-area-inset-bottom))}
+  .day-modal.editing .day-modal-title{margin-bottom:10px}
+  .day-modal.editing .modal-edit-scroll{padding-right:2px}
+  .day-modal.editing .modal-section{margin-bottom:11px}
+  .day-modal.editing .photo-upload-options{margin-bottom:2px}
+  .day-modal.editing .photo-upload-btn{padding:8px}
+  .modal-textarea{height:clamp(136px,20dvh,164px);min-height:136px;font-size:16px;line-height:1.5;padding:10px;resize:none}
+  .album-place-editor{margin-top:8px;padding-top:8px}
+  .album-place-editor-head{margin-bottom:5px}
+  .album-place-link-row{grid-template-columns:minmax(0,1fr) 40px;gap:6px}
+  .album-place-link-input{height:40px;font-size:16px}
+  .album-place-link-action{width:40px;height:40px}
+  .album-place-import-btn{min-height:38px;padding:0 10px;font-size:11px}
   .album-place-item{padding:8px}
-  .album-place-previous-search{height:40px;font-size:16px}
-  .album-place-previous-list{max-height:154px}
-  .album-place-previous-btn{padding:8px 10px;font-size:11px}
-  .love-count-control{margin-top:9px}
+  .album-place-previous{margin:7px 0 8px}
+  .album-place-previous-toggle{min-height:38px;padding:7px 10px}
+  .album-place-previous-search{height:38px;font-size:16px}
+  .album-place-previous-list{max-height:132px}
+  .album-place-previous-btn{padding:7px 9px;font-size:10px}
+  .album-place-or{margin:6px 0}
+  .album-place-status{min-height:13px;margin-top:4px}
+  .love-count-control{margin-top:7px}
+  .modal-save-bar{padding-top:8px}
+  .modal-save-btn{min-height:43px;padding:10px 12px}
 }
 
 /* 2026-08-06：管理地點類別手機／平板版重新排版。避免左右分欄造成欄位過窄。 */
@@ -2645,6 +2667,7 @@ onclick="hideSpecialForToday()">
       </div>
     </div>
     <div id="modal-edit-content" class="hidden">
+      <div class="modal-edit-scroll">
       <div class="modal-section">
         <div class="modal-section-title">📷 照片</div>
         <div class="modal-photos-grid" id="modal-photos-grid"></div>
@@ -2699,7 +2722,8 @@ onclick="hideSpecialForToday()">
           </div>
         </div>
       </div>
-      <button class="modal-save-btn" onclick="saveDayData()">儲存 💾</button>
+      </div>
+      <div class="modal-save-bar"><button class="modal-save-btn" onclick="saveDayData()">儲存 💾</button></div>
     </div>
   </div>
 </div>
@@ -5891,7 +5915,14 @@ function updateAlbumTabsStickyOffset(){
   const height=header?Math.ceil(header.getBoundingClientRect().height):0;
   document.documentElement.style.setProperty('--album-tabs-top',`${height}px`);
   const nav=document.querySelector('.bottom-nav');
-  const navHeight=nav?Math.ceil(nav.getBoundingClientRect().height):68;
+  const navRect=nav?.getBoundingClientRect();
+  const visualViewport=window.visualViewport;
+  const viewportBottom=visualViewport
+    ? visualViewport.offsetTop+visualViewport.height
+    : (document.documentElement.clientHeight||window.innerHeight);
+  const navHeight=navRect
+    ? Math.ceil(Math.max(navRect.height,viewportBottom-navRect.top))
+    : 68;
   document.documentElement.style.setProperty('--bottom-nav-height',`${navHeight}px`);
 }
 function initAlbumTabsSticky(){
@@ -5904,6 +5935,12 @@ function initAlbumTabsSticky(){
     if(nav) albumTabsResizeObserver.observe(nav);
   }
   window.addEventListener('resize',updateAlbumTabsStickyOffset,{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(updateAlbumTabsStickyOffset,120),{passive:true});
+  window.addEventListener('pageshow',()=>requestAnimationFrame(updateAlbumTabsStickyOffset),{passive:true});
+  window.visualViewport?.addEventListener('resize',updateAlbumTabsStickyOffset,{passive:true});
+  window.visualViewport?.addEventListener('scroll',updateAlbumTabsStickyOffset,{passive:true});
+  requestAnimationFrame(()=>requestAnimationFrame(updateAlbumTabsStickyOffset));
+  setTimeout(updateAlbumTabsStickyOffset,320);
 }
 initAlbumTabsSticky();
 

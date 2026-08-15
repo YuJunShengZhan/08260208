@@ -4629,14 +4629,11 @@ function pickYearlyOccasionMessage(year,messages){
   return messages[(cycle*37+74)%messages.length];
 }
 
-const OCCASION_COPY_SETTINGS_LOCAL_KEY='occasionCopySettings-v2';
-const OCCASION_COPY_SETTINGS_DB_PATH='occasionCopySettingsV2';
-const OCCASION_LEGACY_SETTINGS_LOCAL_KEY='occasionEffectPreferences-v1';
-const OCCASION_LEGACY_SETTINGS_DB_PATH='occasionEffectPreferences';
+const OCCASION_COPY_SETTINGS_LOCAL_KEY='occasionCopySettings-v3';
+const OCCASION_COPY_SETTINGS_DB_PATH='occasionCopySettingsV3';
 const OCCASION_DEFAULT_PREVIEW_PASSWORD='9898';
 const OCCASION_COPY_TYPE_LABELS={anniversary:'週年紀念日',valentine:'情人節',shengzhan:'聖展生日',yujun:'予君生日'};
 let occasionCopySettingsSyncStarted=false;
-let occasionLegacyPasswordMigrationStarted=false;
 
 function normalizeOccasionCopySettings(raw){
   raw=raw&&typeof raw==='object'?raw:{};
@@ -4656,13 +4653,8 @@ function normalizeOccasionCopySettings(raw){
   };
 }
 function loadOccasionCopySettings(){
-  try{
-    const current=localStorage.getItem(OCCASION_COPY_SETTINGS_LOCAL_KEY);
-    if(current) return normalizeOccasionCopySettings(JSON.parse(current));
-    const legacy=JSON.parse(localStorage.getItem(OCCASION_LEGACY_SETTINGS_LOCAL_KEY)||'{}');
-    const previewPasswordHash=String(legacy?.previewPasswordHash||'');
-    return normalizeOccasionCopySettings({previewPasswordHash,updatedAt:previewPasswordHash?Date.now():0});
-  }catch(_){return normalizeOccasionCopySettings({});}
+  try{return normalizeOccasionCopySettings(JSON.parse(localStorage.getItem(OCCASION_COPY_SETTINGS_LOCAL_KEY)||'{}'));}
+  catch(_){return normalizeOccasionCopySettings({});}
 }
 let occasionCopySettings=loadOccasionCopySettings();
 function cacheOccasionCopySettings(){
@@ -4684,18 +4676,7 @@ function startOccasionCopySettingsSync(){
     fb.onValue(fb.ref(fb.db,OCCASION_COPY_SETTINGS_DB_PATH),snapshot=>{
       const value=snapshot.val();
       if(!value){
-        if(occasionCopySettings.updatedAt){
-          fb.set(fb.ref(fb.db,OCCASION_COPY_SETTINGS_DB_PATH),occasionCopySettings).catch(()=>{});
-        }else if(!occasionLegacyPasswordMigrationStarted){
-          occasionLegacyPasswordMigrationStarted=true;
-          fb.get(fb.ref(fb.db,OCCASION_LEGACY_SETTINGS_DB_PATH)).then(legacySnapshot=>{
-            const previewPasswordHash=String(legacySnapshot.val()?.previewPasswordHash||'');
-            if(!previewPasswordHash) return;
-            occasionCopySettings=normalizeOccasionCopySettings({...occasionCopySettings,previewPasswordHash,updatedAt:Date.now()});
-            cacheOccasionCopySettings();
-            return fb.set(fb.ref(fb.db,OCCASION_COPY_SETTINGS_DB_PATH),occasionCopySettings);
-          }).catch(()=>{});
-        }
+        if(occasionCopySettings.updatedAt) fb.set(fb.ref(fb.db,OCCASION_COPY_SETTINGS_DB_PATH),occasionCopySettings).catch(()=>{});
         return;
       }
       const remote=normalizeOccasionCopySettings(value);

@@ -526,7 +526,7 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .birthday-letter-reveal.dragging{cursor:grabbing}
 .birthday-envelope-shell{position:absolute;left:50%;top:50%;width:280px;height:174px;transform:translate(-50%,-50%);filter:drop-shadow(0 24px 35px rgba(0,0,0,.45));transform-style:preserve-3d}
 .birthday-envelope-back{position:absolute;z-index:1;inset:0;border:1px solid rgba(255,225,166,.75);border-radius:12px;background:#a93f64;box-shadow:inset 0 0 30px rgba(79,18,46,.28)}
-.birthday-envelope-card{position:absolute;z-index:2;left:8%;right:8%;bottom:12px;height:142px;box-sizing:border-box;padding:19px 14px;border:1px solid rgba(201,75,100,.28);border-radius:9px;background:#fff9f2;color:#9f3f5a;text-align:center;transform:translateY(0) scale(.94);transition:transform .85s cubic-bezier(.2,1,.3,1),box-shadow .7s ease}
+.birthday-envelope-card{position:absolute;z-index:2;left:8%;right:8%;bottom:12px;height:142px;box-sizing:border-box;padding:19px 14px;border:1px solid rgba(201,75,100,.28);border-radius:9px;background:#fff9f2;color:#9f3f5a;text-align:center;transform:translateY(12px) scale(.94);transition:transform .85s cubic-bezier(.2,1,.3,1),box-shadow .7s ease}
 .birthday-envelope-card span{display:block;color:#c94b64;font-family:'Noto Serif TC',serif;font-size:24px;font-weight:800}
 .birthday-envelope-card b{display:block;margin-top:7px;color:#d79f38;font-size:11px;letter-spacing:0}
 .birthday-envelope-card i{display:block;width:34px;height:34px;margin:11px auto 0;background:#e8637a;-webkit-mask:url('assets/birthday-heart.svg') center/contain no-repeat;mask:url('assets/birthday-heart.svg') center/contain no-repeat}
@@ -537,7 +537,7 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .birthday-letter-reveal.awaiting-pull .birthday-envelope-caption::before{content:'↑';display:inline-block;margin-right:7px;color:#ff9fba;font-family:'Noto Sans TC',sans-serif;font-size:22px;animation:birthdayEnvelopePullHint .8s ease-in-out infinite alternate}
 .birthday-letter-reveal.open .birthday-envelope-flap{transform:rotateX(178deg)}
 .birthday-letter-reveal.open .birthday-envelope-seal{opacity:0;transform:translateX(-50%) scale(.25)}
-.birthday-letter-reveal.open .birthday-envelope-card{transform:translateY(calc(-94px - var(--letter-pull))) scale(1);box-shadow:0 18px 36px rgba(0,0,0,.28)}
+.birthday-letter-reveal.open .birthday-envelope-card{transform:translateY(calc(12px - var(--letter-pull))) scale(1);box-shadow:0 18px 36px rgba(0,0,0,.28)}
 .birthday-letter-reveal.dragging .birthday-envelope-card{transition:none}
 .birthday-letter-reveal.release{animation:birthdayEnvelopeRelease .72s ease forwards}
 .birthday-letter-reveal.release .birthday-envelope-card{transform:translateY(-220px) scale(1.35)}
@@ -682,6 +682,7 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .birthday-video-deco.d6{--deco-symbol:'♥';--deco:#ff9ab5;right:7px;bottom:8px;width:20px;height:20px;font-size:18px;animation-delay:1.65s}
 .birthday-video-letter-layer.finished{animation:birthdayVideoLayerOut .55s ease forwards}
 .birthday-video-letter-layer.finished .birthday-video-envelope-scene{animation:birthdayVideoEnvelopeOut .55s ease forwards}
+.birthday-gift-tease{position:absolute;z-index:28;inset:0;display:grid;place-items:center;padding:max(68px,calc(env(safe-area-inset-top) + 52px)) 18px max(20px,calc(env(safe-area-inset-bottom) + 16px));box-sizing:border-box;background:radial-gradient(circle at 50% 18%,rgba(255,179,206,.2),transparent 33%),rgba(18,12,24,.84);backdrop-filter:blur(8px);animation:birthdayGiftTeaseIn .5s ease both}.birthday-gift-card{position:relative;width:min(100%,380px);padding:25px 20px 21px;overflow:hidden;border:1px solid rgba(255,220,146,.64);border-radius:20px;background:linear-gradient(150deg,rgba(57,27,45,.97),rgba(35,22,39,.96));color:#fff8ed;text-align:center;box-shadow:0 24px 65px rgba(0,0,0,.5),inset 0 0 0 5px rgba(255,255,255,.035)}.birthday-gift-card::before,.birthday-gift-card::after{content:'✦';position:absolute;color:#ffd878;font:700 20px/1 Georgia,serif;opacity:.72;animation:birthdayGiftSpark 1.55s ease-in-out infinite alternate}.birthday-gift-card::before{left:17px;top:19px}.birthday-gift-card::after{right:19px;bottom:18px;animation-delay:.55s}.birthday-gift-kicker{position:relative;color:#ffd878;font-size:10px;font-weight:900;letter-spacing:1.2px}.birthday-gift-box{position:relative;width:112px;height:92px;margin:16px auto 12px;filter:drop-shadow(0 14px 16px rgba(0,0,0,.33));transform-style:preserve-3d}.birthday-gift-box i{position:absolute;display:block}.birthday-gift-lid{z-index:3;left:-6px;right:-6px;top:0;height:31px;border-radius:8px;background:linear-gradient(180deg,#ffb2c3,#df5e86);box-shadow:inset 0 -4px rgba(151,41,79,.18);transform-origin:8% 100%;transition:transform .65s cubic-bezier(.16,1,.3,1)}.birthday-gift-lid::before,.birthday-gift-base::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:17px;background:linear-gradient(90deg,#ffe285,#f5b953,#ffe8a9);transform:translateX(-50%);box-shadow:0 0 9px rgba(255,218,108,.45)}.birthday-gift-base{z-index:2;left:0;right:0;bottom:0;height:65px;overflow:hidden;border-radius:7px 7px 12px 12px;background:linear-gradient(145deg,#e9648b,#b93862);box-shadow:inset 0 -11px rgba(94,22,48,.15)}.birthday-gift-bow{z-index:4;left:50%;top:-16px;width:50px;height:29px;transform:translateX(-50%)}.birthday-gift-bow::before,.birthday-gift-bow::after{content:'';position:absolute;top:0;width:25px;height:21px;border:6px solid #ffd86f;border-radius:65% 35% 55% 35%;box-sizing:border-box;background:rgba(255,236,146,.18)}.birthday-gift-bow::before{left:0;transform:rotate(-24deg)}.birthday-gift-bow::after{right:0;transform:scaleX(-1) rotate(-24deg)}.birthday-gift-bow b{position:absolute;left:50%;top:8px;width:15px;height:15px;border-radius:50%;background:#ffd86f;transform:translateX(-50%);box-shadow:0 0 10px rgba(255,223,117,.7)}.birthday-gift-card.opened .birthday-gift-lid{transform:rotateZ(-19deg) translate(-15px,-23px)}.birthday-gift-card.opened .birthday-gift-box{animation:birthdayGiftBoxBounce .62s ease both}.birthday-gift-title{position:relative;margin:0;color:#fff9ef;font-family:'Noto Serif TC',serif;font-size:clamp(25px,7vw,34px);line-height:1.25}.birthday-gift-note{position:relative;min-height:44px;margin:9px auto 15px;color:#f7dce5;font-size:14px;font-weight:700;line-height:1.7}.birthday-gift-reveal{display:none;position:relative;margin:0 0 15px;padding:12px 13px;border:1px solid rgba(255,216,120,.38);border-radius:11px;background:rgba(255,244,217,.1);color:#fff4d8;font-size:13px;line-height:1.7;animation:birthdayGiftReveal .5s ease both}.birthday-gift-card.opened .birthday-gift-reveal{display:block}.birthday-gift-actions{position:relative;display:grid;gap:8px}.birthday-gift-actions button{min-height:46px;border:1px solid rgba(255,211,123,.55);border-radius:999px;background:rgba(255,255,255,.1);color:#fff7e5;font:800 13px/1.25 'Noto Sans TC',sans-serif;cursor:pointer}.birthday-gift-actions .primary{border-color:#ef7597;background:linear-gradient(135deg,#e86487,#bd3d62);color:#fff;box-shadow:0 10px 22px rgba(201,75,100,.28)}.birthday-gift-card.opened .birthday-gift-actions .reveal{display:none}@keyframes birthdayGiftTeaseIn{from{opacity:0}to{opacity:1}}@keyframes birthdayGiftSpark{from{transform:scale(.7) rotate(-15deg);opacity:.28}to{transform:scale(1.2) rotate(14deg);opacity:1}}@keyframes birthdayGiftBoxBounce{0%{transform:scale(.88)}55%{transform:scale(1.1)}100%{transform:scale(1)}}@keyframes birthdayGiftReveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(max-height:620px){.birthday-video-letter-layer{padding:10px 60px}.birthday-video-envelope-scene{width:min(62vw,470px);height:calc(100dvh - 20px);min-height:0}.birthday-video-paper{left:5%;right:5%;bottom:48px;padding:10px 10px 16px}.birthday-video-paper::after{top:8px}.birthday-video-stamp{right:12px;top:7px;width:31px;height:31px}.birthday-video-postmark{right:40px;top:13px}.birthday-video-title{margin:1px 0 5px;font-size:15px}.birthday-video-envelope-back{height:82px}.birthday-video-envelope-front{height:68px}.birthday-video-envelope-fold{bottom:34px;height:54px}.birthday-video-envelope-seal{bottom:34px;width:30px;height:30px;font-size:16px}.birthday-video-envelope-label{bottom:7px;padding:3px 10px}.birthday-video-deco.d5,.birthday-video-deco.d6{display:none}}
 .occasion-exit-confirm{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(13,10,18,.62);backdrop-filter:blur(8px);animation:occasionFadeIn .25s ease both}
 .occasion-exit-panel{width:min(100%,390px);box-sizing:border-box;padding:22px 18px 18px;border:1px solid rgba(255,255,255,.32);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(255,235,241,.96));color:#5e3b45;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.4)}
@@ -704,8 +705,9 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-copy-kicker{color:#2f9664;font-size:9px;font-weight:900;letter-spacing:1px}.occasion-copy-title{margin-top:3px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:23px;font-weight:800;line-height:1.3}.occasion-copy-close{flex:0 0 auto;width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:23px;line-height:1;cursor:pointer}
 .occasion-copy-body{min-height:0;overflow-y:auto;padding:0 18px 18px;background:var(--white);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.occasion-copy-original{display:flex;align-items:flex-start;gap:10px;margin:0 -18px 16px;padding:13px 18px;border-bottom:1px solid var(--card-border);background:var(--pink-light);color:var(--text-muted);font-size:11px;line-height:1.65}.occasion-copy-original::before{content:'♡';flex:0 0 auto;color:#2f9664;font:700 18px/1 Georgia,serif}.occasion-copy-original strong{display:block;color:var(--rose);font-size:12px}.occasion-copy-field{display:grid;gap:6px;margin-top:13px}.occasion-copy-field label{color:var(--text);font-size:12px;font-weight:800}.occasion-copy-input,.occasion-copy-textarea{width:100%;box-sizing:border-box;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--text);font:600 13px/1.55 'Noto Sans TC',sans-serif;outline:none}.occasion-copy-input{height:44px;padding:10px 12px}.occasion-copy-textarea{min-height:132px;padding:11px 12px;resize:vertical}.occasion-copy-input:focus,.occasion-copy-textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.11)}.occasion-copy-note{margin-top:6px;color:var(--text-muted);font-size:10px;line-height:1.55}.occasion-copy-status{min-height:19px;margin-top:8px;color:#2f9664;font-size:11px;font-weight:800;text-align:center}.occasion-copy-status.error{color:var(--rose)}
 .occasion-copy-actions{display:grid;grid-template-columns:.9fr 1fr 1.15fr;gap:8px;margin-top:12px}.occasion-copy-actions button,.occasion-password-save{min-height:45px;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--rose);font:800 12px/1.35 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-copy-actions .preview{border-color:#2f9664;background:#2f9664;color:#fff}.occasion-copy-actions .save{border-color:var(--pink);background:var(--pink);color:#fff}
+.occasion-letter-editor{margin-top:17px;padding:14px;border:1px solid rgba(201,75,100,.18);border-radius:10px;background:linear-gradient(145deg,rgba(255,244,247,.92),rgba(255,250,241,.92));box-shadow:inset 0 1px rgba(255,255,255,.92)}.occasion-letter-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px dashed rgba(201,75,100,.25)}.occasion-letter-editor-kicker{color:#c94b64;font-size:9px;font-weight:900;letter-spacing:1.1px}.occasion-letter-editor h3{margin:3px 0 0;color:var(--text);font-family:'Noto Serif TC',serif;font-size:18px;line-height:1.25}.occasion-letter-editor-head>span{margin-top:2px;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.8);color:#2f9664;font-size:10px;font-weight:800;white-space:nowrap}.occasion-letter-textarea{min-height:102px;resize:vertical}
 .occasion-password-section{margin-top:18px;padding-top:15px;border-top:1px solid var(--card-border)}.occasion-password-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;background:transparent;color:var(--rose);font:800 13px/1.4 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-password-toggle span:last-child{font-size:18px;transition:transform .18s}.occasion-password-toggle[aria-expanded="true"] span:last-child{transform:rotate(45deg)}.occasion-password-fields{display:none;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:12px}.occasion-password-fields.open{display:grid}.occasion-password-save{grid-column:1/-1;background:var(--white)}
-[data-theme="dark"] .occasion-copy-head,[data-theme="dark"] .occasion-copy-body{background:#211319}[data-theme="dark"] .occasion-copy-original{background:#2a1820}[data-theme="dark"] .occasion-copy-input,[data-theme="dark"] .occasion-copy-textarea,[data-theme="dark"] .occasion-password-save{background:#301b24;border-color:rgba(255,139,163,.2)}
+[data-theme="dark"] .occasion-copy-head,[data-theme="dark"] .occasion-copy-body{background:#211319}[data-theme="dark"] .occasion-copy-original{background:#2a1820}[data-theme="dark"] .occasion-copy-input,[data-theme="dark"] .occasion-copy-textarea,[data-theme="dark"] .occasion-password-save{background:#301b24;border-color:rgba(255,139,163,.2)}[data-theme="dark"] .occasion-letter-editor{background:linear-gradient(145deg,rgba(68,31,44,.85),rgba(39,24,35,.92));border-color:rgba(255,159,185,.22)}[data-theme="dark"] .occasion-letter-editor-head>span{background:rgba(34,21,30,.78)}
 @media(max-width:560px){.occasion-copy-editor{padding:0;align-items:flex-end}.occasion-copy-panel{width:100%;max-height:94dvh;border-radius:8px 8px 0 0}.occasion-copy-head{padding:14px 15px 12px}.occasion-copy-body{padding:0 14px max(14px,env(safe-area-inset-bottom))}.occasion-copy-original{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px}.occasion-copy-actions{grid-template-columns:1fr 1fr}.occasion-copy-actions .preview{grid-column:1/-1;grid-row:2}.occasion-copy-textarea{min-height:112px}}
 .occasion-archive-empty .occasion-lock-panel{position:relative;overflow:hidden;padding:27px 22px 22px;border-color:rgba(232,99,122,.24);background:linear-gradient(155deg,var(--white),var(--pink-light))}
 .occasion-archive-empty .occasion-lock-panel::before,.occasion-archive-empty .occasion-lock-panel::after{content:'✦';position:absolute;color:rgba(232,99,122,.3);font:700 28px/1 Georgia,serif}
@@ -4633,6 +4635,15 @@ const OCCASION_COPY_SETTINGS_LOCAL_KEY='occasionCopySettings-v3';
 const OCCASION_COPY_SETTINGS_DB_PATH='occasionCopySettingsV3';
 const OCCASION_DEFAULT_PREVIEW_PASSWORD='9898';
 const OCCASION_COPY_TYPE_LABELS={anniversary:'週年紀念日',valentine:'情人節',shengzhan:'聖展生日',yujun:'予君生日'};
+const ORIGINAL_YUJUN_BIRTHDAY_LETTER=Object.freeze({
+  title:'給我最愛的予君寶包',
+  paragraphs:[
+    '予君寶包，謝謝妳出現在我的生命中。和妳一起走過的每一天，對我而言都不是理所當然，而是我想好好珍藏的幸運。妳的笑容、妳的可愛、妳偶爾的小脾氣，都讓平凡的日子裡，變成只屬於我們倆的珍藏時光。',
+    '新的一歲，希望妳永遠可以做最真實、最自在的自己。開心的時候，我想陪妳一起笑；難過的時候，我會陪妳慢慢走；累了就放心靠過來我的肩膀上，不用一個人逞強。未來也許不會每天都是完美的，但我會認真記得妳的感受、珍惜妳的笑容，遇到任何事都一次又一次選擇牽緊妳的手。',
+    '生日快樂，我最可愛的予君寶包。妳選擇了我，我就會好好負責到底，帶給妳幸福，接住妳所有的情緒與不安，讓妳知道無論發生什麼事，都不需要一個人面對。往後的每一歲都要讓妳一次比一次更加幸福。而我會一直在妳身邊，陪妳把每一個平凡的日子，過成只屬於我們的浪漫。'
+  ],
+  signature:'最愛妳的聖展'
+});
 let occasionCopySettingsSyncStarted=false;
 
 function normalizeOccasionCopySettings(raw){
@@ -4646,9 +4657,17 @@ function normalizeOccasionCopySettings(raw){
       message:String(source.message||'').slice(0,1200)
     };
   });
+  const letterSource=raw.yujunLetter&&typeof raw.yujunLetter==='object'?raw.yujunLetter:{};
+  const letterParagraphs=Array.isArray(letterSource.paragraphs)?letterSource.paragraphs:[];
   return {
     previewPasswordHash:String(raw.previewPasswordHash||''),
     copies,
+    yujunLetter:{
+      enabled:letterSource.enabled===true,
+      title:String(letterSource.title||'').slice(0,80),
+      paragraphs:[0,1,2].map(index=>String(letterParagraphs[index]||'').slice(0,1200)),
+      signature:String(letterSource.signature||'').slice(0,80)
+    },
     updatedAt:Number(raw.updatedAt)||0
   };
 }
@@ -4726,6 +4745,19 @@ function getOccasionCustomCopy(type){
   const copy=occasionCopySettings.copies?.[type];
   return copy?.enabled===true?copy:null;
 }
+function getOriginalYujunBirthdayLetter(){
+  return {title:ORIGINAL_YUJUN_BIRTHDAY_LETTER.title,paragraphs:[...ORIGINAL_YUJUN_BIRTHDAY_LETTER.paragraphs],signature:ORIGINAL_YUJUN_BIRTHDAY_LETTER.signature};
+}
+function getYujunBirthdayLetter(){
+  const saved=occasionCopySettings.yujunLetter;
+  if(!saved?.enabled) return getOriginalYujunBirthdayLetter();
+  const original=getOriginalYujunBirthdayLetter();
+  return {
+    title:saved.title||original.title,
+    paragraphs:original.paragraphs.map((paragraph,index)=>saved.paragraphs?.[index]||paragraph),
+    signature:saved.signature||original.signature
+  };
+}
 function closeOccasionCopyEditor(){
   document.getElementById('occasion-copy-editor')?.remove();
 }
@@ -4735,11 +4767,25 @@ function openOccasionCopyEditor(type){
   if(!OCCASION_COPY_TYPE_LABELS[type]) return;
   const original=getOccasionOriginalPresentation(type);
   const custom=getOccasionCustomCopy(type);
+  const copyTitleLabel=type==='yujun'?'煙火標題':'標題';
+  const copyMessageLabel=type==='yujun'?'煙火文案':'文案';
+  const originalLetter=type==='yujun'?getOriginalYujunBirthdayLetter():null;
+  const customLetter=type==='yujun'&&occasionCopySettings.yujunLetter?.enabled===true?getYujunBirthdayLetter():null;
+  const letterEditor=type==='yujun'?`
+      <section class="occasion-letter-editor" aria-labelledby="occasion-letter-editor-title">
+        <div class="occasion-letter-editor-head"><div><div class="occasion-letter-editor-kicker">BIRTHDAY LETTER</div><h3 id="occasion-letter-editor-title">生日信內容</h3></div><span>會同步到生日信</span></div>
+        <div class="occasion-copy-field"><label for="occasion-letter-title-input">信件標題</label><input class="occasion-copy-input" id="occasion-letter-title-input" maxlength="80" value="${escapeHtml(customLetter?.title||originalLetter.title)}"></div>
+        <div class="occasion-copy-field"><label for="occasion-letter-p1-input">第一段</label><textarea class="occasion-copy-textarea occasion-letter-textarea" id="occasion-letter-p1-input" maxlength="1200">${escapeHtml(customLetter?.paragraphs?.[0]||originalLetter.paragraphs[0])}</textarea></div>
+        <div class="occasion-copy-field"><label for="occasion-letter-p2-input">第二段</label><textarea class="occasion-copy-textarea occasion-letter-textarea" id="occasion-letter-p2-input" maxlength="1200">${escapeHtml(customLetter?.paragraphs?.[1]||originalLetter.paragraphs[1])}</textarea></div>
+        <div class="occasion-copy-field"><label for="occasion-letter-p3-input">第三段</label><textarea class="occasion-copy-textarea occasion-letter-textarea" id="occasion-letter-p3-input" maxlength="1200">${escapeHtml(customLetter?.paragraphs?.[2]||originalLetter.paragraphs[2])}</textarea></div>
+        <div class="occasion-copy-field"><label for="occasion-letter-sign-input">署名</label><input class="occasion-copy-input" id="occasion-letter-sign-input" maxlength="80" value="${escapeHtml(customLetter?.signature||originalLetter.signature)}"></div>
+      </section>`:'';
   const editor=document.createElement('div');
   editor.id='occasion-copy-editor';
   editor.className='occasion-lock occasion-copy-editor';
   editor.dataset.type=type;
   editor.dataset.copyMode=custom?'custom':'original';
+  editor.dataset.letterMode=customLetter?'custom':'original';
   editor.setAttribute('role','dialog');
   editor.setAttribute('aria-modal','true');
   editor.setAttribute('aria-labelledby','occasion-copy-editor-title');
@@ -4747,9 +4793,10 @@ function openOccasionCopyEditor(type){
     <header class="occasion-copy-head"><div><div class="occasion-copy-kicker">ORIGINAL EFFECT</div><div class="occasion-copy-title" id="occasion-copy-editor-title">${escapeHtml(OCCASION_COPY_TYPE_LABELS[type])}</div></div><button type="button" class="occasion-copy-close" aria-label="關閉">×</button></header>
     <div class="occasion-copy-body">
       <div class="occasion-copy-original"><div><strong>原本特效與原本文案都完整保留</strong>${original.random?'目前使用原本的隨機文案庫；只有儲存自訂文案後才會改用下方內容。':'只有儲存自訂文案後才會改用下方內容。'}</div></div>
-      <div class="occasion-copy-field"><label for="occasion-copy-title-input">標題</label><input class="occasion-copy-input" id="occasion-copy-title-input" maxlength="80" value="${escapeHtml(custom?.title||original.title)}"></div>
-      <div class="occasion-copy-field"><label for="occasion-copy-message-input">文案</label><textarea class="occasion-copy-textarea" id="occasion-copy-message-input" maxlength="1200">${escapeHtml(custom?.message||original.message)}</textarea><div class="occasion-copy-note">恢復原文案後，生日與情人節仍會照原本方式從文案庫輪替，不會刪除任何一則。</div></div>
-      <div class="occasion-copy-status" id="occasion-copy-status" aria-live="polite">${custom?'目前使用自訂文案':'目前使用原本文案'}</div>
+      <div class="occasion-copy-field"><label for="occasion-copy-title-input">${copyTitleLabel}</label><input class="occasion-copy-input" id="occasion-copy-title-input" maxlength="80" value="${escapeHtml(custom?.title||original.title)}"></div>
+      <div class="occasion-copy-field"><label for="occasion-copy-message-input">${copyMessageLabel}</label><textarea class="occasion-copy-textarea" id="occasion-copy-message-input" maxlength="1200">${escapeHtml(custom?.message||original.message)}</textarea><div class="occasion-copy-note">恢復原文案後，生日與情人節仍會照原本方式從文案庫輪替，不會刪除任何一則。</div></div>
+      ${letterEditor}
+      <div class="occasion-copy-status" id="occasion-copy-status" aria-live="polite">${custom?'目前使用自訂文案':'目前使用原本文案'}${customLetter?'，生日信已自訂':''}</div>
       <div class="occasion-copy-actions"><button type="button" onclick="restoreOriginalOccasionCopy()">恢復原文案</button><button type="button" class="save" onclick="saveOccasionCopyFromEditor(false)">儲存文案</button><button type="button" class="preview" onclick="saveOccasionCopyFromEditor(true)">儲存並預覽</button></div>
       <section class="occasion-password-section"><button type="button" class="occasion-password-toggle" aria-expanded="false" onclick="toggleOccasionPasswordFields(this)"><span>修改預覽密碼</span><span>＋</span></button><div class="occasion-password-fields"><input class="occasion-copy-input" id="occasion-new-password" type="password" minlength="4" maxlength="12" autocomplete="new-password" placeholder="新密碼（4–12 碼）"><input class="occasion-copy-input" id="occasion-confirm-password" type="password" minlength="4" maxlength="12" autocomplete="new-password" placeholder="再次輸入新密碼"><button type="button" class="occasion-password-save" onclick="saveOccasionPreviewPassword()">儲存新密碼</button></div></section>
     </div>
@@ -4760,6 +4807,11 @@ function openOccasionCopyEditor(type){
     editor.dataset.copyMode='custom';
     const status=editor.querySelector('#occasion-copy-status');
     if(status){status.textContent='尚未儲存';status.classList.remove('error');}
+  }));
+  editor.querySelectorAll('#occasion-letter-title-input,#occasion-letter-p1-input,#occasion-letter-p2-input,#occasion-letter-p3-input,#occasion-letter-sign-input').forEach(field=>field.addEventListener('input',()=>{
+    editor.dataset.letterMode='custom';
+    const status=editor.querySelector('#occasion-copy-status');
+    if(status){status.textContent='生日信尚未儲存';status.classList.remove('error');}
   }));
   document.body.appendChild(editor);
   setTimeout(()=>editor.querySelector('#occasion-copy-title-input')?.focus(),30);
@@ -4779,13 +4831,27 @@ async function saveOccasionCopyFromEditor(preview=false){
   const message=String(editor.querySelector('#occasion-copy-message-input')?.value||'').trim();
   const status=editor.querySelector('#occasion-copy-status');
   const customMode=editor.dataset.copyMode==='custom';
+  const letterMode=type==='yujun'&&editor.dataset.letterMode==='custom';
   if(customMode&&(!title||!message)){
     if(status){status.textContent='標題和文案都要填寫';status.classList.add('error');}
     return;
   }
+  let letter=null;
+  if(type==='yujun'&&letterMode){
+    letter={
+      title:String(editor.querySelector('#occasion-letter-title-input')?.value||'').trim(),
+      paragraphs:[0,1,2].map(index=>String(editor.querySelector(`#occasion-letter-p${index+1}-input`)?.value||'').trim()),
+      signature:String(editor.querySelector('#occasion-letter-sign-input')?.value||'').trim()
+    };
+    if(!letter.title||!letter.signature||letter.paragraphs.some(paragraph=>!paragraph)){
+      if(status){status.textContent='生日信的標題、三段內容與署名都要填寫';status.classList.add('error');}
+      return;
+    }
+  }
   occasionCopySettings.copies[type]=customMode?{enabled:true,title,message}:{enabled:false,title:'',message:''};
+  if(type==='yujun') occasionCopySettings.yujunLetter=letter?{enabled:true,...letter}:{enabled:false,title:'',paragraphs:['','',''],signature:''};
   await saveOccasionCopySettings();
-  if(status){status.textContent=customMode?'自訂文案已儲存並同步':'原本文案設定已同步';status.classList.remove('error');}
+  if(status){status.textContent=letterMode?'生日信已儲存並同步':(customMode?'自訂文案已儲存並同步':'原本文案設定已同步');status.classList.remove('error');}
   if(preview){
     closeOccasionCopyEditor();
     playOriginalOccasionEffect(type);
@@ -4800,6 +4866,14 @@ async function restoreOriginalOccasionCopy(){
   editor.dataset.copyMode='original';
   editor.querySelector('#occasion-copy-title-input').value=original.title;
   editor.querySelector('#occasion-copy-message-input').value=original.message;
+  if(type==='yujun'){
+    const originalLetter=getOriginalYujunBirthdayLetter();
+    occasionCopySettings.yujunLetter={enabled:false,title:'',paragraphs:['','',''],signature:''};
+    editor.dataset.letterMode='original';
+    editor.querySelector('#occasion-letter-title-input').value=originalLetter.title;
+    originalLetter.paragraphs.forEach((paragraph,index)=>{editor.querySelector(`#occasion-letter-p${index+1}-input`).value=paragraph;});
+    editor.querySelector('#occasion-letter-sign-input').value=originalLetter.signature;
+  }
   const status=editor.querySelector('#occasion-copy-status');
   if(status){status.textContent='正在恢復原本文案';status.classList.remove('error');}
   await saveOccasionCopySettings();
@@ -5060,6 +5134,33 @@ function showOccasionExitConfirm(overlay){
   confirmLayer.innerHTML=`<div class="occasion-exit-panel"><div class="occasion-exit-icon">🎁</div><div class="occasion-exit-title" id="occasion-exit-title">要怎麼收下這份禮物？</div><div class="occasion-exit-note">選擇收下禮物，今天再次開啟網站時仍會顯示。</div><div class="occasion-exit-actions"><button type="button" onclick="resolveOccasionEffectClose('hide')">此裝置不再顯示</button><button type="button" class="primary" onclick="resolveOccasionEffectClose('gift')">收下禮物</button></div></div>`;
   overlay.appendChild(confirmLayer);
   setTimeout(()=>confirmLayer.querySelector('.primary')?.focus(),30);
+}
+function showYujunBirthdayGiftTease(overlay){
+  if(!overlay || overlay.querySelector('.birthday-gift-tease')) return;
+  const tease=document.createElement('div');
+  tease.className='birthday-gift-tease';
+  tease.setAttribute('role','dialog');
+  tease.setAttribute('aria-modal','true');
+  tease.setAttribute('aria-labelledby','birthday-gift-tease-title');
+  tease.innerHTML=`<section class="birthday-gift-card"><div class="birthday-gift-kicker">SUSPICIOUS BIRTHDAY DELIVERY</div><div class="birthday-gift-box" aria-hidden="true"><i class="birthday-gift-lid"></i><i class="birthday-gift-base"></i><i class="birthday-gift-bow"><b></b></i></div><h2 class="birthday-gift-title" id="birthday-gift-tease-title">偵測到可疑生日禮物</h2><p class="birthday-gift-note">系統正在確認：這不是空氣、不是貼圖，也不是「下次再給妳」的那種。</p><p class="birthday-gift-reveal">被妳抓到了，這次真的有準備。真正的禮物由聖展本人保管，限予君本人親自兌換；不接受代領、轉售，或用可愛的眼神先偷看。</p><div class="birthday-gift-actions"><button type="button" class="reveal">打開可疑包裹</button><button type="button" class="primary" hidden>好啦，我收下</button></div></section>`;
+  const card=tease.querySelector('.birthday-gift-card');
+  const title=tease.querySelector('.birthday-gift-title');
+  const note=tease.querySelector('.birthday-gift-note');
+  const reveal=tease.querySelector('.reveal');
+  const collect=tease.querySelector('.primary');
+  reveal.addEventListener('click',()=>{
+    card.classList.add('opened');
+    title.textContent='被妳抓到了';
+    note.textContent='好啦，這次真的有準備。';
+    collect.hidden=false;
+    setTimeout(()=>collect.focus(),260);
+  });
+  collect.addEventListener('click',()=>{
+    tease.remove();
+    showOccasionExitConfirm(overlay);
+  });
+  overlay.appendChild(tease);
+  setTimeout(()=>reveal.focus(),80);
 }
 function requestOccasionEffectClose(){
   const overlay=document.getElementById('yujun-birthday-fireworks') || document.getElementById('occasion-effect');
@@ -5377,6 +5478,7 @@ function openYujunBirthdayLetter(){
 function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
   const year=Number(archiveSnapshot?.year)||today().getFullYear();
   const customCopy=archiveSnapshot?null:getOccasionCustomCopy('yujun');
+  const birthdayLetter=getYujunBirthdayLetter();
   const shownKey=`yujunBirthdayFireworksShown-${year}`;
   const yearlyBirthdayCopy=archiveSnapshot?.effectType==='yujun' && archiveSnapshot?.yearlyBirthdayCopy
     ? String(archiveSnapshot.yearlyBirthdayCopy)
@@ -5427,7 +5529,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
     <div class="birthday-letter-reveal" role="button" tabindex="-1" aria-label="向上滑動，抽出生日信" aria-hidden="true">
       <div class="birthday-envelope-shell">
         <div class="birthday-envelope-back"></div>
-        <div class="birthday-envelope-card"><span>給我最愛的予君</span><b>8 / 26 · ONLY FOR YOU</b><i></i></div>
+        <div class="birthday-envelope-card"><span>${escapeHtml(birthdayLetter.title)}</span><b>8 / 26 · ONLY FOR YOU</b><i></i></div>
         <div class="birthday-envelope-front"></div>
         <div class="birthday-envelope-flap"></div>
         <div class="birthday-envelope-seal">♡</div>
@@ -5442,11 +5544,9 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
       <i class="birthday-letter-deco cake-bottom" aria-hidden="true"></i>
       <i class="birthday-letter-deco party-bottom" aria-hidden="true"></i>
       <div class="birthday-letter-kicker">A LETTER FOR YUJUN</div>
-      <div class="birthday-letter-title">給我最愛的予君寶包 <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
-      <p>予君寶包，謝謝妳出現在我的生命中。和妳一起走過的每一天，對我而言都不是理所當然，而是我想好好珍藏的幸運。妳的笑容、妳的可愛、妳偶爾的小脾氣，都讓平凡的日子裡，變成只屬於我們倆的珍藏時光。</p>
-      <p>新的一歲，希望妳永遠可以做最真實、最自在的自己。開心的時候，我想陪妳一起笑；難過的時候，我會陪妳慢慢走；累了就放心靠過來我的肩膀上，不用一個人逞強。未來也許不會每天都是完美的，但我會認真記得妳的感受、珍惜妳的笑容，遇到任何事都一次又一次選擇牽緊妳的手。</p>
-      <p>生日快樂，我最可愛的予君寶包。妳選擇了我，我就會好好負責到底，帶給妳幸福，接住妳所有的情緒與不安，讓妳知道無論發生什麼事，都不需要一個人面對。往後的每一歲都要讓妳一次比一次更加幸福。而我會一直在妳身邊，陪妳把每一個平凡的日子，過成只屬於我們的浪漫。</p>
-      <div class="birthday-letter-sign">最愛妳的聖展 <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
+      <div class="birthday-letter-title">${escapeHtml(birthdayLetter.title)} <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
+      ${birthdayLetter.paragraphs.map(paragraph=>`<p>${escapeHtml(paragraph)}</p>`).join('')}
+      <div class="birthday-letter-sign">${escapeHtml(birthdayLetter.signature)} <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
       <div class="birthday-letter-photo-frame" aria-label="我們的回憶照片自動輪播">
         <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-04.jpg" alt="7月4日一起搭客運的回憶"></div>
         <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-19.jpg" alt="7月19日一起看球的回憶"></div>
@@ -5624,7 +5724,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
       layer.classList.add('finished');
       setTimeout(()=>{
         layer.remove();
-        showOccasionExitConfirm(overlay);
+        showYujunBirthdayGiftTease(overlay);
       },540);
     };
     const playVideo=()=>{

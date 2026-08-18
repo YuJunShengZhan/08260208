@@ -682,8 +682,6 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .birthday-video-deco.d6{--deco-symbol:'♥';--deco:#ff9ab5;right:7px;bottom:8px;width:20px;height:20px;font-size:18px;animation-delay:1.65s}
 .birthday-video-letter-layer.finished{animation:birthdayVideoLayerOut .55s ease forwards}
 .birthday-video-letter-layer.finished .birthday-video-envelope-scene{animation:birthdayVideoEnvelopeOut .55s ease forwards}
-.birthday-gift-tease{position:absolute;z-index:28;inset:0;display:grid;place-items:center;padding:max(68px,calc(env(safe-area-inset-top) + 52px)) 18px max(20px,calc(env(safe-area-inset-bottom) + 16px));box-sizing:border-box;background:radial-gradient(circle at 50% 18%,rgba(255,179,206,.2),transparent 33%),rgba(18,12,24,.84);backdrop-filter:blur(8px);animation:birthdayGiftTeaseIn .5s ease both}.birthday-gift-card{position:relative;width:min(100%,380px);padding:25px 20px 21px;overflow:hidden;border:1px solid rgba(255,220,146,.64);border-radius:20px;background:linear-gradient(150deg,rgba(57,27,45,.97),rgba(35,22,39,.96));color:#fff8ed;text-align:center;box-shadow:0 24px 65px rgba(0,0,0,.5),inset 0 0 0 5px rgba(255,255,255,.035)}.birthday-gift-card::before,.birthday-gift-card::after{content:'✦';position:absolute;color:#ffd878;font:700 20px/1 Georgia,serif;opacity:.72;animation:birthdayGiftSpark 1.55s ease-in-out infinite alternate}.birthday-gift-card::before{left:17px;top:19px}.birthday-gift-card::after{right:19px;bottom:18px;animation-delay:.55s}.birthday-gift-kicker{position:relative;color:#ffd878;font-size:10px;font-weight:900;letter-spacing:1.2px}.birthday-gift-box{position:relative;width:112px;height:92px;margin:16px auto 12px;filter:drop-shadow(0 14px 16px rgba(0,0,0,.33));transform-style:preserve-3d}.birthday-gift-box i{position:absolute;display:block}.birthday-gift-lid{z-index:3;left:-6px;right:-6px;top:0;height:31px;border-radius:8px;background:linear-gradient(180deg,#ffb2c3,#df5e86);box-shadow:inset 0 -4px rgba(151,41,79,.18);transform-origin:8% 100%;transition:transform .65s cubic-bezier(.16,1,.3,1)}.birthday-gift-lid::before,.birthday-gift-base::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:17px;background:linear-gradient(90deg,#ffe285,#f5b953,#ffe8a9);transform:translateX(-50%);box-shadow:0 0 9px rgba(255,218,108,.45)}.birthday-gift-base{z-index:2;left:0;right:0;bottom:0;height:65px;overflow:hidden;border-radius:7px 7px 12px 12px;background:linear-gradient(145deg,#e9648b,#b93862);box-shadow:inset 0 -11px rgba(94,22,48,.15)}.birthday-gift-bow{z-index:4;left:50%;top:-16px;width:50px;height:29px;transform:translateX(-50%)}.birthday-gift-bow::before,.birthday-gift-bow::after{content:'';position:absolute;top:0;width:25px;height:21px;border:6px solid #ffd86f;border-radius:65% 35% 55% 35%;box-sizing:border-box;background:rgba(255,236,146,.18)}.birthday-gift-bow::before{left:0;transform:rotate(-24deg)}.birthday-gift-bow::after{right:0;transform:scaleX(-1) rotate(-24deg)}.birthday-gift-bow b{position:absolute;left:50%;top:8px;width:15px;height:15px;border-radius:50%;background:#ffd86f;transform:translateX(-50%);box-shadow:0 0 10px rgba(255,223,117,.7)}.birthday-gift-card.opened .birthday-gift-lid{transform:rotateZ(-19deg) translate(-15px,-23px)}.birthday-gift-card.opened .birthday-gift-box{animation:birthdayGiftBoxBounce .62s ease both}.birthday-gift-title{position:relative;margin:0;color:#fff9ef;font-family:'Noto Serif TC',serif;font-size:clamp(25px,7vw,34px);line-height:1.25}.birthday-gift-note{position:relative;min-height:44px;margin:9px auto 15px;color:#f7dce5;font-size:14px;font-weight:700;line-height:1.7}.birthday-gift-reveal{display:none;position:relative;margin:0 0 15px;padding:12px 13px;border:1px solid rgba(255,216,120,.38);border-radius:11px;background:rgba(255,244,217,.1);color:#fff4d8;font-size:13px;line-height:1.7;animation:birthdayGiftReveal .5s ease both}.birthday-gift-card.opened .birthday-gift-reveal{display:block}.birthday-gift-actions{position:relative;display:grid;gap:8px}.birthday-gift-actions button{min-height:46px;border:1px solid rgba(255,211,123,.55);border-radius:999px;background:rgba(255,255,255,.1);color:#fff7e5;font:800 13px/1.25 'Noto Sans TC',sans-serif;cursor:pointer}.birthday-gift-actions .primary{border-color:#ef7597;background:linear-gradient(135deg,#e86487,#bd3d62);color:#fff;box-shadow:0 10px 22px rgba(201,75,100,.28)}.birthday-gift-card.opened .birthday-gift-actions .reveal{display:none}@keyframes birthdayGiftTeaseIn{from{opacity:0}to{opacity:1}}@keyframes birthdayGiftSpark{from{transform:scale(.7) rotate(-15deg);opacity:.28}to{transform:scale(1.2) rotate(14deg);opacity:1}}@keyframes birthdayGiftBoxBounce{0%{transform:scale(.88)}55%{transform:scale(1.1)}100%{transform:scale(1)}}@keyframes birthdayGiftReveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.birthday-gift-scan{position:relative;margin:-1px 0 14px;padding:10px 11px;border:1px dashed rgba(255,216,120,.36);border-radius:10px;background:rgba(255,255,255,.045);text-align:left}.birthday-gift-scan-label{display:block;color:#ffd878;font-size:9px;font-weight:900;letter-spacing:.9px}.birthday-gift-scan-track{height:5px;margin:7px 0;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}.birthday-gift-scan-track i{display:block;width:16%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#ff80a4,#ffe07a,#7ee8d2);transition:width .28s ease}.birthday-gift-scan-text{display:block;min-height:17px;color:#f6dce5;font-size:11px;font-weight:700;line-height:1.45}.birthday-gift-card.scanning .birthday-gift-box{animation:birthdayGiftScannerShake .16s linear infinite}.birthday-gift-card.scanning .birthday-gift-scan-track i{animation:birthdayGiftScanFlash .55s ease-in-out infinite}.birthday-gift-card.scanned .birthday-gift-scan{border-color:rgba(125,229,187,.62);background:rgba(92,210,159,.1)}.birthday-gift-card.scanned .birthday-gift-scan-label,.birthday-gift-card.scanned .birthday-gift-scan-text{color:#a5f0ca}.birthday-gift-confetti{position:absolute;z-index:6;inset:0;overflow:hidden;pointer-events:none}.birthday-gift-confetti i{position:absolute;left:50%;top:42%;width:7px;height:12px;border-radius:2px;background:var(--gift-confetti,#ffd878);opacity:0;transform:translate(-50%,-50%);animation:birthdayGiftConfetti 1.5s cubic-bezier(.14,.77,.22,1) forwards}.birthday-gift-card.opened .birthday-gift-confetti i{animation-play-state:running}@keyframes birthdayGiftScannerShake{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-2px) rotate(-1deg)}75%{transform:translateX(2px) rotate(1deg)}}@keyframes birthdayGiftScanFlash{0%,100%{filter:brightness(1)}50%{filter:brightness(1.8)}}@keyframes birthdayGiftConfetti{0%{opacity:0;transform:translate(-50%,-50%) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--gift-x)),calc(-50% + var(--gift-y))) rotate(var(--gift-rotate))}}
 @media(max-height:620px){.birthday-video-letter-layer{padding:10px 60px}.birthday-video-envelope-scene{width:min(62vw,470px);height:calc(100dvh - 20px);min-height:0}.birthday-video-paper{left:5%;right:5%;bottom:48px;padding:10px 10px 16px}.birthday-video-paper::after{top:8px}.birthday-video-stamp{right:12px;top:7px;width:31px;height:31px}.birthday-video-postmark{right:40px;top:13px}.birthday-video-title{margin:1px 0 5px;font-size:15px}.birthday-video-envelope-back{height:82px}.birthday-video-envelope-front{height:68px}.birthday-video-envelope-fold{bottom:34px;height:54px}.birthday-video-envelope-seal{bottom:34px;width:30px;height:30px;font-size:16px}.birthday-video-envelope-label{bottom:7px;padding:3px 10px}.birthday-video-deco.d5,.birthday-video-deco.d6{display:none}}
 .occasion-exit-confirm{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(13,10,18,.62);backdrop-filter:blur(8px);animation:occasionFadeIn .25s ease both}
 .occasion-exit-panel{width:min(100%,390px);box-sizing:border-box;padding:22px 18px 18px;border:1px solid rgba(255,255,255,.32);border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(255,235,241,.96));color:#5e3b45;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.4)}
@@ -5150,84 +5148,6 @@ function showOccasionExitConfirm(overlay){
   overlay.appendChild(confirmLayer);
   setTimeout(()=>confirmLayer.querySelector('.primary')?.focus(),30);
 }
-function showYujunBirthdayGiftTease(overlay){
-  if(!overlay || overlay.querySelector('.birthday-gift-tease')) return;
-  const tease=document.createElement('div');
-  tease.className='birthday-gift-tease';
-  tease.setAttribute('role','dialog');
-  tease.setAttribute('aria-modal','true');
-  tease.setAttribute('aria-labelledby','birthday-gift-tease-title');
-  tease.innerHTML=`<section class="birthday-gift-card"><div class="birthday-gift-confetti" aria-hidden="true"></div><div class="birthday-gift-kicker">SUSPICIOUS BIRTHDAY DELIVERY</div><div class="birthday-gift-box" aria-hidden="true"><i class="birthday-gift-lid"></i><i class="birthday-gift-base"></i><i class="birthday-gift-bow"><b></b></i></div><h2 class="birthday-gift-title" id="birthday-gift-tease-title">偵測到可疑生日禮物</h2><p class="birthday-gift-note">包裹來源不明，但收件人寫得很大：蘇予君。</p><div class="birthday-gift-scan" aria-live="polite"><span class="birthday-gift-scan-label">禮物檢測中心 · 待命中</span><div class="birthday-gift-scan-track"><i></i></div><b class="birthday-gift-scan-text">按下按鈕才能確認它是不是一包空氣。</b></div><p class="birthday-gift-reveal">被妳抓到了，這次真的有準備。真正的禮物由聖展本人保管，限予君本人親自兌換；不接受代領、轉售，或用可愛的眼神先偷看。</p><div class="birthday-gift-actions"><button type="button" class="reveal">啟動可疑包裹檢測</button><button type="button" class="primary" hidden>好啦，我收下</button></div></section>`;
-  const card=tease.querySelector('.birthday-gift-card');
-  const title=tease.querySelector('.birthday-gift-title');
-  const note=tease.querySelector('.birthday-gift-note');
-  const reveal=tease.querySelector('.reveal');
-  const collect=tease.querySelector('.primary');
-  const scanLabel=tease.querySelector('.birthday-gift-scan-label');
-  const scanFill=tease.querySelector('.birthday-gift-scan-track i');
-  const scanText=tease.querySelector('.birthday-gift-scan-text');
-  const confetti=tease.querySelector('.birthday-gift-confetti');
-  const makeConfetti=()=>{
-    if(confetti.childElementCount) return;
-    const colors=['#ffd878','#ff83a5','#8edaf2','#a5f0ca','#fff4d8'];
-    for(let index=0;index<34;index+=1){
-      const piece=document.createElement('i');
-      piece.style.setProperty('--gift-confetti',colors[index%colors.length]);
-      piece.style.setProperty('--gift-x',`${-150+Math.random()*300}px`);
-      piece.style.setProperty('--gift-y',`${-170+Math.random()*250}px`);
-      piece.style.setProperty('--gift-rotate',`${-260+Math.random()*520}deg`);
-      piece.style.animationDelay=`${Math.random()*.18}s`;
-      confetti.appendChild(piece);
-    }
-  };
-  const finishScan=()=>{
-    card.classList.remove('scanning');
-    card.classList.add('scanned');
-    scanFill.style.width='100%';
-    scanLabel.textContent='禮物檢測中心 · 通過';
-    scanText.textContent='結果：不是一包空氣，也不是「下次再給」。確認為實體生日禮物。';
-    title.textContent='查驗完成：真的有東西';
-    note.textContent='這下不能假裝沒看到囉。';
-    reveal.disabled=false;
-    reveal.textContent='拆開這份有點可疑的禮物';
-    setTimeout(()=>reveal.focus(),120);
-  };
-  reveal.addEventListener('click',()=>{
-    if(!card.classList.contains('scanned')){
-      if(card.classList.contains('scanning')) return;
-      card.classList.add('scanning');
-      reveal.disabled=true;
-      title.textContent='生日禮物安全檢查中';
-      note.textContent='請不要偷跑，掃描機器正在非常認真地亂叫。';
-      scanLabel.textContent='禮物檢測中心 · 正在掃描';
-      const steps=[
-        [14,'發現粉紅色可疑物質…'],
-        [37,'排除：一張貼圖。'],
-        [63,'排除：一包空氣。'],
-        [82,'排除：「下次再給」的口頭支票。'],
-        [96,'偵測到實體禮物，請不要太期待。']
-      ];
-      steps.forEach(([progress,text],index)=>setTimeout(()=>{
-        scanFill.style.width=`${progress}%`;
-        scanText.textContent=`${progress}% · ${text}`;
-      },index*390));
-      setTimeout(finishScan,steps.length*390+240);
-      return;
-    }
-    card.classList.add('opened');
-    makeConfetti();
-    title.textContent='被妳抓到了';
-    note.textContent='好啦，這次真的有準備，不是在敷衍妳。';
-    collect.hidden=false;
-    setTimeout(()=>collect.focus(),520);
-  });
-  collect.addEventListener('click',()=>{
-    tease.remove();
-    showOccasionExitConfirm(overlay);
-  });
-  overlay.appendChild(tease);
-  setTimeout(()=>reveal.focus(),80);
-}
 function requestOccasionEffectClose(){
   const overlay=document.getElementById('yujun-birthday-fireworks') || document.getElementById('occasion-effect');
   if(!overlay || overlay.querySelector('.occasion-exit-confirm')) return;
@@ -5790,7 +5710,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
       layer.classList.add('finished');
       setTimeout(()=>{
         layer.remove();
-        showYujunBirthdayGiftTease(overlay);
+        showOccasionExitConfirm(overlay);
       },540);
     };
     const playVideo=()=>{

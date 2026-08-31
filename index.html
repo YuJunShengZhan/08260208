@@ -9451,6 +9451,8 @@ function pdRecordAction(){
   else pdRecordStart();
 }
 
+let pdRecordOverlay=null;
+
 function pdRecordStart(){
   // 跳出選日期的對話框
   const today = new Date();
@@ -9466,13 +9468,19 @@ function pdRecordStart(){
       <input type="date" id="pd-record-date" value="${todayStr}"
         style="width:100%;padding:11px;border:1px solid var(--card-border);border-radius:12px;font-size:14px;font-family:'Noto Sans TC',sans-serif;background:var(--pink-light);color:var(--text);margin-bottom:14px">
       <div style="display:flex;gap:10px">
-        <button onclick="this.closest('div[style*=fixed]').remove()"
+        <button onclick="pdCloseRecordOverlay()"
           style="flex:1;padding:11px;border:1.5px solid var(--card-border);border-radius:12px;background:none;cursor:pointer;font-size:14px;font-family:'Noto Sans TC',sans-serif;color:var(--text-muted)">取消</button>
         <button onclick="pdConfirmStart()"
           style="flex:1;padding:11px;background:var(--pink);color:white;border:none;border-radius:12px;cursor:pointer;font-size:14px;font-family:'Noto Sans TC',sans-serif">確認 💕</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
+  pdRecordOverlay=overlay;
+}
+
+function pdCloseRecordOverlay(){
+  pdRecordOverlay?.remove();
+  pdRecordOverlay=null;
 }
 
 function pdConfirmStart(){
@@ -9489,7 +9497,7 @@ function pdConfirmStart(){
 
   if(!window._fb){ alert('Firebase 尚未連線'); return; }
   pdSaveSettingsWithHistory(newSettings).then(()=>{
-    document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
+    pdCloseRecordOverlay();
     pdShowToast(`已記錄！月經開始日：${startDate} 🩸`);
   });
 }
@@ -9506,13 +9514,14 @@ function pdRecordEnd(){
       <input type="date" id="pd-record-end-date" min="${pdSettings.start}" value="${todayStr}"
         style="width:100%;padding:11px;border:1px solid var(--card-border);border-radius:12px;font-size:14px;font-family:'Noto Sans TC',sans-serif;background:var(--pink-light);color:var(--text);margin-bottom:14px">
       <div style="display:flex;gap:10px">
-        <button onclick="this.closest('div[style*=fixed]').remove()"
+        <button onclick="pdCloseRecordOverlay()"
           style="flex:1;padding:11px;border:1.5px solid var(--card-border);border-radius:12px;background:none;cursor:pointer;font-size:14px;font-family:'Noto Sans TC',sans-serif;color:var(--text-muted)">取消</button>
         <button onclick="pdConfirmEnd()"
           style="flex:1;padding:11px;background:var(--pink);color:white;border:none;border-radius:12px;cursor:pointer;font-size:14px;font-family:'Noto Sans TC',sans-serif">確認結束</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
+  pdRecordOverlay=overlay;
 }
 
 function pdConfirmEnd(){
@@ -9528,7 +9537,7 @@ function pdConfirmEnd(){
   const newSettings = {...pdSettings,end:endDate,dur,completed:true};
   if(!window._fb){alert('Firebase 尚未連線');return;}
   pdSaveSettingsWithHistory(newSettings).then(()=>{
-    document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
+    pdCloseRecordOverlay();
     pdApplySettings(newSettings);
     pdShowToast(`已記錄，本次生理期於第 ${dur} 天結束。`);
   });

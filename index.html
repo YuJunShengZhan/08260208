@@ -84,6 +84,7 @@ body{
 background:var(--cream);
 color:var(--text);
 font-family:'Noto Sans TC',sans-serif;
+ -webkit-text-size-adjust:100%;
 width:100%;
 min-height:100vh;
 min-height:100dvh;
@@ -401,6 +402,10 @@ button.countdown-num:active{transform:scale(.95);background:var(--white)}
 .countdown-preview{min-width:92px;padding:6px 13px;border:1px solid rgba(232,99,122,.25);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:9px;font-weight:800;line-height:1.2;white-space:nowrap;cursor:pointer;touch-action:manipulation;transition:transform .18s,background .18s,color .18s}
 .countdown-preview.previous{background:transparent;color:var(--text-muted)}
 .countdown-preview:active{transform:scale(.96);background:var(--pink);color:#fff}
+[data-countdown-type]{position:relative}
+[data-countdown-type] .countdown-num{flex-direction:row;align-items:baseline;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+[data-countdown-type] .countdown-num:focus-visible{outline:3px solid rgba(232,99,122,.25);outline-offset:2px}
+[data-countdown-type] .countdown-num:active{transform:none;background:transparent}
 [data-theme="dark"] .countdown-preview{background:#332028;border-color:rgba(255,158,178,.3);color:#ffb1c1}
 [data-theme="dark"] .countdown-preview.previous{background:transparent;color:#cfa7b0}
 .surprise-history-btn{padding:7px 11px;border:1px solid rgba(232,99,122,.22);border-radius:999px;background:var(--white);color:var(--rose);font-family:'Noto Sans TC',sans-serif;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;transition:transform .18s,background .18s,color .18s}
@@ -694,6 +699,9 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-exit-actions button:active{transform:scale(.98)}
 .occasion-lock{position:fixed;inset:0;z-index:12100;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(25,15,20,.58);backdrop-filter:blur(8px);animation:occasionFadeIn .22s ease both}
 .occasion-lock-panel{width:min(100%,360px);padding:22px;border:1px solid var(--card-border);border-radius:8px;background:var(--white);box-shadow:0 18px 55px rgba(34,12,21,.28);text-align:center}
+.occasion-lock-panel{border-radius:22px;border-color:rgba(232,99,122,.22);box-shadow:0 24px 75px rgba(34,12,21,.34)}
+.occasion-lock-actions button{border-radius:12px;transition:transform .18s ease,background .18s ease}
+.occasion-lock-actions button:hover{transform:translateY(-1px)}
 .occasion-lock-icon{font-size:34px;line-height:1;margin-bottom:10px}.occasion-lock-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:800;color:var(--rose);letter-spacing:0}.occasion-lock-sub{margin-top:6px;color:var(--text-muted);font-size:12px;line-height:1.6}
 .occasion-lock-input{width:100%;margin-top:16px;padding:13px 14px;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--text);font:700 20px/1 'Noto Sans TC',sans-serif;text-align:center;letter-spacing:6px;outline:none}.occasion-lock-input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.12)}
 .occasion-lock-error{min-height:20px;margin-top:7px;color:var(--rose);font-size:12px;font-weight:700}.occasion-lock-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:5px}.occasion-lock-actions button{min-height:43px;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--rose);font:800 14px/1 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-lock-actions .confirm{border-color:var(--pink);background:var(--pink);color:#fff}
@@ -704,6 +712,36 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-copy-kicker{color:#2f9664;font-size:9px;font-weight:900;letter-spacing:1px}.occasion-copy-title{margin-top:3px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:23px;font-weight:800;line-height:1.3}.occasion-copy-close{flex:0 0 auto;width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--card-border);border-radius:50%;background:var(--pink-light);color:var(--rose);font-size:23px;line-height:1;cursor:pointer}
 .occasion-copy-body{min-height:0;overflow-y:auto;padding:0 18px 18px;background:var(--white);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.occasion-copy-original{display:flex;align-items:flex-start;gap:10px;margin:0 -18px 16px;padding:13px 18px;border-bottom:1px solid var(--card-border);background:var(--pink-light);color:var(--text-muted);font-size:11px;line-height:1.65}.occasion-copy-original::before{content:'♡';flex:0 0 auto;color:#2f9664;font:700 18px/1 Georgia,serif}.occasion-copy-original strong{display:block;color:var(--rose);font-size:12px}.occasion-copy-field{display:grid;gap:6px;margin-top:13px}.occasion-copy-field label{color:var(--text);font-size:12px;font-weight:800}.occasion-copy-input,.occasion-copy-textarea{width:100%;box-sizing:border-box;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--text);font:600 13px/1.55 'Noto Sans TC',sans-serif;outline:none}.occasion-copy-input{height:44px;padding:10px 12px}.occasion-copy-textarea{min-height:132px;padding:11px 12px;resize:vertical}.occasion-copy-input:focus,.occasion-copy-textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(232,99,122,.11)}.occasion-copy-note{margin-top:6px;color:var(--text-muted);font-size:10px;line-height:1.55}.occasion-copy-status{min-height:19px;margin-top:8px;color:#2f9664;font-size:11px;font-weight:800;text-align:center}.occasion-copy-status.error{color:var(--rose)}
 .occasion-copy-actions{display:grid;grid-template-columns:.9fr 1fr 1.15fr;gap:8px;margin-top:12px}.occasion-copy-actions button,.occasion-password-save{min-height:45px;border:1px solid var(--pink-soft);border-radius:7px;background:var(--pink-light);color:var(--rose);font:800 12px/1.35 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-copy-actions .preview{border-color:#2f9664;background:#2f9664;color:#fff}.occasion-copy-actions .save{border-color:var(--pink);background:var(--pink);color:#fff}
+.occasion-copy-panel{border-radius:24px;border-color:rgba(232,99,122,.22);box-shadow:0 24px 80px rgba(34,12,21,.34)}
+.occasion-copy-head{padding:20px 22px 17px;background:linear-gradient(135deg,var(--white),var(--pink-light))}
+.occasion-copy-kicker{letter-spacing:1.6px}
+.occasion-copy-title{font-size:25px}
+.occasion-copy-close{width:42px;height:42px;transition:transform .18s ease,background .18s ease}
+.occasion-copy-close:hover{transform:rotate(8deg);background:var(--pink-soft)}
+.occasion-copy-body{padding:0 22px 22px}
+.occasion-copy-original{margin:0 -22px 18px;padding:14px 22px;background:linear-gradient(90deg,var(--pink-light),rgba(255,255,255,.7))}
+.occasion-copy-field{margin-top:15px}
+.occasion-copy-input,.occasion-copy-textarea{border-radius:12px;background:color-mix(in srgb,var(--pink-light) 78%,var(--white));transition:border-color .18s ease,box-shadow .18s ease,background .18s ease}
+.occasion-copy-input{height:48px}
+.occasion-copy-textarea{min-height:145px}
+.occasion-copy-input:focus,.occasion-copy-textarea:focus{background:var(--white)}
+.occasion-copy-actions button,.occasion-password-save{border-radius:12px}
+.occasion-code-editor{margin-top:18px;padding:15px;border:1px solid rgba(47,150,100,.23);border-radius:16px;background:linear-gradient(145deg,rgba(239,251,246,.9),rgba(255,249,241,.9))}
+.occasion-code-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.occasion-code-kicker{color:#2f9664;font-size:9px;font-weight:900;letter-spacing:1.5px}
+.occasion-code-title{margin-top:3px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:18px;font-weight:800}
+.occasion-code-badge{padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.82);color:#2f9664;font-size:10px;font-weight:800;white-space:nowrap}
+.occasion-code-help{margin-top:8px;color:var(--text-muted);font-size:10px;line-height:1.65}
+.occasion-code-textarea{width:100%;min-height:190px;margin-top:10px;padding:12px;box-sizing:border-box;border:1px solid rgba(47,150,100,.24);border-radius:12px;background:#17231f;color:#d9f7e6;font:500 12px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0;resize:vertical;tab-size:2;outline:none}
+.occasion-code-textarea:focus{border-color:#2f9664;box-shadow:0 0 0 3px rgba(47,150,100,.14)}
+.occasion-code-template{margin-top:9px;color:#2f9664;font-size:10px;font-weight:800}
+.occasion-code-template code{font:700 10px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.occasion-custom-code-error{position:absolute;z-index:5;left:50%;bottom:18px;max-width:min(92vw,620px);padding:8px 12px;transform:translateX(-50%);border:1px solid rgba(255,184,198,.5);border-radius:999px;background:rgba(35,13,24,.82);color:#ffd9e2;font:700 11px/1.4 'Noto Sans TC',sans-serif;text-align:center;pointer-events:none}
+[data-theme="dark"] .occasion-copy-head{background:linear-gradient(135deg,#211319,#2a1820)}
+[data-theme="dark"] .occasion-copy-original{background:linear-gradient(90deg,#2a1820,#211319)}
+[data-theme="dark"] .occasion-code-editor{background:linear-gradient(145deg,rgba(30,61,48,.78),rgba(44,29,38,.9));border-color:rgba(117,199,157,.25)}
+[data-theme="dark"] .occasion-code-badge{background:rgba(25,41,34,.8)}
+[data-theme="dark"] .occasion-custom-code-error{background:rgba(10,6,12,.88)}
 .occasion-letter-editor{margin-top:17px;padding:14px;border:1px solid rgba(201,75,100,.18);border-radius:10px;background:linear-gradient(145deg,rgba(255,244,247,.92),rgba(255,250,241,.92));box-shadow:inset 0 1px rgba(255,255,255,.92)}.occasion-letter-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px dashed rgba(201,75,100,.25)}.occasion-letter-editor-kicker{color:#c94b64;font-size:9px;font-weight:900;letter-spacing:1.1px}.occasion-letter-editor h3{margin:3px 0 0;color:var(--text);font-family:'Noto Serif TC',serif;font-size:18px;line-height:1.25}.occasion-letter-editor-head>span{margin-top:2px;padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.8);color:#2f9664;font-size:10px;font-weight:800;white-space:nowrap}.occasion-letter-textarea{min-height:102px;resize:vertical}
 .occasion-password-section{margin-top:18px;padding-top:15px;border-top:1px solid var(--card-border)}.occasion-password-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;background:transparent;color:var(--rose);font:800 13px/1.4 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-password-toggle span:last-child{font-size:18px;transition:transform .18s}.occasion-password-toggle[aria-expanded="true"] span:last-child{transform:rotate(45deg)}.occasion-password-fields{display:none;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:12px}.occasion-password-fields.open{display:grid}.occasion-password-save{grid-column:1/-1;background:var(--white)}
 [data-theme="dark"] .occasion-copy-head,[data-theme="dark"] .occasion-copy-body{background:#211319}[data-theme="dark"] .occasion-copy-original{background:#2a1820}[data-theme="dark"] .occasion-copy-input,[data-theme="dark"] .occasion-copy-textarea,[data-theme="dark"] .occasion-password-save{background:#301b24;border-color:rgba(255,139,163,.2)}[data-theme="dark"] .occasion-letter-editor{background:linear-gradient(145deg,rgba(68,31,44,.85),rgba(39,24,35,.92));border-color:rgba(255,159,185,.22)}[data-theme="dark"] .occasion-letter-editor-head>span{background:rgba(34,21,30,.78)}
@@ -2476,23 +2514,23 @@ onclick="hideSpecialForToday()">
   <div class="card">
     <div class="card-title">📅 重要倒數</div>
     <div class="countdown-grid">
-      <div class="countdown-item">
-        <button type="button" class="countdown-num" id="annivDays" onclick="previewOccasionEffect('anniversary')" aria-label="預覽週年紀念日特效">—</button>
+      <div class="countdown-item" data-countdown-type="anniversary">
+        <button type="button" class="countdown-num" id="annivDays" onclick="previewOccasionEffect('anniversary')" aria-label="編輯週年紀念日特效">—</button>
         <div class="countdown-desc" id="annivLabel">下個週年紀念日</div>
         <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('anniversary')">歷史特效</button></div>
       </div>
-      <div class="countdown-item">
-        <button type="button" class="countdown-num" id="vdDays" onclick="previewOccasionEffect('valentine')" aria-label="預覽情人節特效">—</button>
+      <div class="countdown-item" data-countdown-type="valentine">
+        <button type="button" class="countdown-num" id="vdDays" onclick="previewOccasionEffect('valentine')" aria-label="編輯情人節特效">—</button>
         <div class="countdown-desc" id="vdLabel">下個情人節</div>
         <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('valentine')">歷史特效</button></div>
       </div>
-      <div class="countdown-item">
-        <button type="button" class="countdown-num" id="bd1Days" onclick="previewOccasionEffect('shengzhan')" aria-label="預覽聖展生日特效">—</button>
+      <div class="countdown-item" data-countdown-type="shengzhan">
+        <button type="button" class="countdown-num" id="bd1Days" onclick="previewOccasionEffect('shengzhan')" aria-label="編輯聖展生日特效">—</button>
         <div class="countdown-desc">聖展生日 (2/8)</div>
         <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('shengzhan')">歷史特效</button></div>
       </div>
-      <div class="countdown-item">
-        <button type="button" class="countdown-num" id="bd2Days" onclick="previewOccasionEffect('yujun')" aria-label="預覽予君生日特效">—</button>
+      <div class="countdown-item" data-countdown-type="yujun">
+        <button type="button" class="countdown-num" id="bd2Days" onclick="previewOccasionEffect('yujun')" aria-label="編輯予君生日特效">—</button>
         <div class="countdown-desc">予君生日 (8/26)</div>
         <div class="countdown-effect-actions"><button type="button" class="countdown-preview previous" onclick="showOccasionEffectHistory('yujun')">歷史特效</button></div>
       </div>
@@ -4661,8 +4699,11 @@ function isYujunLetterTestDraft(letter){
 function normalizeOccasionCopySettings(raw){
   raw=raw&&typeof raw==='object'?raw:{};
   const copies={};
+  const effectCodeSource=raw.effectCode&&typeof raw.effectCode==='object'?raw.effectCode:{};
+  const effectCode={};
   Object.keys(OCCASION_COPY_TYPE_LABELS).forEach(type=>{
     const source=raw.copies?.[type]&&typeof raw.copies[type]==='object'?raw.copies[type]:{};
+    effectCode[type]=String(effectCodeSource[type]||'').slice(0,20000);
     copies[type]={
       enabled:source.enabled===true,
       title:String(source.title||'').slice(0,80),
@@ -4682,6 +4723,7 @@ function normalizeOccasionCopySettings(raw){
   return {
     previewPasswordHash,
     copies,
+    effectCode,
     yujunLetter:{
       enabled:!shouldResetTestLetter&&letterSource.enabled===true,
       title:shouldResetTestLetter?'':String(letterSource.title||'').slice(0,80),
@@ -4772,6 +4814,88 @@ function getOccasionCustomCopy(type){
   const copy=occasionCopySettings.copies?.[type];
   return copy?.enabled===true?copy:null;
 }
+function getOccasionCustomEffectCode(type){
+  const key=type==='birthday'?'shengzhan':type;
+  return String(occasionCopySettings.effectCode?.[key]||'').trim();
+}
+function runOccasionCustomEffect(overlay,type,config,runtime={}){
+  const source=getOccasionCustomEffectCode(type);
+  if(!overlay||!source) return;
+  const cleanups=[];
+  const addedNodes=[];
+  const effectId=`custom-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+  overlay.dataset.customEffect=effectId;
+  const scope=`[data-custom-effect="${effectId}"]`;
+  const addCSS=css=>{
+    const style=document.createElement('style');
+    const raw=String(css||'');
+    style.textContent=raw.replace(/(^|})\s*([^@{}][^{]*)\{/g,(match,lead,selectors)=>{
+      const scopedSelectors=selectors.split(',').map(selector=>`${scope} ${selector.trim()}`).join(',');
+      return `${lead}${scopedSelectors}{`;
+    });
+    overlay.appendChild(style);
+    addedNodes.push(style);
+    return style;
+  };
+  const addElement=(tag='div',props={},text='')=>{
+    const node=document.createElement(String(tag||'div'));
+    Object.entries(props&&typeof props==='object'?props:{}).forEach(([key,value])=>{
+      if(key==='style'&&value&&typeof value==='object') Object.assign(node.style,value);
+      else if(key==='dataset'&&value&&typeof value==='object') Object.assign(node.dataset,value);
+      else if(key==='className') node.className=String(value);
+      else if(key in node) node[key]=value;
+      else node.setAttribute(key,String(value));
+    });
+    if(text!==undefined&&text!==null) node.textContent=String(text);
+    overlay.appendChild(node);
+    addedNodes.push(node);
+    return node;
+  };
+  const addParticle=particle=>{
+    if(!Array.isArray(runtime.particles)) return null;
+    const value=particle&&typeof particle==='object'?particle:{};
+    const x=Number(value.x)||effect.width/2;
+    const y=Number(value.y)||effect.height/2;
+    const item={x,y,px:x,py:y,vx:Number(value.vx)||0,vy:Number(value.vy)||0,life:Number(value.life)||1,decay:Number(value.decay)||.01,color:String(value.color||'#fff'),size:Number(value.size)||2,...value};
+    runtime.particles.push(item);
+    return item;
+  };
+  const timer=(callback,delay,repeat=false)=>{
+    const id=repeat?setInterval(callback,Math.max(16,Number(delay)||1000)):setTimeout(callback,Math.max(0,Number(delay)||0));
+    cleanups.push(()=>repeat?clearInterval(id):clearTimeout(id));
+    return id;
+  };
+  const effect={
+    overlay,canvas:runtime.canvas||overlay.querySelector('canvas'),ctx:runtime.ctx||null,type,config,
+    width:window.innerWidth,height:window.innerHeight,colors:Array.isArray(config?.colors)?config.colors.slice():[],
+    particles:runtime.particles||[],objects:runtime.objects||[],
+    addParticle,burst:(x,y,large=false)=>runtime.makeBurst?.(x,y,large),
+    explode:(x,y,color,grand=false)=>runtime.explode?.(x,y,color,grand),
+    launch:kind=>runtime.launch?.(kind),
+    addElement,addCSS,setStyle:styles=>Object.assign(overlay.style,styles&&typeof styles==='object'?styles:{}),
+    setColors:colors=>{if(Array.isArray(colors)&&colors.length){config.colors=colors.slice();effect.colors=config.colors.slice();}},
+    setText:(selector,text)=>{const node=overlay.querySelector(selector);if(node) node.textContent=String(text??'');return node;},
+    query:selector=>overlay.querySelector(selector),
+    queryAll:selector=>Array.from(overlay.querySelectorAll(selector)),
+    after:(delay,callback)=>timer(callback,delay,false),
+    every:(delay,callback)=>timer(callback,delay,true),
+    on:(event,callback,target=overlay)=>{target.addEventListener(event,callback);cleanups.push(()=>target.removeEventListener(event,callback));}
+  };
+  try{
+    new Function('effect','overlay','config','runtime',`"use strict";\n${source}`)(effect,overlay,config,runtime);
+  }catch(error){
+    console.warn('自訂紀念日特效程式碼執行失敗',error);
+    const notice=document.createElement('div');
+    notice.className='occasion-custom-code-error';
+    notice.textContent=`自訂程式碼未執行：${String(error?.message||'請檢查程式碼').slice(0,140)}`;
+    overlay.appendChild(notice);
+    addedNodes.push(notice);
+  }
+  overlay._customCodeCleanup=()=>{
+    cleanups.splice(0).forEach(cleanup=>{try{cleanup();}catch(_){}}); 
+    addedNodes.splice(0).forEach(node=>node.remove?.());
+  };
+}
 function getOriginalYujunBirthdayLetter(){
   return {title:ORIGINAL_YUJUN_BIRTHDAY_LETTER.title,paragraphs:[...ORIGINAL_YUJUN_BIRTHDAY_LETTER.paragraphs],signature:ORIGINAL_YUJUN_BIRTHDAY_LETTER.signature};
 }
@@ -4794,6 +4918,7 @@ function openOccasionCopyEditor(type){
   if(!OCCASION_COPY_TYPE_LABELS[type]) return;
   const original=getOccasionOriginalPresentation(type);
   const custom=getOccasionCustomCopy(type);
+  const customEffectCode=getOccasionCustomEffectCode(type);
   const copyTitleLabel=type==='yujun'?'煙火標題':'標題';
   const copyMessageLabel=type==='yujun'?'煙火文案':'文案';
   const originalLetter=type==='yujun'?getOriginalYujunBirthdayLetter():null;
@@ -4822,19 +4947,37 @@ function openOccasionCopyEditor(type){
       <div class="occasion-copy-original"><div><strong>原本特效與原本文案都完整保留</strong>${original.random?'目前使用原本的隨機文案庫；只有儲存自訂文案後才會改用下方內容。':'只有儲存自訂文案後才會改用下方內容。'}</div></div>
       <div class="occasion-copy-field"><label for="occasion-copy-title-input">${copyTitleLabel}</label><input class="occasion-copy-input" id="occasion-copy-title-input" maxlength="80" value="${escapeHtml(custom?.title||original.title)}"></div>
       <div class="occasion-copy-field"><label for="occasion-copy-message-input">${copyMessageLabel}</label><textarea class="occasion-copy-textarea" id="occasion-copy-message-input" maxlength="1200">${escapeHtml(custom?.message||original.message)}</textarea><div class="occasion-copy-note">恢復原文案後，生日與情人節仍會照原本方式從文案庫輪替，不會刪除任何一則。</div></div>
-      ${letterEditor}
+       ${letterEditor}
+       <section class="occasion-code-editor" aria-labelledby="occasion-code-editor-title">
+         <div class="occasion-code-head"><div><div class="occasion-code-kicker">CUSTOM EFFECT CODE</div><h3 class="occasion-code-title" id="occasion-code-editor-title">自訂特效程式碼</h3></div><span class="occasion-code-badge">${customEffectCode?'已啟用':'選填'}</span></div>
+         <div class="occasion-code-help">把 JavaScript 貼在這裡，按「儲存並預覽」就會套用。只會作用在這個紀念日的特效畫面，原本的煙火、動畫與程式碼不會被刪除。</div>
+         <textarea class="occasion-code-textarea" id="occasion-effect-code-input" maxlength="20000" spellcheck="false" autocomplete="off" placeholder="// 例如：\n// effect.addParticle({ x: effect.width / 2, y: effect.height / 3, color: '#fff', size: 3 });">${escapeHtml(customEffectCode)}</textarea>
+         <div class="occasion-code-template">可用 API：<code>effect.overlay</code>　<code>effect.canvas</code>　<code>effect.addParticle({...})</code>　<code>effect.burst(x,y)</code>　<code>effect.explode(x,y,color)</code>　<code>effect.addCSS('...')</code></div>
+       </section>
       <div class="occasion-copy-status" id="occasion-copy-status" aria-live="polite">${custom?'目前使用自訂文案':'目前使用原本文案'}${customLetter?'，生日信已自訂':''}</div>
-      <div class="occasion-copy-actions"><button type="button" onclick="restoreOriginalOccasionCopy()">恢復原文案</button><button type="button" class="save" onclick="saveOccasionCopyFromEditor(false)">儲存文案</button><button type="button" class="preview" onclick="saveOccasionCopyFromEditor(true)">儲存並預覽</button></div>
+       <div class="occasion-copy-actions"><button type="button" onclick="restoreOriginalOccasionCopy()">恢復原設定</button><button type="button" class="save" onclick="saveOccasionCopyFromEditor(false)">儲存設定</button><button type="button" class="preview" onclick="saveOccasionCopyFromEditor(true)">儲存並預覽</button></div>
       <section class="occasion-password-section"><button type="button" class="occasion-password-toggle" aria-expanded="false" onclick="toggleOccasionPasswordFields(this)"><span>修改預覽密碼</span><span>＋</span></button><div class="occasion-password-fields"><input class="occasion-copy-input" id="occasion-new-password" type="password" minlength="4" maxlength="12" autocomplete="new-password" placeholder="新密碼（4–12 碼）"><input class="occasion-copy-input" id="occasion-confirm-password" type="password" minlength="4" maxlength="12" autocomplete="new-password" placeholder="再次輸入新密碼"><button type="button" class="occasion-password-save" onclick="saveOccasionPreviewPassword()">儲存新密碼</button></div></section>
     </div>
   </section>`;
   editor.addEventListener('click',event=>{if(event.target===editor) closeOccasionCopyEditor();});
   editor.querySelector('.occasion-copy-close').addEventListener('click',closeOccasionCopyEditor);
-  editor.querySelectorAll('#occasion-copy-title-input,#occasion-copy-message-input').forEach(field=>field.addEventListener('input',()=>{
+   editor.querySelectorAll('#occasion-copy-title-input,#occasion-copy-message-input').forEach(field=>field.addEventListener('input',()=>{
     editor.dataset.copyMode='custom';
     const status=editor.querySelector('#occasion-copy-status');
     if(status){status.textContent='尚未儲存';status.classList.remove('error');}
   }));
+   editor.querySelector('#occasion-effect-code-input')?.addEventListener('input',()=>{
+     const status=editor.querySelector('#occasion-copy-status');
+     if(status){status.textContent='特效程式碼尚未儲存';status.classList.remove('error');}
+   });
+   editor.querySelector('#occasion-effect-code-input')?.addEventListener('keydown',event=>{
+     if(event.key!=='Tab') return;
+     event.preventDefault();
+     const field=event.currentTarget;
+     const start=field.selectionStart;
+     const end=field.selectionEnd;
+     field.setRangeText('  ',start,end,'end');
+   });
   editor.querySelectorAll('#occasion-letter-title-input,#occasion-letter-p1-input,#occasion-letter-p2-input,#occasion-letter-p3-input,#occasion-letter-sign-input').forEach(field=>field.addEventListener('input',()=>{
     editor.dataset.letterMode='custom';
     const status=editor.querySelector('#occasion-copy-status');
@@ -4856,6 +4999,7 @@ async function saveOccasionCopyFromEditor(preview=false){
   const type=editor.dataset.type;
   const title=String(editor.querySelector('#occasion-copy-title-input')?.value||'').trim();
   const message=String(editor.querySelector('#occasion-copy-message-input')?.value||'').trim();
+  const effectCode=String(editor.querySelector('#occasion-effect-code-input')?.value||'').trim().slice(0,20000);
   const status=editor.querySelector('#occasion-copy-status');
   const customMode=editor.dataset.copyMode==='custom';
   const letterMode=type==='yujun'&&editor.dataset.letterMode==='custom';
@@ -4875,10 +5019,19 @@ async function saveOccasionCopyFromEditor(preview=false){
       return;
     }
   }
+  if(effectCode){
+    try{new Function('effect','overlay','config','runtime',effectCode);}
+    catch(error){
+      if(status){status.textContent=`程式碼有錯：${error.message||'請檢查語法'}`;status.classList.add('error');}
+      return;
+    }
+  }
   occasionCopySettings.copies[type]=customMode?{enabled:true,title,message}:{enabled:false,title:'',message:''};
+  if(!occasionCopySettings.effectCode||typeof occasionCopySettings.effectCode!=='object') occasionCopySettings.effectCode={};
+  occasionCopySettings.effectCode[type]=effectCode;
   if(type==='yujun') occasionCopySettings.yujunLetter=letter?{enabled:true,...letter}:{enabled:false,title:'',paragraphs:['','',''],signature:''};
   await saveOccasionCopySettings();
-  if(status){status.textContent=letterMode?'生日信已儲存並同步':(customMode?'自訂文案已儲存並同步':'原本文案設定已同步');status.classList.remove('error');}
+  if(status){status.textContent=effectCode?'文案與特效程式碼已儲存並同步':(letterMode?'生日信已儲存並同步':(customMode?'自訂文案已儲存並同步':'原本文案設定已同步'));status.classList.remove('error');}
   if(preview){
     closeOccasionCopyEditor();
     playOriginalOccasionEffect(type);
@@ -4890,9 +5043,12 @@ async function restoreOriginalOccasionCopy(){
   const type=editor.dataset.type;
   const original=getOccasionOriginalPresentation(type);
   occasionCopySettings.copies[type]={enabled:false,title:'',message:''};
+  if(!occasionCopySettings.effectCode||typeof occasionCopySettings.effectCode!=='object') occasionCopySettings.effectCode={};
+  occasionCopySettings.effectCode[type]='';
   editor.dataset.copyMode='original';
   editor.querySelector('#occasion-copy-title-input').value=original.title;
   editor.querySelector('#occasion-copy-message-input').value=original.message;
+  if(editor.querySelector('#occasion-effect-code-input')) editor.querySelector('#occasion-effect-code-input').value='';
   if(type==='yujun'){
     const originalLetter=getOriginalYujunBirthdayLetter();
     occasionCopySettings.yujunLetter={enabled:false,title:'',paragraphs:['','',''],signature:''};
@@ -5091,6 +5247,14 @@ function playPreviousOccasionEffect(type){
   showOccasionEffectHistory(type);
 }
 
+document.addEventListener('dblclick',event=>{
+  const target=event.target;
+  if(target.closest('.countdown-num,.countdown-preview,.occasion-lock button,.occasion-copy-close,.occasion-copy-actions button') &&
+     !target.closest('input,textarea,select')){
+    event.preventDefault();
+  }
+},{passive:false});
+
 function previewOccasionEffect(type){
   closeOccasionPreviewLock();
   closeOccasionCopyEditor();
@@ -5150,6 +5314,7 @@ function getOccasionEffectPerformanceProfile(){
 function closeOccasionEffect(){
   const overlay=document.getElementById('occasion-effect');
   if(!overlay) return;
+  if(typeof overlay._customCodeCleanup==='function') overlay._customCodeCleanup();
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
   document.body.classList.remove('occasion-effect-running');
@@ -5461,11 +5626,13 @@ function launchOccasionEffect(type,autoPlay=false,archiveSnapshot=null){
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
+  runOccasionCustomEffect(overlay,type,config,{canvas,ctx,particles,objects,makeBurst});
 }
 
 function closeYujunBirthdayFireworks(){
   const overlay=document.getElementById('yujun-birthday-fireworks');
   if(!overlay) return;
+  if(typeof overlay._customCodeCleanup==='function') overlay._customCodeCleanup();
   if(typeof overlay._cleanup==='function') overlay._cleanup();
   overlay.remove();
   document.body.classList.remove('occasion-effect-running');
@@ -6142,6 +6309,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
+  runOccasionCustomEffect(overlay,'yujun',{title:birthdayTitle,sub:yearlyBirthdayCopy,colors}, {canvas,ctx,particles,rockets,explode,launch});
 }
 
 function launchConfetti(){

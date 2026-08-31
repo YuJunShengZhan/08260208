@@ -3042,6 +3042,12 @@ onclick="hideSpecialForToday()">
   style="margin-top:12px;background:var(--pink);color:white;border:none;border-radius:12px;padding:10px 20px;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif">
   🩸 月經來了，記錄今天
 </button>
+  <div>
+  <button id="pd-cancel-action" onclick="pdCancelCurrentPeriod()" hidden
+  style="display:none;margin-top:8px;background:none;color:var(--text-muted);border:none;font-size:12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;text-decoration:underline">
+  ✕ 按錯了？取消本次記錄
+</button>
+  </div>
   </div>
   <div class="card">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
@@ -9032,8 +9038,17 @@ function pdRenderHistory(val){
 
 function pdDeleteHistory(key){
   if(!confirm('刪除這筆紀錄？')) return;
-  const {db,ref,remove} = window._fb;
-  remove(ref(db,`pdPeriodHistory/${key}`));
+  if(!window._fb){alert('Firebase 尚未連線');return;}
+  const {db,ref,remove,set} = window._fb;
+  const target = pdCycleHistory.find(item=>item._key===key);
+  const tasks=[remove(ref(db,`pdPeriodHistory/${key}`))];
+  // 如果刪除的正是目前設定所依據的那筆紀錄，同步還原 pdSettings，
+  // 避免刪掉紀錄後畫面仍卡在「生理期中」無法取消的狀態。
+  if(target && pdSettings.start===target.start){
+    const remaining = pdCycleHistory.filter(item=>item._key!==key);
+    tasks.push(set(ref(db,'pdSettings'),pdBuildRestoredSettings(remaining)));
+  }
+  Promise.all(tasks);
 }
 
 function pdSaveSettings(){
@@ -9364,7 +9379,55 @@ function pdUpdateRecordAction(){
   if(!button) return;
   button.hidden=false;
   button.style.display='inline-block';
-  button.textContent = pdIsCurrentPeriodActive() ? '✅ 設定月經結束日' : '🩸 月經來了，記錄今天';
+  const active = pdIsCurrentPeriodActive();
+  button.textContent = active ? '✅ 設定月經結束日' : '🩸 月經來了，記錄今天';
+  const cancelBtn = document.getElementById('pd-cancel-action');
+  if(cancelBtn){
+    cancelBtn.hidden = !active;
+    cancelBtn.style.display = active ? 'inline-block' : 'none';
+  }
+}
+
+// 找出目前 pdSettings 所依據的那一筆歷史紀錄（用開始日期比對）
+function pdFindCurrentHistoryEntry(){
+  if(!pdSettings.start) return null;
+  const matches = pdCycleHistory.filter(item=>item.start===pdSettings.start);
+  if(!matches.length) return null;
+  // 若有多筆同一天的紀錄（理論上不該發生），取最新建立的那筆
+  return matches.slice().sort((a,b)=>(a.createdAt||0)-(b.createdAt||0)).pop();
+}
+
+// 依照剩餘歷史紀錄，還原 pdSettings（取最近一筆；若都沒有則清空）
+function pdBuildRestoredSettings(remaining){
+  if(!remaining.length){
+    return {start:'',end:'',cycle:pdSettings.cycle||28,dur:pdSettings.dur||5};
+  }
+  const latest = remaining.slice().sort((a,b)=>a.start.localeCompare(b.start)||((a.createdAt||0)-(b.createdAt||0))).pop();
+  return {
+    start:latest.start,
+    end:latest.end||'',
+    cycle:latest.cycle||pdSettings.cycle||28,
+    dur:latest.dur||pdSettings.dur||5,
+    completed:latest.completed===true
+  };
+}
+
+// 「按錯了」的快速取消：刪掉目前這筆生理期紀錄，並把設定還原成前一筆狀態
+function pdCancelCurrentPeriod(){
+  if(!pdSettings.start){return;}
+  if(!confirm('確定要取消本次生理期記錄嗎？這會刪除剛剛記錄的開始日期。')) return;
+  if(!window._fb){alert('Firebase 尚未連線');return;}
+  const {db,ref,remove,set}=window._fb;
+  const target = pdFindCurrentHistoryEntry();
+  const remaining = target ? pdCycleHistory.filter(item=>item._key!==target._key) : pdCycleHistory.slice();
+  const restoredSettings = pdBuildRestoredSettings(remaining);
+  const tasks=[set(ref(db,'pdSettings'),restoredSettings)];
+  if(target && target._key){
+    tasks.push(remove(ref(db,`pdPeriodHistory/${target._key}`)));
+  }
+  Promise.all(tasks).then(()=>{
+    alert('已取消本次記錄');
+  });
 }
 
 function pdRecordAction(){
@@ -12023,4 +12086,4 @@ window.addEventListener('firebaseReady',()=>{
 </script>
 
 </body>
-</html>
+</html>

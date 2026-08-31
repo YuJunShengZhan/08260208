@@ -9364,6 +9364,22 @@ function pdDateString(date=new Date()){
   return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 }
 
+// 顯示一個會自動消失的小提示，取代需要手動按確定的 alert()
+function pdShowToast(message, duration=1800){
+  document.querySelectorAll('.pd-toast').forEach(el=>el.remove());
+  const toast = document.createElement('div');
+  toast.className = 'pd-toast';
+  toast.style.cssText = 'position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(8px);background:var(--pink);color:#fff;padding:12px 22px;border-radius:999px;font-size:13px;font-family:\'Noto Sans TC\',sans-serif;box-shadow:0 10px 26px rgba(0,0,0,.2);z-index:10001;opacity:0;transition:opacity .25s ease,transform .25s ease;max-width:86vw;text-align:center;pointer-events:none';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  requestAnimationFrame(()=>{ toast.style.opacity='1'; toast.style.transform='translateX(-50%) translateY(0)'; });
+  setTimeout(()=>{
+    toast.style.opacity='0';
+    toast.style.transform='translateX(-50%) translateY(8px)';
+    setTimeout(()=>toast.remove(),250);
+  }, duration);
+}
+
 function pdIsCurrentPeriodActive(){
   if(!pdSettings.start || pdSettings.completed===true) return false;
   const start = new Date(pdSettings.start+'T00:00:00');
@@ -9474,7 +9490,7 @@ function pdConfirmStart(){
   if(!window._fb){ alert('Firebase 尚未連線'); return; }
   pdSaveSettingsWithHistory(newSettings).then(()=>{
     document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
-    alert(`已記錄！月經開始日：${startDate} 🩸`);
+    pdShowToast(`已記錄！月經開始日：${startDate} 🩸`);
   });
 }
 
@@ -9514,7 +9530,7 @@ function pdConfirmEnd(){
   pdSaveSettingsWithHistory(newSettings).then(()=>{
     document.querySelector('div[style*="position:fixed"][style*="9999"]')?.remove();
     pdApplySettings(newSettings);
-    alert(`已記錄，本次生理期於第 ${dur} 天結束。`);
+    pdShowToast(`已記錄，本次生理期於第 ${dur} 天結束。`);
   });
 }
 // ── Music Player ──

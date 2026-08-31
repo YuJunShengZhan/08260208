@@ -4672,8 +4672,15 @@ function normalizeOccasionCopySettings(raw){
   const letterSource=raw.yujunLetter&&typeof raw.yujunLetter==='object'?raw.yujunLetter:{};
   const shouldResetTestLetter=isYujunLetterTestDraft(letterSource);
   const letterParagraphs=Array.isArray(letterSource.paragraphs)?letterSource.paragraphs:[];
+  const legacyHash=typeof raw.previewPasswordHash==='string'?raw.previewPasswordHash:'';
+  const hashSource=raw.previewPasswordHash&&typeof raw.previewPasswordHash==='object'?raw.previewPasswordHash:{};
+  const previewPasswordHash={};
+  Object.keys(OCCASION_COPY_TYPE_LABELS).forEach(type=>{
+    // 舊資料只有單一密碼字串時，先套用到四個項目，之後各自更改互不影響
+    previewPasswordHash[type]=String(hashSource[type]||legacyHash||'');
+  });
   return {
-    previewPasswordHash:String(raw.previewPasswordHash||''),
+    previewPasswordHash,
     copies,
     yujunLetter:{
       enabled:!shouldResetTestLetter&&letterSource.enabled===true,
@@ -4739,9 +4746,10 @@ async function hashOccasionPreviewPassword(value){
   for(let i=0;i<text.length;i+=1){hash^=text.charCodeAt(i);hash=Math.imul(hash,16777619);}
   return `fallback-${(hash>>>0).toString(16)}`;
 }
-async function verifyOccasionPreviewPassword(value){
-  if(!occasionCopySettings.previewPasswordHash) return String(value||'')===OCCASION_DEFAULT_PREVIEW_PASSWORD;
-  return (await hashOccasionPreviewPassword(value))===occasionCopySettings.previewPasswordHash;
+async function verifyOccasionPreviewPassword(value,type){
+  const hash=occasionCopySettings.previewPasswordHash?.[type];
+  if(!hash) return String(value||'')===OCCASION_DEFAULT_PREVIEW_PASSWORD;
+  return (await hashOccasionPreviewPassword(value))===hash;
 }
 function getOccasionOriginalPresentation(type){
   const now=today();
@@ -4912,11 +4920,15 @@ async function saveOccasionPreviewPassword(){
     if(status){status.textContent='兩次輸入的密碼不一致';status.classList.add('error');}
     return;
   }
-  occasionCopySettings.previewPasswordHash=await hashOccasionPreviewPassword(first);
+  const type=editor.dataset.type;
+  if(!occasionCopySettings.previewPasswordHash||typeof occasionCopySettings.previewPasswordHash!=='object'){
+    occasionCopySettings.previewPasswordHash={};
+  }
+  occasionCopySettings.previewPasswordHash[type]=await hashOccasionPreviewPassword(first);
   await saveOccasionCopySettings();
   editor.querySelector('#occasion-new-password').value='';
   editor.querySelector('#occasion-confirm-password').value='';
-  if(status){status.textContent='預覽密碼已更新並同步';status.classList.remove('error');}
+  if(status){status.textContent=`${OCCASION_COPY_TYPE_LABELS[type]||''}的預覽密碼已更新並同步`;status.classList.remove('error');}
 }
 function playOriginalOccasionEffect(type){
   if(type==='anniversary') launchAnniversaryEffect(false);
@@ -5106,7 +5118,7 @@ async function unlockOccasionPreview(){
   if(!lock) return;
   const input=lock.querySelector('#occasion-lock-input');
   const error=lock.querySelector('#occasion-lock-error');
-  if(!(await verifyOccasionPreviewPassword((input?.value||'').trim()))){
+  if(!(await verifyOccasionPreviewPassword((input?.value||'').trim(),lock.dataset.type))){
     error.textContent='密碼錯誤，請再試一次';
     input.value='';
     input.focus();

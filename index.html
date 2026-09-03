@@ -3065,7 +3065,7 @@ onclick="hideSpecialForToday()">
       </div>
     </section>
   </div>
-  <audio id="choose-song-audio" src="assets/heart-vow-theme.mp3" preload="metadata" loop hidden></audio>
+  <audio id="choose-song-audio" src="assets/heart-vow-theme.mp3" preload="auto" loop hidden></audio>
 </div>
 
 <div class="choose-submit-preview-bg hidden" id="choose-submit-preview-bg" onclick="chooseCloseSubmitPreview(event)">
@@ -6538,9 +6538,9 @@ function showPage(id,btn){
   }
   if(id==='memories') renderMemories();
   if(id==='choose'){
+    chooseStartSong();
     chooseRefreshOpeningCopy();
     chooseRender();
-    chooseStartSong();
     setTimeout(()=>chooseMaybeShowReadyPage(),180);
   }else{
     chooseStopSong();
@@ -10350,6 +10350,29 @@ function chooseSetSongState(playing,label='心約音樂'){
   if(icon) icon.textContent=chooseSongPlaying?'Ⅱ':'♪';
   if(text) text.textContent=label;
 }
+let chooseSongRetryArmed=false;
+function chooseArmAutoplayRetry(){
+  if(chooseSongRetryArmed) return;
+  chooseSongRetryArmed=true;
+  const retry=()=>{
+    const choosePage=document.getElementById('page-choose');
+    if(!chooseSongRequested || !choosePage?.classList.contains('active')){
+      cleanup();
+      return;
+    }
+    chooseSongAudio.volume=.58;
+    chooseSongAudio.play().then(cleanup).catch(()=>{});
+  };
+  const cleanup=()=>{
+    chooseSongRetryArmed=false;
+    document.removeEventListener('pointerdown',retry,true);
+    document.removeEventListener('touchstart',retry,true);
+    document.removeEventListener('keydown',retry,true);
+  };
+  document.addEventListener('pointerdown',retry,true);
+  document.addEventListener('touchstart',retry,true);
+  document.addEventListener('keydown',retry,true);
+}
 async function chooseStartSong(){
   chooseSongRequested=true;
   if(typeof audio!=='undefined'&&!audio.paused) audio.pause();
@@ -10357,10 +10380,14 @@ async function chooseStartSong(){
   chooseSetSongState(false,'正在播放紙短情長...');
   try{
     chooseSongAudio.volume=.58;
+    if(chooseSongAudio.readyState===0) chooseSongAudio.load();
     await chooseSongAudio.play();
   }catch(error){
-    console.warn('心約背景音樂無法自動播放',error);
-    if(chooseSongRequested) chooseSetSongState(false,'點一下播放心約音樂');
+    console.warn('心約背景音樂首次自動播放被瀏覽器阻擋，等待下一次操作自動重試',error);
+    if(chooseSongRequested){
+      chooseSetSongState(false,'紙短情長 · 等待自動播放');
+      chooseArmAutoplayRetry();
+    }
   }
 }
 function chooseStopSong(){
@@ -10811,7 +10838,7 @@ function chooseRender(){
   textarea.disabled=sealedReadOnly;
   textarea.placeholder=sealedReadOnly
       ?'這封信已經封存，等另一封抵達後再一起打開。'
-      :(player==='shengzhan'
+      :(chooseSelectedPlayer==='shengzhan'
         ?'聖展，這個月為什麼仍然願意選擇予君？'
         :'予君，這個月為什麼仍然願意選擇聖展？');
   if(sealedReadOnly) textarea.value='';

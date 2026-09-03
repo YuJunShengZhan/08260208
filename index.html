@@ -633,6 +633,21 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 @media(max-width:520px){.birthday-fireworks-letter{top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:max(7px,env(safe-area-inset-bottom));width:96%}.birthday-finale-heart-scene{margin-top:clamp(14px,3.8vh,30px)}.birthday-finale-bottom{margin-bottom:4px}.birthday-finale-stage{height:36px;margin-top:9px}.birthday-cake-stage-copy{top:max(75px,calc(env(safe-area-inset-top) + 64px))}.birthday-letter-reveal{width:92vw;height:242px}.birthday-envelope-shell{width:250px;height:155px}.birthday-envelope-card{height:128px;padding-top:15px}.birthday-envelope-card span{font-size:21px}.birthday-envelope-front{height:103px}.birthday-envelope-flap{height:99px}.birthday-envelope-seal{top:51px;width:38px;height:38px}.birthday-envelope-caption{font-size:15px}.birthday-letter-deco{width:19px;height:19px;opacity:.58}.birthday-letter-deco.party-top{top:9px;left:9px}.birthday-letter-deco.gift-top{top:9px;right:9px}.birthday-letter-deco.spark-left{left:2px;width:17px;height:17px}.birthday-letter-deco.heart-right{right:2px;width:17px;height:17px}.birthday-letter-deco.cake-bottom{bottom:8px;left:9px;width:21px;height:21px}.birthday-letter-deco.party-bottom{right:9px;bottom:8px;width:21px;height:21px}.birthday-final-cake{width:min(78vw,294px);height:175px}.birthday-cake-candles{height:46px}.birthday-candle{height:31px}.birthday-candle:nth-child(2){height:38px}.birthday-cake-top{height:38px}.birthday-cake-middle{height:45px}.birthday-cake-bottom{height:54px}.birthday-cake-bottom b{font-size:16px}}
 @media(max-height:620px){.birthday-fireworks-letter p{font-size:9.5px;line-height:1.42}.birthday-letter-photo-frame{min-height:72px}.birthday-letter-title{font-size:16px}.birthday-letter-sign{font-size:10.5px}}
 @media(max-height:560px) and (orientation:landscape){.birthday-fireworks-letter{left:31%;top:max(58px,calc(env(safe-area-inset-top) + 52px));bottom:6px;width:58%;padding:8px 12px}.birthday-letter-title{font-size:15px}.birthday-fireworks-letter p{font-size:9px;line-height:1.36;margin-bottom:3px}.birthday-letter-sign{font-size:10px}.birthday-letter-photo-frame{min-height:64px;margin-top:4px}.birthday-final-cake{left:81%;bottom:5px;width:min(31vw,245px);height:154px}.birthday-cake-candles{height:42px}.birthday-candle{height:29px}.birthday-candle:nth-child(2){height:35px}.birthday-cake-top{height:31px}.birthday-cake-middle{height:39px}.birthday-cake-bottom{height:47px}.birthday-cake-bottom b{font-size:14px}}
+
+#shengzhan-birthday-fireworks{background:radial-gradient(circle at 50% 82%,rgba(36,104,150,.34),transparent 38%),radial-gradient(circle at 18% 12%,rgba(66,207,214,.15),transparent 34%),linear-gradient(180deg,#07111e 0%,#0b1a2c 48%,#101725 100%)}
+#shengzhan-birthday-fireworks .birthday-fireworks-bow{filter:drop-shadow(0 0 12px rgba(255,220,126,.85)) drop-shadow(0 0 28px rgba(92,207,255,.45))}
+#shengzhan-birthday-fireworks .birthday-fireworks-message b{color:#f7fbff;text-shadow:0 2px 10px rgba(0,0,0,.9),0 0 25px rgba(91,196,255,.52)}
+#shengzhan-birthday-fireworks .birthday-fireworks-message span{color:#eef8ff}
+#shengzhan-birthday-fireworks .birthday-finale-name span{color:#76d9ff}
+#shengzhan-birthday-fireworks .birthday-finale-heart-icon{background:#ffd878;filter:drop-shadow(0 0 12px rgba(255,255,255,.78)) drop-shadow(0 0 26px rgba(80,192,255,.78))}
+#shengzhan-birthday-fireworks .birthday-fireworks-letter{border-color:rgba(126,214,255,.45);background:linear-gradient(145deg,rgba(9,26,43,.94),rgba(22,48,69,.9));box-shadow:0 22px 70px rgba(0,0,0,.5),inset 0 0 42px rgba(105,207,255,.07)}
+#shengzhan-birthday-fireworks .birthday-fireworks-letter::before{border-color:rgba(255,216,120,.34)}
+#shengzhan-birthday-fireworks .birthday-letter-title{color:#f5fbff;text-shadow:0 0 18px rgba(94,205,255,.35)}
+#shengzhan-birthday-fireworks .birthday-letter-sign{color:#8edaf2}
+#shengzhan-birthday-fireworks .birthday-cake-bottom{background:linear-gradient(180deg,#dff6ff,#91d7ec)}
+#shengzhan-birthday-fireworks .birthday-cake-middle{background:linear-gradient(180deg,#fff3cb,#ffd979)}
+#shengzhan-birthday-fireworks .birthday-cake-top{background:linear-gradient(180deg,#eefaff,#b9e9f5)}
+
 .occasion-overlay{position:fixed;inset:0;z-index:11950;overflow:hidden;display:flex;align-items:center;justify-content:center;animation:occasionFadeIn .65s ease both;contain:layout paint style;isolation:isolate}
 .occasion-overlay canvas{position:absolute;inset:0;width:100%;height:100%;transform:translateZ(0)}
 .occasion-overlay.birthday{background:rgba(26,39,67,.94)}
@@ -732,7 +747,7 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-code-title{margin-top:3px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:18px;font-weight:800}
 .occasion-code-badge{padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.82);color:#2f9664;font-size:10px;font-weight:800;white-space:nowrap}
 .occasion-code-help{margin-top:8px;color:var(--text-muted);font-size:10px;line-height:1.65}
-.occasion-code-textarea{width:100%;min-height:190px;margin-top:10px;padding:12px;box-sizing:border-box;border:1px solid rgba(47,150,100,.24);border-radius:12px;background:#17231f;color:#d9f7e6;font:500 12px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0;resize:vertical;tab-size:2;outline:none}
+.occasion-code-textarea{width:100%;min-height:430px;margin-top:10px;padding:14px;box-sizing:border-box;border:1px solid rgba(47,150,100,.24);border-radius:12px;background:#17231f;color:#d9f7e6;font:500 12px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0;resize:vertical;tab-size:2;outline:none;white-space:pre;overflow:auto}
 .occasion-code-textarea:focus{border-color:#2f9664;box-shadow:0 0 0 3px rgba(47,150,100,.14)}
 .occasion-code-template{margin-top:9px;color:#2f9664;font-size:10px;font-weight:800}
 .occasion-code-template code{font:700 10px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
@@ -742,6 +757,7 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-code-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.occasion-code-tools button{padding:7px 9px;border:1px solid rgba(47,150,100,.25);border-radius:9px;background:rgba(255,255,255,.84);color:#2f9664;font:800 10px/1.3 'Noto Sans TC',sans-serif;cursor:pointer}
 [data-theme="dark"] .occasion-yujun-media{background:linear-gradient(145deg,rgba(68,31,44,.85),rgba(39,24,35,.92));border-color:rgba(255,159,185,.22)}[data-theme="dark"] .occasion-yujun-media-card,[data-theme="dark"] .occasion-yujun-media-actions label,[data-theme="dark"] .occasion-yujun-media-actions button,[data-theme="dark"] .occasion-code-tools button{background:#301b24}
 @media(max-width:560px){.occasion-yujun-media-grid{grid-template-columns:1fr}.occasion-yujun-media-preview{aspect-ratio:16/10}}
+@media(max-width:560px){.occasion-code-textarea{min-height:340px;font-size:11px}}
 .occasion-custom-code-error{position:absolute;z-index:5;left:50%;bottom:18px;max-width:min(92vw,620px);padding:8px 12px;transform:translateX(-50%);border:1px solid rgba(255,184,198,.5);border-radius:999px;background:rgba(35,13,24,.82);color:#ffd9e2;font:700 11px/1.4 'Noto Sans TC',sans-serif;text-align:center;pointer-events:none}
 [data-theme="dark"] .occasion-copy-head{background:linear-gradient(135deg,#211319,#2a1820)}
 [data-theme="dark"] .occasion-copy-original{background:linear-gradient(90deg,#2a1820,#211319)}
@@ -4734,7 +4750,7 @@ function normalizeOccasionCopySettings(raw){
   const effectCode={};
   Object.keys(OCCASION_COPY_TYPE_LABELS).forEach(type=>{
     const source=raw.copies?.[type]&&typeof raw.copies[type]==='object'?raw.copies[type]:{};
-    effectCode[type]=String(effectCodeSource[type]||'').slice(0,20000);
+    effectCode[type]=String(effectCodeSource[type]||'').slice(0,60000);
     copies[type]={
       enabled:source.enabled===true,
       title:String(source.title||'').slice(0,80),
@@ -4855,6 +4871,166 @@ function getOccasionCustomEffectCode(type){
   const key=type==='birthday'?'shengzhan':type;
   return String(occasionCopySettings.effectCode?.[key]||'').trim();
 }
+function getOccasionOriginalEffectCode(type){
+  const key=type==='birthday'?'shengzhan':type;
+  const scripts={
+    anniversary:`/* =========================================================
+   週年紀念日｜原始可編輯特效控制程式
+   這裡可直接改文字、顏色、CSS、DOM、粒子、計時與互動。
+   底層動畫引擎在 effect.runtime；若要完全自己接管可呼叫 effect.stopDefault()。
+   ========================================================= */
+
+// 原始文字
+// config.title / config.sub 會跟上方「標題、文案」欄位同步
+effect.setText('.occasion-kicker', '12 / 1 · ANNIVERSARY');
+effect.setText('.occasion-title', config.title);
+effect.setText('.occasion-sub', config.sub);
+
+// 原始配色
+effect.setColors(['#ffd36e','#fff1b8','#ff8fa8','#72dcff','#ffffff']);
+effect.style('.occasion-title', {
+  color:'#ffffff',
+  textShadow:'0 3px 18px rgba(0,0,0,.72), 0 0 24px rgba(255,211,110,.22)'
+});
+effect.style('.occasion-anniversary-mark', { color:'#ffd36e' });
+
+// 背景
+effect.setBackground('radial-gradient(circle at 50% 88%, rgba(255,211,110,.10), transparent 35%), rgba(24,15,25,.96)');
+
+// 原本的週年動畫仍由底層引擎持續執行：
+// effect.runtime.makeBurst(x, y, large)
+// effect.runtime.objects / effect.runtime.particles
+
+// 點畫面時追加一朵大煙火
+effect.on('pointerdown', event => {
+  if(event.target.closest('button')) return;
+  effect.burst(event.clientX, event.clientY, true);
+});
+
+// 想完全改成自己的動畫時取消註解：
+// effect.stopDefault();
+// effect.every(900, () => effect.burst(Math.random()*effect.width, effect.height*.32, true));
+`,
+    valentine:`/* =========================================================
+   情人節｜原始可編輯特效控制程式
+   可控制信封、文案、愛心、花瓣、煙火、背景與任何 DOM。
+   ========================================================= */
+
+// 原始文字
+effect.setText('.occasion-kicker', config.kicker || 'VALENTINE');
+effect.setText('.occasion-title', config.title);
+effect.setText('.occasion-sub', config.sub);
+
+// 原始粉紅色系
+effect.setColors(['#ff7f9a','#ffb0bd','#ffd1d8','#fff0f2','#f05f7f']);
+effect.setBackground('radial-gradient(circle at 50% 82%, rgba(255,150,180,.14), transparent 42%), rgba(77,29,49,.94)');
+effect.style('.occasion-envelope', {
+  filter:'drop-shadow(0 10px 24px rgba(255,110,145,.24))'
+});
+
+// 點畫面加入愛心粒子
+effect.on('pointerdown', event => {
+  if(event.target.closest('button')) return;
+  for(let i=0;i<10;i++){
+    effect.addParticle({
+      x:event.clientX, y:event.clientY,
+      vx:(Math.random()-.5)*2.8, vy:-1-Math.random()*2.6,
+      color:i%2?'#ff9db4':'#fff0f4', size:2+Math.random()*2,
+      life:1, decay:.018
+    });
+  }
+});
+
+// 底層原始物件：effect.runtime.objects
+// 底層煙火：effect.runtime.makeBurst(...)
+// 完全自己接管：effect.stopDefault();
+`,
+    shengzhan:`/* =========================================================
+   聖展生日｜原始可編輯特效控制程式
+   目前使用「煙火 → 祝福 → 蛋糕 → 生日信」完整生日特效。
+   你可以在這裡直接控制所有畫面與煙火。
+   ========================================================= */
+
+// 主畫面文字
+effect.setText('.birthday-fireworks-kicker', "2 / 8 · SHENGZHAN'S DAY");
+effect.setText('.birthday-fireworks-message b', config.title);
+effect.setText('.birthday-fireworks-message span', config.sub);
+
+// 最終畫面
+effect.setText('.birthday-finale-date', "2 / 8 · SHENGZHAN'S DAY");
+effect.setText('.birthday-finale-wish', '今晚的煙火，也為你亮一次');
+effect.setText('.birthday-cake-middle-label', 'HAPPY BIRTHDAY, SHENGZHAN');
+
+// 原始藍金配色
+effect.setColors(['#62d8ff','#ffd166','#ffffff','#88f0d0','#86a8ff','#ff9d6c','#b9f2ff']);
+effect.setBackground('radial-gradient(circle at 50% 82%, rgba(36,104,150,.34), transparent 38%), linear-gradient(180deg,#07111e,#101725)');
+
+// 可直接控制現有節點
+effect.style('.birthday-fireworks-message b', {letterSpacing:'0'});
+effect.style('.birthday-final-cake', {filter:'drop-shadow(0 18px 26px rgba(0,0,0,.42))'});
+
+// API 直接操控原本煙火引擎
+// effect.launch();               // 發射一發
+// effect.runtime.launchHeart();  // 愛心煙火
+// effect.explode(x,y,'#62d8ff',true);
+// effect.openLetter();           // 直接打開生日信
+
+// 點背景追加煙火
+effect.on('pointerdown', event => {
+  if(event.target.closest('button')) return;
+  effect.explode(event.clientX,event.clientY,'#62d8ff',true);
+});
+
+// 想把內建流程全部停掉、完全自己寫：
+// effect.stopDefault();
+`,
+    yujun:`/* =========================================================
+   予君生日｜原始可編輯特效控制程式
+   原本煙火、蛋糕、抽信、生日信、照片與結尾影片都可從這裡操控。
+   ========================================================= */
+
+// 主畫面
+effect.setText('.birthday-fireworks-kicker', "8 / 26 · YUJUN'S DAY");
+effect.setText('.birthday-fireworks-message b', config.title);
+effect.setText('.birthday-fireworks-message span', config.sub);
+
+// Finale
+effect.setText('.birthday-finale-date', "8 / 26 · YUJUN'S DAY");
+effect.setText('.birthday-finale-wish', '這一夜的煙火，只為妳盛開');
+effect.setText('.birthday-cake-middle-label', 'HAPPY BIRTHDAY, YUJUN');
+
+// 原始煙火色
+effect.setColors(['#ff5d8f','#ffd166','#60d6ff','#8cff98','#c99cff','#ff8c42','#ffffff','#f7b5ff','#82ffe0']);
+
+// 可直接改生日信、照片、蛋糕等任何節點
+effect.style('.birthday-fireworks-letter', {
+  boxShadow:'0 22px 70px rgba(0,0,0,.48), inset 0 0 42px rgba(255,151,181,.07)'
+});
+
+// 底層引擎可以直接呼叫：
+// effect.launch();
+// effect.runtime.launchFan?.(9);
+// effect.runtime.explodeHeart?.(effect.width/2,effect.height*.35);
+// effect.openLetter();
+
+// 例如：點畫面追加一朵煙火
+effect.on('pointerdown', event => {
+  if(event.target.closest('button')) return;
+  effect.explode(event.clientX,event.clientY,'#ff8fb1',true);
+});
+
+// 要完全自己接管原本流程：
+// effect.stopDefault();
+`
+  };
+  return String(scripts[key]||`// ${key} effect\n`).trim();
+}
+function getOccasionEffectEditorCode(type){
+  return getOccasionCustomEffectCode(type)||getOccasionOriginalEffectCode(type);
+}
+function isOriginalOccasionEffectCode(type,source){
+  return String(source||'').trim()===getOccasionOriginalEffectCode(type).trim();
+}
 function runOccasionCustomEffect(overlay,type,config,runtime={}){
   const source=getOccasionCustomEffectCode(type);
   if(!overlay||!source) return;
@@ -4874,16 +5050,17 @@ function runOccasionCustomEffect(overlay,type,config,runtime={}){
     addedNodes.push(style);
     return style;
   };
-  const addElement=(tag='div',props={},text='')=>{
+  const addElement=(tag='div',props={},content='')=>{
     const node=document.createElement(String(tag||'div'));
     Object.entries(props&&typeof props==='object'?props:{}).forEach(([key,value])=>{
       if(key==='style'&&value&&typeof value==='object') Object.assign(node.style,value);
       else if(key==='dataset'&&value&&typeof value==='object') Object.assign(node.dataset,value);
       else if(key==='className') node.className=String(value);
+      else if(key==='html') node.innerHTML=String(value??'');
       else if(key in node) node[key]=value;
       else node.setAttribute(key,String(value));
     });
-    if(text!==undefined&&text!==null) node.textContent=String(text);
+    if(content!==undefined&&content!==null && !('html' in (props||{}))) node.textContent=String(content);
     overlay.appendChild(node);
     addedNodes.push(node);
     return node;
@@ -4891,8 +5068,8 @@ function runOccasionCustomEffect(overlay,type,config,runtime={}){
   const addParticle=particle=>{
     if(!Array.isArray(runtime.particles)) return null;
     const value=particle&&typeof particle==='object'?particle:{};
-    const x=Number(value.x)||effect.width/2;
-    const y=Number(value.y)||effect.height/2;
+    const x=Number.isFinite(Number(value.x))?Number(value.x):window.innerWidth/2;
+    const y=Number.isFinite(Number(value.y))?Number(value.y):window.innerHeight/2;
     const item={x,y,px:x,py:y,vx:Number(value.vx)||0,vy:Number(value.vy)||0,life:Number(value.life)||1,decay:Number(value.decay)||.01,color:String(value.color||'#fff'),size:Number(value.size)||2,...value};
     runtime.particles.push(item);
     return item;
@@ -4902,18 +5079,37 @@ function runOccasionCustomEffect(overlay,type,config,runtime={}){
     cleanups.push(()=>repeat?clearInterval(id):clearTimeout(id));
     return id;
   };
+  const query=selector=>overlay.querySelector(selector);
+  const queryAll=selector=>Array.from(overlay.querySelectorAll(selector));
+  const applyStyle=(selectorOrNode,styles={})=>{
+    const nodes=typeof selectorOrNode==='string'?queryAll(selectorOrNode):[selectorOrNode];
+    nodes.filter(Boolean).forEach(node=>Object.assign(node.style,styles&&typeof styles==='object'?styles:{}));
+    return nodes.length===1?nodes[0]:nodes;
+  };
   const effect={
-    overlay,canvas:runtime.canvas||overlay.querySelector('canvas'),ctx:runtime.ctx||null,type,config,
+    overlay,root:overlay,canvas:runtime.canvas||overlay.querySelector('canvas'),ctx:runtime.ctx||null,type,config,runtime,
     width:window.innerWidth,height:window.innerHeight,colors:Array.isArray(config?.colors)?config.colors.slice():[],
-    particles:runtime.particles||[],objects:runtime.objects||[],
-    addParticle,burst:(x,y,large=false)=>runtime.makeBurst?.(x,y,large),
+    particles:runtime.particles||[],objects:runtime.objects||[],rockets:runtime.rockets||[],
+    addParticle,
+    burst:(x,y,large=false)=>runtime.makeBurst?.(x,y,large),
     explode:(x,y,color,grand=false)=>runtime.explode?.(x,y,color,grand),
     launch:kind=>runtime.launch?.(kind),
-    addElement,addCSS,setStyle:styles=>Object.assign(overlay.style,styles&&typeof styles==='object'?styles:{}),
-    setColors:colors=>{if(Array.isArray(colors)&&colors.length){config.colors=colors.slice();effect.colors=config.colors.slice();}},
-    setText:(selector,text)=>{const node=overlay.querySelector(selector);if(node) node.textContent=String(text??'');return node;},
-    query:selector=>overlay.querySelector(selector),
-    queryAll:selector=>Array.from(overlay.querySelectorAll(selector)),
+    addElement,addCSS,query,queryAll,
+    style:applyStyle,
+    setStyle:styles=>Object.assign(overlay.style,styles&&typeof styles==='object'?styles:{}),
+    setBackground:value=>{overlay.style.background=String(value||'');return overlay;},
+    setColors:colors=>{if(Array.isArray(colors)&&colors.length){config.colors=colors.slice();effect.colors=config.colors.slice();if(runtime.setColors) runtime.setColors(config.colors.slice());}},
+    setText:(selector,value)=>{const node=query(selector);if(node) node.textContent=String(value??'');return node;},
+    setHTML:(selector,value)=>{const node=query(selector);if(node) node.innerHTML=String(value??'');return node;},
+    attr:(selector,name,value)=>{queryAll(selector).forEach(node=>value===null?node.removeAttribute(name):node.setAttribute(name,String(value)));},
+    hide:selector=>applyStyle(selector,{display:'none'}),
+    show:(selector,display='')=>applyStyle(selector,{display}),
+    remove:selector=>queryAll(selector).forEach(node=>node.remove()),
+    clearParticles:()=>{if(Array.isArray(runtime.particles)) runtime.particles.length=0;},
+    clearObjects:()=>{if(Array.isArray(runtime.objects)) runtime.objects.length=0;},
+    stopDefault:()=>runtime.stopDefault?.(),
+    openLetter:()=>overlay._openLetter?.(),
+    close:()=>requestOccasionEffectClose(),
     after:(delay,callback)=>timer(callback,delay,false),
     every:(delay,callback)=>timer(callback,delay,true),
     on:(event,callback,target=overlay)=>{target.addEventListener(event,callback);cleanups.push(()=>target.removeEventListener(event,callback));}
@@ -4929,10 +5125,11 @@ function runOccasionCustomEffect(overlay,type,config,runtime={}){
     addedNodes.push(notice);
   }
   overlay._customCodeCleanup=()=>{
-    cleanups.splice(0).forEach(cleanup=>{try{cleanup();}catch(_){}}); 
+    cleanups.splice(0).forEach(cleanup=>{try{cleanup();}catch(_){}});
     addedNodes.splice(0).forEach(node=>node.remove?.());
   };
 }
+
 function getOriginalYujunBirthdayLetter(){
   return {title:ORIGINAL_YUJUN_BIRTHDAY_LETTER.title,paragraphs:[...ORIGINAL_YUJUN_BIRTHDAY_LETTER.paragraphs],signature:ORIGINAL_YUJUN_BIRTHDAY_LETTER.signature};
 }
@@ -5108,6 +5305,19 @@ effect.every(1200, () => {
 function closeOccasionCopyEditor(){
   document.getElementById('occasion-copy-editor')?.remove();
 }
+function restoreOccasionEffectCodeOnly(){
+  const editor=document.getElementById('occasion-copy-editor');
+  if(!editor) return;
+  const type=editor.dataset.type;
+  const field=editor.querySelector('#occasion-effect-code-input');
+  if(!field) return;
+  field.value=getOccasionOriginalEffectCode(type);
+  editor.dataset.codeMode='original';
+  const badge=editor.querySelector('.occasion-code-badge');
+  if(badge) badge.textContent='原始程式';
+  const status=editor.querySelector('#occasion-copy-status');
+  if(status){status.textContent='已載入原始特效程式碼，按儲存後會恢復原本特效';status.classList.remove('error');}
+}
 function openOccasionCopyEditor(type){
   closeOccasionPreviewLock();
   closeOccasionCopyEditor();
@@ -5115,8 +5325,10 @@ function openOccasionCopyEditor(type){
   const original=getOccasionOriginalPresentation(type);
   const custom=getOccasionCustomCopy(type);
   const customEffectCode=getOccasionCustomEffectCode(type);
-  const copyTitleLabel=type==='yujun'?'煙火標題':'標題';
-  const copyMessageLabel=type==='yujun'?'煙火文案':'文案';
+  const originalEffectCode=getOccasionOriginalEffectCode(type);
+  const effectEditorCode=customEffectCode||originalEffectCode;
+  const copyTitleLabel=['yujun','shengzhan'].includes(type)?'煙火標題':'標題';
+  const copyMessageLabel=['yujun','shengzhan'].includes(type)?'煙火文案':'文案';
   const originalLetter=type==='yujun'?getOriginalYujunBirthdayLetter():null;
   const customLetter=type==='yujun'&&occasionCopySettings.yujunLetter?.enabled===true?getYujunBirthdayLetter():null;
   const yujunMedia=type==='yujun'?getYujunBirthdayMedia():null;
@@ -5145,6 +5357,7 @@ function openOccasionCopyEditor(type){
   editor.dataset.type=type;
   editor.dataset.copyMode=custom?'custom':'original';
   editor.dataset.letterMode=customLetter?'custom':'original';
+  editor.dataset.codeMode=customEffectCode?'custom':'original';
   if(type==='yujun') editor.dataset.yujunMediaDraft=JSON.stringify(yujunMedia);
   editor.setAttribute('role','dialog');
   editor.setAttribute('aria-modal','true');
@@ -5152,17 +5365,17 @@ function openOccasionCopyEditor(type){
   editor.innerHTML=`<section class="occasion-lock-panel occasion-copy-panel">
     <header class="occasion-copy-head"><div><div class="occasion-copy-kicker">ORIGINAL EFFECT</div><div class="occasion-copy-title" id="occasion-copy-editor-title">${escapeHtml(OCCASION_COPY_TYPE_LABELS[type])}</div></div><button type="button" class="occasion-copy-close" aria-label="關閉">×</button></header>
     <div class="occasion-copy-body">
-      <div class="occasion-copy-original"><div><strong>原本特效與原本文案都完整保留</strong>${original.random?'目前使用原本的隨機文案庫；只有儲存自訂文案後才會改用下方內容。':'只有儲存自訂文案後才會改用下方內容。'}</div></div>
+      <div class="occasion-copy-original"><div><strong>原本特效、文案與完整程式碼都可還原</strong>${original.random?'目前使用原本的隨機文案庫；只有儲存自訂文案後才會改用下方內容。':'只有儲存自訂文案後才會改用下方內容。'}</div></div>
       <div class="occasion-copy-field"><label for="occasion-copy-title-input">${copyTitleLabel}</label><input class="occasion-copy-input" id="occasion-copy-title-input" maxlength="80" value="${escapeHtml(custom?.title||original.title)}"></div>
       <div class="occasion-copy-field"><label for="occasion-copy-message-input">${copyMessageLabel}</label><textarea class="occasion-copy-textarea" id="occasion-copy-message-input" maxlength="1200">${escapeHtml(custom?.message||original.message)}</textarea><div class="occasion-copy-note">恢復原文案後，生日與情人節仍會照原本方式從文案庫輪替，不會刪除任何一則。</div></div>
        ${letterEditor}
        ${mediaEditor}
        <section class="occasion-code-editor" aria-labelledby="occasion-code-editor-title">
-         <div class="occasion-code-head"><div><div class="occasion-code-kicker">CUSTOM EFFECT CODE</div><h3 class="occasion-code-title" id="occasion-code-editor-title">自訂特效程式碼</h3></div><span class="occasion-code-badge">${customEffectCode?'已啟用':'選填'}</span></div>
-         <div class="occasion-code-help">把 JavaScript 貼在這裡，按「儲存並預覽」就會套用。只會作用在這個紀念日的特效畫面，原本的煙火、動畫與程式碼不會被刪除。</div>
-         <textarea class="occasion-code-textarea" id="occasion-effect-code-input" maxlength="20000" spellcheck="false" autocomplete="off" placeholder="// 例如：\n// effect.addParticle({ x: effect.width / 2, y: effect.height / 3, color: '#fff', size: 3 });">${escapeHtml(customEffectCode)}</textarea>
-         <div class="occasion-code-template">可用 API：<code>effect.overlay</code>　<code>effect.canvas</code>　<code>effect.addParticle({...})</code>　<code>effect.burst(x,y)</code>　<code>effect.explode(x,y,color)</code>　<code>effect.addCSS('...')</code>　<code>effect.addElement(...)</code>　<code>effect.every(...)</code></div>
-         <div class="occasion-code-tools"><button type="button" onclick="insertOccasionCodeTemplate('text')">＋文字範例</button><button type="button" onclick="insertOccasionCodeTemplate('css')">＋樣式範例</button><button type="button" onclick="insertOccasionCodeTemplate('burst')">＋煙火範例</button></div>
+         <div class="occasion-code-head"><div><div class="occasion-code-kicker">FULL EFFECT CODE</div><h3 class="occasion-code-title" id="occasion-code-editor-title">完整特效程式碼</h3></div><span class="occasion-code-badge">${customEffectCode?'已自訂':'原始程式'}</span></div>
+         <div class="occasion-code-help">這裡會直接載入這個紀念日的原始可編輯程式。以後只要改這一格，就能控制文字、顏色、CSS、畫面元素、煙火、粒子、計時與互動；需要完全自己接管時可用 <b>effect.stopDefault()</b> 停掉內建流程。</div>
+         <textarea class="occasion-code-textarea" id="occasion-effect-code-input" maxlength="60000" spellcheck="false" autocomplete="off">${escapeHtml(effectEditorCode)}</textarea>
+         <div class="occasion-code-template">完整 API：<code>effect.overlay</code>　<code>effect.canvas</code>　<code>effect.ctx</code>　<code>effect.runtime</code>　<code>effect.query()</code>　<code>effect.style()</code>　<code>effect.setText()</code>　<code>effect.setHTML()</code>　<code>effect.setBackground()</code>　<code>effect.setColors()</code>　<code>effect.addParticle()</code>　<code>effect.burst()</code>　<code>effect.explode()</code>　<code>effect.launch()</code>　<code>effect.addCSS()</code>　<code>effect.addElement()</code>　<code>effect.after()</code>　<code>effect.every()</code>　<code>effect.stopDefault()</code></div>
+         <div class="occasion-code-tools"><button type="button" onclick="restoreOccasionEffectCodeOnly()">↺ 還原原始程式</button><button type="button" onclick="insertOccasionCodeTemplate('text')">＋文字範例</button><button type="button" onclick="insertOccasionCodeTemplate('css')">＋樣式範例</button><button type="button" onclick="insertOccasionCodeTemplate('burst')">＋煙火範例</button></div>
        </section>
       <div class="occasion-copy-status" id="occasion-copy-status" aria-live="polite">${custom?'目前使用自訂文案':'目前使用原本文案'}${customLetter?'，生日信已自訂':''}</div>
        <div class="occasion-copy-actions"><button type="button" onclick="restoreOriginalOccasionCopy()">恢復原設定</button><button type="button" class="save" onclick="saveOccasionCopyFromEditor(false)">儲存設定</button><button type="button" class="preview" onclick="saveOccasionCopyFromEditor(true)">儲存並預覽</button></div>
@@ -5176,6 +5389,9 @@ function openOccasionCopyEditor(type){
     if(status){status.textContent='尚未儲存';status.classList.remove('error');}
   }));
    editor.querySelector('#occasion-effect-code-input')?.addEventListener('input',()=>{
+     editor.dataset.codeMode='custom';
+     const badge=editor.querySelector('.occasion-code-badge');
+     if(badge) badge.textContent='尚未儲存';
      const status=editor.querySelector('#occasion-copy-status');
      if(status){status.textContent='特效程式碼尚未儲存';status.classList.remove('error');}
    });
@@ -5208,7 +5424,8 @@ async function saveOccasionCopyFromEditor(preview=false){
   const type=editor.dataset.type;
   const title=String(editor.querySelector('#occasion-copy-title-input')?.value||'').trim();
   const message=String(editor.querySelector('#occasion-copy-message-input')?.value||'').trim();
-  const effectCode=String(editor.querySelector('#occasion-effect-code-input')?.value||'').trim().slice(0,20000);
+  const rawEffectCode=String(editor.querySelector('#occasion-effect-code-input')?.value||'').trim().slice(0,60000);
+  const effectCode=isOriginalOccasionEffectCode(type,rawEffectCode)?'':rawEffectCode;
   const status=editor.querySelector('#occasion-copy-status');
   const customMode=editor.dataset.copyMode==='custom';
   const letterMode=type==='yujun'&&editor.dataset.letterMode==='custom';
@@ -5248,7 +5465,10 @@ async function saveOccasionCopyFromEditor(preview=false){
     };
   }
   await saveOccasionCopySettings();
-  if(status){status.textContent=type==='yujun'?'予君生日特效設定（文案、照片、影片、程式碼）已儲存並同步':(effectCode?'文案與特效程式碼已儲存並同步':(customMode?'自訂文案已儲存並同步':'原本文案設定已同步'));status.classList.remove('error');}
+  editor.dataset.codeMode=effectCode?'custom':'original';
+  const badge=editor.querySelector('.occasion-code-badge');
+  if(badge) badge.textContent=effectCode?'已自訂':'原始程式';
+  if(status){status.textContent=type==='yujun'?'予君生日特效設定（文案、照片、影片、完整程式碼）已儲存並同步':(effectCode?'文案與完整特效程式碼已儲存並同步':(customMode?'自訂文案已儲存並同步':'原始特效設定已同步'));status.classList.remove('error');}
   if(preview){
     closeOccasionCopyEditor();
     playOriginalOccasionEffect(type);
@@ -5265,7 +5485,10 @@ async function restoreOriginalOccasionCopy(){
   editor.dataset.copyMode='original';
   editor.querySelector('#occasion-copy-title-input').value=original.title;
   editor.querySelector('#occasion-copy-message-input').value=original.message;
-  if(editor.querySelector('#occasion-effect-code-input')) editor.querySelector('#occasion-effect-code-input').value='';
+  if(editor.querySelector('#occasion-effect-code-input')) editor.querySelector('#occasion-effect-code-input').value=getOccasionOriginalEffectCode(type);
+  editor.dataset.codeMode='original';
+  const codeBadge=editor.querySelector('.occasion-code-badge');
+  if(codeBadge) codeBadge.textContent='原始程式';
   if(type==='yujun'){
     const originalLetter=getOriginalYujunBirthdayLetter();
     occasionCopySettings.yujunLetter={enabled:false,title:'',paragraphs:['','',''],signature:''};
@@ -5413,6 +5636,10 @@ function playOccasionEffectSnapshot(snapshot,type){
     launchYujunBirthdayFireworks(false,snapshot);
     return;
   }
+  if(snapshot.effectType==='shengzhan' || (type==='shengzhan' && snapshot.effectType==='birthday')){
+    launchShengzhanBirthdayFireworks(false,snapshot);
+    return;
+  }
   if(['anniversary','valentine','birthday'].includes(snapshot.effectType)){
     launchOccasionEffect(snapshot.effectType,false,snapshot);
     return;
@@ -5444,8 +5671,9 @@ function showOccasionEffectHistory(type){
     const button=document.createElement('button');
     button.type='button';
     button.className='occasion-history-item';
-    const title=entry.effectType==='yujun'?String(entry.title||'予君，生日快樂'):String(entry.config?.title||labels[type]||'紀念日特效');
-    const detail=entry.effectType==='yujun'
+    const birthdayArchive=['yujun','shengzhan'].includes(entry.effectType);
+    const title=birthdayArchive?String(entry.title||(entry.effectType==='yujun'?'予君，生日快樂':'聖展，生日快樂')):String(entry.config?.title||labels[type]||'紀念日特效');
+    const detail=birthdayArchive
       ? String(entry.yearlyBirthdayCopy||'生日煙火與生日信')
       : String(entry.config?.kicker||entry.config?.sub||'');
     button.innerHTML=`<span class="occasion-history-date">${escapeHtml(String(entry.displayDate||entry.year||'曾經顯示'))}</span><span class="occasion-history-copy"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(detail.replace(/\n/g,'　')).slice(0,90)}</span></span>`;
@@ -5529,7 +5757,7 @@ function showOccasionExitConfirm(overlay){
   setTimeout(()=>confirmLayer.querySelector('.primary')?.focus(),30);
 }
 function requestOccasionEffectClose(){
-  const overlay=document.getElementById('yujun-birthday-fireworks') || document.getElementById('occasion-effect');
+  const overlay=document.getElementById('yujun-birthday-fireworks') || document.getElementById('shengzhan-birthday-fireworks') || document.getElementById('occasion-effect');
   if(!overlay || overlay.querySelector('.occasion-exit-confirm')) return;
   const shouldPlayBirthdayVideo=
     overlay.id==='yujun-birthday-fireworks' &&
@@ -5546,8 +5774,9 @@ function requestOccasionEffectClose(){
 }
 function resolveOccasionEffectClose(choice){
   const yujunOverlay=document.getElementById('yujun-birthday-fireworks');
+  const shengzhanOverlay=document.getElementById('shengzhan-birthday-fireworks');
   const occasionOverlay=document.getElementById('occasion-effect');
-  const overlay=yujunOverlay || occasionOverlay;
+  const overlay=yujunOverlay || shengzhanOverlay || occasionOverlay;
   if(!overlay) return;
   const type=overlay.dataset.occasionType||'';
   const isAutomatic=overlay.dataset.autoPlay==='true';
@@ -5556,6 +5785,7 @@ function resolveOccasionEffectClose(choice){
   }
   if(isAutomatic && type) occasionDismissedThisView.add(type);
   if(yujunOverlay) closeYujunBirthdayFireworks();
+  else if(shengzhanOverlay) closeShengzhanBirthdayFireworks();
   else closeOccasionEffect();
 }
 function toggleOccasionEffectSound(){
@@ -5563,7 +5793,7 @@ function toggleOccasionEffectSound(){
   if(overlay && typeof overlay._toggleSound==='function') overlay._toggleSound();
 }
 function launchShengzhanBirthdayEffect(autoPlay=false,archiveSnapshot=null){
-  launchOccasionEffect('birthday',autoPlay,archiveSnapshot);
+  launchShengzhanBirthdayFireworks(autoPlay,archiveSnapshot);
 }
 function launchValentineEffect(autoPlay=false,archiveSnapshot=null){
   launchOccasionEffect('valentine',autoPlay,archiveSnapshot);
@@ -5823,7 +6053,188 @@ function launchOccasionEffect(type,autoPlay=false,archiveSnapshot=null){
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
-  runOccasionCustomEffect(overlay,type,config,{canvas,ctx,particles,objects,makeBurst});
+  runOccasionCustomEffect(overlay,type,config,{canvas,ctx,particles,objects,makeBurst,tone,startThemeLoop,stopThemeLoop,stopDefault:()=>{timers.forEach(clearTimeout);intervals.forEach(clearInterval);stopThemeLoop();}});
+}
+
+function closeShengzhanBirthdayFireworks(){
+  const overlay=document.getElementById('shengzhan-birthday-fireworks');
+  if(!overlay) return;
+  if(typeof overlay._customCodeCleanup==='function') overlay._customCodeCleanup();
+  if(typeof overlay._cleanup==='function') overlay._cleanup();
+  overlay.remove();
+  document.body.classList.remove('occasion-effect-running');
+  if(!releaseQueuedOccasionAfterClose()) releaseQueuedLoveSurpriseAfterOccasion();
+}
+function toggleShengzhanBirthdayFireworksSound(){
+  const overlay=document.getElementById('shengzhan-birthday-fireworks');
+  if(overlay && typeof overlay._toggleSound==='function') overlay._toggleSound();
+}
+function openShengzhanBirthdayLetter(){
+  const overlay=document.getElementById('shengzhan-birthday-fireworks');
+  if(overlay && typeof overlay._openLetter==='function') overlay._openLetter();
+}
+function launchShengzhanBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
+  const year=Number(archiveSnapshot?.year)||today().getFullYear();
+  const customCopy=archiveSnapshot?null:getOccasionCustomCopy('shengzhan');
+  const archivedTitle=archiveSnapshot?.title||archiveSnapshot?.config?.title||'';
+  const archivedCopy=archiveSnapshot?.yearlyBirthdayCopy||archiveSnapshot?.config?.sub||'';
+  const birthdayTitle=archivedTitle||customCopy?.title||'聖展，生日快樂';
+  const birthdayCopy=archivedCopy||customCopy?.message||pickOccasionMessage('shengzhan-birthday',SHENGZHAN_BIRTHDAY_OCCASION_MESSAGES);
+  const shownKey=`shengzhanBirthdayFireworksShown-${year}`;
+  if(autoPlay && localStorage.getItem(shownKey)==='1') return;
+  if(autoPlay){
+    saveOccasionEffectArchive('shengzhan',{
+      effectType:'shengzhan',displayDate:localDateKey(),year,title:birthdayTitle,yearlyBirthdayCopy:birthdayCopy
+    });
+  }
+  closeOccasionEffect();
+  closeYujunBirthdayFireworks();
+  closeShengzhanBirthdayFireworks();
+
+  const overlay=document.createElement('div');
+  overlay.id='shengzhan-birthday-fireworks';
+  overlay.className='birthday-fireworks shengzhan-birthday';
+  overlay.dataset.stage='opening';
+  overlay.dataset.autoPlay=autoPlay?'true':'false';
+  overlay.dataset.occasionType='shengzhan';
+  overlay.dataset.shownKey=shownKey;
+  overlay.dataset.archiveReplay=archiveSnapshot?'true':'false';
+  const colors=['#62d8ff','#ffd166','#ffffff','#88f0d0','#86a8ff','#ff9d6c','#b9f2ff'];
+  overlay.innerHTML=`
+    <canvas aria-hidden="true"></canvas>
+    <button type="button" class="birthday-fireworks-sound" onclick="toggleShengzhanBirthdayFireworksSound()" aria-label="關閉煙火音效" title="關閉音效"><img src="assets/volume-2.svg" alt=""></button>
+    <div class="birthday-fireworks-finale">
+      <div class="birthday-finale-kicker">HAPPY BIRTHDAY · ALWAYS WITH YOU</div>
+      <div class="birthday-finale-name">予君 <span>♡</span> 聖展</div>
+      <div class="birthday-finale-heart-scene"><i class="birthday-finale-heart-icon"></i><b>ONE MORE YEAR WITH YOU</b></div>
+      <div class="birthday-finale-bottom">
+        <div class="birthday-finale-date">2 / 8 · SHENGZHAN'S DAY</div>
+        <strong class="birthday-finale-wish">今晚的煙火，也為你亮一次</strong>
+        <div class="birthday-finale-stage"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div class="birthday-fireworks-message"><div class="birthday-fireworks-bow" aria-hidden="true">🎂</div><div class="birthday-fireworks-kicker">2 / 8 · SHENGZHAN'S DAY</div><b>${escapeHtml(birthdayTitle)}</b><span>${escapeHtml(birthdayCopy).replace(/\n/g,'<br>')}</span></div>
+    <div class="birthday-cake-stage-copy"><span>MAKE A WISH</span><b>聖展，今天把願望交給星空</b><i>新的一歲，也一起把平凡日子過成值得收藏的回憶</i></div>
+    <div class="birthday-fireworks-letter" aria-label="給聖展的生日信">
+      <i class="birthday-letter-deco party-top" aria-hidden="true"></i>
+      <i class="birthday-letter-deco gift-top" aria-hidden="true"></i>
+      <i class="birthday-letter-deco spark-left" aria-hidden="true"></i>
+      <i class="birthday-letter-deco heart-right" aria-hidden="true"></i>
+      <i class="birthday-letter-deco cake-bottom" aria-hidden="true"></i>
+      <i class="birthday-letter-deco party-bottom" aria-hidden="true"></i>
+      <div class="birthday-letter-kicker">A LETTER FOR SHENGZHAN</div>
+      <div class="birthday-letter-title">給今天的聖展 <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
+      <p>${escapeHtml(birthdayCopy)}</p>
+      <p>新的一歲，希望你想做的事情都能一步一步完成，也希望累的時候記得停下來休息。生日不是只多了一歲，而是又多了一整年可以一起創造新的回憶。</p>
+      <p>未來也許還是會有忙碌、有情緒、有不完美的時候，但希望每一次回頭，都還能看見彼此站在身邊。生日快樂，願今年的你比去年更自在、更幸福。</p>
+      <div class="birthday-letter-sign">予君 ♡ <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
+    </div>
+    <button type="button" class="birthday-final-cake" onclick="openShengzhanBirthdayLetter()" aria-label="點擊生日蛋糕，打開給聖展的生日信" aria-expanded="false">
+      <i class="birthday-cake-spark s1"></i><i class="birthday-cake-spark s2"></i><i class="birthday-cake-spark s3"></i><i class="birthday-cake-spark s4"></i>
+      <div class="birthday-cake-candles"><i class="birthday-candle"><i class="birthday-flame"></i></i><i class="birthday-candle"><i class="birthday-flame"></i></i><i class="birthday-candle"><i class="birthday-flame"></i></i></div>
+      <div class="birthday-cake-tier birthday-cake-top"><i class="birthday-cake-berry"></i><span class="birthday-cake-top-date">2 · 8</span><i class="birthday-cake-berry"></i></div>
+      <div class="birthday-cake-tier birthday-cake-middle"><span class="birthday-cake-middle-label">HAPPY BIRTHDAY, SHENGZHAN</span></div>
+      <div class="birthday-cake-tier birthday-cake-bottom"><b><span>聖展</span><span class="birthday-cake-tap">點一下打開生日信</span></b></div>
+      <div class="birthday-cake-plate"></div>
+    </button>
+    <button type="button" class="birthday-fireworks-close" onclick="requestOccasionEffectClose()" aria-label="關閉煙火" title="關閉">×</button>`;
+  document.body.classList.add('occasion-effect-running');
+  document.body.appendChild(overlay);
+
+  const canvas=overlay.querySelector('canvas');
+  const ctx=canvas.getContext('2d');
+  const soundButton=overlay.querySelector('.birthday-fireworks-sound');
+  const finale=overlay.querySelector('.birthday-fireworks-finale');
+  const cake=overlay.querySelector('.birthday-final-cake');
+  const letter=overlay.querySelector('.birthday-fireworks-letter');
+  let width=0,height=0,dpr=1,running=true,frame=0;
+  const rockets=[],particles=[],stars=[],timers=[];
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  let audioCtx=null,masterGain=null,soundEnabled=!!AudioContextClass;
+  try{
+    if(AudioContextClass){audioCtx=new AudioContextClass();masterGain=audioCtx.createGain();masterGain.gain.value=.62;masterGain.connect(audioCtx.destination);}
+  }catch(_){audioCtx=null;masterGain=null;soundEnabled=false;}
+  const tone=(frequency,duration=.25,volume=.04,type='sine',delay=0,endFrequency=frequency)=>{
+    if(!soundEnabled||!audioCtx||audioCtx.state!=='running'||!masterGain) return;
+    const start=audioCtx.currentTime+delay,osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+    osc.type=type;osc.frequency.setValueAtTime(Math.max(1,frequency),start);osc.frequency.exponentialRampToValueAtTime(Math.max(1,endFrequency),start+duration);
+    gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(volume,start+.02);gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+    osc.connect(gain);gain.connect(masterGain);osc.start(start);osc.stop(start+duration+.03);
+  };
+  const updateSoundButton=()=>{
+    if(!soundButton) return;
+    soundButton.hidden=!audioCtx;
+    soundButton.innerHTML=`<img src="assets/${soundEnabled?'volume-2':'volume-off'}.svg" alt="">`;
+    soundButton.setAttribute('aria-label',soundEnabled?'關閉煙火音效':'開啟煙火音效');
+  };
+  const unlockSound=async()=>{if(audioCtx&&soundEnabled){try{if(audioCtx.state!=='running') await audioCtx.resume();}catch(_){} updateSoundButton();}};
+  overlay._toggleSound=async()=>{
+    if(!audioCtx) return;
+    soundEnabled=!soundEnabled;masterGain.gain.value=soundEnabled?.62:0;
+    if(soundEnabled) await unlockSound();
+    updateSoundButton();
+  };
+  overlay.addEventListener('pointerdown',unlockSound,{passive:true});
+  updateSoundButton();unlockSound();
+
+  const resize=()=>{
+    dpr=Math.min(window.devicePixelRatio||1,1.35);width=window.innerWidth;height=window.innerHeight;
+    canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;ctx.setTransform(dpr,0,0,dpr,0,0);
+    stars.length=0;for(let i=0;i<Math.max(55,Math.round(width*height/12500));i++) stars.push({x:Math.random()*width,y:Math.random()*height,r:.5+Math.random()*1.5,a:.25+Math.random()*.65});
+  };
+  const explode=(x,y,color=colors[Math.floor(Math.random()*colors.length)],grand=false)=>{
+    tone(grand?92:130,.32,grand?.08:.045,'sine',0,42);
+    const count=grand?110:62;
+    for(let i=0;i<count;i++){
+      const a=Math.PI*2*i/count+(Math.random()-.5)*.13,s=(grand?2.4:1.6)+Math.random()*(grand?5.1:3.8);
+      particles.push({x,y,px:x,py:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,decay:.009+Math.random()*.012,color:i%9===0?'#fff':color,size:1.1+Math.random()*2.2});
+    }
+  };
+  const explodeHeart=(x=width/2,y=height*.34)=>{
+    tone(523,.28,.05,'triangle');
+    for(let i=0;i<120;i++){
+      const t=Math.PI*2*i/120;
+      const hx=16*Math.pow(Math.sin(t),3),hy=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+      const scale=.25+Math.random()*.05;
+      particles.push({x,y,px:x,py:y,vx:hx*scale,vy:-hy*scale,life:1,decay:.008+Math.random()*.007,color:i%3===0?'#ffd166':'#62d8ff',size:1.6+Math.random()*1.8});
+    }
+  };
+  const launch=(kind='normal')=>{
+    const x=width*(.12+Math.random()*.76),targetY=height*(.13+Math.random()*.42),color=colors[Math.floor(Math.random()*colors.length)];
+    rockets.push({x,y:height+18,px:x,py:height+18,vx:(Math.random()-.5)*.5,vy:-6.8-Math.random()*2.3,targetY,color,kind});
+    tone(180,.32,.025,'sine',0,540);
+  };
+  const launchHeart=()=>{explodeHeart(width/2,height*.34);};
+  const draw=()=>{
+    if(!running) return;
+    ctx.clearRect(0,0,width,height);ctx.globalCompositeOperation='source-over';
+    stars.forEach(s=>{ctx.globalAlpha=s.a;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='#eaf8ff';ctx.fill();});ctx.globalAlpha=1;
+    ctx.globalCompositeOperation='lighter';
+    for(let i=rockets.length-1;i>=0;i--){
+      const r=rockets[i];r.px=r.x;r.py=r.y;r.x+=r.vx;r.y+=r.vy;r.vy+=.018;
+      ctx.beginPath();ctx.moveTo(r.px,r.py);ctx.lineTo(r.x,r.y);ctx.strokeStyle=r.color;ctx.lineWidth=2;ctx.stroke();
+      if(r.y<=r.targetY){rockets.splice(i,1);if(r.kind==='heart') explodeHeart(r.x,r.y);else explode(r.x,r.y,r.color,r.kind==='grand');}
+    }
+    for(let i=particles.length-1;i>=0;i--){
+      const p=particles[i];p.px=p.x;p.py=p.y;p.x+=p.vx;p.y+=p.vy;p.vx*=.985;p.vy=p.vy*.992+.045;p.life-=p.decay;
+      if(p.life<=0){particles.splice(i,1);continue;}
+      ctx.globalAlpha=p.life;ctx.beginPath();ctx.moveTo(p.px,p.py);ctx.lineTo(p.x,p.y);ctx.strokeStyle=p.color;ctx.lineWidth=p.size;ctx.stroke();
+    }
+    ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';frame=requestAnimationFrame(draw);
+  };
+  resize();window.addEventListener('resize',resize);frame=requestAnimationFrame(draw);
+  for(let i=0;i<16;i++) timers.push(setTimeout(()=>launch(i%6===0?'grand':'normal'),120+i*115));
+  let launchTimer=setInterval(()=>{launch();if(Math.random()>.62) timers.push(setTimeout(()=>launch(),150));},590);
+  timers.push(setTimeout(()=>{overlay.classList.add('finale-mode');overlay.dataset.stage='title';finale?.classList.add('show');launchHeart();for(let i=0;i<5;i++) timers.push(setTimeout(()=>launch('grand'),i*180));},5200));
+  timers.push(setTimeout(()=>{overlay.dataset.stage='cake';finale?.classList.add('fade');cake?.classList.add('show');for(let i=0;i<6;i++) timers.push(setTimeout(()=>explode(width*(.12+i*.15),height*(.62+(i%2)*.08),colors[i%colors.length],false),i*130));},8200));
+  overlay._openLetter=()=>{
+    if(overlay.dataset.stage==='letter') return;
+    overlay.dataset.stage='letter';cake?.classList.add('letter-open');letter?.classList.add('show');cake?.setAttribute('aria-expanded','true');
+    launchHeart();tone(659,.35,.04,'triangle');tone(880,.45,.035,'sine',.16);
+  };
+  const stopDefault=()=>{clearInterval(launchTimer);launchTimer=null;timers.splice(0).forEach(clearTimeout);};
+  overlay._cleanup=()=>{running=false;cancelAnimationFrame(frame);stopDefault();window.removeEventListener('resize',resize);document.body.classList.remove('occasion-effect-running');if(audioCtx&&audioCtx.state!=='closed') audioCtx.close().catch(()=>{});};
+  runOccasionCustomEffect(overlay,'shengzhan',{title:birthdayTitle,sub:birthdayCopy,colors}, {canvas,ctx,particles,rockets,explode,launch,launchHeart,setColors:newColors=>{if(Array.isArray(newColors)&&newColors.length) colors.splice(0,colors.length,...newColors);},stopDefault});
 }
 
 function closeYujunBirthdayFireworks(){
@@ -6502,7 +6913,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
-  runOccasionCustomEffect(overlay,'yujun',{title:birthdayTitle,sub:yearlyBirthdayCopy,colors,media:birthdayMedia}, {canvas,ctx,particles,rockets,explode,launch});
+  runOccasionCustomEffect(overlay,'yujun',{title:birthdayTitle,sub:yearlyBirthdayCopy,colors,media:birthdayMedia}, {canvas,ctx,particles,rockets,explode,launch,launchFan,explodeHeart,explodeGrandHeart,explodeMega,addGoldenRain,startLetterMusic,setColors:newColors=>{if(Array.isArray(newColors)&&newColors.length) colors.splice(0,colors.length,...newColors);},stopDefault:()=>{regularLaunches=false;clearInterval(launchTimer);clearTimeout(finaleTimer);timers.splice(0).forEach(clearTimeout);}});
 }
 
 function launchConfetti(){

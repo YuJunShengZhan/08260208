@@ -2984,7 +2984,7 @@ onclick="hideSpecialForToday()">
       <button type="button" class="choose-player-btn" data-choose-player="yujun" onclick="chooseSelectPlayer('yujun')">我是予君</button>
     </div>
     <label class="choose-compose-prompt" id="choose-compose-prompt" for="choose-text"></label>
-    <textarea class="choose-textarea" id="choose-text" maxlength="600" placeholder="不用寫得完美，只要寫下此刻最真實的原因。" oninput="chooseUpdateCount()"></textarea>
+    <textarea class="choose-textarea" id="choose-text" maxlength="600" placeholder="回想上個月發生的事，說說你的感受，也寫下希望未來的我們可以怎麼做得更好。" oninput="chooseUpdateCount()"></textarea>
     <div class="choose-photo-panel" id="choose-photo-panel">
       <div class="choose-photo-head"><span class="choose-photo-title">附上這個月的照片</span><button type="button" class="choose-photo-add" id="choose-photo-add" onclick="chooseOpenAlbumPicker()">＋ 選擇照片</button></div>
       <div class="choose-photo-grid" id="choose-photo-grid"></div>
@@ -10616,7 +10616,7 @@ function chooseRender(){
   document.getElementById('choose-compose-prompt').textContent=`${info.name}，這個月為什麼仍然願意選擇${info.partner}？`;
   const textarea=document.getElementById('choose-text');
   textarea.disabled=sealedReadOnly;
-  textarea.placeholder=sealedReadOnly?'這封信已經封存，等另一封抵達後再一起打開。':'不用寫得完美，只要寫下此刻最真實的原因。';
+  textarea.placeholder=sealedReadOnly?'這封信已經封存，等另一封抵達後再一起打開。':'回想上個月發生的事，說說你的感受，也寫下希望未來的我們可以怎麼做得更好。';
   if(sealedReadOnly) textarea.value='';
   else if(document.activeElement!==textarea) textarea.value=selected?.text||'';
   const photoPanel=document.getElementById('choose-photo-panel');
@@ -12291,4 +12291,4 @@ window.addEventListener('firebaseReady',()=>{
 </script>
 
 </body>
-</html>
+</html>

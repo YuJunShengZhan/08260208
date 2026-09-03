@@ -736,6 +736,12 @@ body.occasion-effect-running .home-countdown-broadcast-icon b{animation-play-sta
 .occasion-code-textarea:focus{border-color:#2f9664;box-shadow:0 0 0 3px rgba(47,150,100,.14)}
 .occasion-code-template{margin-top:9px;color:#2f9664;font-size:10px;font-weight:800}
 .occasion-code-template code{font:700 10px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.occasion-yujun-media{margin-top:17px;padding:15px;border:1px solid rgba(201,75,100,.2);border-radius:16px;background:linear-gradient(145deg,rgba(255,244,247,.94),rgba(255,250,241,.94))}
+.occasion-yujun-media-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}.occasion-yujun-media-kicker{color:#c94b64;font-size:9px;font-weight:900;letter-spacing:1.3px}.occasion-yujun-media-title{margin-top:3px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:18px;font-weight:800}.occasion-yujun-media-badge{padding:5px 8px;border-radius:999px;background:rgba(255,255,255,.82);color:#c94b64;font-size:10px;font-weight:800;white-space:nowrap}
+.occasion-yujun-media-help{color:var(--text-muted);font-size:10px;line-height:1.65}.occasion-yujun-media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.occasion-yujun-media-card{position:relative;overflow:hidden;border:1px solid rgba(201,75,100,.18);border-radius:13px;background:var(--white)}.occasion-yujun-media-preview{position:relative;aspect-ratio:4/3;background:#211319;overflow:hidden}.occasion-yujun-media-preview img,.occasion-yujun-media-preview video{width:100%;height:100%;display:block;object-fit:cover}.occasion-yujun-media-preview video{object-fit:contain;background:#171118}.occasion-yujun-media-index{position:absolute;left:8px;top:8px;z-index:2;padding:4px 7px;border-radius:999px;background:rgba(0,0,0,.52);color:#fff;font-size:9px;font-weight:900;backdrop-filter:blur(8px)}.occasion-yujun-media-actions{display:grid;grid-template-columns:1fr auto;gap:6px;padding:8px}.occasion-yujun-media-actions label,.occasion-yujun-media-actions button,.occasion-yujun-media-reset{min-height:36px;display:flex;align-items:center;justify-content:center;padding:7px 9px;border:1px solid rgba(201,75,100,.2);border-radius:10px;background:var(--white);color:var(--rose);font:800 10px/1.3 'Noto Sans TC',sans-serif;cursor:pointer}.occasion-yujun-media-actions label{background:var(--pink-light)}.occasion-yujun-media-actions input{display:none}.occasion-yujun-media-video{margin-top:10px}.occasion-yujun-media-video .occasion-yujun-media-preview{aspect-ratio:16/9}.occasion-yujun-media-reset{width:100%;margin-top:10px;background:transparent}.occasion-yujun-uploading{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:rgba(20,12,17,.72);color:#fff;font-size:11px;font-weight:900;backdrop-filter:blur(4px)}
+.occasion-code-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.occasion-code-tools button{padding:7px 9px;border:1px solid rgba(47,150,100,.25);border-radius:9px;background:rgba(255,255,255,.84);color:#2f9664;font:800 10px/1.3 'Noto Sans TC',sans-serif;cursor:pointer}
+[data-theme="dark"] .occasion-yujun-media{background:linear-gradient(145deg,rgba(68,31,44,.85),rgba(39,24,35,.92));border-color:rgba(255,159,185,.22)}[data-theme="dark"] .occasion-yujun-media-card,[data-theme="dark"] .occasion-yujun-media-actions label,[data-theme="dark"] .occasion-yujun-media-actions button,[data-theme="dark"] .occasion-code-tools button{background:#301b24}
+@media(max-width:560px){.occasion-yujun-media-grid{grid-template-columns:1fr}.occasion-yujun-media-preview{aspect-ratio:16/10}}
 .occasion-custom-code-error{position:absolute;z-index:5;left:50%;bottom:18px;max-width:min(92vw,620px);padding:8px 12px;transform:translateX(-50%);border:1px solid rgba(255,184,198,.5);border-radius:999px;background:rgba(35,13,24,.82);color:#ffd9e2;font:700 11px/1.4 'Noto Sans TC',sans-serif;text-align:center;pointer-events:none}
 [data-theme="dark"] .occasion-copy-head{background:linear-gradient(135deg,#211319,#2a1820)}
 [data-theme="dark"] .occasion-copy-original{background:linear-gradient(90deg,#2a1820,#211319)}
@@ -1922,6 +1928,17 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-letter-kicker{color:var(--rose);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
 .choose-letter-title{max-width:540px;margin:13px 0 0;color:var(--text);font-family:'Noto Serif TC',serif;font-size:38px;font-weight:400;line-height:1.32;letter-spacing:0}
 .choose-letter-copy{max-width:600px;margin:14px 0 0;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.9}
+.choose-guide{margin:22px 0 20px;padding:20px 21px;border:1px solid rgba(232,99,122,.18);border-radius:16px;background:linear-gradient(145deg,color-mix(in srgb,var(--pink-light) 78%,var(--white)),var(--white));box-shadow:0 10px 26px rgba(73,39,49,.06)}
+.choose-guide-title{margin:0 0 12px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:20px;font-weight:800;line-height:1.4}
+.choose-guide-intro,.choose-guide-end{margin:0;color:var(--text);font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.95}
+.choose-guide-intro + .choose-guide-intro{margin-top:10px}
+.choose-guide-list{display:grid;gap:12px;margin:17px 0}
+.choose-guide-item{padding:13px 14px;border:1px solid var(--card-border);border-radius:12px;background:color-mix(in srgb,var(--white) 88%,transparent)}
+.choose-guide-item strong{display:block;margin-bottom:5px;color:var(--text);font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.65}
+.choose-guide-item span{display:block;color:var(--text-muted);font-size:11px;line-height:1.75}
+.choose-guide-ending{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(232,99,122,.24);text-align:center;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:13px;font-weight:800;line-height:1.8}
+[data-theme="dark"] .choose-guide{background:linear-gradient(145deg,rgba(65,31,44,.72),rgba(39,24,35,.88));border-color:rgba(255,159,185,.18)}
+
 .choose-player-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:21px 0 11px}
 .choose-player-tabs.single{grid-template-columns:minmax(0,1fr)}
 .choose-player-btn{min-height:43px;border:1px solid var(--card-border);border-radius:7px;background:var(--pink-light);color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:background .18s,color .18s,border-color .18s,transform .18s}
@@ -2976,15 +2993,26 @@ onclick="hideSpecialForToday()">
     <div class="choose-layout">
   <section class="choose-compose">
     <div class="choose-letter-kicker" id="choose-date-kicker">MONTHLY PROMISE</div>
-    <h1 class="choose-letter-title">今天，我依然選擇你。</h1>
-    <p class="choose-letter-copy" id="choose-letter-copy">不是因為一切都完美，而是走過這個月以後，我仍然想牽著你繼續往前。</p>
+    <h1 class="choose-letter-title">💌 這個月，想對彼此說的話</h1>
+    <div class="choose-guide">
+      <p class="choose-guide-intro">回想上個月我們一起經歷的事情，把那些開心、感動、難過，或一直放在心裡沒有說出口的感受寫下來。</p>
+      <p class="choose-guide-intro">不用想著要寫得多好，也沒有標準答案，只要寫下此刻最真實的心情就好。希望透過每一次心約，我們都能更了解彼此，也讓未來的我們，一點一點變得更好。❤️</p>
+      <div class="choose-guide-list">
+        <div class="choose-guide-item"><strong>🌷 上個月，有什麼事情讓你覺得很開心或很幸福？</strong><span>可以是一個小小的瞬間、一次約會，或是對方做了某件讓你很感動的事。</span></div>
+        <div class="choose-guide-item"><strong>💭 有沒有哪件事情，讓你覺得難過、委屈或有點在意？</strong><span>如果當時沒有說出口，也可以在這裡慢慢告訴對方你的感受。</span></div>
+        <div class="choose-guide-item"><strong>🤍 有什麼事情，是你希望對方可以更了解你的？</strong><span>也許是一種心情、一個習慣，或是你其實很需要但不知道怎麼開口的事情。</span></div>
+        <div class="choose-guide-item"><strong>🌙 下一個月，希望我們可以一起做得更好的事情是什麼？</strong><span>可以是多一點陪伴、多一點溝通、多給彼此一些理解，也可以寫下一件想一起完成的小事。</span></div>
+      </div>
+      <p class="choose-guide-end">心約不是為了找出誰對誰錯，而是希望我們即使有不開心，也願意好好說給彼此聽。</p>
+      <div class="choose-guide-ending">願我們每個月，都比上個月更懂彼此一點。❤️</div>
+    </div>
     <div class="choose-compose-form" id="choose-compose-form">
     <div class="choose-player-tabs" role="group" aria-label="選擇寫下答案的人">
       <button type="button" class="choose-player-btn active" data-choose-player="shengzhan" onclick="chooseSelectPlayer('shengzhan')">我是聖展</button>
       <button type="button" class="choose-player-btn" data-choose-player="yujun" onclick="chooseSelectPlayer('yujun')">我是予君</button>
     </div>
     <label class="choose-compose-prompt" id="choose-compose-prompt" for="choose-text"></label>
-    <textarea class="choose-textarea" id="choose-text" maxlength="600" placeholder="回想上個月發生的事，說說你的感受，也寫下希望未來的我們可以怎麼做得更好。" oninput="chooseUpdateCount()"></textarea>
+    <textarea class="choose-textarea" id="choose-text" maxlength="2000" placeholder="寫下上個月的感受、想讓對方知道的事，以及下一個月對我們的小小期待。" oninput="chooseUpdateCount()"></textarea>
     <div class="choose-photo-panel" id="choose-photo-panel">
       <div class="choose-photo-head"><span class="choose-photo-title">附上這個月的照片</span><button type="button" class="choose-photo-add" id="choose-photo-add" onclick="chooseOpenAlbumPicker()">＋ 選擇照片</button></div>
       <div class="choose-photo-grid" id="choose-photo-grid"></div>
@@ -2992,7 +3020,7 @@ onclick="hideSpecialForToday()">
     </div>
     <div class="choose-compose-meta">
       <span id="choose-edit-hint">這個月還沒有寫下答案</span>
-      <span id="choose-char-count">0 / 600</span>
+      <span id="choose-char-count">0 / 2000</span>
     </div>
     <div class="choose-compose-actions">
       <button type="button" class="choose-save-btn" id="choose-save-btn" onclick="chooseOpenSubmitPreview()">送出這個月的信</button>
@@ -4711,6 +4739,8 @@ function normalizeOccasionCopySettings(raw){
     };
   });
   const letterSource=raw.yujunLetter&&typeof raw.yujunLetter==='object'?raw.yujunLetter:{};
+  const yujunMediaSource=raw.yujunMedia&&typeof raw.yujunMedia==='object'?raw.yujunMedia:{};
+  const yujunMediaPhotos=Array.isArray(yujunMediaSource.photos)?yujunMediaSource.photos:[];
   const shouldResetTestLetter=isYujunLetterTestDraft(letterSource);
   const letterParagraphs=Array.isArray(letterSource.paragraphs)?letterSource.paragraphs:[];
   const legacyHash=typeof raw.previewPasswordHash==='string'?raw.previewPasswordHash:'';
@@ -4729,6 +4759,10 @@ function normalizeOccasionCopySettings(raw){
       title:shouldResetTestLetter?'':String(letterSource.title||'').slice(0,80),
       paragraphs:shouldResetTestLetter?['','','']:[0,1,2].map(index=>String(letterParagraphs[index]||'').slice(0,1200)),
       signature:shouldResetTestLetter?'':String(letterSource.signature||'').slice(0,80)
+    },
+    yujunMedia:{
+      photos:[0,1,2,3,4,5].map(index=>String(yujunMediaPhotos[index]||'').slice(0,1800)),
+      video:String(yujunMediaSource.video||'').slice(0,1800)
     },
     updatedAt:Number(raw.updatedAt)||0
   };
@@ -4909,6 +4943,165 @@ function getYujunBirthdayLetter(){
     signature:saved.signature||original.signature
   };
 }
+function getOriginalYujunBirthdayMedia(){
+  return {
+    photos:[
+      'assets/yujun-birthday-2026-07-04.jpg',
+      'assets/yujun-birthday-2026-07-19.jpg',
+      'assets/yujun-birthday-2026-06-27.jpg',
+      'assets/yujun-birthday-2026-05-06.jpg',
+      'assets/yujun-birthday-2026-07-04-beach.jpg',
+      'assets/yujun-birthday-2026-07-28-02.jpg'
+    ],
+    video:'assets/yujun-birthday-after-letter.mp4'
+  };
+}
+function getYujunBirthdayMedia(){
+  const original=getOriginalYujunBirthdayMedia();
+  const saved=occasionCopySettings.yujunMedia&&typeof occasionCopySettings.yujunMedia==='object'?occasionCopySettings.yujunMedia:{};
+  const photos=Array.isArray(saved.photos)?saved.photos:[];
+  return {
+    photos:original.photos.map((url,index)=>String(photos[index]||url)),
+    video:String(saved.video||original.video)
+  };
+}
+function getYujunMediaDraft(editor){
+  try{
+    const parsed=JSON.parse(editor?.dataset.yujunMediaDraft||'{}');
+    const original=getOriginalYujunBirthdayMedia();
+    return {
+      photos:original.photos.map((url,index)=>String(parsed?.photos?.[index]||url)),
+      video:String(parsed?.video||original.video)
+    };
+  }catch(_){
+    return getYujunBirthdayMedia();
+  }
+}
+function setYujunMediaDraft(editor,media){
+  if(!editor) return;
+  editor.dataset.yujunMediaDraft=JSON.stringify({
+    photos:Array.isArray(media?.photos)?media.photos.slice(0,6):[],
+    video:String(media?.video||'')
+  });
+  editor.dataset.mediaMode='custom';
+}
+function renderYujunMediaPreview(editor){
+  if(!editor||editor.dataset.type!=='yujun') return;
+  const media=getYujunMediaDraft(editor);
+  editor.querySelectorAll('[data-yujun-photo-index]').forEach(frame=>{
+    const index=Number(frame.dataset.yujunPhotoIndex);
+    const img=frame.querySelector('img');
+    if(img) img.src=media.photos[index]||getOriginalYujunBirthdayMedia().photos[index];
+  });
+  const video=editor.querySelector('#occasion-yujun-video-preview');
+  if(video){
+    video.pause();
+    video.src=media.video||getOriginalYujunBirthdayMedia().video;
+    video.load();
+  }
+}
+async function handleYujunMediaUpload(input,kind,index=0){
+  const editor=document.getElementById('occasion-copy-editor');
+  const file=input?.files?.[0];
+  if(!editor||editor.dataset.type!=='yujun'||!file) return;
+  const status=editor.querySelector('#occasion-copy-status');
+  const isVideo=kind==='video';
+  const valid=isVideo?file.type.startsWith('video/'):file.type.startsWith('image/');
+  if(!valid){
+    if(status){status.textContent=isVideo?'請選擇影片檔':'請選擇照片檔';status.classList.add('error');}
+    input.value='';
+    return;
+  }
+  const maxBytes=isVideo?220*1024*1024:18*1024*1024;
+  if(file.size>maxBytes){
+    if(status){status.textContent=isVideo?'影片請小於 220MB':'照片請小於 18MB';status.classList.add('error');}
+    input.value='';
+    return;
+  }
+  const card=input.closest('.occasion-yujun-media-card');
+  const preview=card?.querySelector('.occasion-yujun-media-preview');
+  const loading=document.createElement('div');
+  loading.className='occasion-yujun-uploading';
+  loading.textContent='上傳中…';
+  preview?.appendChild(loading);
+  if(status){status.textContent=`正在上傳${isVideo?'影片':'照片'}到 Cloudinary…`;status.classList.remove('error');}
+  try{
+    const url=await uploadBlobToCloudinary(file,file.name||`${kind}-${Date.now()}`,isVideo?'occasion-yujun-video':'occasion-yujun-photos',isVideo?'video':'image');
+    const media=getYujunMediaDraft(editor);
+    if(isVideo) media.video=url;
+    else media.photos[Math.max(0,Math.min(5,Number(index)||0))]=url;
+    setYujunMediaDraft(editor,media);
+    renderYujunMediaPreview(editor);
+    if(status){status.textContent=`${isVideo?'影片':'照片'}已上傳，記得按「儲存設定」`;status.classList.remove('error');}
+  }catch(error){
+    if(status){status.textContent=String(error?.message||'媒體上傳失敗');status.classList.add('error');}
+  }finally{
+    loading.remove();
+    input.value='';
+  }
+}
+function resetYujunMediaSlot(kind,index=0){
+  const editor=document.getElementById('occasion-copy-editor');
+  if(!editor||editor.dataset.type!=='yujun') return;
+  const original=getOriginalYujunBirthdayMedia();
+  const media=getYujunMediaDraft(editor);
+  if(kind==='video') media.video=original.video;
+  else media.photos[Math.max(0,Math.min(5,Number(index)||0))]=original.photos[Math.max(0,Math.min(5,Number(index)||0))];
+  setYujunMediaDraft(editor,media);
+  renderYujunMediaPreview(editor);
+  const status=editor.querySelector('#occasion-copy-status');
+  if(status){status.textContent='已切回原素材，記得儲存設定';status.classList.remove('error');}
+}
+function resetAllYujunMedia(){
+  const editor=document.getElementById('occasion-copy-editor');
+  if(!editor||editor.dataset.type!=='yujun') return;
+  setYujunMediaDraft(editor,getOriginalYujunBirthdayMedia());
+  renderYujunMediaPreview(editor);
+  const status=editor.querySelector('#occasion-copy-status');
+  if(status){status.textContent='照片與影片都已切回原素材，記得儲存設定';status.classList.remove('error');}
+}
+function insertOccasionCodeTemplate(kind='text'){
+  const editor=document.getElementById('occasion-copy-editor');
+  const field=editor?.querySelector('#occasion-effect-code-input');
+  if(!field) return;
+  const templates={
+    text:`// 加一段自訂文字
+const note = effect.addElement('div', {
+  className: 'my-effect-note',
+  style: {
+    position: 'absolute', left: '50%', bottom: '12%',
+    transform: 'translateX(-50%)', zIndex: 8,
+    color: '#fff', fontSize: '20px', fontWeight: '900'
+  }
+}, '只屬於我們的特效 ♡');
+`,
+    css:`// 改變特效畫面的視覺
+effect.addCSS(\`
+  .birthday-fireworks-message{
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 24px rgba(255,120,160,.55));
+  }
+\`);
+`,
+    burst:`// 每 1.2 秒追加一朵煙火
+effect.every(1200, () => {
+  effect.explode(
+    Math.random() * effect.width,
+    100 + Math.random() * effect.height * .45,
+    '#ff8fb1',
+    true
+  );
+});
+`
+  };
+  const code=templates[kind]||templates.text;
+  const start=field.selectionStart??field.value.length;
+  const prefix=field.value && !field.value.endsWith('\n')?'\n\n':'';
+  field.setRangeText(prefix+code,start,field.selectionEnd??start,'end');
+  field.dispatchEvent(new Event('input',{bubbles:true}));
+  field.focus();
+}
+
 function closeOccasionCopyEditor(){
   document.getElementById('occasion-copy-editor')?.remove();
 }
@@ -4923,6 +5116,17 @@ function openOccasionCopyEditor(type){
   const copyMessageLabel=type==='yujun'?'煙火文案':'文案';
   const originalLetter=type==='yujun'?getOriginalYujunBirthdayLetter():null;
   const customLetter=type==='yujun'&&occasionCopySettings.yujunLetter?.enabled===true?getYujunBirthdayLetter():null;
+  const yujunMedia=type==='yujun'?getYujunBirthdayMedia():null;
+  const mediaEditor=type==='yujun'?`
+      <section class="occasion-yujun-media" aria-labelledby="occasion-yujun-media-title">
+        <div class="occasion-yujun-media-head"><div><div class="occasion-yujun-media-kicker">PHOTO & VIDEO</div><div class="occasion-yujun-media-title" id="occasion-yujun-media-title">特效照片與影片</div></div><span class="occasion-yujun-media-badge">可直接更換</span></div>
+        <div class="occasion-yujun-media-help">照片會用在生日信底部的回憶輪播；影片會用在生日信結束後的影片信。選檔後會先上傳到 Cloudinary，再按「儲存設定」同步到兩支手機。</div>
+        <div class="occasion-yujun-media-grid">
+          ${yujunMedia.photos.map((url,index)=>`<div class="occasion-yujun-media-card"><div class="occasion-yujun-media-preview" data-yujun-photo-index="${index}"><span class="occasion-yujun-media-index">照片 ${index+1}</span><img src="${escapeHtml(url)}" alt="予君生日特效照片 ${index+1}"></div><div class="occasion-yujun-media-actions"><label>換照片<input type="file" accept="image/*" onchange="handleYujunMediaUpload(this,'photo',${index})"></label><button type="button" onclick="resetYujunMediaSlot('photo',${index})">原檔</button></div></div>`).join('')}
+        </div>
+        <div class="occasion-yujun-media-card occasion-yujun-media-video"><div class="occasion-yujun-media-preview"><span class="occasion-yujun-media-index">結尾影片</span><video id="occasion-yujun-video-preview" src="${escapeHtml(yujunMedia.video)}" playsinline controls preload="metadata"></video></div><div class="occasion-yujun-media-actions"><label>換影片<input type="file" accept="video/*" onchange="handleYujunMediaUpload(this,'video',0)"></label><button type="button" onclick="resetYujunMediaSlot('video',0)">原檔</button></div></div>
+        <button type="button" class="occasion-yujun-media-reset" onclick="resetAllYujunMedia()">全部恢復原照片與影片</button>
+      </section>`:'';
   const letterEditor=type==='yujun'?`
       <section class="occasion-letter-editor" aria-labelledby="occasion-letter-editor-title">
         <div class="occasion-letter-editor-head"><div><div class="occasion-letter-editor-kicker">BIRTHDAY LETTER</div><h3 id="occasion-letter-editor-title">生日信內容</h3></div><span>會同步到生日信</span></div>
@@ -4938,6 +5142,7 @@ function openOccasionCopyEditor(type){
   editor.dataset.type=type;
   editor.dataset.copyMode=custom?'custom':'original';
   editor.dataset.letterMode=customLetter?'custom':'original';
+  if(type==='yujun') editor.dataset.yujunMediaDraft=JSON.stringify(yujunMedia);
   editor.setAttribute('role','dialog');
   editor.setAttribute('aria-modal','true');
   editor.setAttribute('aria-labelledby','occasion-copy-editor-title');
@@ -4948,15 +5153,16 @@ function openOccasionCopyEditor(type){
       <div class="occasion-copy-field"><label for="occasion-copy-title-input">${copyTitleLabel}</label><input class="occasion-copy-input" id="occasion-copy-title-input" maxlength="80" value="${escapeHtml(custom?.title||original.title)}"></div>
       <div class="occasion-copy-field"><label for="occasion-copy-message-input">${copyMessageLabel}</label><textarea class="occasion-copy-textarea" id="occasion-copy-message-input" maxlength="1200">${escapeHtml(custom?.message||original.message)}</textarea><div class="occasion-copy-note">恢復原文案後，生日與情人節仍會照原本方式從文案庫輪替，不會刪除任何一則。</div></div>
        ${letterEditor}
+       ${mediaEditor}
        <section class="occasion-code-editor" aria-labelledby="occasion-code-editor-title">
          <div class="occasion-code-head"><div><div class="occasion-code-kicker">CUSTOM EFFECT CODE</div><h3 class="occasion-code-title" id="occasion-code-editor-title">自訂特效程式碼</h3></div><span class="occasion-code-badge">${customEffectCode?'已啟用':'選填'}</span></div>
          <div class="occasion-code-help">把 JavaScript 貼在這裡，按「儲存並預覽」就會套用。只會作用在這個紀念日的特效畫面，原本的煙火、動畫與程式碼不會被刪除。</div>
          <textarea class="occasion-code-textarea" id="occasion-effect-code-input" maxlength="20000" spellcheck="false" autocomplete="off" placeholder="// 例如：\n// effect.addParticle({ x: effect.width / 2, y: effect.height / 3, color: '#fff', size: 3 });">${escapeHtml(customEffectCode)}</textarea>
-         <div class="occasion-code-template">可用 API：<code>effect.overlay</code>　<code>effect.canvas</code>　<code>effect.addParticle({...})</code>　<code>effect.burst(x,y)</code>　<code>effect.explode(x,y,color)</code>　<code>effect.addCSS('...')</code></div>
+         <div class="occasion-code-template">可用 API：<code>effect.overlay</code>　<code>effect.canvas</code>　<code>effect.addParticle({...})</code>　<code>effect.burst(x,y)</code>　<code>effect.explode(x,y,color)</code>　<code>effect.addCSS('...')</code>　<code>effect.addElement(...)</code>　<code>effect.every(...)</code></div>
+         <div class="occasion-code-tools"><button type="button" onclick="insertOccasionCodeTemplate('text')">＋文字範例</button><button type="button" onclick="insertOccasionCodeTemplate('css')">＋樣式範例</button><button type="button" onclick="insertOccasionCodeTemplate('burst')">＋煙火範例</button></div>
        </section>
       <div class="occasion-copy-status" id="occasion-copy-status" aria-live="polite">${custom?'目前使用自訂文案':'目前使用原本文案'}${customLetter?'，生日信已自訂':''}</div>
        <div class="occasion-copy-actions"><button type="button" onclick="restoreOriginalOccasionCopy()">恢復原設定</button><button type="button" class="save" onclick="saveOccasionCopyFromEditor(false)">儲存設定</button><button type="button" class="preview" onclick="saveOccasionCopyFromEditor(true)">儲存並預覽</button></div>
-      <section class="occasion-password-section"><button type="button" class="occasion-password-toggle" aria-expanded="false" onclick="toggleOccasionPasswordFields(this)"><span>修改預覽密碼</span><span>＋</span></button><div class="occasion-password-fields"><input class="occasion-copy-input" id="occasion-new-password" type="password" minlength="4" maxlength="12" autocomplete="new-password" placeholder="新密碼（4–12 碼）"><input class="occasion-copy-input" id="occasion-confirm-password" type="password" minlength="4" maxlength="12" autocomplete="new-password" placeholder="再次輸入新密碼"><button type="button" class="occasion-password-save" onclick="saveOccasionPreviewPassword()">儲存新密碼</button></div></section>
     </div>
   </section>`;
   editor.addEventListener('click',event=>{if(event.target===editor) closeOccasionCopyEditor();});
@@ -5003,6 +5209,7 @@ async function saveOccasionCopyFromEditor(preview=false){
   const status=editor.querySelector('#occasion-copy-status');
   const customMode=editor.dataset.copyMode==='custom';
   const letterMode=type==='yujun'&&editor.dataset.letterMode==='custom';
+  const mediaDraft=type==='yujun'?getYujunMediaDraft(editor):null;
   if(customMode&&(!title||!message)){
     if(status){status.textContent='標題和文案都要填寫';status.classList.add('error');}
     return;
@@ -5029,9 +5236,16 @@ async function saveOccasionCopyFromEditor(preview=false){
   occasionCopySettings.copies[type]=customMode?{enabled:true,title,message}:{enabled:false,title:'',message:''};
   if(!occasionCopySettings.effectCode||typeof occasionCopySettings.effectCode!=='object') occasionCopySettings.effectCode={};
   occasionCopySettings.effectCode[type]=effectCode;
-  if(type==='yujun') occasionCopySettings.yujunLetter=letter?{enabled:true,...letter}:{enabled:false,title:'',paragraphs:['','',''],signature:''};
+  if(type==='yujun'){
+    occasionCopySettings.yujunLetter=letter?{enabled:true,...letter}:{enabled:false,title:'',paragraphs:['','',''],signature:''};
+    const originalMedia=getOriginalYujunBirthdayMedia();
+    occasionCopySettings.yujunMedia={
+      photos:mediaDraft.photos.map((url,index)=>url===originalMedia.photos[index]?'':String(url||'')),
+      video:mediaDraft.video===originalMedia.video?'':String(mediaDraft.video||'')
+    };
+  }
   await saveOccasionCopySettings();
-  if(status){status.textContent=effectCode?'文案與特效程式碼已儲存並同步':(letterMode?'生日信已儲存並同步':(customMode?'自訂文案已儲存並同步':'原本文案設定已同步'));status.classList.remove('error');}
+  if(status){status.textContent=type==='yujun'?'予君生日特效設定（文案、照片、影片、程式碼）已儲存並同步':(effectCode?'文案與特效程式碼已儲存並同步':(customMode?'自訂文案已儲存並同步':'原本文案設定已同步'));status.classList.remove('error');}
   if(preview){
     closeOccasionCopyEditor();
     playOriginalOccasionEffect(type);
@@ -5052,7 +5266,10 @@ async function restoreOriginalOccasionCopy(){
   if(type==='yujun'){
     const originalLetter=getOriginalYujunBirthdayLetter();
     occasionCopySettings.yujunLetter={enabled:false,title:'',paragraphs:['','',''],signature:''};
+    occasionCopySettings.yujunMedia={photos:['','','','','',''],video:''};
     editor.dataset.letterMode='original';
+    editor.dataset.yujunMediaDraft=JSON.stringify(getOriginalYujunBirthdayMedia());
+    renderYujunMediaPreview(editor);
     editor.querySelector('#occasion-letter-title-input').value=originalLetter.title;
     originalLetter.paragraphs.forEach((paragraph,index)=>{editor.querySelector(`#occasion-letter-p${index+1}-input`).value=paragraph;});
     editor.querySelector('#occasion-letter-sign-input').value=originalLetter.signature;
@@ -5258,39 +5475,16 @@ document.addEventListener('dblclick',event=>{
 function previewOccasionEffect(type){
   closeOccasionPreviewLock();
   closeOccasionCopyEditor();
-  const lock=document.createElement('div');
-  lock.id='occasion-preview-lock';
-  lock.className='occasion-lock';
-  lock.setAttribute('role','dialog');
-  lock.setAttribute('aria-modal','true');
-  lock.setAttribute('aria-labelledby','occasion-lock-title');
-  lock.dataset.type=type;
-  lock.innerHTML=`<div class="occasion-lock-panel"><div class="occasion-lock-icon">🔒</div><div class="occasion-lock-title" id="occasion-lock-title">預覽鎖定</div><div class="occasion-lock-sub">輸入密碼後，可以預覽原本特效、修改文案或更改密碼</div><input class="occasion-lock-input" id="occasion-lock-input" type="password" maxlength="12" autocomplete="off" aria-label="預覽密碼"><div class="occasion-lock-error" id="occasion-lock-error" aria-live="polite"></div><div class="occasion-lock-actions"><button type="button" onclick="closeOccasionPreviewLock()">取消</button><button type="button" class="confirm" onclick="unlockOccasionPreview()">解鎖設定</button></div></div>`;
-  document.body.appendChild(lock);
-  const input=lock.querySelector('input');
-  input.addEventListener('keydown',event=>{
-    if(event.key==='Enter') unlockOccasionPreview();
-    else if(event.key==='Escape') closeOccasionPreviewLock();
-  });
-  setTimeout(()=>input.focus(),30);
+  openOccasionCopyEditor(type);
 }
 function closeOccasionPreviewLock(){
   document.getElementById('occasion-preview-lock')?.remove();
 }
 async function unlockOccasionPreview(){
   const lock=document.getElementById('occasion-preview-lock');
-  if(!lock) return;
-  const input=lock.querySelector('#occasion-lock-input');
-  const error=lock.querySelector('#occasion-lock-error');
-  if(!(await verifyOccasionPreviewPassword((input?.value||'').trim(),lock.dataset.type))){
-    error.textContent='密碼錯誤，請再試一次';
-    input.value='';
-    input.focus();
-    return;
-  }
-  const type=lock.dataset.type;
+  const type=lock?.dataset?.type;
   closeOccasionPreviewLock();
-  openOccasionCopyEditor(type);
+  if(type) openOccasionCopyEditor(type);
 }
 
 function getOccasionEffectPerformanceProfile(){
@@ -5650,6 +5844,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
   const year=Number(archiveSnapshot?.year)||today().getFullYear();
   const customCopy=archiveSnapshot?null:getOccasionCustomCopy('yujun');
   const birthdayLetter=getYujunBirthdayLetter();
+  const birthdayMedia=getYujunBirthdayMedia();
   const shownKey=`yujunBirthdayFireworksShown-${year}`;
   const yearlyBirthdayCopy=archiveSnapshot?.effectType==='yujun' && archiveSnapshot?.yearlyBirthdayCopy
     ? String(archiveSnapshot.yearlyBirthdayCopy)
@@ -5719,12 +5914,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
       ${birthdayLetter.paragraphs.map(paragraph=>`<p>${escapeHtml(paragraph)}</p>`).join('')}
       <div class="birthday-letter-sign">${escapeHtml(birthdayLetter.signature)} <span class="birthday-letter-sign-heart" aria-hidden="true">♥</span></div>
       <div class="birthday-letter-photo-frame" aria-label="我們的回憶照片自動輪播">
-        <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-04.jpg" alt="7月4日一起搭客運的回憶"></div>
-        <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-19.jpg" alt="7月19日一起看球的回憶"></div>
-        <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-06-27.jpg" alt="6月27日一起逛街的回憶"></div>
-        <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-05-06.jpg" alt="5月6日一起看球的回憶"></div>
-        <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-04-beach.jpg" alt="7月4日一起在海邊的回憶"></div>
-        <div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="assets/yujun-birthday-2026-07-28-02.jpg" alt="7月28日的回憶"></div>
+        ${birthdayMedia.photos.map((url,index)=>`<div class="birthday-letter-photo-slide"><img class="birthday-letter-photo" src="${escapeHtml(url)}" alt="予君生日回憶照片 ${index+1}"></div>`).join('')}
       </div>
     </div>
     <button type="button" class="birthday-final-cake" onclick="openYujunBirthdayLetter()" aria-label="點擊生日蛋糕，打開給予君的生日信" aria-expanded="false">
@@ -5872,7 +6062,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
           <div class="birthday-video-kicker">ONE MORE THING FOR YUJUN</div>
           <div class="birthday-video-title">還有一段回憶想讓妳看見</div>
           <div class="birthday-video-frame">
-            <video src="assets/yujun-birthday-after-letter.mp4" playsinline preload="auto" aria-label="給予君的生日影片"></video>
+            <video src="${escapeHtml(birthdayMedia.video)}" playsinline preload="auto" aria-label="給予君的生日影片"></video>
             <div class="birthday-video-progress" aria-hidden="true"><i></i></div>
             <button type="button" class="birthday-video-play" hidden>點一下播放影片</button>
           </div>
@@ -6309,7 +6499,7 @@ function launchYujunBirthdayFireworks(autoPlay=false,archiveSnapshot=null){
     if(audioCtx && audioCtx.state!=='closed') audioCtx.close().catch(()=>{});
   };
   frame=requestAnimationFrame(draw);
-  runOccasionCustomEffect(overlay,'yujun',{title:birthdayTitle,sub:yearlyBirthdayCopy,colors}, {canvas,ctx,particles,rockets,explode,launch});
+  runOccasionCustomEffect(overlay,'yujun',{title:birthdayTitle,sub:yearlyBirthdayCopy,colors,media:birthdayMedia}, {canvas,ctx,particles,rockets,explode,launch});
 }
 
 function launchConfetti(){
@@ -10613,10 +10803,10 @@ function chooseRender(){
   playerTabs?.classList.toggle('single',!complete&&(Boolean(entries.shengzhan)!==Boolean(entries.yujun)));
   const composeForm=document.getElementById('choose-compose-form');
   if(composeForm) composeForm.hidden=complete;
-  document.getElementById('choose-compose-prompt').textContent=`${info.name}，這個月為什麼仍然願意選擇${info.partner}？`;
+  document.getElementById('choose-compose-prompt').textContent=`${info.name}，把這個月想對${info.partner}說的話寫在這裡。`;
   const textarea=document.getElementById('choose-text');
   textarea.disabled=sealedReadOnly;
-  textarea.placeholder=sealedReadOnly?'這封信已經封存，等另一封抵達後再一起打開。':'回想上個月發生的事，說說你的感受，也寫下希望未來的我們可以怎麼做得更好。';
+  textarea.placeholder=sealedReadOnly?'這封信已經封存，等另一封抵達後再一起打開。':'寫下上個月的感受、想讓對方知道的事，以及下一個月對我們的小小期待。';
   if(sealedReadOnly) textarea.value='';
   else if(document.activeElement!==textarea) textarea.value=selected?.text||'';
   const photoPanel=document.getElementById('choose-photo-panel');
@@ -10696,13 +10886,13 @@ function chooseConfirmSubmitPreview(){
 function chooseUpdateCount(){
   const textarea=document.getElementById('choose-text');
   const counter=document.getElementById('choose-char-count');
-  if(textarea&&counter) counter.textContent=`${textarea.value.length} / 600`;
+  if(textarea&&counter) counter.textContent=`${textarea.value.length} / 2000`;
 }
 async function chooseSaveEntry(){
   const textarea=document.getElementById('choose-text');
   const button=document.getElementById('choose-save-btn');
   const text=textarea.value.trim();
-  if(!text){alert('先寫下這個月為什麼仍然選擇對方');return;}
+  if(!text){alert('先寫下這個月想對彼此說的話');return;}
   const key=chooseMonthKey();
   if(chooseNormalizeEntry(chooseEntriesData[key]?.[chooseSelectedPlayer])){
     alert('這封信已經送出，無法再修改');

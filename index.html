@@ -2354,6 +2354,17 @@ body.choose-letterbox-open{overflow:hidden}
 
 #choose-compose-prompt{display:none!important}
 
+
+.choose-guide-tip{margin:15px 0 2px;padding:12px 14px;border:1px dashed rgba(232,99,122,.3);border-radius:12px;background:rgba(255,255,255,.58);color:var(--text);line-height:1.75}
+.choose-guide-tip strong{display:block;margin-bottom:4px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:12px}.choose-guide-tip span{display:block;color:var(--text-muted);font-size:11px}
+.choose-guide-more{margin:14px 0;border:1px solid rgba(232,99,122,.2);border-radius:13px;background:rgba(255,255,255,.48);overflow:hidden}
+.choose-guide-more summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;cursor:pointer;list-style:none;color:var(--rose);font-weight:900;font-size:12px}.choose-guide-more summary::-webkit-details-marker{display:none}.choose-guide-more summary::after{content:'＋';font-size:18px;font-weight:500;transition:transform .2s ease}.choose-guide-more[open] summary::after{transform:rotate(45deg)}
+.choose-guide-more summary small{margin-left:auto;color:var(--text-muted);font-size:9px;font-weight:700}.choose-guide-more-body{display:grid;gap:10px;padding:0 11px 12px}.choose-guide-more-body .choose-guide-item{margin:0}
+.choose-guide-mini{display:grid;gap:7px;margin:14px 0;padding:13px 14px;border-radius:12px;background:linear-gradient(145deg,rgba(255,235,241,.72),rgba(255,250,245,.8));border:1px solid rgba(232,99,122,.16)}
+.choose-guide-mini strong{margin-bottom:2px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:11px}.choose-guide-mini span{color:var(--text);font-size:11px;line-height:1.55}.choose-guide-mini span::before{content:'♡';margin-right:7px;color:#e8637a}
+[data-theme="dark"] .choose-guide-tip,[data-theme="dark"] .choose-guide-more{background:rgba(50,29,39,.62);border-color:rgba(255,159,185,.18)}[data-theme="dark"] .choose-guide-mini{background:linear-gradient(145deg,rgba(76,38,53,.62),rgba(48,31,41,.72))}
+@media(max-width:560px){.choose-guide-more summary{align-items:center}.choose-guide-more summary small{display:none}}
+
 </style>
 </head>
 <body>
@@ -3016,13 +3027,41 @@ onclick="hideSpecialForToday()">
     <div class="choose-guide">
       <p class="choose-guide-intro">回想上個月我們一起經歷的事情，把那些開心、感動、難過，或一直放在心裡沒有說出口的感受寫下來。</p>
       <p class="choose-guide-intro">沒有標準答案，只要寫下此刻最真實的心情就好。希望透過每一次心約，我們都能更了解彼此，也讓未來的我們，一點一點變得更好。❤️</p>
+      <div class="choose-guide-tip"><strong>不知道這個月要寫什麼也沒關係。</strong><span>下面的問題不用全部回答，每個月挑 2～4 題最有感覺的寫就好。就算這個月很平淡，也可以寫一件小事、一個瞬間、一句話，或最近對彼此的新發現。</span></div>
       <div class="choose-guide-list">
         <div class="choose-guide-item"><strong>🌷 上個月，有什麼事情讓你覺得很開心或很幸福？</strong><span>可以是一個小小的瞬間、一次約會，或是對方做了某件讓你很感動的事。</span></div>
         <div class="choose-guide-item"><strong>💭 有沒有哪件事情，讓你覺得難過、委屈或有點在意？</strong><span>如果當時沒有說出口，也可以在這裡慢慢告訴對方你的感受。</span></div>
         <div class="choose-guide-item"><strong>🤍 有什麼事情，是你希望對方可以更了解你的？</strong><span>也許是一種心情、一個習慣，或是你其實很需要但不知道怎麼開口的事情。</span></div>
         <div class="choose-guide-item"><strong>🌙 下一個月，希望我們可以一起做得更好的事情是什麼？</strong><span>可以是多一點陪伴、多一點溝通、多給彼此一些理解，也可以寫下一件想一起完成的小事。</span></div>
       </div>
-      <p class="choose-guide-end">心約不是為了找出誰對誰錯，而是希望我們即使有不開心，也願意好好說給彼此聽。</p>
+
+      <details class="choose-guide-more">
+        <summary><span>💡 更多靈感題目</span><small>每個月挑幾題就好</small></summary>
+        <div class="choose-guide-more-body">
+          <div class="choose-guide-item"><strong>✨ 如果只能留下上個月的一個瞬間，你最想留下哪一個？</strong><span>也許是一個擁抱、一頓飯、一段路，或只是一起發呆的幾分鐘。</span></div>
+          <div class="choose-guide-item"><strong>🫶 最近有哪一件事情，讓你特別想謝謝對方？</strong><span>不一定要是大事，也可以是陪伴、體貼、記得你的小習慣，或一句剛好接住你的話。</span></div>
+          <div class="choose-guide-item"><strong>👀 最近有沒有重新發現對方一個很可愛、很喜歡的地方？</strong><span>可能是表情、說話方式、個性，或以前沒特別注意到的小細節。</span></div>
+          <div class="choose-guide-item"><strong>🏠 哪一個平凡的時刻，讓你突然有「我們真的在一起生活」的感覺？</strong><span>平凡的小事有時最容易變成以後最懷念的回憶。</span></div>
+          <div class="choose-guide-item"><strong>🗣️ 有沒有一句話，你上個月其實很想說，但當時沒有說出口？</strong><span>可以是喜歡、感謝、道歉、想念，也可以是一直藏在心裡的小情緒。</span></div>
+          <div class="choose-guide-item"><strong>🤝 如果上個月有一次爭執或誤會，現在回頭看，你希望我們下次可以怎麼做？</strong><span>不是追究誰對誰錯，而是一起找到下一次更舒服的溝通方式。</span></div>
+          <div class="choose-guide-item"><strong>💗 最近的你，最希望被對方怎麼愛、怎麼陪伴？</strong><span>例如多一點主動、多一點擁抱、多聽你說話，或只是累的時候安靜陪著你。</span></div>
+          <div class="choose-guide-item"><strong>🌱 你覺得自己上個月在這段感情裡，有哪裡做得很好？又有哪裡想再進步一點？</strong><span>除了看對方，也可以看看自己，記錄我們一起成長的樣子。</span></div>
+          <div class="choose-guide-item"><strong>🎁 下一個月，你想偷偷為對方多做哪一件小事？</strong><span>不需要很盛大，可以是一頓飯、一個約會、一句主動的關心，或多留一點時間給彼此。</span></div>
+          <div class="choose-guide-item"><strong>📍 有沒有一個地方、一件事，是你最近很想和對方一起完成的？</strong><span>可以寫下一個小約定，等下個月回來看看我們有沒有一起做到。</span></div>
+          <div class="choose-guide-item"><strong>📸 如果要用一張照片、一首歌或一句話代表上個月，你會選什麼？</strong><span>也可以順便寫下為什麼它會讓你想到我們。</span></div>
+          <div class="choose-guide-item"><strong>💌 如果只能留一句話給「下個月的我們」，你最想說什麼？</strong><span>把它當成寫給未來的我們的一句小小留言。</span></div>
+        </div>
+      </details>
+
+      <div class="choose-guide-mini">
+        <strong>真的完全不知道寫什麼時，可以只從這四句開始：</strong>
+        <span>「這個月我最開心的是……」</span>
+        <span>「這個月我有點在意的是……」</span>
+        <span>「我最近很想謝謝你的是……」</span>
+        <span>「下個月我希望我們可以……」</span>
+      </div>
+
+      <p class="choose-guide-end">心約不是為了找出誰對誰錯，而是希望我們即使有不開心，也願意好好說給彼此聽。也不用每個月都寫得很長，有時候真心的一兩件小事，就已經很值得被留下來。</p>
       <div class="choose-guide-ending">願我們每個月，都比上個月更懂彼此一點。❤️</div>
     </div>
     <div class="choose-compose-form" id="choose-compose-form">

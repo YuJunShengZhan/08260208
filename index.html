@@ -2335,6 +2335,9 @@ body.choose-letterbox-open{overflow:hidden}
   .footprint-category-place-control{margin-left:37px}
   .footprint-category-dialog.is-detail .footprint-category-place-select{height:37px!important}
 }
+
+#choose-compose-prompt{display:none!important}
+
 </style>
 </head>
 <body>
@@ -2996,7 +2999,7 @@ onclick="hideSpecialForToday()">
     <h1 class="choose-letter-title">💌 這個月，想對彼此說的話</h1>
     <div class="choose-guide">
       <p class="choose-guide-intro">回想上個月我們一起經歷的事情，把那些開心、感動、難過，或一直放在心裡沒有說出口的感受寫下來。</p>
-      <p class="choose-guide-intro">不用想著要寫得多好，也沒有標準答案，只要寫下此刻最真實的心情就好。希望透過每一次心約，我們都能更了解彼此，也讓未來的我們，一點一點變得更好。❤️</p>
+      <p class="choose-guide-intro">沒有標準答案，只要寫下此刻最真實的心情就好。希望透過每一次心約，我們都能更了解彼此，也讓未來的我們，一點一點變得更好。❤️</p>
       <div class="choose-guide-list">
         <div class="choose-guide-item"><strong>🌷 上個月，有什麼事情讓你覺得很開心或很幸福？</strong><span>可以是一個小小的瞬間、一次約會，或是對方做了某件讓你很感動的事。</span></div>
         <div class="choose-guide-item"><strong>💭 有沒有哪件事情，讓你覺得難過、委屈或有點在意？</strong><span>如果當時沒有說出口，也可以在這裡慢慢告訴對方你的感受。</span></div>
@@ -3012,7 +3015,7 @@ onclick="hideSpecialForToday()">
       <button type="button" class="choose-player-btn" data-choose-player="yujun" onclick="chooseSelectPlayer('yujun')">我是予君</button>
     </div>
     <label class="choose-compose-prompt" id="choose-compose-prompt" for="choose-text"></label>
-    <textarea class="choose-textarea" id="choose-text" maxlength="2000" placeholder="寫下上個月的感受、想讓對方知道的事，以及下一個月對我們的小小期待。" oninput="chooseUpdateCount()"></textarea>
+    <textarea class="choose-textarea" id="choose-text" maxlength="2000" placeholder="聖展，這個月為什麼仍然願意選擇予君？" oninput="chooseUpdateCount()"></textarea>
     <div class="choose-photo-panel" id="choose-photo-panel">
       <div class="choose-photo-head"><span class="choose-photo-title">附上這個月的照片</span><button type="button" class="choose-photo-add" id="choose-photo-add" onclick="chooseOpenAlbumPicker()">＋ 選擇照片</button></div>
       <div class="choose-photo-grid" id="choose-photo-grid"></div>
@@ -10806,7 +10809,11 @@ function chooseRender(){
   document.getElementById('choose-compose-prompt').textContent=`${info.name}，把這個月想對${info.partner}說的話寫在這裡。`;
   const textarea=document.getElementById('choose-text');
   textarea.disabled=sealedReadOnly;
-  textarea.placeholder=sealedReadOnly?'這封信已經封存，等另一封抵達後再一起打開。':'寫下上個月的感受、想讓對方知道的事，以及下一個月對我們的小小期待。';
+  textarea.placeholder=sealedReadOnly
+      ?'這封信已經封存，等另一封抵達後再一起打開。'
+      :(player==='shengzhan'
+        ?'聖展，這個月為什麼仍然願意選擇予君？'
+        :'予君，這個月為什麼仍然願意選擇聖展？');
   if(sealedReadOnly) textarea.value='';
   else if(document.activeElement!==textarea) textarea.value=selected?.text||'';
   const photoPanel=document.getElementById('choose-photo-panel');

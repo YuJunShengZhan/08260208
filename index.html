@@ -1342,6 +1342,19 @@ font-family:'Noto Sans TC',sans-serif;transition:all .2s;color:var(--text);
 #pd-status-banner{
 transition:background .3s,border-color .3s,box-shadow .3s;
 }
+.pd-banner-main{
+font-family:'Noto Serif TC',serif;
+font-size:32px;
+font-weight:800;
+line-height:1.25;
+letter-spacing:.02em;
+color:var(--rose);
+margin:2px 0 7px;
+}
+.pd-banner-main[hidden]{display:none;}
+@media(max-width:520px){
+  .pd-banner-main{font-size:30px;}
+}
 [data-theme="dark"] #pd-status-banner{
 box-shadow:0 12px 28px rgba(0,0,0,.28);
 }
@@ -2367,11 +2380,11 @@ body.choose-letterbox-open{overflow:hidden}
 
 
 
-/* iPhone 15 Plus / 430px：沿用 iPhone 13 / 390px 的內容密度，不做大字版 */
-@media (min-width:391px) and (max-width:440px){
+/* iPhone Plus / 428–430px：比 iPhone 13 稍微放大版面，但不刻意放大字體 */
+@media (min-width:420px) and (max-width:440px){
   .page{
-    width:390px;
-    max-width:390px;
+    width:414px;
+    max-width:calc(100% - 16px);
     margin-left:auto;
     margin-right:auto;
   }
@@ -3172,6 +3185,7 @@ onclick="hideSpecialForToday()">
 <div id="page-period" class="page">
   <div id="pd-status-banner" style="border-radius:20px;padding:20px;margin-bottom:16px;text-align:center;background:var(--pd-banner-default,var(--white));border:1px solid var(--card-border)">
     <div id="pd-banner-emoji" style="font-size:40px;margin-bottom:6px">🌸</div>
+    <div id="pd-banner-main" class="pd-banner-main" hidden></div>
     <div id="pd-banner-title" style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--pink);font-weight:700">載入中...</div>
     <div id="pd-banner-sub" style="font-size:13px;color:var(--text-muted);margin-top:4px"></div>
   <button id="pd-record-action" onclick="pdRecordAction()"
@@ -10047,6 +10061,8 @@ function pdRefresh(){
   const recordButton=document.getElementById('pd-record-action');
   if(recordButton){recordButton.hidden=false;recordButton.style.display='inline-block';}
   if(!pdSettings.start){
+    const bannerMain=document.getElementById('pd-banner-main');
+    if(bannerMain){bannerMain.textContent='';bannerMain.hidden=true;}
     document.getElementById('pd-banner-title').textContent='尚未設定週期';
     document.getElementById('pd-banner-sub').textContent='請先到下方設定生理期資訊';
     document.getElementById('pd-banner-emoji').textContent='⚙️';
@@ -10060,30 +10076,37 @@ function pdRefresh(){
   const completedDays=pdSettings.completed===true?pdPeriodLength(pdSettings.start,pdSettings.end):0;
   const endDate=pdSettings.end?new Date(pdSettings.end+'T00:00:00'):null;
   const isCompletionDay=completedDays&&endDate&&!Number.isNaN(endDate.getTime())&&endDate.getTime()===tMs;
-  let bannerEmoji='🌿',bannerTitle='週期預測',bannerSub='';
+  let bannerEmoji='🌿',bannerTitle='週期預測',bannerSub='',bannerMain='';
   let chanceCycle=null;
 
   if(isCompletionDay){
     bannerEmoji='✅';
+    bannerMain=`第 ${completedDays} 天結束`;
     bannerTitle='本次生理期已結束';
-    bannerSub=`生理期於第 ${completedDays} 天結束｜懷孕機率預測：低`;
+    bannerSub='這次生理期已完成記錄｜懷孕機率預測：低';
   }else if(pdIsCurrentPeriodActive()){
     const active=cycles.find(c=>!c.isForecast&&tMs>=c.pStart.getTime()&&tMs<=c.pEnd.getTime())||cycles.find(c=>!c.isForecast&&c.isOpen);
     const day=active?Math.floor((tMs-active.pStart.getTime())/864e5)+1:1;
     bannerEmoji='🩸';
+    bannerMain=`生理期第 ${Math.max(1,day)} 天`;
     bannerTitle='生理期中';
-    bannerSub=`第 ${Math.max(1,day)} 天，月經結束時請按「設定月經結束日」｜懷孕機率預測：低`;
+    bannerSub='月經結束時請按「設定月經結束日」｜懷孕機率預測：低';
     chanceCycle=active||null;
   }else if(pendingPrediction&&pendingPrediction.daysTo<=0){
     bannerEmoji='😮';
     if(pendingPrediction.delayedDays===0){
-      bannerTitle='預計今天來';
+      bannerMain='預計今天來';
+      bannerTitle='生理期預測';
       bannerSub='目前還沒有記錄經期開始｜懷孕機率預測：低';
     }else{
-      bannerTitle=`經期推遲第 ${pendingPrediction.delayedDays} 天`;
+      bannerMain=`已推遲 ${pendingPrediction.delayedDays} 天`;
+      bannerTitle='生理期預測';
       bannerSub='實際開始後再按下方按鈕記錄｜懷孕機率預測：低';
     }
   }else{
+    if(pendingPrediction && pendingPrediction.daysTo>0){
+      bannerMain=`預計 ${pendingPrediction.daysTo} 天後來`;
+    }
     // 先找「目前這個週期」：今天位於本次月經開始與下一次預測開始之間。
     let currentCycle=null,nextCycle=null;
     for(let i=0;i<cycles.length;i++){
@@ -10120,6 +10143,11 @@ function pdRefresh(){
     }
   }
   document.getElementById('pd-banner-emoji').textContent=bannerEmoji;
+  const bannerMainEl=document.getElementById('pd-banner-main');
+  if(bannerMainEl){
+    bannerMainEl.textContent=bannerMain;
+    bannerMainEl.hidden=!bannerMain;
+  }
   document.getElementById('pd-banner-title').textContent=bannerTitle;
   document.getElementById('pd-banner-sub').textContent=bannerSub;
   const banner=document.getElementById('pd-status-banner');

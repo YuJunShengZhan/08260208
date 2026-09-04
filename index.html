@@ -2102,6 +2102,9 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-song-control.playing{border-color:rgba(47,154,104,.3);background:color-mix(in srgb,var(--white) 55%,#dff2e8);color:#267c55}
 .choose-song-icon{width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:var(--white);font-size:var(--i15fs-10-px, 10px)}
 .choose-open-letters{width:100%;min-height:43px;margin-top:10px;border:1px solid var(--card-border);border-radius:7px;background:var(--rose);color:#fff;font-family:'Noto Sans TC',sans-serif;font-size:var(--i15fs-11-px, 11px);font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(201,75,100,.16)}
+.choose-repair-control{width:100%;min-height:38px;margin-top:8px;padding:7px 10px;border:1px dashed color-mix(in srgb,var(--rose) 48%,var(--card-border));border-radius:7px;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:var(--i15fs-9-px, 9px);font-weight:800;cursor:pointer;transition:border-color .18s ease,color .18s ease,background .18s ease}
+.choose-repair-control:not(:disabled):hover,.choose-repair-control:not(:disabled):focus-visible{outline:none;border-color:var(--rose);background:var(--pink-light);color:var(--rose)}
+.choose-repair-control:disabled{opacity:.45;cursor:default}
 .choose-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:9px}
 .choose-section-title{color:var(--rose);font-family:'Noto Serif TC',serif;font-size:var(--i15fs-15-px, 15px);font-weight:700}
 .choose-section-sub{color:var(--text-muted);font-size:var(--i15fs-9-px, 9px)}
@@ -3983,6 +3986,7 @@ onclick="hideSpecialForToday()">
         <div class="choose-seal-status" id="choose-current-status"></div>
         <button type="button" class="choose-song-control" id="choose-song-toggle" onclick="chooseToggleSong()" aria-label="播放心約背景音樂" title="播放或暫停心約背景音樂"><span class="choose-song-icon" id="choose-song-icon" aria-hidden="true">♪</span><span id="choose-song-label">心約音樂</span></button>
         <button type="button" class="choose-open-letters" id="choose-open-letters" onclick="chooseOpenLetters()">查看本月信匣</button>
+        <button type="button" class="choose-repair-control" id="choose-repair-button" onclick="chooseRepairCurrentAssignment()" title="如果信被封存到錯的人名下，可用這裡互換歸屬">↔ 寄件人放錯了？修正</button>
       </div>
     </section>
   <section class="choose-history" id="choose-history" hidden>
@@ -12235,6 +12239,10 @@ let chooseAlbumPickerPhotos=[];
 let chooseAlbumPickerSelection=[];
 let chooseAlbumPickerPreviousOverflow='';
 let chooseSubmitPreviewPreviousOverflow='';
+let chooseSubmitLockedPlayer='';
+let chooseAssignmentRepairRunning=false;
+const CHOOSE_KNOWN_REPAIR_MONTH='2026-09';
+const CHOOSE_KNOWN_REPAIR_FLAG='choose_assignment_repair_2026_09_shengzhan_to_yujun_v1';
 
 function chooseEscape(value){
   return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -12552,6 +12560,12 @@ function chooseRender(){
   document.getElementById('choose-current-status').textContent=written===2?'兩封信都已送出':`已送出 ${written} / 2 封信`;
   const openButton=document.getElementById('choose-open-letters');
   if(openButton) openButton.textContent=written===2?(chooseLettersUnlocked(key)?'打開本月信匣':'解鎖本月信匣'):`查看封存進度 · ${written} / 2`;
+  const repairButton=document.getElementById('choose-repair-button');
+  if(repairButton){
+    const hasOnlyOne=written===1;
+    repairButton.disabled=!hasOnlyOne||chooseAssignmentRepairRunning;
+    repairButton.textContent=chooseAssignmentRepairRunning?'正在修正封存歸屬...':'↔ 寄件人放錯了？修正';
+  }
   if(chooseLetterboxMonth) chooseRenderLetterbox(chooseLetterboxMonth);
 
   const historyKeys=Object.keys(chooseEntriesData||{}).filter(month=>month!==key&&/^\d{4}-\d{2}$/.test(month)).sort().reverse().filter(month=>{
@@ -12593,7 +12607,10 @@ function chooseOpenSubmitPreview(){
   const textarea=document.getElementById('choose-text');
   const text=String(textarea?.value||'').trim();
   if(!text){alert('先寫下這個月為什麼仍然選擇對方');textarea?.focus();return;}
-  const info=choosePlayerInfo(chooseSelectedPlayer);
+  // 鎖定「打開預覽當下」的寄件人，避免 Firebase / render 更新後角色被自動切換。
+  chooseSubmitLockedPlayer=['shengzhan','yujun'].includes(chooseSelectedPlayer)?chooseSelectedPlayer:'';
+  if(!chooseSubmitLockedPlayer){alert('目前找不到正確的寄件人，請重新選擇一次');return;}
+  const info=choosePlayerInfo(chooseSubmitLockedPlayer);
   document.getElementById('choose-submit-preview-player').textContent=`${info.name} 寫給 ${info.partner}`;
   document.getElementById('choose-submit-preview-text').textContent=text;
   document.getElementById('choose-submit-preview-photos').innerHTML=chooseExistingPhotos.map(url=>`<img src="${chooseEscape(url)}" alt="準備送出的心約照片">`).join('');
@@ -12607,23 +12624,28 @@ function chooseCloseSubmitPreview(event){
 function chooseCloseSubmitPreviewDirect(){
   document.getElementById('choose-submit-preview-bg').classList.add('hidden');
   document.body.style.overflow=chooseSubmitPreviewPreviousOverflow;
+  chooseSubmitLockedPlayer='';
 }
 function chooseConfirmSubmitPreview(){
+  const player=chooseSubmitLockedPlayer;
   chooseCloseSubmitPreviewDirect();
-  chooseSaveEntry();
+  chooseSaveEntry(player);
 }
 function chooseUpdateCount(){
   const textarea=document.getElementById('choose-text');
   const counter=document.getElementById('choose-char-count');
   if(textarea&&counter) counter.textContent=`${textarea.value.length} / 2000`;
 }
-async function chooseSaveEntry(){
+async function chooseSaveEntry(player=chooseSelectedPlayer){
   const textarea=document.getElementById('choose-text');
   const button=document.getElementById('choose-save-btn');
   const text=textarea.value.trim();
   if(!text){alert('先寫下這個月想對彼此說的話');return;}
+  // 整個儲存流程固定使用同一個 savePlayer；chooseRender() 就算自動切換畫面，也不能改變 Firebase 寫入對象。
+  const savePlayer=['shengzhan','yujun'].includes(player)?player:'';
+  if(!savePlayer){alert('寄件人狀態已變更，請重新選擇「我是聖展 / 我是予君」後再送出');chooseRender();return;}
   const key=chooseMonthKey();
-  if(chooseNormalizeEntry(chooseEntriesData[key]?.[chooseSelectedPlayer])){
+  if(chooseNormalizeEntry(chooseEntriesData[key]?.[savePlayer])){
     alert('這封信已經送出，無法再修改');
     chooseRender();
     return;
@@ -12637,18 +12659,18 @@ async function chooseSaveEntry(){
     const entry={text:text.slice(0,600),photos,createdAt:Date.now(),updatedAt:Date.now()};
     chooseExistingPhotos=[...photos];
     choosePhotosDirty=false;
-    chooseEntriesData[key]={...(chooseEntriesData[key]||{}),[chooseSelectedPlayer]:entry};
+    chooseEntriesData[key]={...(chooseEntriesData[key]||{}),[savePlayer]:entry};
     chooseWriteCache();
     chooseRender();
     chooseSyncHomeBroadcast();
     saved=true;
     try{
-      if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`chooseYouEntries/${key}/${chooseSelectedPlayer}`),entry);}
-      else queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
+      if(window._fb){const {db,ref,set}=window._fb;await set(ref(db,`chooseYouEntries/${key}/${savePlayer}`),entry);}
+      else queueFirebaseWrite(`chooseYouEntries/${key}/${savePlayer}`,entry);
       document.getElementById('choose-edit-hint').textContent='已儲存並同步';
     }catch(syncError){
       console.warn('每月選擇同步失敗，已排入待同步',syncError);
-      queueFirebaseWrite(`chooseYouEntries/${key}/${chooseSelectedPlayer}`,entry);
+      queueFirebaseWrite(`chooseYouEntries/${key}/${savePlayer}`,entry);
       document.getElementById('choose-edit-hint').textContent='已先存到這台裝置，連線後會補同步';
     }
   }catch(saveError){
@@ -12659,6 +12681,90 @@ async function chooseSaveEntry(){
     button.disabled=false;
     chooseRender();
     if(saved&&beforeCount<2&&chooseEntryCount(chooseEntriesData[key])===2) chooseMaybeShowReadyPage(key);
+  }
+}
+
+async function chooseMoveEntryAssignment(month,fromPlayer,toPlayer,{silent=false}={}){
+  if(chooseAssignmentRepairRunning) return false;
+  if(!/^\d{4}-\d{2}$/.test(String(month||''))) return false;
+  if(!['shengzhan','yujun'].includes(fromPlayer)||!['shengzhan','yujun'].includes(toPlayer)||fromPlayer===toPlayer) return false;
+  const source=chooseNormalizeEntry(chooseEntriesData[month]?.[fromPlayer]);
+  const target=chooseNormalizeEntry(chooseEntriesData[month]?.[toPlayer]);
+  if(!source||target) return false;
+  chooseAssignmentRepairRunning=true;
+  const repairButton=document.getElementById('choose-repair-button');
+  if(repairButton){repairButton.disabled=true;repairButton.textContent='正在修正封存歸屬...';}
+  try{
+    const monthData={...(chooseEntriesData[month]||{})};
+    monthData[toPlayer]=source;
+    delete monthData[fromPlayer];
+    chooseEntriesData[month]=monthData;
+    chooseSelectedPlayer=fromPlayer;
+    try{localStorage.setItem('choose_you_player',fromPlayer);}catch(_){}
+    try{localStorage.removeItem(`choose_letters_unlocked_${month}`);localStorage.removeItem(`choose_ready_seen_${month}`);}catch(_){}
+    chooseWriteCache();
+    chooseRender();
+    chooseSyncHomeBroadcast();
+
+    const updates={
+      [`chooseYouEntries/${month}/${toPlayer}`]:source,
+      [`chooseYouEntries/${month}/${fromPlayer}`]:null
+    };
+    if(window._fb){
+      const {db,ref,update}=window._fb;
+      try{await update(ref(db),updates);}
+      catch(syncError){
+        console.warn('心約寄件人修正同步失敗，已排入待同步',syncError);
+        Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+        if(!silent) alert('畫面已先修正，Firebase 會在連線恢復後補同步。');
+        return false;
+      }
+    }else{
+      Object.entries(updates).forEach(([path,value])=>queueFirebaseWrite(path,value));
+      if(!silent) alert('畫面已先修正，目前離線；連線恢復後會補同步。');
+      return false;
+    }
+    if(!silent){
+      const from=choosePlayerInfo(fromPlayer).name;
+      const to=choosePlayerInfo(toPlayer).name;
+      alert(`已修正：這封信已從「${from}」移到「${to}」，${from}目前恢復為尚未送出。`);
+    }
+    return true;
+  }finally{
+    chooseAssignmentRepairRunning=false;
+    chooseRender();
+  }
+}
+
+async function chooseRepairCurrentAssignment(){
+  const month=chooseMonthKey();
+  const data=chooseEntriesData[month]||{};
+  const shengzhan=chooseNormalizeEntry(data.shengzhan);
+  const yujun=chooseNormalizeEntry(data.yujun);
+  if(Boolean(shengzhan)===Boolean(yujun)){
+    alert(shengzhan?'目前兩個人都已經有信，為避免覆蓋資料，這裡不會自動互換。':'目前沒有可修正的封存信。');
+    return;
+  }
+  const fromPlayer=shengzhan?'shengzhan':'yujun';
+  const toPlayer=shengzhan?'yujun':'shengzhan';
+  const from=choosePlayerInfo(fromPlayer).name;
+  const to=choosePlayerInfo(toPlayer).name;
+  if(!confirm(`目前唯一一封信封存在「${from}」名下。\n\n確定這封其實是「${to}」寫的，要把它移到 ${to}，並讓 ${from} 恢復成尚未送出嗎？`)) return;
+  await chooseMoveEntryAssignment(month,fromPlayer,toPlayer);
+}
+
+async function chooseRepairKnownSeptember2026Bug(){
+  if(chooseAssignmentRepairRunning||!window._fb) return;
+  try{if(localStorage.getItem(CHOOSE_KNOWN_REPAIR_FLAG)==='1') return;}catch(_){}
+  const data=chooseEntriesData[CHOOSE_KNOWN_REPAIR_MONTH]||{};
+  const wrong=chooseNormalizeEntry(data.shengzhan);
+  const yujun=chooseNormalizeEntry(data.yujun);
+  // 這是針對這次已確認的 2026-09 誤歸屬資料：聖展名下有一封、予君沒有信。
+  if(!wrong||yujun) return;
+  const repaired=await chooseMoveEntryAssignment(CHOOSE_KNOWN_REPAIR_MONTH,'shengzhan','yujun',{silent:true});
+  if(repaired){
+    try{localStorage.setItem(CHOOSE_KNOWN_REPAIR_FLAG,'1');}catch(_){}
+    console.info('已自動修正 2026-09 心約：聖展 → 予君');
   }
 }
 function chooseInitFirebase(){
@@ -12672,6 +12778,8 @@ function chooseInitFirebase(){
     chooseWriteCache();
     chooseRender();
     chooseSyncHomeBroadcast();
+    // 首次載入新版本時，自動把這次已知被 bug 放錯的 2026-09 信件移回予君。
+    chooseRepairKnownSeptember2026Bug().catch(error=>console.warn('已知心約歸屬修正失敗',error));
     const nextCount=chooseEntryCount(chooseEntriesData[chooseMonthKey()]);
     if(nextCount===2&&document.getElementById('page-choose')?.classList.contains('active')) chooseMaybeShowReadyPage(chooseMonthKey());
   },error=>{

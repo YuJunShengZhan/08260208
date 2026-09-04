@@ -15,6 +15,29 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
 <title>林聖展 ♡ 蘇予君</title>
+
+<script>
+(function(){
+  try{
+    const ua = navigator.userAgent || '';
+    const isIPhone = /iPhone/i.test(ua);
+    const sw = Math.min(screen.width || 0, screen.height || 0);
+    const sh = Math.max(screen.width || 0, screen.height || 0);
+    const iw = Math.min(window.innerWidth || 0, window.innerHeight || 0);
+    const ih = Math.max(window.innerWidth || 0, window.innerHeight || 0);
+    const dpr = window.devicePixelRatio || 1;
+
+    const largeLogical = sw >= 414 || iw >= 414 || sh >= 896 || ih >= 896;
+    const largePhysical = Math.max(sw, iw) * dpr >= 1240 ||
+                          Math.max(sh, ih) * dpr >= 2680;
+
+    if(isIPhone && (largeLogical || largePhysical)){
+      document.documentElement.classList.add('iphone-large-font120');
+    }
+  }catch(_){}
+})();
+</script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500&display=swap');
 
@@ -2561,70 +2584,137 @@ body.choose-letterbox-open{overflow:hidden}
   body.music-library-open .music-player{opacity:0;pointer-events:none}
 }
 
-/* ===== iPhone 15 Plus：所有 font-size 統一放大 10%（明確尺寸，不依賴 Safari 自動文字縮放） ===== */
+/* ===== 大型 iPhone（含 iPhone 15 Plus）：全站所有字體真正統一放大 20% =====
+   不再只靠 420~440px media query；由 JS 偵測大型 iPhone 後套用。 */
+html.iphone-large-font120{
+  --i15fs-1_15-dvh:1.38dvh;
+  --i15fs-1_58-dvh:1.896dvh;
+  --i15fs-1_75-dvh:2.1dvh;
+  --i15fs-2_9-dvh:3.48dvh;
+  --i15fs-0_82-em:0.984em;
+  --i15fs-5-px:6px;
+  --i15fs-7-px:8.4px;
+  --i15fs-7_5-px:9px;
+  --i15fs-8-px:9.6px;
+  --i15fs-8_5-px:10.2px;
+  --i15fs-9-px:10.8px;
+  --i15fs-9_5-px:11.4px;
+  --i15fs-10-px:12px;
+  --i15fs-10_5-px:12.6px;
+  --i15fs-11-px:13.2px;
+  --i15fs-12-px:14.4px;
+  --i15fs-13-px:15.6px;
+  --i15fs-14-px:16.8px;
+  --i15fs-15-px:18px;
+  --i15fs-16-px:19.2px;
+  --i15fs-17-px:20.4px;
+  --i15fs-18-px:21.6px;
+  --i15fs-19-px:22.8px;
+  --i15fs-20-px:24px;
+  --i15fs-21-px:25.2px;
+  --i15fs-22-px:26.4px;
+  --i15fs-23-px:27.6px;
+  --i15fs-24-px:28.8px;
+  --i15fs-25-px:30px;
+  --i15fs-26-px:31.2px;
+  --i15fs-27-px:32.4px;
+  --i15fs-28-px:33.6px;
+  --i15fs-29-px:34.8px;
+  --i15fs-30-px:36px;
+  --i15fs-31-px:37.2px;
+  --i15fs-32-px:38.4px;
+  --i15fs-34-px:40.8px;
+  --i15fs-36-px:43.2px;
+  --i15fs-38-px:45.6px;
+  --i15fs-39-px:46.8px;
+  --i15fs-40-px:48px;
+  --i15fs-42-px:50.4px;
+  --i15fs-44-px:52.8px;
+  --i15fs-45-px:54px;
+  --i15fs-48-px:57.6px;
+  --i15fs-60-px:72px;
+  --i15fs-62-px:74.4px;
+  --i15fs-64-px:76.8px;
+  --i15fs-68-px:81.6px;
+  --i15fs-70-px:84px;
+  --i15fs-72-px:86.4px;
+  --i15fs-76-px:91.2px;
+  --i15fs-3_5-vw:4.2vw;
+  --i15fs-4-vw:4.8vw;
+  --i15fs-4_5-vw:5.4vw;
+  --i15fs-5-vw:6vw;
+  --i15fs-7-vw:8.4vw;
+  --i15fs-9-vw:10.8vw;
+  --i15fs-10-vw:12vw;
+}
+
+
+
+/* 電腦 Chrome 模擬 iPhone 15 Plus（430px）時也強制套用相同 120% 字體 */
 @media (min-width:420px) and (max-width:440px){
   :root{
-    --i15fs-1_15-dvh:1.265dvh;
-    --i15fs-1_58-dvh:1.738dvh;
-    --i15fs-1_75-dvh:1.925dvh;
-    --i15fs-2_9-dvh:3.19dvh;
-    --i15fs-0_82-em:0.902em;
-    --i15fs-5-px:5.5px;
-    --i15fs-7-px:7.7px;
-    --i15fs-7_5-px:8.25px;
-    --i15fs-8-px:8.8px;
-    --i15fs-8_5-px:9.35px;
-    --i15fs-9-px:9.9px;
-    --i15fs-9_5-px:10.45px;
-    --i15fs-10-px:11px;
-    --i15fs-10_5-px:11.55px;
-    --i15fs-11-px:12.1px;
-    --i15fs-12-px:13.2px;
-    --i15fs-13-px:14.3px;
-    --i15fs-14-px:15.4px;
-    --i15fs-15-px:16.5px;
-    --i15fs-16-px:17.6px;
-    --i15fs-17-px:18.7px;
-    --i15fs-18-px:19.8px;
-    --i15fs-19-px:20.9px;
-    --i15fs-20-px:22px;
-    --i15fs-21-px:23.1px;
-    --i15fs-22-px:24.2px;
-    --i15fs-23-px:25.3px;
-    --i15fs-24-px:26.4px;
-    --i15fs-25-px:27.5px;
-    --i15fs-26-px:28.6px;
-    --i15fs-27-px:29.7px;
-    --i15fs-28-px:30.8px;
-    --i15fs-29-px:31.9px;
-    --i15fs-30-px:33px;
-    --i15fs-31-px:34.1px;
-    --i15fs-32-px:35.2px;
-    --i15fs-34-px:37.4px;
-    --i15fs-36-px:39.6px;
-    --i15fs-38-px:41.8px;
-    --i15fs-39-px:42.9px;
-    --i15fs-40-px:44px;
-    --i15fs-42-px:46.2px;
-    --i15fs-44-px:48.4px;
-    --i15fs-45-px:49.5px;
-    --i15fs-48-px:52.8px;
-    --i15fs-60-px:66px;
-    --i15fs-62-px:68.2px;
-    --i15fs-64-px:70.4px;
-    --i15fs-68-px:74.8px;
-    --i15fs-70-px:77px;
-    --i15fs-72-px:79.2px;
-    --i15fs-76-px:83.6px;
-    --i15fs-3_5-vw:3.85vw;
-    --i15fs-4-vw:4.4vw;
-    --i15fs-4_5-vw:4.95vw;
-    --i15fs-5-vw:5.5vw;
-    --i15fs-7-vw:7.7vw;
-    --i15fs-9-vw:9.9vw;
-    --i15fs-10-vw:11vw;
+--i15fs-1_15-dvh:1.38dvh;
+  --i15fs-1_58-dvh:1.896dvh;
+  --i15fs-1_75-dvh:2.1dvh;
+  --i15fs-2_9-dvh:3.48dvh;
+  --i15fs-0_82-em:0.984em;
+  --i15fs-5-px:6px;
+  --i15fs-7-px:8.4px;
+  --i15fs-7_5-px:9px;
+  --i15fs-8-px:9.6px;
+  --i15fs-8_5-px:10.2px;
+  --i15fs-9-px:10.8px;
+  --i15fs-9_5-px:11.4px;
+  --i15fs-10-px:12px;
+  --i15fs-10_5-px:12.6px;
+  --i15fs-11-px:13.2px;
+  --i15fs-12-px:14.4px;
+  --i15fs-13-px:15.6px;
+  --i15fs-14-px:16.8px;
+  --i15fs-15-px:18px;
+  --i15fs-16-px:19.2px;
+  --i15fs-17-px:20.4px;
+  --i15fs-18-px:21.6px;
+  --i15fs-19-px:22.8px;
+  --i15fs-20-px:24px;
+  --i15fs-21-px:25.2px;
+  --i15fs-22-px:26.4px;
+  --i15fs-23-px:27.6px;
+  --i15fs-24-px:28.8px;
+  --i15fs-25-px:30px;
+  --i15fs-26-px:31.2px;
+  --i15fs-27-px:32.4px;
+  --i15fs-28-px:33.6px;
+  --i15fs-29-px:34.8px;
+  --i15fs-30-px:36px;
+  --i15fs-31-px:37.2px;
+  --i15fs-32-px:38.4px;
+  --i15fs-34-px:40.8px;
+  --i15fs-36-px:43.2px;
+  --i15fs-38-px:45.6px;
+  --i15fs-39-px:46.8px;
+  --i15fs-40-px:48px;
+  --i15fs-42-px:50.4px;
+  --i15fs-44-px:52.8px;
+  --i15fs-45-px:54px;
+  --i15fs-48-px:57.6px;
+  --i15fs-60-px:72px;
+  --i15fs-62-px:74.4px;
+  --i15fs-64-px:76.8px;
+  --i15fs-68-px:81.6px;
+  --i15fs-70-px:84px;
+  --i15fs-72-px:86.4px;
+  --i15fs-76-px:91.2px;
+  --i15fs-3_5-vw:4.2vw;
+  --i15fs-4-vw:4.8vw;
+  --i15fs-4_5-vw:5.4vw;
+  --i15fs-5-vw:6vw;
+  --i15fs-7-vw:8.4vw;
+  --i15fs-9-vw:10.8vw;
+  --i15fs-10-vw:12vw;
   }
 }
+
 </style>
 </head>
 <body>
@@ -2825,7 +2915,7 @@ body.choose-letterbox-open{overflow:hidden}
     <div id="music-library-list"></div>
   </div>
 </div>
-<audio id="audio-player" crossorigin="anonymous" preload="metadata"></audio>
+<audio id="audio-player" crossorigin="anonymous" preload="metadata" playsinline webkit-playsinline x-webkit-airplay="allow"></audio>
 
 <div class="special-overlay hidden" id="special-overlay">
   <div class="special-box">
@@ -3431,7 +3521,7 @@ onclick="hideSpecialForToday()">
       </div>
     </section>
   </div>
-  <audio id="choose-song-audio" src="assets/heart-vow-theme.mp3" preload="auto" loop hidden></audio>
+  <audio id="choose-song-audio" src="assets/heart-vow-theme.mp3" preload="auto" loop playsinline webkit-playsinline hidden></audio>
 </div>
 
 <div class="choose-submit-preview-bg hidden" id="choose-submit-preview-bg" onclick="chooseCloseSubmitPreview(event)">
@@ -10994,6 +11084,31 @@ async function resolveMusicSongSource(song){
   }
 }
 
+function updateMainMusicMediaSession(song){
+  if(!('mediaSession' in navigator)) return;
+  try{
+    navigator.mediaSession.metadata=new MediaMetadata({
+      title:String(song?.name||'我們的音樂'),
+      artist:'聖展 ♡ 予君',
+      album:'屬於我們的小宇宙'
+    });
+  }catch(_){}
+}
+function syncMainMusicMediaSessionState(){
+  if(!('mediaSession' in navigator)) return;
+  try{
+    navigator.mediaSession.playbackState=audio.paused?'paused':'playing';
+  }catch(_){}
+  if(Number.isFinite(audio.duration) && audio.duration>0){
+    try{
+      navigator.mediaSession.setPositionState({
+        duration:audio.duration,
+        playbackRate:audio.playbackRate||1,
+        position:Math.min(audio.currentTime||0,audio.duration)
+      });
+    }catch(_){}
+  }
+}
 function updateMusicTitle(name){
   titleEl.textContent=name;
   const controlTitle=document.getElementById('music-control-title');
@@ -11125,6 +11240,7 @@ async function selectMusicSong(idx,autoplay=false){
   if(!playlist.length) return;
   songIdx=(idx+playlist.length)%playlist.length;
   const song=playlist[songIdx];
+  updateMainMusicMediaSession(song);
   const loadToken=++musicSourceLoadToken;
   const isFirebaseMusic=song.storage===MUSIC_FIREBASE_STORAGE;
   if(isFirebaseMusic){
@@ -11138,8 +11254,13 @@ async function selectMusicSong(idx,autoplay=false){
   setUI(false);
   renderMusicLibrary();
   try{
-    const source=await resolveMusicSongSource(song);
+    let source=await resolveMusicSongSource(song);
     if(loadToken!==musicSourceLoadToken) return;
+    audio.dataset.assetFallback='';
+    audio.dataset.assetFallbackTried='0';
+    if(!song.custom && /^[^/]+\.mp3(?:[?#].*)?$/i.test(String(source||''))){
+      audio.dataset.assetFallback='assets/'+String(source).replace(/^\.\//,'');
+    }
     audio.src=source;
     updateMusicTitle(song.name);
     if(autoplay){
@@ -11247,12 +11368,65 @@ function prevSong(){
   if(musicPlayMode==='random') selectMusicSong(randomMusicIndex(),isCurrentMusicPlaying());
   else moveMusicSong(-1);
 }
-audio.addEventListener('loadedmetadata',updateMusicProgressUI);
-audio.addEventListener('durationchange',updateMusicProgressUI);
-audio.addEventListener('timeupdate',updateMusicProgressUI);
+audio.addEventListener('loadedmetadata',()=>{
+  updateMusicProgressUI();
+  syncMainMusicMediaSessionState();
+});
+audio.addEventListener('durationchange',()=>{
+  updateMusicProgressUI();
+  syncMainMusicMediaSessionState();
+});
+audio.addEventListener('timeupdate',()=>{
+  updateMusicProgressUI();
+  if(!document.hidden) syncMainMusicMediaSessionState();
+});
 audio.addEventListener('emptied',updateMusicProgressUI);
-audio.addEventListener('play',()=>{setUI(true);resumeMusicAudioGraph();});
-audio.addEventListener('pause',()=>setUI(false));
+audio.addEventListener('play',()=>{
+  setUI(true);
+  syncMainMusicMediaSessionState();
+  resumeMusicAudioGraph();
+});
+audio.addEventListener('pause',()=>{
+  setUI(false);
+  syncMainMusicMediaSessionState();
+});
+audio.addEventListener('error',()=>{
+  const fallback=audio.dataset.assetFallback||'';
+  const tried=audio.dataset.assetFallbackTried==='1';
+  if(fallback && !tried){
+    const shouldResume=!audio.paused;
+    const oldTime=Number.isFinite(audio.currentTime)?audio.currentTime:0;
+    audio.dataset.assetFallbackTried='1';
+    audio.src=fallback;
+    audio.load();
+    audio.addEventListener('loadedmetadata',()=>{
+      try{ if(oldTime>0 && oldTime<audio.duration) audio.currentTime=oldTime; }catch(_){}
+      if(shouldResume) audio.play().catch(()=>{});
+    },{once:true});
+  }
+});
+
+if('mediaSession' in navigator){
+  try{navigator.mediaSession.setActionHandler('play',()=>audio.play().catch(()=>{}));}catch(_){}
+  try{navigator.mediaSession.setActionHandler('pause',()=>audio.pause());}catch(_){}
+  try{navigator.mediaSession.setActionHandler('previoustrack',()=>prevSong());}catch(_){}
+  try{navigator.mediaSession.setActionHandler('nexttrack',()=>nextSong());}catch(_){}
+  try{navigator.mediaSession.setActionHandler('seekto',details=>{
+    if(Number.isFinite(audio.duration) && Number.isFinite(details.seekTime)){
+      audio.currentTime=Math.max(0,Math.min(audio.duration,details.seekTime));
+    }
+  });}catch(_){}
+  try{navigator.mediaSession.setActionHandler('seekbackward',details=>{
+    const amount=Number(details.seekOffset)||10;
+    audio.currentTime=Math.max(0,(audio.currentTime||0)-amount);
+  });}catch(_){}
+  try{navigator.mediaSession.setActionHandler('seekforward',details=>{
+    const amount=Number(details.seekOffset)||10;
+    audio.currentTime=Math.min(Number.isFinite(audio.duration)?audio.duration:Infinity,(audio.currentTime||0)+amount);
+  });}catch(_){}
+}
+
+// 主音樂不在 visibilitychange / pagehide 時暫停，交給 iPhone 的媒體播放機制處理。
 window.addEventListener('firebaseReady',initCustomMusicSync);
 if(window._fb) initCustomMusicSync();
 renderMusicLibrary();
@@ -11398,6 +11572,28 @@ function chooseToggleSong(){
 chooseSongAudio.addEventListener('play',()=>chooseSetSongState(true,'紙短情長 · 播放中'));
 chooseSongAudio.addEventListener('pause',()=>{if(!chooseSongRequested) chooseSetSongState(false,'心約音樂');});
 chooseSongAudio.addEventListener('error',()=>chooseSetSongState(false,'歌曲暫時無法播放'));
+
+let chooseSongPausedByBackground=false;
+function pauseChooseSongForBackground(){
+  if(!chooseSongAudio || chooseSongAudio.paused) return;
+  chooseSongPausedByBackground=true;
+  chooseSongAudio.pause();
+  chooseSetSongState(false,'紙短情長 · 已暫停');
+}
+function resumeChooseSongAfterBackground(){
+  const choosePage=document.getElementById('page-choose');
+  if(!chooseSongPausedByBackground || !chooseSongRequested || !choosePage?.classList.contains('active')) return;
+  chooseSongPausedByBackground=false;
+  chooseSongAudio.play().catch(()=>{
+    chooseSetSongState(false,'紙短情長 · 點一下繼續');
+  });
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden) pauseChooseSongForBackground();
+  else resumeChooseSongAfterBackground();
+});
+window.addEventListener('pagehide',pauseChooseSongForBackground);
+window.addEventListener('pageshow',()=>{ if(!document.hidden) resumeChooseSongAfterBackground(); });
 
 const CHOOSE_OPENING_COPIES=[
   '不是因為一切都完美，而是走過這個月以後，我仍然想牽著你繼續往前。',
@@ -13503,6 +13699,44 @@ window.addEventListener('firebaseReady',()=>{
   pdLoad();
   checkLoveSurprise();
 });
+</script>
+
+
+<script>
+(function(){
+  function refreshLargeIPhoneFontClass(){
+    try{
+      const ua=navigator.userAgent||'';
+      const isIPhone=/iPhone/i.test(ua);
+      const sw=Math.min(screen.width||0,screen.height||0);
+      const sh=Math.max(screen.width||0,screen.height||0);
+      const iw=Math.min(window.innerWidth||0,window.innerHeight||0);
+      const ih=Math.max(window.innerWidth||0,window.innerHeight||0);
+      const dpr=window.devicePixelRatio||1;
+      const largeLogical=sw>=414||iw>=414||sh>=896||ih>=896;
+      const largePhysical=Math.max(sw,iw)*dpr>=1240||Math.max(sh,ih)*dpr>=2680;
+      document.documentElement.classList.toggle('iphone-large-font120', !!(isIPhone&&(largeLogical||largePhysical)));
+    }catch(_){}
+  }
+  window.addEventListener('resize',refreshLargeIPhoneFontClass,{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(refreshLargeIPhoneFontClass,80),{passive:true});
+  window.addEventListener('pageshow',refreshLargeIPhoneFontClass);
+})();
+</script>
+
+
+<script>
+window.checkIPhone15PlusFontScale=function(){
+  const root=getComputedStyle(document.documentElement);
+  return {
+    classApplied:document.documentElement.classList.contains('iphone-large-font120'),
+    viewport:[window.innerWidth,window.innerHeight],
+    screen:[screen.width,screen.height],
+    dpr:window.devicePixelRatio,
+    sample14px:root.getPropertyValue('--i15fs-14-px').trim()||'14px (未放大)',
+    sample20px:root.getPropertyValue('--i15fs-20-px').trim()||'20px (未放大)'
+  };
+};
 </script>
 
 </body>

@@ -1434,7 +1434,7 @@ transition:transform .25s ease,background .2s ease;
 .music-track-delete{width:42px;border:0;border-left:1px solid var(--card-border);background:transparent;color:var(--text-muted);font-size:17px;cursor:pointer}
 .music-track-delete:active{background:var(--pink-light);color:var(--rose)}
 [data-theme="dark"] .music-library{box-shadow:0 14px 42px rgba(0,0,0,.5)}
-@media(max-width:420px){.music-library{left:14px;right:14px;width:auto}}
+@media(max-width:430px){.music-library{left:14px;right:14px;width:auto}}
 
 /* 相簿同步載入指示器 */
 .album-sync-badge{
@@ -2243,7 +2243,7 @@ body.choose-letterbox-open{overflow:hidden}
   .footprint-category-place-meta{font-size:9px!important;margin-top:3px!important}
   .footprint-category-place-select{width:100%!important;height:42px!important;padding:0 11px!important;border-radius:10px!important;font-size:11px!important}
 }
-@media(max-width:390px){
+@media(max-width:430px){
   .footprint-category-order{grid-template-columns:minmax(0,1fr)!important}
   .footprint-category-row{min-height:82px!important}
 }
@@ -2288,7 +2288,7 @@ body.choose-letterbox-open{overflow:hidden}
   .footprint-category-place{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:8px!important;margin-bottom:8px!important;padding:11px!important;border:1px solid rgba(232,99,122,.13)!important;border-radius:12px!important;background:color-mix(in srgb,var(--pink-light) 24%,var(--white))!important}
   .footprint-category-place-select{height:40px!important;font-size:11px!important}
 }
-@media(max-width:390px){
+@media(max-width:430px){
   .footprint-category-order{grid-template-columns:minmax(0,1fr)!important}
   .footprint-category-row{min-height:64px!important}
 }
@@ -2364,6 +2364,18 @@ body.choose-letterbox-open{overflow:hidden}
 .choose-guide-mini strong{margin-bottom:2px;color:var(--rose);font-family:'Noto Serif TC',serif;font-size:11px}.choose-guide-mini span{color:var(--text);font-size:11px;line-height:1.55}.choose-guide-mini span::before{content:'♡';margin-right:7px;color:#e8637a}
 [data-theme="dark"] .choose-guide-tip,[data-theme="dark"] .choose-guide-more{background:rgba(50,29,39,.62);border-color:rgba(255,159,185,.18)}[data-theme="dark"] .choose-guide-mini{background:linear-gradient(145deg,rgba(76,38,53,.62),rgba(48,31,41,.72))}
 @media(max-width:560px){.choose-guide-more summary{align-items:center}.choose-guide-more summary small{display:none}}
+
+
+
+/* iPhone 15 Plus / 430px：沿用 iPhone 13 / 390px 的內容密度，不做大字版 */
+@media (min-width:391px) and (max-width:440px){
+  .page{
+    width:390px;
+    max-width:390px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
 
 </style>
 </head>

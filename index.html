@@ -2715,6 +2715,442 @@ html.iphone-large-font120{
   }
 }
 
+
+
+/* ===== 全螢幕音樂介面 v3 ===== */
+.music-library{
+  display:none;
+  position:fixed!important;
+  inset:0!important;
+  z-index:20000!important;
+  width:100vw!important;
+  height:100dvh!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:
+    radial-gradient(circle at 50% -12%, rgba(232,99,122,.16), transparent 32%),
+    linear-gradient(180deg, color-mix(in srgb,var(--pink-light) 42%,var(--white)) 0%, var(--bg) 45%, var(--bg) 100%)!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+.music-library.open{display:block!important}
+body.music-library-open{overflow:hidden!important;touch-action:none}
+.music-library-shell{height:100%;display:flex;flex-direction:column;min-height:0}
+.music-library-head{
+  position:relative!important;
+  top:auto!important;
+  z-index:5;
+  flex:0 0 auto;
+  min-height:calc(62px + env(safe-area-inset-top));
+  padding:calc(10px + env(safe-area-inset-top)) 18px 10px!important;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  background:color-mix(in srgb,var(--white) 88%,transparent)!important;
+  color:var(--text)!important;
+  border-bottom:1px solid color-mix(in srgb,var(--card-border) 78%,transparent);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+}
+.music-library-head-copy{min-width:0}
+.music-library-eyebrow{
+  display:block;
+  margin-bottom:1px;
+  color:var(--text-muted);
+  font-size:var(--i15fs-8-px,8px);
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.music-library-title{
+  display:block!important;
+  color:var(--text)!important;
+  font-family:'Noto Serif TC',serif!important;
+  font-size:var(--i15fs-24-px,24px)!important;
+  font-weight:800!important;
+  line-height:1.2;
+}
+.music-library-head-actions{display:flex;align-items:center;gap:9px}
+.music-library-head-btn{
+  width:40px!important;
+  height:40px!important;
+  flex:0 0 40px;
+  display:grid!important;
+  place-items:center;
+  padding:0!important;
+  border:1px solid color-mix(in srgb,var(--pink) 28%,var(--card-border))!important;
+  border-radius:50%!important;
+  background:color-mix(in srgb,var(--white) 86%,transparent)!important;
+  color:var(--rose)!important;
+  font-family:Arial,sans-serif;
+  font-size:var(--i15fs-25-px,25px)!important;
+  font-weight:300;
+  line-height:1;
+  box-shadow:0 5px 16px rgba(93,48,61,.06);
+}
+.music-library-head-btn:active{transform:scale(.94);background:var(--pink-light)!important}
+.music-library-scroll{
+  flex:1;
+  min-height:0;
+  max-height:none!important;
+  overflow-y:auto!important;
+  padding:18px 16px calc(28px + env(safe-area-inset-bottom));
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+.music-now-card{
+  width:min(100%,520px);
+  margin:0 auto;
+  padding:10px 4px 22px!important;
+  background:transparent!important;
+  border:0!important;
+}
+.music-now-art{
+  width:min(44vw,176px);
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  margin:2px auto 18px;
+  border-radius:24%;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.96),rgba(249,218,225,.96));
+  border:1px solid rgba(232,99,122,.15);
+  box-shadow:0 24px 55px rgba(180,73,98,.16);
+}
+.music-now-art-disc{
+  width:68%;
+  aspect-ratio:1;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,var(--white) 0 14%,transparent 15%),
+    linear-gradient(145deg,var(--rose),#ef7d93);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 10px 26px rgba(173,56,85,.18);
+}
+.music-now-art-disc span{
+  color:#fff;
+  font-family:Georgia,serif;
+  font-size:var(--i15fs-44-px,44px);
+  transform:translateY(-1px);
+  text-shadow:0 2px 8px rgba(111,24,48,.16);
+}
+.music-control-now{
+  display:block!important;
+  margin:0 2px 16px!important;
+  text-align:left;
+}
+.music-control-kicker{
+  display:block;
+  margin-bottom:4px;
+  color:var(--rose)!important;
+  font-size:var(--i15fs-9-px,9px)!important;
+  font-weight:900!important;
+  letter-spacing:.12em!important;
+}
+.music-control-current-title{
+  display:block;
+  max-width:none!important;
+  overflow:visible!important;
+  color:var(--text)!important;
+  font-family:'Noto Serif TC',serif;
+  font-size:var(--i15fs-22-px,22px)!important;
+  font-weight:800!important;
+  line-height:1.35;
+  white-space:normal!important;
+}
+.music-control-subtitle{
+  display:block;
+  margin-top:3px;
+  color:var(--text-muted);
+  font-size:var(--i15fs-11-px,11px);
+}
+.music-range{
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  height:22px;
+  margin:0;
+  background:transparent;
+  accent-color:var(--pink);
+  touch-action:pan-x;
+}
+.music-range::-webkit-slider-runnable-track{
+  height:4px;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--text-muted) 18%,var(--white));
+}
+.music-range::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:18px;
+  height:18px;
+  margin-top:-7px;
+  border:0;
+  border-radius:50%;
+  background:var(--pink);
+  box-shadow:0 2px 7px rgba(99,46,61,.2);
+}
+.music-range::-moz-range-track{
+  height:4px;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--text-muted) 18%,var(--white));
+}
+.music-range::-moz-range-thumb{
+  width:18px;height:18px;border:0;border-radius:50%;background:var(--pink);
+}
+.music-time-row{
+  margin-top:-2px!important;
+  color:var(--text-muted)!important;
+  font-size:var(--i15fs-9-px,9px)!important;
+}
+.music-main-controls{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:22px!important;
+  margin:19px 0 0!important;
+}
+.music-main-control{
+  width:52px!important;
+  height:52px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border:1px solid color-mix(in srgb,var(--pink) 18%,var(--card-border))!important;
+  border-radius:50%!important;
+  background:color-mix(in srgb,var(--white) 94%,transparent)!important;
+  color:var(--rose)!important;
+  box-shadow:0 7px 20px rgba(100,45,61,.07);
+  font-family:Arial,sans-serif!important;
+  font-size:var(--i15fs-18-px,18px)!important;
+  line-height:1!important;
+}
+.music-main-control.primary{
+  width:64px!important;
+  height:64px!important;
+  border-color:var(--pink)!important;
+  background:var(--pink)!important;
+  color:#fff!important;
+  font-size:var(--i15fs-25-px,25px)!important;
+  box-shadow:0 12px 30px rgba(232,99,122,.28);
+}
+.music-main-control:active{transform:scale(.93)}
+.music-skip-glyph{
+  display:block;
+  color:inherit;
+  font-size:var(--i15fs-13-px,13px);
+  font-weight:900;
+  letter-spacing:-4px;
+  transform:translateX(-1px);
+}
+.music-main-control.skip:last-child .music-skip-glyph{transform:translateX(1px)}
+.music-settings-card,
+.music-songs-card{
+  width:min(100%,520px);
+  margin:0 auto 14px;
+  overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--card-border) 82%,transparent);
+  border-radius:20px;
+  background:color-mix(in srgb,var(--white) 94%,transparent);
+  box-shadow:0 10px 30px rgba(79,42,53,.05);
+}
+.music-control-section{
+  margin:0!important;
+  padding:17px 16px!important;
+  border-top:1px solid color-mix(in srgb,var(--card-border) 78%,transparent)!important;
+}
+.music-control-section.first{border-top:0!important}
+.music-control-section-title{
+  margin-bottom:10px!important;
+  color:var(--text)!important;
+  font-size:var(--i15fs-13-px,13px)!important;
+  font-weight:850!important;
+}
+.music-control-section-title small{
+  color:var(--text-muted)!important;
+  font-size:var(--i15fs-9-px,9px)!important;
+  font-weight:600!important;
+}
+.music-mode-grid{gap:8px!important}
+.music-mode-btn,.music-sleep-btn,.music-ultra-btn,.music-custom-sleep-btn{
+  min-height:42px!important;
+  border:1px solid color-mix(in srgb,var(--card-border) 92%,transparent)!important;
+  border-radius:12px!important;
+  background:color-mix(in srgb,var(--white) 98%,transparent)!important;
+  color:var(--text-muted)!important;
+  font-size:var(--i15fs-11-px,11px)!important;
+  font-weight:800!important;
+  box-shadow:0 4px 12px rgba(68,37,45,.035);
+}
+.music-mode-btn.active,.music-sleep-btn.active{
+  border-color:var(--pink)!important;
+  background:var(--pink-light)!important;
+  color:var(--rose)!important;
+}
+.music-volume-line{gap:10px!important}
+.music-volume-value{
+  min-width:42px!important;
+  color:var(--rose)!important;
+  font-size:var(--i15fs-11-px,11px)!important;
+}
+.music-ultra-btn{margin-top:8px!important}
+.music-ultra-btn.active{
+  border-color:#9276ca!important;
+  background:var(--pd-estimated-bg)!important;
+  color:var(--pd-estimated-text)!important;
+}
+.music-ultra-note{display:none!important}
+.music-sleep-grid{gap:7px!important}
+.music-sleep-input{
+  height:42px!important;
+  border-radius:12px!important;
+  font-size:var(--i15fs-11-px,11px)!important;
+}
+.music-sleep-status{
+  margin-top:8px!important;
+  font-size:var(--i15fs-9-px,9px)!important;
+}
+.music-songs-toggle{
+  width:100%;
+  min-height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:14px 16px;
+  border:0;
+  background:transparent;
+  color:var(--text);
+  text-align:left;
+  font-family:'Noto Sans TC',sans-serif;
+  cursor:pointer;
+}
+.music-songs-toggle-copy{min-width:0}
+.music-songs-toggle-copy b{
+  display:block;
+  color:var(--text);
+  font-size:var(--i15fs-14-px,14px);
+  font-weight:850;
+}
+.music-songs-toggle-copy small{
+  display:block;
+  margin-top:3px;
+  color:var(--text-muted);
+  font-size:var(--i15fs-9-px,9px);
+}
+.music-songs-chevron{
+  flex:0 0 auto;
+  color:var(--rose);
+  font-size:var(--i15fs-24-px,24px);
+  line-height:1;
+  transition:transform .2s ease;
+}
+.music-songs-toggle[aria-expanded="true"] .music-songs-chevron{transform:rotate(180deg)}
+.music-songs-panel{
+  border-top:1px solid color-mix(in srgb,var(--card-border) 80%,transparent);
+  background:color-mix(in srgb,var(--white) 86%,transparent);
+}
+.music-library-list{max-height:none}
+.music-track{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:stretch!important;
+  border-bottom:1px solid color-mix(in srgb,var(--card-border) 70%,transparent)!important;
+}
+.music-track:last-child{border-bottom:0!important}
+.music-track-main{
+  min-height:58px!important;
+  gap:12px!important;
+  padding:11px 14px!important;
+}
+.music-track.active .music-track-main{
+  background:color-mix(in srgb,var(--pink-light) 66%,transparent)!important;
+  color:var(--rose)!important;
+}
+.music-track-index{
+  width:25px;
+  flex:0 0 25px;
+  color:var(--text-muted);
+  font-size:var(--i15fs-10-px,10px);
+  font-variant-numeric:tabular-nums;
+  text-align:center;
+}
+.music-track.active .music-track-index{color:var(--rose);font-weight:900}
+.music-track-copy{min-width:0;display:block}
+.music-track-name{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:inherit;
+  font-size:var(--i15fs-13-px,13px)!important;
+  font-weight:750;
+}
+.music-track-meta{
+  display:block;
+  margin-top:2px;
+  color:var(--text-muted);
+  font-size:var(--i15fs-9-px,9px);
+}
+.music-track-source{margin-left:0!important}
+.music-track-delete{
+  width:48px!important;
+  font-size:var(--i15fs-18-px,18px)!important;
+}
+.music-add-form{
+  padding:16px!important;
+  background:color-mix(in srgb,var(--pink-light) 34%,var(--white))!important;
+}
+.music-add-label{font-size:var(--i15fs-12-px,12px)!important}
+.music-add-input{min-height:46px!important;font-size:var(--i15fs-13-px,13px)!important}
+.music-file-picker{min-height:54px!important}
+.music-file-picker-text{font-size:var(--i15fs-11-px,11px)!important}
+.music-file-picker-text strong{font-size:var(--i15fs-13-px,13px)!important}
+.music-library-empty{padding:28px 16px!important}
+.music-library-bottom-space{height:4px}
+
+[data-theme="dark"] .music-library{
+  background:
+    radial-gradient(circle at 50% -12%,rgba(201,75,100,.18),transparent 32%),
+    linear-gradient(180deg,#26161d 0%,#1a1014 55%,#1a1014 100%)!important;
+}
+[data-theme="dark"] .music-library-head{background:rgba(35,20,27,.86)!important}
+[data-theme="dark"] .music-now-art{
+  background:linear-gradient(145deg,#38212a,#25151c);
+  border-color:rgba(255,155,175,.16);
+  box-shadow:0 24px 55px rgba(0,0,0,.28);
+}
+[data-theme="dark"] .music-settings-card,
+[data-theme="dark"] .music-songs-card{
+  background:rgba(42,24,32,.94);
+  border-color:rgba(255,139,163,.16);
+  box-shadow:none;
+}
+[data-theme="dark"] .music-songs-panel{background:#211319}
+[data-theme="dark"] .music-main-control{
+  background:#321d26!important;
+  border-color:rgba(255,139,163,.18)!important;
+}
+[data-theme="dark"] .music-main-control.primary{background:var(--pink)!important}
+[data-theme="dark"] .music-mode-btn,
+[data-theme="dark"] .music-sleep-btn,
+[data-theme="dark"] .music-ultra-btn,
+[data-theme="dark"] .music-custom-sleep-btn{
+  background:#321d26!important;
+  border-color:rgba(255,139,163,.16)!important;
+}
+[data-theme="dark"] .music-range::-webkit-slider-runnable-track{background:rgba(255,255,255,.12)}
+[data-theme="dark"] .music-range::-moz-range-track{background:rgba(255,255,255,.12)}
+
+@media(max-width:560px){
+  .music-library-scroll{padding:14px 14px calc(24px + env(safe-area-inset-bottom))}
+  .music-now-art{width:min(40vw,164px);margin-top:0}
+  .music-library-head{padding-left:16px!important;padding-right:14px!important}
+}
+
 </style>
 </head>
 <body>
@@ -2836,86 +3272,137 @@ html.iphone-large-font120{
   </div>
 </div>
 
-<!-- 音樂庫 -->
-<div id="music-library" class="music-library">
-  <div class="music-library-head">
-    <div class="music-library-title"><span aria-hidden="true">🎵</span><span>音樂庫</span></div>
-    <button type="button" class="music-library-head-btn" onclick="toggleAddMusicForm()" aria-label="新增音樂" title="新增音樂">＋</button>
-    <button type="button" class="music-library-head-btn" onclick="toggleMusicLibrary()" aria-label="關閉音樂庫" title="關閉">×</button>
-  </div>
-  <div class="music-library-scroll">
-    <div class="music-control-panel" id="music-control-panel">
-      <div class="music-control-now">
-        <div class="music-control-now-copy">
+
+<!-- 音樂庫：全螢幕播放器 -->
+<div id="music-library" class="music-library" aria-hidden="true">
+  <div class="music-library-shell">
+    <header class="music-library-head">
+      <div class="music-library-head-copy">
+        <span class="music-library-eyebrow">OUR MUSIC</span>
+        <div class="music-library-title"><span>音樂</span></div>
+      </div>
+      <div class="music-library-head-actions">
+        <button type="button" class="music-library-head-btn" onclick="toggleAddMusicForm(true)" aria-label="新增音樂" title="新增音樂">＋</button>
+        <button type="button" class="music-library-head-btn" onclick="toggleMusicLibrary(false)" aria-label="關閉音樂庫" title="關閉">×</button>
+      </div>
+    </header>
+
+    <div class="music-library-scroll">
+      <section class="music-now-card" id="music-control-panel">
+        <div class="music-now-art" aria-hidden="true">
+          <div class="music-now-art-disc"><span>♫</span></div>
+        </div>
+
+        <div class="music-control-now">
           <span class="music-control-kicker">NOW PLAYING</span>
           <b class="music-control-current-title" id="music-control-title">尚未播放</b>
+          <span class="music-control-subtitle">聖展 ♡ 予君</span>
         </div>
-      </div>
-      <div class="music-main-controls">
-        <button type="button" class="music-main-control" onclick="prevSong()" aria-label="上一首">⏮</button>
-        <button type="button" class="music-main-control primary" id="music-library-play-btn" onclick="togglePlay()" aria-label="播放或暫停">▶</button>
-        <button type="button" class="music-main-control" onclick="nextSong()" aria-label="下一首">⏭</button>
-      </div>
-      <input class="music-range" id="music-seek-range" type="range" min="0" max="1000" value="0" step="1" oninput="seekMusicBySlider(this.value)" aria-label="調整歌曲時間點">
-      <div class="music-time-row"><span id="music-current-time">0:00</span><span id="music-duration">0:00</span></div>
 
-      <div class="music-control-section">
-        <div class="music-control-section-title"><span>播放方式</span><small id="music-mode-label">順序播放</small></div>
-        <div class="music-mode-grid">
-          <button type="button" class="music-mode-btn" data-music-mode="sequence" onclick="setMusicPlayMode('sequence')">⇥ 順序</button>
-          <button type="button" class="music-mode-btn" data-music-mode="single" onclick="setMusicPlayMode('single')">↻ 單曲</button>
-          <button type="button" class="music-mode-btn" data-music-mode="random" onclick="setMusicPlayMode('random')">⤨ 隨機</button>
+        <input class="music-range music-seek-range" id="music-seek-range" type="range" min="0" max="1000" value="0" step="1"
+          oninput="seekMusicBySlider(this.value)" aria-label="調整歌曲時間點">
+        <div class="music-time-row">
+          <span id="music-current-time">0:00</span>
+          <span id="music-duration">0:00</span>
         </div>
-      </div>
 
-      <div class="music-control-section">
-        <div class="music-control-section-title"><span>網站音量</span><small>獨立於 iPhone 音量再衰減</small></div>
-        <div class="music-volume-line">
-          <input class="music-range" id="music-volume-range" type="range" min="0" max="100" value="35" step="1" oninput="setMusicVolume(this.value)" aria-label="調整網站音量">
-          <span class="music-volume-value" id="music-volume-value">35%</span>
+        <div class="music-main-controls">
+          <button type="button" class="music-main-control skip" onclick="prevSong()" aria-label="上一首">
+            <span class="music-skip-glyph" aria-hidden="true">◀◀</span>
+          </button>
+          <button type="button" class="music-main-control primary" id="music-library-play-btn" onclick="togglePlay()" aria-label="播放或暫停">▶</button>
+          <button type="button" class="music-main-control skip" onclick="nextSong()" aria-label="下一首">
+            <span class="music-skip-glyph" aria-hidden="true">▶▶</span>
+          </button>
         </div>
-        <button type="button" class="music-ultra-btn" id="music-ultra-quiet-btn" onclick="toggleMusicUltraQuiet()">🌙 超低音量 ×0.08</button>
-        <div class="music-ultra-note">開啟後會在手機系統音量之外再把音樂壓低，適合睡前聽。</div>
-      </div>
+      </section>
 
-      <div class="music-control-section">
-        <div class="music-control-section-title"><span>睡眠計時器</span><small id="music-sleep-label">未設定</small></div>
-        <div class="music-sleep-grid">
-          <button type="button" class="music-sleep-btn" data-sleep="0" onclick="setMusicSleepTimer(0)">關閉</button>
-          <button type="button" class="music-sleep-btn" data-sleep="15" onclick="setMusicSleepTimer(15)">15分</button>
-          <button type="button" class="music-sleep-btn" data-sleep="30" onclick="setMusicSleepTimer(30)">30分</button>
-          <button type="button" class="music-sleep-btn" data-sleep="45" onclick="setMusicSleepTimer(45)">45分</button>
-          <button type="button" class="music-sleep-btn" data-sleep="60" onclick="setMusicSleepTimer(60)">60分</button>
+      <section class="music-settings-card">
+        <div class="music-control-section first">
+          <div class="music-control-section-title">
+            <span>播放方式</span>
+            <small id="music-mode-label">順序播放</small>
+          </div>
+          <div class="music-mode-grid">
+            <button type="button" class="music-mode-btn" data-music-mode="sequence" onclick="setMusicPlayMode('sequence')">順序</button>
+            <button type="button" class="music-mode-btn" data-music-mode="single" onclick="setMusicPlayMode('single')">單曲循環</button>
+            <button type="button" class="music-mode-btn" data-music-mode="random" onclick="setMusicPlayMode('random')">隨機</button>
+          </div>
         </div>
-        <div class="music-sleep-custom">
-          <input class="music-sleep-input" id="music-sleep-custom" type="number" min="1" max="480" inputmode="numeric" placeholder="自訂分鐘（1～480）">
-          <button type="button" class="music-custom-sleep-btn" onclick="startCustomMusicSleepTimer()">開始</button>
+
+        <div class="music-control-section">
+          <div class="music-control-section-title">
+            <span>網站音量</span>
+            <small>可比 iPhone 最小聲更低</small>
+          </div>
+          <div class="music-volume-line">
+            <input class="music-range" id="music-volume-range" type="range" min="0" max="100" value="35" step="1"
+              oninput="setMusicVolume(this.value)" aria-label="調整網站音量">
+            <span class="music-volume-value" id="music-volume-value">35%</span>
+          </div>
+          <button type="button" class="music-ultra-btn" id="music-ultra-quiet-btn" onclick="toggleMusicUltraQuiet()">🌙 超低音量 ×0.08</button>
         </div>
-        <div class="music-sleep-status" id="music-sleep-status">到時間後會自動暫停音樂。</div>
-      </div>
+
+        <div class="music-control-section">
+          <div class="music-control-section-title">
+            <span>睡眠計時器</span>
+            <small id="music-sleep-label">未設定</small>
+          </div>
+          <div class="music-sleep-grid">
+            <button type="button" class="music-sleep-btn" data-sleep="0" onclick="setMusicSleepTimer(0)">關閉</button>
+            <button type="button" class="music-sleep-btn" data-sleep="15" onclick="setMusicSleepTimer(15)">15分</button>
+            <button type="button" class="music-sleep-btn" data-sleep="30" onclick="setMusicSleepTimer(30)">30分</button>
+            <button type="button" class="music-sleep-btn" data-sleep="45" onclick="setMusicSleepTimer(45)">45分</button>
+            <button type="button" class="music-sleep-btn" data-sleep="60" onclick="setMusicSleepTimer(60)">60分</button>
+          </div>
+          <div class="music-sleep-custom">
+            <input class="music-sleep-input" id="music-sleep-custom" type="number" min="1" max="480" inputmode="numeric" placeholder="自訂分鐘">
+            <button type="button" class="music-custom-sleep-btn" onclick="startCustomMusicSleepTimer()">開始</button>
+          </div>
+          <div class="music-sleep-status" id="music-sleep-status">到時間後會自動暫停音樂。</div>
+        </div>
+      </section>
+
+      <section class="music-songs-card">
+        <button type="button" class="music-songs-toggle" id="music-songs-toggle" onclick="toggleMusicSongs()"
+          aria-expanded="false" aria-controls="music-songs-panel">
+          <span class="music-songs-toggle-copy">
+            <b>歌曲列表</b>
+            <small id="music-songs-summary">收合中</small>
+          </span>
+          <span class="music-songs-chevron" aria-hidden="true">⌄</span>
+        </button>
+
+        <div id="music-songs-panel" class="music-songs-panel" hidden>
+          <div id="music-add-form" class="music-add-form" hidden>
+            <label class="music-add-label">歌曲名稱
+              <input id="music-add-name" class="music-add-input" type="text" maxlength="80" autocomplete="off" placeholder="輸入想顯示的歌名">
+            </label>
+            <label class="music-add-label">MP3 音樂檔案
+              <input id="music-add-file" class="music-file-input" type="file" accept=".mp3,audio/mpeg" onchange="updateMusicFileLabel()">
+              <span class="music-file-picker">
+                <span class="music-file-picker-icon" aria-hidden="true">♫</span>
+                <span class="music-file-picker-text" id="music-add-file-label"><strong>選擇 MP3</strong>從手機或電腦挑選音樂</span>
+              </span>
+              <span class="music-file-limit">僅接受 MP3，單首上限 30 MB</span>
+            </label>
+            <div class="music-add-actions">
+              <button type="button" class="music-add-action" onclick="toggleAddMusicForm(false)">取消</button>
+              <button type="button" class="music-add-action primary" id="music-add-submit" onclick="saveMp3Music()">加入音樂庫</button>
+            </div>
+            <div id="music-add-status" class="music-add-status" aria-live="polite"></div>
+          </div>
+
+          <div id="music-library-list" class="music-library-list"></div>
+        </div>
+      </section>
+
+      <div class="music-library-bottom-space"></div>
     </div>
-    <div id="music-add-form" class="music-add-form" hidden>
-      <label class="music-add-label">歌曲名稱
-        <input id="music-add-name" class="music-add-input" type="text" maxlength="80" autocomplete="off" placeholder="輸入想顯示的歌名">
-      </label>
-      <label class="music-add-label">MP3 音樂檔案
-        <input id="music-add-file" class="music-file-input" type="file" accept=".mp3,audio/mpeg" onchange="updateMusicFileLabel()">
-        <span class="music-file-picker">
-          <span class="music-file-picker-icon" aria-hidden="true">🎧</span>
-          <span class="music-file-picker-text" id="music-add-file-label"><strong>選擇 MP3</strong>從手機或電腦挑選音樂</span>
-        </span>
-        <span class="music-file-limit">僅接受 MP3，單首上限 30 MB</span>
-      </label>
-      <div class="music-add-actions">
-        <button type="button" class="music-add-action" onclick="toggleAddMusicForm(false)">取消</button>
-        <button type="button" class="music-add-action primary" id="music-add-submit" onclick="saveMp3Music()">上傳並加入</button>
-      </div>
-      <div id="music-add-status" class="music-add-status" aria-live="polite"></div>
-    </div>
-    <div id="music-library-list"></div>
   </div>
 </div>
-<audio id="audio-player" crossorigin="anonymous" preload="metadata" playsinline webkit-playsinline x-webkit-airplay="allow"></audio>
+<audio id="audio-player" preload="metadata" playsinline webkit-playsinline x-webkit-airplay="allow"></audio>
+
 
 <div class="special-overlay hidden" id="special-overlay">
   <div class="special-box">
@@ -10836,30 +11323,14 @@ function formatMusicTime(seconds){
   return `${m}:${String(s).padStart(2,'0')}`;
 }
 function ensureMusicAudioGraph(){
-  if(musicGainNode) return true;
-  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
-  if(!AudioContextClass) return false;
-  try{
-    musicAudioContext=musicAudioContext||new AudioContextClass();
-    musicMediaSource=musicMediaSource||musicAudioContext.createMediaElementSource(audio);
-    musicGainNode=musicAudioContext.createGain();
-    musicMediaSource.connect(musicGainNode);
-    musicGainNode.connect(musicAudioContext.destination);
-    audio.volume=1;
-    applyMusicVolume();
-    return true;
-  }catch(err){
-    console.warn('Web Audio 音量控制無法啟用，改用一般音量',err);
-    musicGainNode=null;
-    return false;
-  }
+  // iPhone Safari 上 createMediaElementSource 容易因 CORS / AudioContext 狀態造成「看起來有播放但沒聲音」。
+  // 主播放器改用原生 HTMLAudioElement 音量，穩定度較高。
+  musicGainNode=null;
+  return false;
 }
 async function resumeMusicAudioGraph(){
-  if(!ensureMusicAudioGraph()) return false;
-  try{
-    if(musicAudioContext?.state==='suspended') await musicAudioContext.resume();
-  }catch(_){ }
-  return !!musicGainNode;
+  applyMusicVolume();
+  return true;
 }
 function musicGainValue(){
   const normalized=musicVolume/100;
@@ -10868,12 +11339,7 @@ function musicGainValue(){
 }
 function applyMusicVolume(){
   const gain=musicGainValue();
-  if(musicGainNode){
-    audio.volume=1;
-    try{musicGainNode.gain.setTargetAtTime(gain,musicAudioContext.currentTime,.015);}catch(_){musicGainNode.gain.value=gain;}
-  }else{
-    try{audio.volume=Math.max(0,Math.min(1,(musicVolume/100)*(musicUltraQuiet?0.08:1)));}catch(_){ }
-  }
+  try{audio.volume=Math.max(0,Math.min(1,gain));}catch(_){}
   const range=document.getElementById('music-volume-range');
   const value=document.getElementById('music-volume-value');
   const ultra=document.getElementById('music-ultra-quiet-btn');
@@ -11124,12 +11590,13 @@ function updateMusicTitle(name){
   },100);
 }
 function setUI(playing){
-  if(disc) disc.classList.toggle('playing',playing);
-  if(playBtn) playBtn.textContent=playing?'⏸️':'▶️';
+  disc?.classList.toggle('playing',playing);
+  if(playBtn) playBtn.textContent=playing?'Ⅱ':'▶';
   const libraryPlay=document.getElementById('music-library-play-btn');
-  if(libraryPlay) libraryPlay.textContent=playing?'⏸':'▶';
-  const headerBtn=document.getElementById('music-header-btn');
-  if(headerBtn) headerBtn.classList.toggle('is-playing',!!playing);
+  if(libraryPlay){
+    libraryPlay.textContent=playing?'Ⅱ':'▶';
+    libraryPlay.setAttribute('aria-label',playing?'暫停':'播放');
+  }
 }
 
 function getMusicPlaylist(){
@@ -11148,6 +11615,7 @@ function toggleAddMusicForm(force){
   const form=document.getElementById('music-add-form');
   if(!form) return;
   const opening=typeof force==='boolean'?force:form.hidden;
+  if(opening && typeof setMusicSongsExpanded==='function') setMusicSongsExpanded(true);
   form.hidden=!opening;
   setMusicAddStatus('');
   if(opening) setTimeout(()=>document.getElementById('music-add-name')?.focus(),30);
@@ -11240,6 +11708,8 @@ async function selectMusicSong(idx,autoplay=false){
   if(!playlist.length) return;
   songIdx=(idx+playlist.length)%playlist.length;
   const song=playlist[songIdx];
+  audio.dataset.pathFallbackStep='0';
+  audio.dataset.wantAutoplay=autoplay?'1':'0';
   updateMainMusicMediaSession(song);
   const loadToken=++musicSourceLoadToken;
   const isFirebaseMusic=song.storage===MUSIC_FIREBASE_STORAGE;
@@ -11279,20 +11749,43 @@ function loadSong(idx){
   selectMusicSong(idx,false);
 }
 function renderMusicLibrary(){
-  const list = document.getElementById('music-library-list');
+  const list=document.getElementById('music-library-list');
   if(!list) return;
   const playlist=getMusicPlaylist();
+
+  const summary=document.getElementById('music-songs-summary');
+  if(summary){
+    const current=getCurrentMusicSong();
+    summary.textContent=`${playlist.length} 首${current?.name?` · 目前：${current.name}`:''}`;
+  }
+
   list.innerHTML=playlist.length?playlist.map((song,index)=>{
     const safeName=escapeHtml(song.name||'未命名歌曲');
     const custom=!!song.custom;
+    const indexText=String(index+1).padStart(2,'0');
     return `<div class="music-track${index===songIdx?' active':''}">
       <button type="button" class="music-track-main" onclick="playSongAt(${index})">
-        <span class="music-track-icon" aria-hidden="true">${index===songIdx?'🎵':'🎶'}</span>
-        <span class="music-track-name">${safeName}${custom?'<span class="music-track-source">MP3</span>':''}</span>
+        <span class="music-track-index" aria-hidden="true">${index===songIdx?'▶':indexText}</span>
+        <span class="music-track-copy">
+          <span class="music-track-name">${safeName}</span>
+          <span class="music-track-meta">${custom?'自己加入的 MP3':'我們的歌單'}</span>
+        </span>
       </button>
       ${custom?`<button type="button" class="music-track-delete" onclick="event.stopPropagation();deleteCustomMusic('${song.key}')" aria-label="刪除 ${safeName}" title="刪除">×</button>`:''}
     </div>`;
   }).join(''):'<div class="music-library-empty">音樂庫目前是空的</div>';
+}
+
+let musicSongsExpanded=false;
+function setMusicSongsExpanded(expanded){
+  musicSongsExpanded=!!expanded;
+  const panel=document.getElementById('music-songs-panel');
+  const toggle=document.getElementById('music-songs-toggle');
+  if(panel) panel.hidden=!musicSongsExpanded;
+  if(toggle) toggle.setAttribute('aria-expanded',String(musicSongsExpanded));
+}
+function toggleMusicSongs(){
+  setMusicSongsExpanded(!musicSongsExpanded);
 }
 
 function toggleMusicPlayerDock(forceExpanded){
@@ -11310,19 +11803,30 @@ function toggleMusicPlayerDock(forceExpanded){
     document.body.classList.remove('music-library-open');
   }
 }
-function toggleMusicLibrary(){
-  const lib = document.getElementById('music-library');
+function toggleMusicLibrary(forceOpen){
+  const lib=document.getElementById('music-library');
   if(!lib) return;
-  const isHidden = getComputedStyle(lib).display === 'none';
-  lib.style.display = isHidden ? 'block' : 'none';
-  document.body.classList.toggle('music-library-open',isHidden);
+  const currentlyOpen=lib.classList.contains('open');
+  const shouldOpen=typeof forceOpen==='boolean'?forceOpen:!currentlyOpen;
+
+  lib.classList.toggle('open',shouldOpen);
+  lib.style.display=shouldOpen?'block':'none';
+  lib.setAttribute('aria-hidden',String(!shouldOpen));
+  document.body.classList.toggle('music-library-open',shouldOpen);
+
   const headerBtn=document.getElementById('music-header-btn');
-  if(headerBtn){
-    headerBtn.setAttribute('aria-expanded',String(isHidden));
-    headerBtn.setAttribute('aria-label',isHidden?'關閉音樂庫':'開啟音樂庫');
-    headerBtn.title=isHidden?'關閉音樂庫':'開啟音樂庫';
+  if(headerBtn) headerBtn.setAttribute('aria-expanded',String(shouldOpen));
+
+  if(shouldOpen){
+    renderMusicLibrary();
+    updateMusicProgressUI();
+    applyMusicVolume();
+    updateMusicModeUI();
+    // 預設讓歌曲列表收起來，介面保持乾淨。
+    setMusicSongsExpanded(false);
+  }else{
+    toggleAddMusicForm(false);
   }
-  if(isHidden) renderMusicLibrary();
 }
 
 function playSongAt(i){
@@ -11391,18 +11895,22 @@ audio.addEventListener('pause',()=>{
   syncMainMusicMediaSessionState();
 });
 audio.addEventListener('error',()=>{
-  const fallback=audio.dataset.assetFallback||'';
-  const tried=audio.dataset.assetFallbackTried==='1';
-  if(fallback && !tried){
-    const shouldResume=!audio.paused;
-    const oldTime=Number.isFinite(audio.currentTime)?audio.currentTime:0;
-    audio.dataset.assetFallbackTried='1';
-    audio.src=fallback;
+  const current=getCurrentMusicSong();
+  if(!current || current.custom) return;
+
+  const tried=Number(audio.dataset.pathFallbackStep||0);
+  const raw=String(current.file||'').replace(/^\.\//,'');
+  const candidates=[raw,`assets/${raw}`].filter((v,i,a)=>v&&a.indexOf(v)===i);
+
+  if(tried<candidates.length){
+    const next=candidates[tried];
+    audio.dataset.pathFallbackStep=String(tried+1);
+    const shouldResume=audio.dataset.wantAutoplay==='1';
+    audio.src=next;
     audio.load();
-    audio.addEventListener('loadedmetadata',()=>{
-      try{ if(oldTime>0 && oldTime<audio.duration) audio.currentTime=oldTime; }catch(_){}
-      if(shouldResume) audio.play().catch(()=>{});
-    },{once:true});
+    if(shouldResume){
+      audio.addEventListener('canplay',()=>audio.play().catch(()=>{}),{once:true});
+    }
   }
 });
 
@@ -13737,6 +14245,15 @@ window.checkIPhone15PlusFontScale=function(){
     sample20px:root.getPropertyValue('--i15fs-20-px').trim()||'20px (未放大)'
   };
 };
+</script>
+
+
+<script>
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape' && document.getElementById('music-library')?.classList.contains('open')){
+    toggleMusicLibrary(false);
+  }
+});
 </script>
 
 </body>

@@ -7980,6 +7980,8 @@ function showPage(id,btn){
     else albumRenderCal();
   }
   if(id==='memories') renderMemories();
+  // 依目前頁面切換 iPhone AudioSession：主音樂可背景播放；心約只前景播放。
+  if(typeof configureMusicPlaybackSession==='function') configureMusicPlaybackSession();
   if(id==='choose'){
     chooseStartSong();
     chooseRefreshOpeningCopy();
@@ -11401,6 +11403,7 @@ let songIdx=musicPlayMode==='random'?Math.floor(Math.random()*SONGS.length):0;
 
 const audio=document.getElementById('audio-player');
 try{audio.crossOrigin='anonymous';}catch(_){}
+try{audio.preload='auto';}catch(_){}
 const disc=document.getElementById('music-disc');
 const playBtn=document.getElementById('play-btn');
 const titleEl=document.getElementById('music-title');
@@ -11427,7 +11430,20 @@ function formatMusicTime(seconds){
   const s=Math.floor(seconds%60);
   return `${m}:${String(s).padStart(2,'0')}`;
 }
+function configureMusicPlaybackSession(){
+  try{
+    if('audioSession' in navigator && navigator.audioSession){
+      // 主音樂使用 playback 才能在 iPhone 鎖屏／切背景繼續播放。
+      // 心約頁則刻意改成 ambient，心約音樂只允許前景播放。
+      const chooseActive=document.getElementById('page-choose')?.classList.contains('active');
+      navigator.audioSession.type=chooseActive?'ambient':'playback';
+    }
+  }catch(error){
+    console.warn('iPhone 音訊播放模式設定失敗',error);
+  }
+}
 function ensureMusicAudioGraph(){
+  configureMusicPlaybackSession();
   if(musicGainNode&&musicAudioContext) return true;
   const AudioContextClass=window.AudioContext||window.webkitAudioContext;
   if(!AudioContextClass) return false;
@@ -11866,6 +11882,7 @@ async function selectMusicSong(idx,autoplay=false){
     audio.src=source;
     updateMusicTitle(song.name);
     if(autoplay){
+      configureMusicPlaybackSession();
       await resumeMusicAudioGraph();
       await audio.play();
     }
@@ -11982,6 +11999,7 @@ async function togglePlay(){
   if(audio.paused){
     if(!audio.getAttribute('src')){selectMusicSong(songIdx,true);return;}
     try{
+      configureMusicPlaybackSession();
       await resumeMusicAudioGraph();
       await audio.play();
       setUI(true);
@@ -12046,8 +12064,9 @@ audio.addEventListener('error',()=>{
   }
 });
 
+configureMusicPlaybackSession();
 if('mediaSession' in navigator){
-  try{navigator.mediaSession.setActionHandler('play',()=>audio.play().catch(()=>{}));}catch(_){}
+  try{navigator.mediaSession.setActionHandler('play',()=>{configureMusicPlaybackSession();resumeMusicAudioGraph().then(()=>audio.play()).catch(()=>{});});}catch(_){}
   try{navigator.mediaSession.setActionHandler('pause',()=>audio.pause());}catch(_){}
   try{navigator.mediaSession.setActionHandler('previoustrack',()=>prevSong());}catch(_){}
   try{navigator.mediaSession.setActionHandler('nexttrack',()=>nextSong());}catch(_){}
@@ -12066,7 +12085,21 @@ if('mediaSession' in navigator){
   });}catch(_){}
 }
 
-// 主音樂不在 visibilitychange / pagehide 時暫停，交給 iPhone 的媒體播放機制處理。
+// 主音樂切到背景／鎖屏時不主動暫停；iPhone 17+ 以 AudioSession playback 維持媒體播放。
+document.addEventListener('visibilitychange',()=>{
+  configureMusicPlaybackSession();
+  if(!document.hidden && !audio.paused){
+    resumeMusicAudioGraph().catch(()=>{});
+    syncMainMusicMediaSessionState();
+  }
+});
+window.addEventListener('pagehide',()=>{
+  configureMusicPlaybackSession();
+});
+window.addEventListener('pageshow',()=>{
+  configureMusicPlaybackSession();
+  if(!audio.paused) resumeMusicAudioGraph().catch(()=>{});
+});
 window.addEventListener('firebaseReady',initCustomMusicSync);
 if(window._fb) initCustomMusicSync();
 renderMusicLibrary();
@@ -12180,11 +12213,15 @@ function chooseArmAutoplayRetry(){
 }
 async function chooseStartSong(){
   chooseSongRequested=true;
+  chooseSongPausedByBackground=false;
+  // 一進心約，主音樂一定暫停，避免兩首同時播放。
   if(typeof audio!=='undefined'&&!audio.paused) audio.pause();
   if(typeof setUI==='function') setUI(false);
+  if(typeof configureMusicPlaybackSession==='function') configureMusicPlaybackSession();
   chooseSetSongState(false,'正在播放紙短情長...');
   try{
     chooseSongAudio.volume=.58;
+    // 只有第一次尚未載入時才 load；已播過就保留 currentTime，直接續播。
     if(chooseSongAudio.readyState===0) chooseSongAudio.load();
     await chooseSongAudio.play();
   }catch(error){
@@ -12196,9 +12233,10 @@ async function chooseStartSong(){
   }
 }
 function chooseStopSong(){
+  // 離開心約頁只暫停，不歸零；下次進心約會從原本時間繼續。
   chooseSongRequested=false;
+  chooseSongPausedByBackground=false;
   chooseSongAudio.pause();
-  chooseSongAudio.currentTime=0;
   chooseSetSongState(false,'心約音樂');
 }
 function chooseToggleSong(){
@@ -12215,25 +12253,38 @@ chooseSongAudio.addEventListener('error',()=>chooseSetSongState(false,'歌曲暫
 
 let chooseSongPausedByBackground=false;
 function pauseChooseSongForBackground(){
-  if(!chooseSongAudio || chooseSongAudio.paused) return;
+  const choosePage=document.getElementById('page-choose');
+  if(!choosePage?.classList.contains('active') || !chooseSongRequested) return;
+  // 保留 currentTime，只暫停；心約音樂絕不留在背景播放。
   chooseSongPausedByBackground=true;
-  chooseSongAudio.pause();
+  if(!chooseSongAudio.paused) chooseSongAudio.pause();
   chooseSetSongState(false,'紙短情長 · 已暫停');
 }
-function resumeChooseSongAfterBackground(){
+async function resumeChooseSongAfterBackground(){
   const choosePage=document.getElementById('page-choose');
-  if(!chooseSongPausedByBackground || !chooseSongRequested || !choosePage?.classList.contains('active')) return;
+  if(!chooseSongPausedByBackground || !chooseSongRequested || !choosePage?.classList.contains('active') || document.hidden) return;
   chooseSongPausedByBackground=false;
-  chooseSongAudio.play().catch(()=>{
-    chooseSetSongState(false,'紙短情長 · 點一下繼續');
-  });
+  if(typeof configureMusicPlaybackSession==='function') configureMusicPlaybackSession();
+  try{
+    // 不設定 currentTime、不重新 load，直接從暫停秒數接著播放。
+    await chooseSongAudio.play();
+  }catch(error){
+    console.warn('心約返回前景自動續播被瀏覽器阻擋，等待下一次操作',error);
+    chooseSongPausedByBackground=true;
+    chooseSetSongState(false,'紙短情長 · 等待續播');
+    chooseArmAutoplayRetry();
+  }
 }
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden) pauseChooseSongForBackground();
   else resumeChooseSongAfterBackground();
 });
+// pagehide 在 iPhone 鎖屏、切 App、離開 Safari 時再補一次，確保立刻暫停。
 window.addEventListener('pagehide',pauseChooseSongForBackground);
-window.addEventListener('pageshow',()=>{ if(!document.hidden) resumeChooseSongAfterBackground(); });
+window.addEventListener('pageshow',()=>{
+  if(typeof configureMusicPlaybackSession==='function') configureMusicPlaybackSession();
+  if(!document.hidden) resumeChooseSongAfterBackground();
+});
 
 const CHOOSE_OPENING_COPIES=[
   '不是因為一切都完美，而是走過這個月以後，我仍然想牽著你繼續往前。',

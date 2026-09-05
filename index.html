@@ -2168,6 +2168,32 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-answer-photos img:first-child:nth-last-child(1){grid-column:1/-1;aspect-ratio:16/10;object-fit:contain}
 .choose-answer-empty{position:relative;z-index:1;margin-top:25px;color:var(--text-muted);font-family:'Noto Serif TC',serif;font-size:var(--i15fs-12-px, 12px);line-height:1.8;text-align:center}
 .choose-answer-time{position:relative;z-index:1;margin-top:18px;padding-top:11px;border-top:1px solid color-mix(in srgb,var(--card-border) 58%,transparent);color:var(--text-muted);font-size:var(--i15fs-9-px, 9px);text-align:right}
+.choose-reaction-wrap{position:relative;z-index:3;margin-top:14px;padding-top:12px;border-top:1px dashed color-mix(in srgb,var(--card-border) 72%,transparent)}
+.choose-reaction-line{display:flex;align-items:center;justify-content:flex-start;gap:8px;flex-wrap:wrap}
+.choose-reaction-main{min-height:34px;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid color-mix(in srgb,var(--rose) 20%,var(--card-border));border-radius:999px;background:color-mix(in srgb,var(--white) 88%,var(--pink-light));color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;font-size:var(--i15fs-9-px, 9px);font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(79,38,51,.05);transition:transform .16s ease,border-color .16s ease,background .16s ease,color .16s ease}
+.choose-reaction-main:hover,.choose-reaction-main:focus-visible{outline:none;border-color:color-mix(in srgb,var(--rose) 48%,var(--card-border));color:var(--rose)}
+.choose-reaction-main:active{transform:scale(.96)}
+.choose-reaction-main.has-reaction{border-color:color-mix(in srgb,var(--rose) 34%,var(--card-border));background:color-mix(in srgb,var(--pink-light) 72%,var(--white));color:var(--rose)}
+.choose-reaction-stack{display:inline-flex;align-items:center;padding-left:2px}
+.choose-reaction-main-emoji{position:relative;display:inline-grid;place-items:center;width:27px;height:27px;margin-left:-5px;border:2px solid var(--white);border-radius:50%;background:var(--pink-light);font-size:var(--i15fs-18-px, 18px);line-height:1;box-shadow:0 2px 6px rgba(78,37,50,.08)}
+.choose-reaction-main-emoji:first-child{margin-left:0}
+.choose-reaction-main-emoji.mine::after{content:'';position:absolute;right:-1px;bottom:-1px;width:7px;height:7px;border:2px solid var(--white);border-radius:50%;background:var(--rose)}
+.choose-reaction-main-heart{font-family:Georgia,serif;font-size:var(--i15fs-15-px, 15px);color:var(--rose)}
+.choose-reaction-change{font-size:var(--i15fs-8-px, 8px);font-weight:700;color:var(--text-muted)}
+.choose-reaction-picker{display:none;max-height:min(48vh,430px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;margin-top:10px;padding:12px;border:1px solid color-mix(in srgb,var(--rose) 18%,var(--card-border));border-radius:14px;background:color-mix(in srgb,var(--white) 96%,var(--pink-light));box-shadow:0 14px 34px rgba(64,29,41,.12)}
+.choose-reaction-picker.open{display:block;animation:chooseReactionPop .18s ease both}
+.choose-reaction-picker-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;color:var(--rose);font-size:var(--i15fs-9-px, 9px);font-weight:900}
+.choose-reaction-picker-head small{color:var(--text-muted);font-size:var(--i15fs-7-px, 7px);font-weight:700}
+.choose-reaction-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
+.choose-reaction-emoji{width:100%;aspect-ratio:1;display:grid;place-items:center;border:1px solid transparent;border-radius:10px;background:transparent;font-size:clamp(20px,4.2vw,28px);line-height:1;cursor:pointer;transition:transform .14s ease,background .14s ease,border-color .14s ease;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.choose-reaction-emoji:hover,.choose-reaction-emoji:focus-visible{outline:none;transform:translateY(-2px) scale(1.08);background:var(--pink-light);border-color:color-mix(in srgb,var(--rose) 18%,transparent)}
+.choose-reaction-emoji.selected{background:color-mix(in srgb,var(--pink-light) 78%,var(--white));border-color:color-mix(in srgb,var(--rose) 44%,var(--card-border));box-shadow:0 0 0 2px color-mix(in srgb,var(--pink-light) 72%,transparent)}
+.choose-reaction-note{margin-top:8px;color:var(--text-muted);font-size:var(--i15fs-7-px, 7px);line-height:1.55}
+@keyframes chooseReactionPop{from{opacity:0;transform:translateY(-4px) scale(.985)}to{opacity:1;transform:none}}
+[data-theme="dark"] .choose-reaction-main{background:color-mix(in srgb,var(--white) 90%,var(--pink-light));box-shadow:none}
+[data-theme="dark"] .choose-reaction-main-emoji,[data-theme="dark"] .choose-reaction-main-emoji.mine::after{border-color:var(--white)}
+[data-theme="dark"] .choose-reaction-picker{background:color-mix(in srgb,var(--white) 94%,var(--pink-light));box-shadow:0 14px 34px rgba(0,0,0,.22)}
+@media(max-width:620px){.choose-reaction-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.choose-reaction-picker{padding:10px}.choose-reaction-emoji{font-size:24px;border-radius:9px}}
 body.choose-letterbox-open{overflow:hidden}
 .choose-ready-bg{position:fixed;z-index:10055;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(circle at 50% 18%,rgba(255,238,243,.97),rgba(68,35,46,.82));backdrop-filter:blur(9px)}
 .choose-ready-card{position:relative;width:min(100%,530px);overflow:hidden;padding:48px 30px 32px;border:1px solid rgba(255,255,255,.62);border-radius:10px;background:var(--white);text-align:center;box-shadow:0 30px 90px rgba(37,14,23,.38);animation:chooseReadyArrive .58s cubic-bezier(.16,1,.3,1) both}
@@ -12226,7 +12252,14 @@ function chooseRefreshOpeningCopy(){
 }
 
 const CHOOSE_CACHE_KEY='choose_you_entries_cache_v1';
+const CHOOSE_REACTION_CACHE_KEY='choose_you_reactions_cache_v2';
+const CHOOSE_REACTION_DEVICE_ID_KEY='choose_you_reaction_device_id_v1';
+const CHOOSE_REACTION_EMOJIS=['🥰','😘','🥺','🥹','🤭','😚','🫶','დ','۵','ू𑣩𑣨','ᦏ♡᪔','💓','💔','💕','💖','💗','💘','💝','💞','💟','❤️‍🩹','❤️‍🔥','🤍','🖤','🤎','💜','💙','💚','💛','🧡','❤️','🌷','🌸','🎀','✨','🌙','🧸','🐶','🐰','🍓','💐'];
 let chooseEntriesData={};
+let chooseReactionsData={};
+let chooseReactionSyncStarted=false;
+let chooseReactionPickerKey='';
+let chooseReactionFallbackDeviceId='';
 let chooseSelectedPlayer=localStorage.getItem('choose_you_player')||'shengzhan';
 let chooseSyncStarted=false;
 let chooseHistoryExpanded=false;
@@ -12292,6 +12325,144 @@ function chooseLoadCache(){
 }
 function chooseWriteCache(){
   try{localStorage.setItem(CHOOSE_CACHE_KEY,JSON.stringify(chooseEntriesData));}catch(_){}
+}
+function chooseGetReactionDeviceId(){
+  try{
+    const saved=String(localStorage.getItem(CHOOSE_REACTION_DEVICE_ID_KEY)||'');
+    if(/^dev_[A-Za-z0-9_-]{8,80}$/.test(saved)) return saved;
+    let token='';
+    if(window.crypto?.randomUUID) token=window.crypto.randomUUID().replace(/-/g,'');
+    else if(window.crypto?.getRandomValues){
+      const bytes=new Uint32Array(4);window.crypto.getRandomValues(bytes);token=Array.from(bytes,n=>n.toString(36)).join('');
+    }else token=`${Date.now().toString(36)}${Math.random().toString(36).slice(2,14)}`;
+    const id=`dev_${token.slice(0,64)}`;
+    localStorage.setItem(CHOOSE_REACTION_DEVICE_ID_KEY,id);
+    return id;
+  }catch(_){
+    if(!chooseReactionFallbackDeviceId) chooseReactionFallbackDeviceId=`dev_session_${Date.now().toString(36)}${Math.random().toString(36).slice(2,10)}`;
+    return chooseReactionFallbackDeviceId;
+  }
+}
+function chooseNormalizeReaction(value){
+  const emoji=String(value?.emoji||value||'').trim();
+  if(!CHOOSE_REACTION_EMOJIS.includes(emoji)) return null;
+  return {emoji,updatedAt:Number(value?.updatedAt)||Date.now()};
+}
+function chooseNormalizeReactionBucket(value){
+  const bucket={};
+  if(!value||typeof value!=='object') return bucket;
+  // 相容上一版：當時每封信只有一個 reaction 物件。
+  const legacy=chooseNormalizeReaction(value);
+  if(legacy){
+    bucket.legacy_v1=legacy;
+    return bucket;
+  }
+  Object.entries(value).forEach(([deviceId,raw])=>{
+    if(!/^(?:dev_[A-Za-z0-9_-]{8,80}|legacy_v1)$/.test(String(deviceId))) return;
+    const reaction=chooseNormalizeReaction(raw);
+    if(reaction) bucket[deviceId]=reaction;
+  });
+  return bucket;
+}
+function chooseReactionEntries(month,letterPlayer){
+  return Object.entries(chooseNormalizeReactionBucket(chooseReactionsData?.[month]?.[letterPlayer]))
+    .sort((a,b)=>(Number(a[1]?.updatedAt)||0)-(Number(b[1]?.updatedAt)||0))
+    .slice(0,2);
+}
+function chooseLoadReactionCache(){
+  try{
+    const current=JSON.parse(localStorage.getItem(CHOOSE_REACTION_CACHE_KEY)||'{}');
+    const legacy=JSON.parse(localStorage.getItem('choose_you_reactions_cache_v1')||'{}');
+    chooseReactionsData=current&&typeof current==='object'&&Object.keys(current).length?current:(legacy&&typeof legacy==='object'?legacy:{});
+  }catch(_){chooseReactionsData={};}
+}
+function chooseWriteReactionCache(){
+  try{localStorage.setItem(CHOOSE_REACTION_CACHE_KEY,JSON.stringify(chooseReactionsData));}catch(_){ }
+}
+function chooseReactionKey(month,letterPlayer){
+  return `${month}:${letterPlayer}`;
+}
+function chooseRenderReactionBar(month,letterPlayer){
+  const deviceId=chooseGetReactionDeviceId();
+  const entries=chooseReactionEntries(month,letterPlayer);
+  const own=entries.find(([id])=>id===deviceId)?.[1]||null;
+  const open=chooseReactionPickerKey===chooseReactionKey(month,letterPlayer);
+  const emojiStack=entries.length
+    ?`<span class="choose-reaction-stack" aria-label="目前有 ${entries.length} 個裝置回應">${entries.map(([id,reaction])=>`<span class="choose-reaction-main-emoji${id===deviceId?' mine':''}" title="${id===deviceId?'這台裝置的回應':'另一台裝置的回應'}">${reaction.emoji}</span>`).join('')}</span>`
+    :'<span class="choose-reaction-main-heart">♡</span>';
+  const mainText=own
+    ?`<span>我的回應</span><span class="choose-reaction-change">點一下更換</span>`
+    :(entries.length>=2?'<span>已有 2 個裝置回應</span>':`<span>${entries.length?'我也要回應':'按個可愛表情'}</span>`);
+  const buttons=CHOOSE_REACTION_EMOJIS.map(emoji=>`<button type="button" class="choose-reaction-emoji${own?.emoji===emoji?' selected':''}" onclick="chooseSetReaction(event,'${month}','${letterPlayer}','${emoji}')" aria-label="用 ${emoji} 回應" aria-pressed="${own?.emoji===emoji?'true':'false'}">${emoji}</button>`).join('');
+  const note=own
+    ?'這台裝置一次保留 1 個表情；換一顆會取代，重按同一顆會取消。'
+    :(entries.length>=2?'這封信已經有 2 個裝置回應；一封信最多保留 2 顆表情。':'不分誰寫的信，自己的信也可以按；每台裝置各保留 1 個表情。');
+  return `<div class="choose-reaction-wrap"><div class="choose-reaction-line"><button type="button" class="choose-reaction-main${entries.length?' has-reaction':''}" onclick="chooseToggleReactionPicker(event,'${month}','${letterPlayer}')" aria-expanded="${open?'true':'false'}">${emojiStack}${mainText}</button></div><div class="choose-reaction-picker${open?' open':''}"><div class="choose-reaction-picker-head"><span>挑一個可愛表情或愛心回應這封信</span><small>${entries.length} / 2 個裝置</small></div><div class="choose-reaction-grid">${buttons}</div><div class="choose-reaction-note">${note}</div></div></div>`;
+}
+function chooseToggleReactionPicker(event,month,letterPlayer){
+  event?.stopPropagation();
+  if(!/^\d{4}-\d{2}$/.test(String(month||''))||!['shengzhan','yujun'].includes(letterPlayer)) return;
+  const key=chooseReactionKey(month,letterPlayer);
+  chooseReactionPickerKey=chooseReactionPickerKey===key?'':key;
+  chooseRenderLetterbox(month);
+}
+async function chooseSetReaction(event,month,letterPlayer,emoji){
+  event?.stopPropagation();
+  if(!/^\d{4}-\d{2}$/.test(String(month||''))||!['shengzhan','yujun'].includes(letterPlayer)||!CHOOSE_REACTION_EMOJIS.includes(emoji)) return;
+  const deviceId=chooseGetReactionDeviceId();
+  const bucket=chooseNormalizeReactionBucket(chooseReactionsData?.[month]?.[letterPlayer]);
+  const current=bucket[deviceId]||null;
+  if(!current&&Object.keys(bucket).length>=2){
+    alert('這封信已經有 2 個裝置的表情回應了。每封信最多保留 2 顆表情。');
+    return;
+  }
+  const next=current?.emoji===emoji?null:{emoji,updatedAt:Date.now()};
+  if(next) bucket[deviceId]=next; else delete bucket[deviceId];
+  const monthData={...(chooseReactionsData[month]||{})};
+  if(Object.keys(bucket).length) monthData[letterPlayer]=bucket; else delete monthData[letterPlayer];
+  if(Object.keys(monthData).length) chooseReactionsData[month]=monthData; else delete chooseReactionsData[month];
+  chooseWriteReactionCache();
+  chooseReactionPickerKey='';
+  chooseRenderLetterbox(month);
+  const path=`chooseYouReactions/${month}/${letterPlayer}`;
+  try{
+    if(window._fb){
+      const {db,ref,runTransaction}=window._fb;
+      const result=await runTransaction(ref(db,path),serverValue=>{
+        const serverBucket=chooseNormalizeReactionBucket(serverValue);
+        const serverCurrent=serverBucket[deviceId]||null;
+        if(!serverCurrent&&next&&Object.keys(serverBucket).length>=2) return;
+        if(next) serverBucket[deviceId]=next; else delete serverBucket[deviceId];
+        return Object.keys(serverBucket).length?serverBucket:null;
+      });
+      const synced=chooseNormalizeReactionBucket(result.snapshot?.val());
+      const syncedMonth={...(chooseReactionsData[month]||{})};
+      if(Object.keys(synced).length) syncedMonth[letterPlayer]=synced; else delete syncedMonth[letterPlayer];
+      if(Object.keys(syncedMonth).length) chooseReactionsData[month]=syncedMonth; else delete chooseReactionsData[month];
+      chooseWriteReactionCache();
+      if(!result.committed&&next&&!current) alert('剛剛另一台裝置已經先送出回應，這封信目前已滿 2 個表情。');
+      chooseRenderLetterbox(month);
+    }else{
+      queueFirebaseWrite(path,Object.keys(bucket).length?bucket:null);
+    }
+  }catch(error){
+    console.warn('心約表情回應同步失敗，已排入待同步',error);
+    queueFirebaseWrite(path,Object.keys(bucket).length?bucket:null);
+  }
+}
+function chooseInitReactionFirebase(){
+  chooseLoadReactionCache();
+  if(chooseReactionSyncStarted||!window._fb) return;
+  chooseReactionSyncStarted=true;
+  const {db,ref,onValue}=window._fb;
+  onValue(ref(db,'chooseYouReactions'),snapshot=>{
+    chooseReactionsData=snapshot.val()||{};
+    chooseWriteReactionCache();
+    if(chooseLetterboxMonth) chooseRenderLetterbox(chooseLetterboxMonth);
+  },error=>{
+    chooseReactionSyncStarted=false;
+    console.warn('心約表情回應同步失敗',error);
+  });
 }
 function chooseFormatTime(timestamp){
   const date=new Date(Number(timestamp)||0);
@@ -12390,11 +12561,11 @@ function chooseConfirmAlbumPhotos(){
   chooseCloseAlbumPickerDirect();
   chooseRenderPhotoEditor();
 }
-function chooseRenderAnswer(player,entry){
+function chooseRenderAnswer(player,entry,month=chooseMonthKey()){
   const info=choosePlayerInfo(player);
   if(!entry) return `<article class="choose-answer"><div class="choose-answer-head"><div class="choose-answer-name">${info.name}</div><i class="choose-answer-status">等待寫信</i></div><div class="choose-answer-empty">這個月份還沒有留下答案。</div></article>`;
   const photos=entry.photos?.length?`<div class="choose-answer-photos">${entry.photos.map(url=>`<img src="${chooseEscape(url)}" alt="${info.name}附上的心約照片" loading="lazy">`).join('')}</div>`:'';
-  return `<article class="choose-answer written"><div class="choose-answer-head"><div class="choose-answer-name">${info.name}</div><i class="choose-answer-status">已送出</i></div><div class="choose-answer-quote" aria-hidden="true">“</div><div class="choose-answer-text">${chooseEscape(entry.text)}</div>${photos}<div class="choose-answer-time">${chooseFormatTime(entry.updatedAt)} 寫下</div></article>`;
+  return `<article class="choose-answer written"><div class="choose-answer-head"><div class="choose-answer-name">${info.name}</div><i class="choose-answer-status">已送出</i></div><div class="choose-answer-quote" aria-hidden="true">“</div><div class="choose-answer-text">${chooseEscape(entry.text)}</div>${photos}<div class="choose-answer-time">${chooseFormatTime(entry.updatedAt)} 寫下</div>${chooseRenderReactionBar(month,player)}</article>`;
 }
 function chooseRenderLetterbox(month=chooseLetterboxMonth||chooseMonthKey()){
   const answers=document.getElementById('choose-current-answers');
@@ -12409,7 +12580,7 @@ function chooseRenderLetterbox(month=chooseLetterboxMonth||chooseMonthKey()){
   document.getElementById('choose-letterbox-intro').textContent=unlocked?'兩封信已經一起抵達，現在可以好好讀完彼此的選擇。':(complete?'兩封信都已抵達，按下解鎖後再一起打開。':'先各自寫下真心，等兩封信都封存後才會一起打開。');
   answers.classList.toggle('choose-letterbox-locked',!unlocked);
   if(unlocked){
-    answers.innerHTML=chooseRenderAnswer('shengzhan',shengzhan)+chooseRenderAnswer('yujun',yujun);
+    answers.innerHTML=chooseRenderAnswer('shengzhan',shengzhan,month)+chooseRenderAnswer('yujun',yujun,month);
     return;
   }
   if(complete){
@@ -12436,6 +12607,7 @@ function chooseCloseLetters(event){
 function chooseCloseLettersDirect(){
   document.getElementById('choose-letterbox-bg').classList.add('hidden');
   document.body.classList.remove('choose-letterbox-open');
+  chooseReactionPickerKey='';
 }
 function chooseReadySeen(month){
   try{return localStorage.getItem(`choose_ready_seen_${month}`)==='1';}catch(_){return false;}
@@ -12769,7 +12941,9 @@ async function chooseRepairKnownSeptember2026Bug(){
 }
 function chooseInitFirebase(){
   chooseLoadCache();
+  chooseLoadReactionCache();
   chooseRender();
+  chooseInitReactionFirebase();
   if(chooseSyncStarted||!window._fb) return;
   chooseSyncStarted=true;
   const {db,ref,onValue}=window._fb;
@@ -12789,6 +12963,7 @@ function chooseInitFirebase(){
 }
 
 chooseLoadCache();
+chooseLoadReactionCache();
 chooseRender();
 chooseSyncHomeBroadcast();
 if(window._fb) chooseInitFirebase();

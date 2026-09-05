@@ -43,6 +43,14 @@
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
+/* iPhone / iPad：全站停用雙點放大，保留單指滑動與雙指縮放 */
+html,body{
+  touch-action:manipulation;
+}
+button,a,label,input,textarea,select,summary,[role="button"],[onclick]{
+  touch-action:manipulation;
+}
+
 html{
 width:100%;
 min-height:100%;
@@ -2896,9 +2904,7 @@ body.music-library-open{overflow:hidden!important;touch-action:none}
   display:grid;
   place-items:center;
   border-radius:50%;
-  background:
-    radial-gradient(circle at 50% 50%,var(--white) 0 14%,transparent 15%),
-    linear-gradient(145deg,var(--rose),#ef7d93);
+  background:linear-gradient(145deg,var(--rose),#ef7d93);
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 10px 26px rgba(173,56,85,.18);
 }
 .music-now-art-disc span{
@@ -3009,14 +3015,43 @@ body.music-library-open{overflow:hidden!important;touch-action:none}
 }
 .music-main-control:active{transform:scale(.93)}
 .music-skip-glyph{
+  position:relative;
   display:block;
+  width:19px;
+  height:18px;
   color:inherit;
-  font-size:var(--i15fs-13-px,13px);
-  font-weight:900;
-  letter-spacing:-4px;
-  transform:translateX(-1px);
 }
-.music-main-control.skip:last-child .music-skip-glyph{transform:translateX(1px)}
+.music-skip-glyph::before{
+  content:'';
+  position:absolute;
+  top:50%;
+  width:0;
+  height:0;
+  transform:translateY(-50%);
+}
+.music-skip-glyph::after{
+  content:'';
+  position:absolute;
+  top:3px;
+  width:2.5px;
+  height:12px;
+  border-radius:2px;
+  background:currentColor;
+}
+.music-skip-glyph.prev::before{
+  left:5px;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-right:10px solid currentColor;
+}
+.music-skip-glyph.prev::after{left:1px}
+.music-skip-glyph.next::before{
+  right:5px;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:10px solid currentColor;
+}
+.music-skip-glyph.next::after{right:1px}
 .music-settings-card,
 .music-songs-card{
   width:min(100%,520px);
@@ -3378,11 +3413,11 @@ body.music-library-open{overflow:hidden!important;touch-action:none}
 
         <div class="music-main-controls">
           <button type="button" class="music-main-control skip" onclick="prevSong()" aria-label="上一首">
-            <span class="music-skip-glyph" aria-hidden="true">◀◀</span>
+            <span class="music-skip-glyph prev" aria-hidden="true"></span>
           </button>
           <button type="button" class="music-main-control primary" id="music-library-play-btn" onclick="togglePlay()" aria-label="播放或暫停">▶</button>
           <button type="button" class="music-main-control skip" onclick="nextSong()" aria-label="下一首">
-            <span class="music-skip-glyph" aria-hidden="true">▶▶</span>
+            <span class="music-skip-glyph next" aria-hidden="true"></span>
           </button>
         </div>
       </section>
@@ -6694,12 +6729,10 @@ function playPreviousOccasionEffect(type){
   showOccasionEffectHistory(type);
 }
 
+// 全站阻止瀏覽器把快速雙點判定成頁面放大。
+// touch-action: manipulation 是主要處理；dblclick 是 Safari / WebView 的額外保險。
 document.addEventListener('dblclick',event=>{
-  const target=event.target;
-  if(target.closest('.countdown-num,.countdown-preview,.occasion-lock button,.occasion-copy-close,.occasion-copy-actions button') &&
-     !target.closest('input,textarea,select')){
-    event.preventDefault();
-  }
+  event.preventDefault();
 },{passive:false});
 
 function previewOccasionEffect(type){
@@ -11367,6 +11400,7 @@ if(!['sequence','single','random'].includes(musicPlayMode)) musicPlayMode='seque
 let songIdx=musicPlayMode==='random'?Math.floor(Math.random()*SONGS.length):0;
 
 const audio=document.getElementById('audio-player');
+try{audio.crossOrigin='anonymous';}catch(_){}
 const disc=document.getElementById('music-disc');
 const playBtn=document.getElementById('play-btn');
 const titleEl=document.getElementById('music-title');
@@ -11394,12 +11428,30 @@ function formatMusicTime(seconds){
   return `${m}:${String(s).padStart(2,'0')}`;
 }
 function ensureMusicAudioGraph(){
-  // iPhone Safari 上 createMediaElementSource 容易因 CORS / AudioContext 狀態造成「看起來有播放但沒聲音」。
-  // 主播放器改用原生 HTMLAudioElement 音量，穩定度較高。
-  musicGainNode=null;
-  return false;
+  if(musicGainNode&&musicAudioContext) return true;
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass) return false;
+  try{
+    if(!musicAudioContext) musicAudioContext=new AudioContextClass();
+    if(!musicMediaSource) musicMediaSource=musicAudioContext.createMediaElementSource(audio);
+    if(!musicGainNode){
+      musicGainNode=musicAudioContext.createGain();
+      musicMediaSource.connect(musicGainNode);
+      musicGainNode.connect(musicAudioContext.destination);
+    }
+    // 由 GainNode 控制真正輸出音量；避免桌機再被 audio.volume 疊乘一次。
+    try{audio.volume=1;}catch(_){}
+    return true;
+  }catch(error){
+    console.warn('網站音量控制初始化失敗，改用瀏覽器原生音量',error);
+    return false;
+  }
 }
 async function resumeMusicAudioGraph(){
+  const ready=ensureMusicAudioGraph();
+  if(ready&&musicAudioContext?.state==='suspended'){
+    try{await musicAudioContext.resume();}catch(_){}
+  }
   applyMusicVolume();
   return true;
 }
@@ -11409,8 +11461,18 @@ function musicGainValue(){
   return shaped*(musicUltraQuiet?0.08:1);
 }
 function applyMusicVolume(){
-  const gain=musicGainValue();
-  try{audio.volume=Math.max(0,Math.min(1,gain));}catch(_){}
+  const gain=Math.max(0,Math.min(1,musicGainValue()));
+  if(musicGainNode&&musicAudioContext){
+    try{
+      const now=musicAudioContext.currentTime;
+      musicGainNode.gain.cancelScheduledValues(now);
+      musicGainNode.gain.setTargetAtTime(gain,now,0.012);
+      audio.volume=1;
+    }catch(_){}
+  }else{
+    // 非 iPhone 或 Web Audio 不可用時的備援。
+    try{audio.volume=gain;}catch(_){}
+  }
   const range=document.getElementById('music-volume-range');
   const value=document.getElementById('music-volume-value');
   const ultra=document.getElementById('music-ultra-quiet-btn');
@@ -11424,14 +11486,13 @@ function applyMusicVolume(){
 function setMusicVolume(value){
   musicVolume=Math.max(0,Math.min(100,Number(value)||0));
   localStorage.setItem('musicVolumeV2',String(musicVolume));
-  ensureMusicAudioGraph();
-  applyMusicVolume();
+  // range 的 input 本身就是使用者手勢，iPhone 可在這裡啟用 AudioContext。
+  resumeMusicAudioGraph().catch(()=>applyMusicVolume());
 }
 function toggleMusicUltraQuiet(){
   musicUltraQuiet=!musicUltraQuiet;
   localStorage.setItem('musicUltraQuietV2',musicUltraQuiet?'1':'0');
-  ensureMusicAudioGraph();
-  applyMusicVolume();
+  resumeMusicAudioGraph().catch(()=>applyMusicVolume());
 }
 function updateMusicModeUI(){
   const labelMap={sequence:'順序播放',single:'單曲循環',random:'隨機播放'};
@@ -12295,50 +12356,17 @@ function chooseRefreshOpeningCopy(){
 const CHOOSE_CACHE_KEY='choose_you_entries_cache_v1';
 const CHOOSE_REACTION_CACHE_KEY='choose_you_reactions_cache_v3';
 const CHOOSE_REACTION_DEVICE_ID_KEY='choose_you_reaction_device_id_v1';
-const CHOOSE_REACTION_STICKERS={
-  puppy_hi:{label:'小狗打招呼',art:'૮˶ᵔ ᵕ ᵔ˶ა',motion:'wiggle'},
-  puppy_heart:{label:'小狗愛你',art:'૮˶♡ ᵕ ♡˶ა',motion:'pulse'},
-  puppy_hug:{label:'小狗抱抱',art:'૮˶っ ᵔ ᵕ ᵔ˶ა',motion:'bounce'},
-  puppy_kiss:{label:'小狗親親',art:'૮˶˘ ³˘˶ა',motion:'kiss'},
-  puppy_shy:{label:'小狗害羞',art:'૮˶˃ ⤙ ˂˶ა',motion:'wiggle'},
-  puppy_miss:{label:'小狗想你',art:'૮˶•́ ᵕ •̀˶ა',motion:'float'},
-  puppy_letter:{label:'小狗情書',art:'🐶💌',motion:'float'},
-  puppy_love_card:{label:'小狗愛心卡',art:'🐶💗',motion:'pop'},
-  puppy_buddy:{label:'小狗抱紫寶',art:'🐶💜',motion:'pulse'},
-  puppy_double:{label:'雙狗貼貼',art:'🐶🫶🐶',motion:'bounce'},
-  puppy_hearts:{label:'頭上愛心',art:'🐶💕',motion:'pop'},
-  puppy_sparkle:{label:'小狗閃亮',art:'🐶✨',motion:'shimmer'},
-  puppy_flower:{label:'小狗花花',art:'🐶🌷',motion:'sway'},
-  puppy_strawberry:{label:'小狗草莓',art:'🐶🍓',motion:'wiggle'},
-  puppy_boba:{label:'小狗奶茶',art:'🐶🧋',motion:'sway'},
-  puppy_teddy:{label:'小狗玩偶',art:'🐶🧸',motion:'bounce'},
-  puppy_sleep:{label:'小狗晚安',art:'🐶🌙',motion:'float'},
-  puppy_paw:{label:'小狗肉球',art:'🐾💗',motion:'shake'},
-  puppy_butterfly:{label:'小狗蝴蝶',art:'🐶🦋',motion:'float'},
-  puppy_crown:{label:'小狗皇冠',art:'🐶👑',motion:'shimmer'},
-  puppy_ribbon:{label:'小狗蝴蝶結',art:'🐶🎀',motion:'sway'},
-  puppy_peek:{label:'小狗偷看',art:'🐶👀',motion:'wiggle'},
-  puppy_happy:{label:'小狗開心',art:'🐶🎉',motion:'bounce'},
-  puppy_magic:{label:'小狗魔法',art:'🐶🪄',motion:'shimmer'}
-};
 const CHOOSE_REACTION_GROUPS={
-  popular:{label:'常用',icon:'🥰',kind:'emoji',emojis:['❤️','🥰','😂','😭','🥹','😍','😘','🫶','🔥','✨','💕','💯','🎉','😮','🥺','🤭','👍','👏','🙏','👀','💋','💌','🎀','🌸','🧸','🍓']},
-  stickers:{label:'貼圖',icon:'🧸',kind:'sticker',stickers:Object.keys(CHOOSE_REACTION_STICKERS)},
   faces:{label:'表情',icon:'😊',kind:'emoji',emojis:['😀','😃','😄','😁','😆','😅','😂','🤣','🥲','🥹','☺️','😊','😇','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋','😛','😝','😜','🤪','🤨','🧐','🤓','😎','🥸','🤩','🥳','🙂‍↕️','😏','😒','🙂‍↔️','😞','😔','😟','😕','🙁','☹️','😣','😖','😫','😩','🥺','😢','😭','😤','😠','😡','🤬','🤯','😳','🥵','🥶','😱','😨','😰','😥','😓','🫣','🤗','🫡','🤔','🫢','🤭','🤫','🤥','😶','🫥','😐','🫤','🙄','😬','😮‍💨','😴','🤤','😪','😵','🤐','🥴','🤢','🤮','🤧','😷','🤒','🤕','😈','👿','💀','👻','👽','🤖']},
   hearts:{label:'愛心',icon:'💗',kind:'emoji',emojis:['💓','💔','💕','💖','💗','💘','💝','💞','💟','❤️‍🩹','❤️‍🔥','🤍','🖤','🤎','💜','💙','🩵','💚','💛','🧡','🩷','❤️','💋','💌','💐','🫶']},
-  hands:{label:'手勢',icon:'🫶',kind:'emoji',emojis:['🫶','👍','👎','👏','🙌','👐','🤲','🤝','🙏','✌️','🤞','🫰','🤟','🤘','👌','🤌','💪','👊','✊','🤛','🤜','👋','🖐️','✋','🫱','🫲','👉','👈','☝️','👇','👆','🫵','🤙']},
-  cute:{label:'可愛',icon:'🎀',kind:'emoji',emojis:['🎀','✨','⭐️','🌟','💫','🔥','💯','🎉','🎊','🎁','🧸','🪄','👑','💎','🪩','🫧','🪽','🦋','🌈','☁️','🌙','☀️','❄️','🍀','🕯️','🔮','🎈','🎂','🧁','🍭','🍬']},
-  nature:{label:'花花',icon:'🌷',kind:'emoji',emojis:['🌷','🌸','🌹','🥀','🌺','🌻','🌼','🪻','🪷','💐','🌱','🌿','☘️','🍀','🍃','🍂','🍁','🌵','🌴','🌳','🌲','🪴','🍄','🌞','🌝','🌛','🌜','🌙','⭐️','🌟','✨','🌈','☀️','⛅️','☁️','🌧️','❄️','☃️']},
-  animals:{label:'動物',icon:'🐰',kind:'emoji',emojis:['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐻‍❄️','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐔','🐥','🐣','🐦','🦆','🦉','🦄','🐝','🦋','🐞','🐢','🐬','🐳','🦭','🐙','🦀','🐠','🐾']},
-  food:{label:'甜甜',icon:'🍓',kind:'emoji',emojis:['🍓','🍒','🍑','🍉','🍇','🍎','🍊','🍋','🍍','🥝','🥭','🍰','🎂','🧁','🍩','🍪','🍫','🍬','🍭','🍮','🍦','🍧','🍨','🥞','🧇','🍯','☕️','🧋','🥛','🍵']},
-  fun:{label:'其他',icon:'🎵',kind:'emoji',emojis:['🎵','🎶','🎧','🎤','🎹','🎸','📷','📸','🎞️','🎬','🎮','🕹️','🧩','🛍️','👛','💄','💅','🪞','🛏️','🛋️','🚗','✈️','🏠','🏖️','🎡','🎢','🏰','⚾️','🏀','⚽️','🏆']}
+  hands:{label:'手勢',icon:'🫶',kind:'emoji',emojis:['🫶','👍','👎','👏','🙌','👐','🤲','🤝','🙏','✌️','🤞','🫰','🤟','🤘','👌','🤌','💪','👊','✊','🤛','🤜','👋','🖐️','✋','🫱','🫲','👉','👈','☝️','👇','👆','🫵','🤙']}
 };
 const CHOOSE_REACTION_EMOJIS=[...new Set(Object.values(CHOOSE_REACTION_GROUPS).flatMap(group=>Array.isArray(group.emojis)?group.emojis:[]))];
 let chooseEntriesData={};
 let chooseReactionsData={};
 let chooseReactionSyncStarted=false;
 let chooseReactionPickerKey='';
-let chooseReactionCategory='popular';
+let chooseReactionCategory='faces';
 let chooseReactionFallbackDeviceId='';
 let chooseSelectedPlayer=localStorage.getItem('choose_you_player')||'shengzhan';
 let chooseSyncStarted=false;
@@ -12425,10 +12453,7 @@ function chooseGetReactionDeviceId(){
 }
 function chooseNormalizeReaction(value){
   const updatedAt=Number(value?.updatedAt)||Date.now();
-  const type=String(value?.type||'').trim();
-  const sticker=String(value?.sticker||value?.value||'').trim();
-  if(type==='sticker'&&CHOOSE_REACTION_STICKERS[sticker]) return {type:'sticker',value:sticker,updatedAt};
-  const emoji=String(value?.emoji||(type==='emoji'?value?.value:'')||value||'').trim();
+  const emoji=String(value?.emoji||(value?.type==='emoji'?value?.value:'')||value||'').trim();
   if(!CHOOSE_REACTION_EMOJIS.includes(emoji)) return null;
   return {type:'emoji',value:emoji,emoji,updatedAt};
 }
@@ -12467,14 +12492,7 @@ function chooseWriteReactionCache(){
 function chooseReactionKey(month,letterPlayer){
   return `${month}:${letterPlayer}`;
 }
-function chooseStickerMarkup(stickerId,compact=false){
-  const sticker=CHOOSE_REACTION_STICKERS[stickerId];
-  if(!sticker) return '';
-  const motion=`choose-sticker-${sticker.motion||'pulse'}`;
-  return `<span class="choose-sticker-art ${motion}${compact?' compact':''}" title="${chooseEscape(sticker.label)}"><span>${chooseEscape(sticker.art)}</span></span>`;
-}
 function chooseReactionDisplayMarkup(reaction){
-  if(reaction?.type==='sticker'&&CHOOSE_REACTION_STICKERS[reaction.value]) return `<span class="choose-reaction-main-sticker">${chooseStickerMarkup(reaction.value,true)}</span>`;
   const emoji=String(reaction?.value||reaction?.emoji||'');
   return `<span class="choose-reaction-main-emoji" title="表情回應">${chooseEscape(emoji)}</span>`;
 }
@@ -12487,19 +12505,14 @@ function chooseRenderReactionBar(month,letterPlayer){
     ?`<span class="choose-reaction-stack" aria-label="目前有 ${entries.length} 個回應">${entries.map(([,reaction])=>chooseReactionDisplayMarkup(reaction)).join('')}</span>`
     :'<span class="choose-reaction-main-heart">♡</span>';
   const mainText=entries.length?'':'<span>按個可愛表情</span>';
-  if(!CHOOSE_REACTION_GROUPS[chooseReactionCategory]) chooseReactionCategory='popular';
+  if(!CHOOSE_REACTION_GROUPS[chooseReactionCategory]) chooseReactionCategory='faces';
   const group=CHOOSE_REACTION_GROUPS[chooseReactionCategory];
   const categoryButtons=Object.entries(CHOOSE_REACTION_GROUPS).map(([key,item])=>`<button type="button" class="choose-reaction-category${key===chooseReactionCategory?' active':''}" onclick="chooseSetReactionCategory(event,'${month}','${letterPlayer}','${key}')" aria-pressed="${key===chooseReactionCategory?'true':'false'}"><span>${item.icon}</span><small>${item.label}</small></button>`).join('');
-  let pickerBody='';
-  if(group.kind==='sticker'){
-    pickerBody=`<div class="choose-reaction-sticker-grid">${group.stickers.map(stickerId=>{const sticker=CHOOSE_REACTION_STICKERS[stickerId];const selected=own?.type==='sticker'&&own?.value===stickerId;return `<button type="button" class="choose-reaction-sticker${selected?' selected':''}" onclick="chooseSetStickerReaction(event,'${month}','${letterPlayer}','${stickerId}')" aria-label="用${chooseEscape(sticker.label)}貼圖回應" aria-pressed="${selected?'true':'false'}">${chooseStickerMarkup(stickerId)}<small>${chooseEscape(sticker.label)}</small></button>`;}).join('')}</div>`;
-  }else{
-    pickerBody=`<div class="choose-reaction-grid">${group.emojis.map(emoji=>`<button type="button" class="choose-reaction-emoji${own?.type!=='sticker'&&own?.value===emoji?' selected':''}" onclick="chooseSetReaction(event,'${month}','${letterPlayer}','${emoji}')" aria-label="用 ${emoji} 回應" aria-pressed="${own?.type!=='sticker'&&own?.value===emoji?'true':'false'}">${emoji}</button>`).join('')}</div>`;
-  }
+  const pickerBody=`<div class="choose-reaction-grid">${group.emojis.map(emoji=>`<button type="button" class="choose-reaction-emoji${own?.value===emoji?' selected':''}" onclick="chooseSetReaction(event,'${month}','${letterPlayer}','${emoji}')" aria-label="用 ${emoji} 回應" aria-pressed="${own?.value===emoji?'true':'false'}">${emoji}</button>`).join('')}</div>`;
   const note=own
-    ?'這台裝置一次保留 1 個回應；換 Emoji 或貼圖會取代，重按同一個會取消。'
-    :(entries.length>=2?'這封信已經有 2 個裝置回應；一封信最多保留 2 個。':'Emoji 和動態貼圖都可以用；自己的信也能按，每台裝置各保留 1 個。');
-  return `<div class="choose-reaction-wrap"><div class="choose-reaction-line"><button type="button" class="choose-reaction-main${entries.length?' has-reaction':''}" onclick="chooseToggleReactionPicker(event,'${month}','${letterPlayer}')" aria-expanded="${open?'true':'false'}">${reactionStack}${mainText}</button></div><div class="choose-reaction-picker${open?' open':''}"><div class="choose-reaction-picker-head"><span>挑 Emoji 或動態貼圖回應</span><small>${entries.length} / 2 個裝置</small></div><div class="choose-reaction-categories">${categoryButtons}</div>${pickerBody}<div class="choose-reaction-note">${note}</div></div></div>`;
+    ?'這台裝置一次保留 1 個表情；換另一個會取代，重按同一個會取消。'
+    :(entries.length>=2?'這封信已經有 2 個裝置回應；一封信最多保留 2 個。':'自己的信也能按表情，每台裝置各保留 1 個。');
+  return `<div class="choose-reaction-wrap"><div class="choose-reaction-line"><button type="button" class="choose-reaction-main${entries.length?' has-reaction':''}" onclick="chooseToggleReactionPicker(event,'${month}','${letterPlayer}')" aria-expanded="${open?'true':'false'}">${reactionStack}${mainText}</button></div><div class="choose-reaction-picker${open?' open':''}"><div class="choose-reaction-picker-head"><span>挑表情回應</span><small>${entries.length} / 2 個裝置</small></div><div class="choose-reaction-categories">${categoryButtons}</div>${pickerBody}<div class="choose-reaction-note">${note}</div></div></div>`;
 }
 function chooseSetReactionCategory(event,month,letterPlayer,category){
   event?.stopPropagation();
@@ -12564,10 +12577,7 @@ async function chooseSetReaction(event,month,letterPlayer,emoji){
   if(!CHOOSE_REACTION_EMOJIS.includes(emoji)) return;
   return chooseCommitReaction(event,month,letterPlayer,{type:'emoji',value:emoji,emoji});
 }
-async function chooseSetStickerReaction(event,month,letterPlayer,stickerId){
-  if(!CHOOSE_REACTION_STICKERS[stickerId]) return;
-  return chooseCommitReaction(event,month,letterPlayer,{type:'sticker',value:stickerId,sticker:stickerId});
-}
+
 function chooseInitReactionFirebase(){
   chooseLoadReactionCache();
   if(chooseReactionSyncStarted||!window._fb) return;

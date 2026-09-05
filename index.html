@@ -2177,7 +2177,6 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-reaction-stack{display:inline-flex;align-items:center;padding-left:2px}
 .choose-reaction-main-emoji{position:relative;display:inline-grid;place-items:center;width:27px;height:27px;margin-left:-5px;border:2px solid var(--white);border-radius:50%;background:var(--pink-light);font-size:var(--i15fs-18-px, 18px);line-height:1;box-shadow:0 2px 6px rgba(78,37,50,.08)}
 .choose-reaction-main-emoji:first-child{margin-left:0}
-.choose-reaction-main-emoji.mine::after{content:'';position:absolute;right:-1px;bottom:-1px;width:7px;height:7px;border:2px solid var(--white);border-radius:50%;background:var(--rose)}
 .choose-reaction-main-heart{font-family:Georgia,serif;font-size:var(--i15fs-15-px, 15px);color:var(--rose)}
 .choose-reaction-change{font-size:var(--i15fs-8-px, 8px);font-weight:700;color:var(--text-muted)}
 .choose-reaction-picker{display:none;max-height:min(48vh,430px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;margin-top:10px;padding:12px;border:1px solid color-mix(in srgb,var(--rose) 18%,var(--card-border));border-radius:14px;background:color-mix(in srgb,var(--white) 96%,var(--pink-light));box-shadow:0 14px 34px rgba(64,29,41,.12)}
@@ -2191,7 +2190,7 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-reaction-note{margin-top:8px;color:var(--text-muted);font-size:var(--i15fs-7-px, 7px);line-height:1.55}
 @keyframes chooseReactionPop{from{opacity:0;transform:translateY(-4px) scale(.985)}to{opacity:1;transform:none}}
 [data-theme="dark"] .choose-reaction-main{background:color-mix(in srgb,var(--white) 90%,var(--pink-light));box-shadow:none}
-[data-theme="dark"] .choose-reaction-main-emoji,[data-theme="dark"] .choose-reaction-main-emoji.mine::after{border-color:var(--white)}
+[data-theme="dark"] .choose-reaction-main-emoji{border-color:var(--white)}
 [data-theme="dark"] .choose-reaction-picker{background:color-mix(in srgb,var(--white) 94%,var(--pink-light));box-shadow:0 14px 34px rgba(0,0,0,.22)}
 @media(max-width:620px){.choose-reaction-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.choose-reaction-picker{padding:10px}.choose-reaction-emoji{font-size:24px;border-radius:9px}}
 body.choose-letterbox-open{overflow:hidden}
@@ -12254,7 +12253,7 @@ function chooseRefreshOpeningCopy(){
 const CHOOSE_CACHE_KEY='choose_you_entries_cache_v1';
 const CHOOSE_REACTION_CACHE_KEY='choose_you_reactions_cache_v2';
 const CHOOSE_REACTION_DEVICE_ID_KEY='choose_you_reaction_device_id_v1';
-const CHOOSE_REACTION_EMOJIS=['🥰','😘','🥺','🥹','🤭','😚','🫶','დ','۵','ू𑣩𑣨','ᦏ♡᪔','💓','💔','💕','💖','💗','💘','💝','💞','💟','❤️‍🩹','❤️‍🔥','🤍','🖤','🤎','💜','💙','💚','💛','🧡','❤️','🌷','🌸','🎀','✨','🌙','🧸','🐶','🐰','🍓','💐'];
+const CHOOSE_REACTION_EMOJIS=['🥰','😘','🥺','🥹','🤭','😚','🫶','💓','💔','💕','💖','💗','💘','💝','💞','💟','❤️‍🩹','❤️‍🔥','🤍','🖤','🤎','💜','💙','💚','💛','🧡','❤️','🌷','🌸','🎀','✨','🌙','🧸','🐶','🐰','🍓','💐'];
 let chooseEntriesData={};
 let chooseReactionsData={};
 let chooseReactionSyncStarted=false;
@@ -12388,11 +12387,10 @@ function chooseRenderReactionBar(month,letterPlayer){
   const own=entries.find(([id])=>id===deviceId)?.[1]||null;
   const open=chooseReactionPickerKey===chooseReactionKey(month,letterPlayer);
   const emojiStack=entries.length
-    ?`<span class="choose-reaction-stack" aria-label="目前有 ${entries.length} 個裝置回應">${entries.map(([id,reaction])=>`<span class="choose-reaction-main-emoji${id===deviceId?' mine':''}" title="${id===deviceId?'這台裝置的回應':'另一台裝置的回應'}">${reaction.emoji}</span>`).join('')}</span>`
+    ?`<span class="choose-reaction-stack" aria-label="目前有 ${entries.length} 個表情回應">${entries.map(([,reaction])=>`<span class="choose-reaction-main-emoji" title="表情回應">${reaction.emoji}</span>`).join('')}</span>`
     :'<span class="choose-reaction-main-heart">♡</span>';
-  const mainText=own
-    ?`<span>我的回應</span><span class="choose-reaction-change">點一下更換</span>`
-    :(entries.length>=2?'<span>已有 2 個裝置回應</span>':`<span>${entries.length?'我也要回應':'按個可愛表情'}</span>`);
+  // IG 私訊風格：有回應後只顯示表情，不標示「我的回應」或裝置身分。
+  const mainText=entries.length?'':'<span>按個可愛表情</span>';
   const buttons=CHOOSE_REACTION_EMOJIS.map(emoji=>`<button type="button" class="choose-reaction-emoji${own?.emoji===emoji?' selected':''}" onclick="chooseSetReaction(event,'${month}','${letterPlayer}','${emoji}')" aria-label="用 ${emoji} 回應" aria-pressed="${own?.emoji===emoji?'true':'false'}">${emoji}</button>`).join('');
   const note=own
     ?'這台裝置一次保留 1 個表情；換一顆會取代，重按同一顆會取消。'

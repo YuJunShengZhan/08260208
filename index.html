@@ -2183,6 +2183,14 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 .choose-reaction-picker.open{display:block;animation:chooseReactionPop .18s ease both}
 .choose-reaction-picker-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;color:var(--rose);font-size:var(--i15fs-9-px, 9px);font-weight:900}
 .choose-reaction-picker-head small{color:var(--text-muted);font-size:var(--i15fs-7-px, 7px);font-weight:700}
+.choose-reaction-categories{display:flex;gap:6px;margin:0 -2px 10px;padding:2px 2px 6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.choose-reaction-categories::-webkit-scrollbar{display:none}
+.choose-reaction-category{flex:0 0 auto;min-width:54px;height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 8px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .15s ease}
+.choose-reaction-category span{font-size:20px;line-height:1}
+.choose-reaction-category small{font-size:var(--i15fs-7-px, 7px);font-weight:800;white-space:nowrap}
+.choose-reaction-category:hover,.choose-reaction-category:focus-visible{outline:none;background:var(--pink-light);border-color:color-mix(in srgb,var(--rose) 18%,transparent)}
+.choose-reaction-category:active{transform:scale(.96)}
+.choose-reaction-category.active{background:color-mix(in srgb,var(--pink-light) 82%,var(--white));border-color:color-mix(in srgb,var(--rose) 38%,var(--card-border));color:var(--rose)}
 .choose-reaction-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
 .choose-reaction-emoji{width:100%;aspect-ratio:1;display:grid;place-items:center;border:1px solid transparent;border-radius:10px;background:transparent;font-size:clamp(20px,4.2vw,28px);line-height:1;cursor:pointer;transition:transform .14s ease,background .14s ease,border-color .14s ease;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .choose-reaction-emoji:hover,.choose-reaction-emoji:focus-visible{outline:none;transform:translateY(-2px) scale(1.08);background:var(--pink-light);border-color:color-mix(in srgb,var(--rose) 18%,transparent)}
@@ -2193,6 +2201,40 @@ textarea.footprint-input{min-height:84px;resize:vertical;line-height:1.6}
 [data-theme="dark"] .choose-reaction-main-emoji{border-color:var(--white)}
 [data-theme="dark"] .choose-reaction-picker{background:color-mix(in srgb,var(--white) 94%,var(--pink-light));box-shadow:0 14px 34px rgba(0,0,0,.22)}
 @media(max-width:620px){.choose-reaction-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.choose-reaction-picker{padding:10px}.choose-reaction-emoji{font-size:24px;border-radius:9px}}
+.choose-reaction-sticker-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.choose-reaction-sticker{min-width:0;min-height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:8px 5px 6px;border:1px solid transparent;border-radius:14px;background:transparent;color:var(--text-muted);font-family:'Noto Sans TC',sans-serif;cursor:pointer;transition:transform .16s ease,background .16s ease,border-color .16s ease;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.choose-reaction-sticker:hover,.choose-reaction-sticker:focus-visible{outline:none;transform:translateY(-2px);background:var(--pink-light);border-color:color-mix(in srgb,var(--rose) 20%,transparent)}
+.choose-reaction-sticker:active{transform:scale(.96)}
+.choose-reaction-sticker.selected{background:color-mix(in srgb,var(--pink-light) 78%,var(--white));border-color:color-mix(in srgb,var(--rose) 44%,var(--card-border));box-shadow:0 0 0 2px color-mix(in srgb,var(--pink-light) 72%,transparent)}
+.choose-reaction-sticker small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--i15fs-7-px, 7px);font-weight:800;color:var(--text-muted)}
+.choose-sticker-art{position:relative;width:60px;height:54px;display:grid;place-items:center;overflow:visible;border-radius:16px;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--pink-light) 90%,#fff),color-mix(in srgb,var(--white) 92%,transparent) 68%,transparent 70%);font-size:31px;line-height:1;transform-origin:center;filter:drop-shadow(0 4px 7px rgba(91,43,58,.12));will-change:transform,filter,opacity}
+.choose-sticker-art>span{display:inline-block;white-space:nowrap;transform-origin:center;will-change:transform,opacity}
+.choose-sticker-art.compact{width:35px;height:35px;border-radius:50%;font-size:20px;background:var(--pink-light);filter:none}
+.choose-reaction-main-sticker{position:relative;display:inline-grid;place-items:center;width:39px;height:39px;margin-left:-5px;border:2px solid var(--white);border-radius:50%;background:var(--pink-light);box-shadow:0 2px 6px rgba(78,37,50,.08);overflow:visible}
+.choose-reaction-main-sticker:first-child{margin-left:0}
+.choose-reaction-main-sticker .choose-sticker-art{transform:scale(.88)}
+.choose-sticker-bounce>span{animation:chooseStickerBounce 1.25s ease-in-out infinite}
+.choose-sticker-pulse>span{animation:chooseStickerPulse 1.15s ease-in-out infinite}
+.choose-sticker-wiggle>span{animation:chooseStickerWiggle 1.2s ease-in-out infinite}
+.choose-sticker-float>span{animation:chooseStickerFloat 1.8s ease-in-out infinite}
+.choose-sticker-sway>span{animation:chooseStickerSway 1.55s ease-in-out infinite}
+.choose-sticker-kiss>span{animation:chooseStickerKiss 1.35s ease-in-out infinite}
+.choose-sticker-pop>span{animation:chooseStickerPop 1.35s cubic-bezier(.3,.9,.3,1.2) infinite}
+.choose-sticker-shimmer{animation:chooseStickerShimmer 1.45s ease-in-out infinite}
+.choose-sticker-shake>span{animation:chooseStickerShake 1.1s ease-in-out infinite}
+@keyframes chooseStickerBounce{0%,100%{transform:translateY(2px) scale(.96)}45%{transform:translateY(-7px) scale(1.06)}65%{transform:translateY(-2px) scale(1.01)}}
+@keyframes chooseStickerPulse{0%,100%{transform:scale(.88)}50%{transform:scale(1.13)}}
+@keyframes chooseStickerWiggle{0%,100%{transform:rotate(-5deg) scale(.98)}50%{transform:rotate(6deg) scale(1.04)}}
+@keyframes chooseStickerFloat{0%,100%{transform:translateY(3px)}50%{transform:translateY(-5px)}}
+@keyframes chooseStickerSway{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+@keyframes chooseStickerKiss{0%,100%{transform:translateX(-2px) scale(.95)}45%{transform:translateX(3px) scale(1.08)}60%{transform:translateX(1px) scale(1.02)}}
+@keyframes chooseStickerPop{0%,100%{transform:scale(.72);opacity:.72}42%{transform:scale(1.16);opacity:1}62%{transform:scale(1)}}
+@keyframes chooseStickerShimmer{0%,100%{filter:drop-shadow(0 3px 6px rgba(91,43,58,.1)) brightness(1)}50%{filter:drop-shadow(0 0 12px rgba(255,109,151,.38)) brightness(1.14)}}
+@keyframes chooseStickerShake{0%,100%{transform:translateX(-2px) rotate(-4deg)}50%{transform:translateX(2px) rotate(4deg)}}
+[data-theme="dark"] .choose-reaction-main-sticker{border-color:var(--white)}
+@media(max-width:620px){.choose-reaction-sticker-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.choose-reaction-sticker{min-height:82px;padding:7px 4px}.choose-sticker-art{width:56px;height:50px;font-size:29px}}
+@media(prefers-reduced-motion:reduce){.choose-sticker-art,.choose-sticker-art>span{animation:none!important}}
+
 body.choose-letterbox-open{overflow:hidden}
 .choose-ready-bg{position:fixed;z-index:10055;inset:0;display:grid;place-items:center;padding:16px;background:radial-gradient(circle at 50% 18%,rgba(255,238,243,.97),rgba(68,35,46,.82));backdrop-filter:blur(9px)}
 .choose-ready-card{position:relative;width:min(100%,530px);overflow:hidden;padding:48px 30px 32px;border:1px solid rgba(255,255,255,.62);border-radius:10px;background:var(--white);text-align:center;box-shadow:0 30px 90px rgba(37,14,23,.38);animation:chooseReadyArrive .58s cubic-bezier(.16,1,.3,1) both}
@@ -12251,13 +12293,48 @@ function chooseRefreshOpeningCopy(){
 }
 
 const CHOOSE_CACHE_KEY='choose_you_entries_cache_v1';
-const CHOOSE_REACTION_CACHE_KEY='choose_you_reactions_cache_v2';
+const CHOOSE_REACTION_CACHE_KEY='choose_you_reactions_cache_v3';
 const CHOOSE_REACTION_DEVICE_ID_KEY='choose_you_reaction_device_id_v1';
-const CHOOSE_REACTION_EMOJIS=['🥰','😘','🥺','🥹','🤭','😚','🫶','💓','💔','💕','💖','💗','💘','💝','💞','💟','❤️‍🩹','❤️‍🔥','🤍','🖤','🤎','💜','💙','💚','💛','🧡','❤️','🌷','🌸','🎀','✨','🌙','🧸','🐶','🐰','🍓','💐'];
+const CHOOSE_REACTION_STICKERS={
+  heart_pop:{label:'愛心蹦蹦',art:'💗',motion:'pop'},
+  hearts_hug:{label:'抱抱愛心',art:'🫂💕',motion:'pulse'},
+  bear_hug:{label:'抱抱熊',art:'🧸💕🧸',motion:'bounce'},
+  kiss_kiss:{label:'親親',art:'😘💋',motion:'kiss'},
+  shy_love:{label:'害羞',art:'🥹👉👈',motion:'wiggle'},
+  miss_you:{label:'想你',art:'🥺💗',motion:'float'},
+  bunny_love:{label:'兔兔愛心',art:'🐰💗',motion:'bounce'},
+  puppy_love:{label:'狗狗愛心',art:'🐶💕',motion:'wiggle'},
+  love_letter:{label:'小情書',art:'💌✨',motion:'float'},
+  sparkle_heart:{label:'閃亮愛心',art:'✨🩷✨',motion:'pop'},
+  flower_love:{label:'花花愛你',art:'🌷💖',motion:'sway'},
+  butterfly_love:{label:'蝴蝶愛心',art:'🦋💗',motion:'float'},
+  strawberry_love:{label:'草莓愛心',art:'🍓💗',motion:'wiggle'},
+  crown_love:{label:'公主愛心',art:'👑🩷',motion:'shimmer'},
+  fire_love:{label:'超級愛你',art:'❤️‍🔥✨',motion:'pulse'},
+  yay_love:{label:'開心愛你',art:'🥳💞',motion:'bounce'},
+  cuddle:{label:'抱緊緊',art:'🤗💕',motion:'pulse'},
+  paw_love:{label:'肉球愛心',art:'🐾💗',motion:'shake'},
+  moon_love:{label:'晚安愛你',art:'🌙💗',motion:'float'},
+  magic_love:{label:'魔法愛心',art:'🪄💖',motion:'shimmer'}
+};
+const CHOOSE_REACTION_GROUPS={
+  popular:{label:'常用',icon:'🥰',kind:'emoji',emojis:['❤️','🥰','😂','😭','🥹','😍','😘','🫶','🔥','✨','💕','💯','🎉','😮','🥺','🤭','👍','👏','🙏','👀','💋','💌','🎀','🌸','🧸','🍓']},
+  stickers:{label:'貼圖',icon:'🧸',kind:'sticker',stickers:Object.keys(CHOOSE_REACTION_STICKERS)},
+  faces:{label:'表情',icon:'😊',kind:'emoji',emojis:['😀','😃','😄','😁','😆','😅','😂','🤣','🥲','🥹','☺️','😊','😇','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋','😛','😝','😜','🤪','🤨','🧐','🤓','😎','🥸','🤩','🥳','🙂‍↕️','😏','😒','🙂‍↔️','😞','😔','😟','😕','🙁','☹️','😣','😖','😫','😩','🥺','😢','😭','😤','😠','😡','🤬','🤯','😳','🥵','🥶','😱','😨','😰','😥','😓','🫣','🤗','🫡','🤔','🫢','🤭','🤫','🤥','😶','🫥','😐','🫤','🙄','😬','😮‍💨','😴','🤤','😪','😵','🤐','🥴','🤢','🤮','🤧','😷','🤒','🤕','😈','👿','💀','👻','👽','🤖']},
+  hearts:{label:'愛心',icon:'💗',kind:'emoji',emojis:['💓','💔','💕','💖','💗','💘','💝','💞','💟','❤️‍🩹','❤️‍🔥','🤍','🖤','🤎','💜','💙','🩵','💚','💛','🧡','🩷','❤️','💋','💌','💐','🫶']},
+  hands:{label:'手勢',icon:'🫶',kind:'emoji',emojis:['🫶','👍','👎','👏','🙌','👐','🤲','🤝','🙏','✌️','🤞','🫰','🤟','🤘','👌','🤌','💪','👊','✊','🤛','🤜','👋','🖐️','✋','🫱','🫲','👉','👈','☝️','👇','👆','🫵','🤙']},
+  cute:{label:'可愛',icon:'🎀',kind:'emoji',emojis:['🎀','✨','⭐️','🌟','💫','🔥','💯','🎉','🎊','🎁','🧸','🪄','👑','💎','🪩','🫧','🪽','🦋','🌈','☁️','🌙','☀️','❄️','🍀','🕯️','🔮','🎈','🎂','🧁','🍭','🍬']},
+  nature:{label:'花花',icon:'🌷',kind:'emoji',emojis:['🌷','🌸','🌹','🥀','🌺','🌻','🌼','🪻','🪷','💐','🌱','🌿','☘️','🍀','🍃','🍂','🍁','🌵','🌴','🌳','🌲','🪴','🍄','🌞','🌝','🌛','🌜','🌙','⭐️','🌟','✨','🌈','☀️','⛅️','☁️','🌧️','❄️','☃️']},
+  animals:{label:'動物',icon:'🐰',kind:'emoji',emojis:['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐻‍❄️','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐔','🐥','🐣','🐦','🦆','🦉','🦄','🐝','🦋','🐞','🐢','🐬','🐳','🦭','🐙','🦀','🐠','🐾']},
+  food:{label:'甜甜',icon:'🍓',kind:'emoji',emojis:['🍓','🍒','🍑','🍉','🍇','🍎','🍊','🍋','🍍','🥝','🥭','🍰','🎂','🧁','🍩','🍪','🍫','🍬','🍭','🍮','🍦','🍧','🍨','🥞','🧇','🍯','☕️','🧋','🥛','🍵']},
+  fun:{label:'其他',icon:'🎵',kind:'emoji',emojis:['🎵','🎶','🎧','🎤','🎹','🎸','📷','📸','🎞️','🎬','🎮','🕹️','🧩','🛍️','👛','💄','💅','🪞','🛏️','🛋️','🚗','✈️','🏠','🏖️','🎡','🎢','🏰','⚾️','🏀','⚽️','🏆']}
+};
+const CHOOSE_REACTION_EMOJIS=[...new Set(Object.values(CHOOSE_REACTION_GROUPS).flatMap(group=>Array.isArray(group.emojis)?group.emojis:[]))];
 let chooseEntriesData={};
 let chooseReactionsData={};
 let chooseReactionSyncStarted=false;
 let chooseReactionPickerKey='';
+let chooseReactionCategory='popular';
 let chooseReactionFallbackDeviceId='';
 let chooseSelectedPlayer=localStorage.getItem('choose_you_player')||'shengzhan';
 let chooseSyncStarted=false;
@@ -12343,9 +12420,13 @@ function chooseGetReactionDeviceId(){
   }
 }
 function chooseNormalizeReaction(value){
-  const emoji=String(value?.emoji||value||'').trim();
+  const updatedAt=Number(value?.updatedAt)||Date.now();
+  const type=String(value?.type||'').trim();
+  const sticker=String(value?.sticker||value?.value||'').trim();
+  if(type==='sticker'&&CHOOSE_REACTION_STICKERS[sticker]) return {type:'sticker',value:sticker,updatedAt};
+  const emoji=String(value?.emoji||(type==='emoji'?value?.value:'')||value||'').trim();
   if(!CHOOSE_REACTION_EMOJIS.includes(emoji)) return null;
-  return {emoji,updatedAt:Number(value?.updatedAt)||Date.now()};
+  return {type:'emoji',value:emoji,emoji,updatedAt};
 }
 function chooseNormalizeReactionBucket(value){
   const bucket={};
@@ -12371,8 +12452,9 @@ function chooseReactionEntries(month,letterPlayer){
 function chooseLoadReactionCache(){
   try{
     const current=JSON.parse(localStorage.getItem(CHOOSE_REACTION_CACHE_KEY)||'{}');
+    const previous=JSON.parse(localStorage.getItem('choose_you_reactions_cache_v2')||'{}');
     const legacy=JSON.parse(localStorage.getItem('choose_you_reactions_cache_v1')||'{}');
-    chooseReactionsData=current&&typeof current==='object'&&Object.keys(current).length?current:(legacy&&typeof legacy==='object'?legacy:{});
+    chooseReactionsData=current&&typeof current==='object'&&Object.keys(current).length?current:(previous&&typeof previous==='object'&&Object.keys(previous).length?previous:(legacy&&typeof legacy==='object'?legacy:{}));
   }catch(_){chooseReactionsData={};}
 }
 function chooseWriteReactionCache(){
@@ -12381,21 +12463,46 @@ function chooseWriteReactionCache(){
 function chooseReactionKey(month,letterPlayer){
   return `${month}:${letterPlayer}`;
 }
+function chooseStickerMarkup(stickerId,compact=false){
+  const sticker=CHOOSE_REACTION_STICKERS[stickerId];
+  if(!sticker) return '';
+  const motion=`choose-sticker-${sticker.motion||'pulse'}`;
+  return `<span class="choose-sticker-art ${motion}${compact?' compact':''}" title="${chooseEscape(sticker.label)}"><span>${chooseEscape(sticker.art)}</span></span>`;
+}
+function chooseReactionDisplayMarkup(reaction){
+  if(reaction?.type==='sticker'&&CHOOSE_REACTION_STICKERS[reaction.value]) return `<span class="choose-reaction-main-sticker">${chooseStickerMarkup(reaction.value,true)}</span>`;
+  const emoji=String(reaction?.value||reaction?.emoji||'');
+  return `<span class="choose-reaction-main-emoji" title="表情回應">${chooseEscape(emoji)}</span>`;
+}
 function chooseRenderReactionBar(month,letterPlayer){
   const deviceId=chooseGetReactionDeviceId();
   const entries=chooseReactionEntries(month,letterPlayer);
   const own=entries.find(([id])=>id===deviceId)?.[1]||null;
   const open=chooseReactionPickerKey===chooseReactionKey(month,letterPlayer);
-  const emojiStack=entries.length
-    ?`<span class="choose-reaction-stack" aria-label="目前有 ${entries.length} 個表情回應">${entries.map(([,reaction])=>`<span class="choose-reaction-main-emoji" title="表情回應">${reaction.emoji}</span>`).join('')}</span>`
+  const reactionStack=entries.length
+    ?`<span class="choose-reaction-stack" aria-label="目前有 ${entries.length} 個回應">${entries.map(([,reaction])=>chooseReactionDisplayMarkup(reaction)).join('')}</span>`
     :'<span class="choose-reaction-main-heart">♡</span>';
-  // IG 私訊風格：有回應後只顯示表情，不標示「我的回應」或裝置身分。
   const mainText=entries.length?'':'<span>按個可愛表情</span>';
-  const buttons=CHOOSE_REACTION_EMOJIS.map(emoji=>`<button type="button" class="choose-reaction-emoji${own?.emoji===emoji?' selected':''}" onclick="chooseSetReaction(event,'${month}','${letterPlayer}','${emoji}')" aria-label="用 ${emoji} 回應" aria-pressed="${own?.emoji===emoji?'true':'false'}">${emoji}</button>`).join('');
+  if(!CHOOSE_REACTION_GROUPS[chooseReactionCategory]) chooseReactionCategory='popular';
+  const group=CHOOSE_REACTION_GROUPS[chooseReactionCategory];
+  const categoryButtons=Object.entries(CHOOSE_REACTION_GROUPS).map(([key,item])=>`<button type="button" class="choose-reaction-category${key===chooseReactionCategory?' active':''}" onclick="chooseSetReactionCategory(event,'${month}','${letterPlayer}','${key}')" aria-pressed="${key===chooseReactionCategory?'true':'false'}"><span>${item.icon}</span><small>${item.label}</small></button>`).join('');
+  let pickerBody='';
+  if(group.kind==='sticker'){
+    pickerBody=`<div class="choose-reaction-sticker-grid">${group.stickers.map(stickerId=>{const sticker=CHOOSE_REACTION_STICKERS[stickerId];const selected=own?.type==='sticker'&&own?.value===stickerId;return `<button type="button" class="choose-reaction-sticker${selected?' selected':''}" onclick="chooseSetStickerReaction(event,'${month}','${letterPlayer}','${stickerId}')" aria-label="用${chooseEscape(sticker.label)}貼圖回應" aria-pressed="${selected?'true':'false'}">${chooseStickerMarkup(stickerId)}<small>${chooseEscape(sticker.label)}</small></button>`;}).join('')}</div>`;
+  }else{
+    pickerBody=`<div class="choose-reaction-grid">${group.emojis.map(emoji=>`<button type="button" class="choose-reaction-emoji${own?.type!=='sticker'&&own?.value===emoji?' selected':''}" onclick="chooseSetReaction(event,'${month}','${letterPlayer}','${emoji}')" aria-label="用 ${emoji} 回應" aria-pressed="${own?.type!=='sticker'&&own?.value===emoji?'true':'false'}">${emoji}</button>`).join('')}</div>`;
+  }
   const note=own
-    ?'這台裝置一次保留 1 個表情；換一顆會取代，重按同一顆會取消。'
-    :(entries.length>=2?'這封信已經有 2 個裝置回應；一封信最多保留 2 顆表情。':'不分誰寫的信，自己的信也可以按；每台裝置各保留 1 個表情。');
-  return `<div class="choose-reaction-wrap"><div class="choose-reaction-line"><button type="button" class="choose-reaction-main${entries.length?' has-reaction':''}" onclick="chooseToggleReactionPicker(event,'${month}','${letterPlayer}')" aria-expanded="${open?'true':'false'}">${emojiStack}${mainText}</button></div><div class="choose-reaction-picker${open?' open':''}"><div class="choose-reaction-picker-head"><span>挑一個可愛表情或愛心回應這封信</span><small>${entries.length} / 2 個裝置</small></div><div class="choose-reaction-grid">${buttons}</div><div class="choose-reaction-note">${note}</div></div></div>`;
+    ?'這台裝置一次保留 1 個回應；換 Emoji 或貼圖會取代，重按同一個會取消。'
+    :(entries.length>=2?'這封信已經有 2 個裝置回應；一封信最多保留 2 個。':'Emoji 和動態貼圖都可以用；自己的信也能按，每台裝置各保留 1 個。');
+  return `<div class="choose-reaction-wrap"><div class="choose-reaction-line"><button type="button" class="choose-reaction-main${entries.length?' has-reaction':''}" onclick="chooseToggleReactionPicker(event,'${month}','${letterPlayer}')" aria-expanded="${open?'true':'false'}">${reactionStack}${mainText}</button></div><div class="choose-reaction-picker${open?' open':''}"><div class="choose-reaction-picker-head"><span>挑 Emoji 或動態貼圖回應</span><small>${entries.length} / 2 個裝置</small></div><div class="choose-reaction-categories">${categoryButtons}</div>${pickerBody}<div class="choose-reaction-note">${note}</div></div></div>`;
+}
+function chooseSetReactionCategory(event,month,letterPlayer,category){
+  event?.stopPropagation();
+  if(!CHOOSE_REACTION_GROUPS[category]) return;
+  chooseReactionCategory=category;
+  chooseReactionPickerKey=chooseReactionKey(month,letterPlayer);
+  chooseRenderLetterbox(month);
 }
 function chooseToggleReactionPicker(event,month,letterPlayer){
   event?.stopPropagation();
@@ -12404,17 +12511,18 @@ function chooseToggleReactionPicker(event,month,letterPlayer){
   chooseReactionPickerKey=chooseReactionPickerKey===key?'':key;
   chooseRenderLetterbox(month);
 }
-async function chooseSetReaction(event,month,letterPlayer,emoji){
+async function chooseCommitReaction(event,month,letterPlayer,nextReaction){
   event?.stopPropagation();
-  if(!/^\d{4}-\d{2}$/.test(String(month||''))||!['shengzhan','yujun'].includes(letterPlayer)||!CHOOSE_REACTION_EMOJIS.includes(emoji)) return;
+  if(!/^\d{4}-\d{2}$/.test(String(month||''))||!['shengzhan','yujun'].includes(letterPlayer)||!nextReaction) return;
   const deviceId=chooseGetReactionDeviceId();
   const bucket=chooseNormalizeReactionBucket(chooseReactionsData?.[month]?.[letterPlayer]);
   const current=bucket[deviceId]||null;
-  if(!current&&Object.keys(bucket).length>=2){
-    alert('這封信已經有 2 個裝置的表情回應了。每封信最多保留 2 顆表情。');
+  const same=Boolean(current&&current.type===nextReaction.type&&current.value===nextReaction.value);
+  if(!current&&!same&&Object.keys(bucket).length>=2){
+    alert('這封信已經有 2 個裝置的回應了。每封信最多保留 2 個。');
     return;
   }
-  const next=current?.emoji===emoji?null:{emoji,updatedAt:Date.now()};
+  const next=same?null:{...nextReaction,updatedAt:Date.now()};
   if(next) bucket[deviceId]=next; else delete bucket[deviceId];
   const monthData={...(chooseReactionsData[month]||{})};
   if(Object.keys(bucket).length) monthData[letterPlayer]=bucket; else delete monthData[letterPlayer];
@@ -12438,15 +12546,23 @@ async function chooseSetReaction(event,month,letterPlayer,emoji){
       if(Object.keys(synced).length) syncedMonth[letterPlayer]=synced; else delete syncedMonth[letterPlayer];
       if(Object.keys(syncedMonth).length) chooseReactionsData[month]=syncedMonth; else delete chooseReactionsData[month];
       chooseWriteReactionCache();
-      if(!result.committed&&next&&!current) alert('剛剛另一台裝置已經先送出回應，這封信目前已滿 2 個表情。');
+      if(!result.committed&&next&&!current) alert('剛剛另一台裝置已經先送出回應，這封信目前已滿 2 個。');
       chooseRenderLetterbox(month);
     }else{
       queueFirebaseWrite(path,Object.keys(bucket).length?bucket:null);
     }
   }catch(error){
-    console.warn('心約表情回應同步失敗，已排入待同步',error);
+    console.warn('心約回應同步失敗，已排入待同步',error);
     queueFirebaseWrite(path,Object.keys(bucket).length?bucket:null);
   }
+}
+async function chooseSetReaction(event,month,letterPlayer,emoji){
+  if(!CHOOSE_REACTION_EMOJIS.includes(emoji)) return;
+  return chooseCommitReaction(event,month,letterPlayer,{type:'emoji',value:emoji,emoji});
+}
+async function chooseSetStickerReaction(event,month,letterPlayer,stickerId){
+  if(!CHOOSE_REACTION_STICKERS[stickerId]) return;
+  return chooseCommitReaction(event,month,letterPlayer,{type:'sticker',value:stickerId,sticker:stickerId});
 }
 function chooseInitReactionFirebase(){
   chooseLoadReactionCache();
